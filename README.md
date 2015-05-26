@@ -1,5 +1,5 @@
 # AllHadronicSUSY
-# LostLepton Background Estimation
+# QCD Background study
 
 1.Set CMS Environment:
 
