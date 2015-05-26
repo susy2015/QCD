@@ -71,28 +71,33 @@ int main(int argc, char* argv[])
   BaseHistgram myBaseHistgram;
   myBaseHistgram.BookHistgram(outFileName);
 
-  int nevents_baseline= 0;
+  int nevents_baseline = 0;
+  int nevents_baseline_dPhisInverted = 0;
 
   while(tr.getNextEvent())
   {
+    double ht = tr.getVar<double>("ht");
+    (myBaseHistgram.h_b_all_HT)->Fill(ht);
+
     if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
 
-    bool passBaseline=tr.getVar<bool>("passBaseline");
+    bool passBaseline = tr.getVar<bool>("passBaseline");
     if (passBaseline)
     {
       ++nevents_baseline;
     }
 
-    //bool passBaseline_nolepveto=tr.getVar<bool>("passBaseline_nolepveto");
-    //if (passBaseline_nolepveto)
-    //{
-      //myAccRecoIsoEffs.nevents_sel_base++;
-    //}//baseline, nolepveto
+    bool passBaseline_dPhisInverted = tr.getVar<bool>("passBaseline_dPhisInverted");
+    if (passBaseline_dPhisInverted)
+    {
+      ++nevents_baseline_dPhisInverted;
+    }
+
   }//end of first loop
 
   //write into histgram
   (myBaseHistgram.oFile)->Write();
-  
+  std::cout << "Normal:" << nevents_baseline << "Inverted:" << nevents_baseline_dPhisInverted << std::endl;
   //const double ttbarCrossSection=806.1;
   //const double lumi=1000.0;
   //const double ntoteventsttbar=25446993.0;

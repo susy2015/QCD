@@ -3,7 +3,7 @@
 void passBaselineFunc(NTupleReader &tr)
 {
   bool passBaseline = true;
-  bool passBaseline_nolepveto = true;
+  bool passBaseline_dPhisInverted = true;
 
   //Form TLorentzVector of MET
   TLorentzVector metLVec; metLVec.SetPtEtaPhiM(tr.getVar<double>("met"), 0, tr.getVar<double>("metphi"), 0);
@@ -35,36 +35,34 @@ void passBaselineFunc(NTupleReader &tr)
   //if( debug ) std::cout<<"\njetsLVec_forTagger->size : "<<jetsLVec_forTagger->size()<<"  recoJetsBtag_forTagger->size : "<<recoJetsBtag_forTagger->size()<<"  passBaseline : "<<passBaseline<<std::endl;
 
   //Pass lepton veto?
-  bool passLeptVeto = true;
-  if( nMuons != AnaConsts::nMuonsSel ){ passBaseline = false; passLeptVeto = false; }
-  if( nElectrons != AnaConsts::nElectronsSel ){ passBaseline = false; passLeptVeto = false; }
+  if( nMuons != AnaConsts::nMuonsSel ){ passBaseline = false; passBaseline_dPhisInverted = false;}
+  if( nElectrons != AnaConsts::nElectronsSel ){ passBaseline = false; passBaseline_dPhisInverted = false; }
   //Isolated track veto is disabled for now
-  //if( nIsoTrks != AnaConsts::nIsoTrksSel ){ passBaseline = false; passLeptVeto = false; }
+  //if( nIsoTrks != AnaConsts::nIsoTrksSel ){ passBaseline = false; passBaseline_dPhisInverted = false; }
   //if( debug ) std::cout<<"nMuons : "<<nMuons<<"  nElectrons : "<<nElectrons<<"  nIsoTrks : "<<nIsoTrks<<"  passBaseline : "<<passBaseline<<std::endl;
 
   //Pass number of jets?
   bool passnJets = true;
-  if( cntNJetsPt50Eta24 < AnaConsts::nJetsSelPt50Eta24 ){ passBaseline = false; passBaseline_nolepveto = false; passnJets = false;}
-  if( cntNJetsPt30Eta24 < AnaConsts::nJetsSelPt30Eta24 ){ passBaseline = false; passBaseline_nolepveto = false; passnJets = false;}
+  if( cntNJetsPt50Eta24 < AnaConsts::nJetsSelPt50Eta24 ){ passBaseline = false; passBaseline_dPhisInverted = false; passnJets = false;}
+  if( cntNJetsPt30Eta24 < AnaConsts::nJetsSelPt30Eta24 ){ passBaseline = false; passBaseline_dPhisInverted = false; passnJets = false;}
   //if( debug ) std::cout<<"cntNJetsPt50Eta24 : "<<cntNJetsPt50Eta24<<"  cntNJetsPt30Eta24 : "<<cntNJetsPt30Eta24<<"  cntNJetsPt30 : "<<cntNJetsPt30<<"  passBaseline : "<<passBaseline<<std::endl;
 
   //Pass deltaPhi?
   bool passdPhis = true;
-  if( dPhiVec->at(0) < AnaConsts::dPhi0_CUT || dPhiVec->at(1) < AnaConsts::dPhi1_CUT || dPhiVec->at(2) < AnaConsts::dPhi2_CUT ){ passBaseline = false; passBaseline_nolepveto = false; passdPhis = false; }
+  if( dPhiVec->at(0) < AnaConsts::dPhi0_CUT || dPhiVec->at(1) < AnaConsts::dPhi1_CUT || dPhiVec->at(2) < AnaConsts::dPhi2_CUT ){ passBaseline = false; passdPhis = false; }
+  else { passBaseline_dPhisInverted = false; passdPhis = true;}
   //if( debug ) std::cout<<"dPhi0 : "<<dPhiVec->at(0)<<"  dPhi1 : "<<dPhiVec->at(1)<<"  dPhi2 : "<<dPhiVec->at(2)<<"  passBaseline : "<<passBaseline<<std::endl;
 
   //Pass number of b-tagged jets?
   bool passBJets = true;
-  if( !( (AnaConsts::low_nJetsSelBtagged == -1 || cntCSVS >= AnaConsts::low_nJetsSelBtagged) && (AnaConsts::high_nJetsSelBtagged == -1 || cntCSVS < AnaConsts::high_nJetsSelBtagged ) ) ){ passBaseline = false; passBaseline_nolepveto = false; passBJets = false; }
+  if( !( (AnaConsts::low_nJetsSelBtagged == -1 || cntCSVS >= AnaConsts::low_nJetsSelBtagged) && (AnaConsts::high_nJetsSelBtagged == -1 || cntCSVS < AnaConsts::high_nJetsSelBtagged ) ) ){ passBaseline = false; passBaseline_dPhisInverted = false; passBJets = false; }
   //if( debug ) std::cout<<"cntCSVS : "<<cntCSVS<<"  passBaseline : "<<passBaseline<<std::endl;
 
   //Pass the baseline MET requirement?
-  bool passMET = true;
-  if( tr.getVar<double>("met") < AnaConsts::defaultMETcut ){ passBaseline = false; passBaseline_nolepveto = false; passMET = false; }
+  //bool passMET = true;
+  //if( tr.getVar<double>("met") < AnaConsts::defaultMETcut ){ passBaseline = false; passBaseline_dPhisInverted = false; passMET = false; }
   //if( debug ) std::cout<<"met : "<<tr.getVar<double>("met")<<"  defaultMETcut : "<<AnaConsts::defaultMETcut<<"  passBaseline : "<<passBaseline<<std::endl;
-
-  //std::cout << "AnaConsts::defaultMETcut = " << AnaConsts::defaultMETcut << std::endl;
-
+  
   //Calculate top tagger related variables. 
   //Note that to save speed, only do the calculation after previous base line requirements.
   int bestTopJetIdx = -1;
@@ -75,9 +73,10 @@ void passBaselineFunc(NTupleReader &tr)
   double MT2 = -1;
   double mTcomb = -1;
 
-  //if( passBaseline && cntNJetsPt30 >= AnaConsts::nJetsSel ){
-  if( passBaseline_nolepveto && cntNJetsPt30 >= AnaConsts::nJetsSel )
+  if( (passBaseline||passBaseline_dPhisInverted) && cntNJetsPt30 >= AnaConsts::nJetsSel )
   {
+  //if( passBaseline_nolepveto && cntNJetsPt30 >= AnaConsts::nJetsSel )
+  //{
     type3Ptr->processEvent((*jetsLVec_forTagger), (*recoJetsBtag_forTagger), metLVec);
     bestTopJetIdx = type3Ptr->bestTopJetIdx;
     remainPassCSVS = type3Ptr->remainPassCSVS;
@@ -92,10 +91,10 @@ void passBaselineFunc(NTupleReader &tr)
   //Pass top tagger requirement?
   bool passTagger = true;
   //bestTopJetIdx != -1 means at least 1 top candidate!
-  if( bestTopJetIdx == -1 ){ passBaseline = false; passBaseline_nolepveto = false; passTagger = false; }
-  if( ! remainPassCSVS ){ passBaseline = false; passBaseline_nolepveto = false; passTagger = false; }
-  if( pickedRemainingCombfatJetIdx == -1 && jetsLVec_forTagger->size()>=6 ){ passBaseline = false; passBaseline_nolepveto = false; passTagger = false; }
-  if( ! (bestTopJetMass > AnaConsts::lowTopCut_ && bestTopJetMass < AnaConsts::highTopCut_ ) ){ passBaseline = false; passBaseline_nolepveto = false; passTagger = false; }
+  if( bestTopJetIdx == -1 ){ passBaseline = false; passBaseline_dPhisInverted = false; passTagger = false; }
+  if( ! remainPassCSVS ){ passBaseline = false; passBaseline_dPhisInverted = false; passTagger = false; }
+  if( pickedRemainingCombfatJetIdx == -1 && jetsLVec_forTagger->size()>=6 ){ passBaseline = false; passBaseline_dPhisInverted = false; passTagger = false; }
+  if( ! (bestTopJetMass > AnaConsts::lowTopCut_ && bestTopJetMass < AnaConsts::highTopCut_ ) ){ passBaseline = false; passBaseline_dPhisInverted = false; passTagger = false; }
   //if( debug ) std::cout<<"bestTopJetidx : "<<bestTopJetIdx<<"  remainPassCSVS : "<<remainPassCSVS<<"  pickedRemainingCombfatJetIdx : "<<pickedRemainingCombfatJetIdx<<"  bestTopJetMass : "<<bestTopJetMass<<"  passBaseline : "<<passBaseline<<std::endl;
 
   //Register all the calculated variables
@@ -122,7 +121,7 @@ void passBaselineFunc(NTupleReader &tr)
   //tr.registerDerivedVar("passMET", passMET);
   //tr.registerDerivedVar("passTagger", passTagger);
   tr.registerDerivedVar("passBaseline", passBaseline);
-  tr.registerDerivedVar("passBaseline_nolepveto", passBaseline_nolepveto);
+  tr.registerDerivedVar("passBaseline_dPhisInverted", passBaseline_dPhisInverted);
 
   //if( debug ) std::cout<<"nTopCandSortedCnt : "<<nTopCandSortedCnt<<"  MT2 : "<<MT2<<"  mTcomb : "<<mTcomb<<"  passBaseline : "<<passBaseline<<std::endl;
 

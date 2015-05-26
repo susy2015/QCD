@@ -16,6 +16,14 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 
 //############finish the definition of class AccRecoEffs######################
+//class QCDFactors
+//{
+// public:
+//  int 
+// private:
+//}
+
+
 
 class BaseHistgram
 {
@@ -24,6 +32,7 @@ class BaseHistgram
 
   TFile *oFile;
   TH1D *h_b_all_MET;
+  TH1D *h_b_all_HT;
   TH1D *h_b_baseline_nMuons, *h_b_baseline_njets, *h_b_baseline_nbjetsCSVM, *h_b_baseline_bestTopMass, *h_b_baseline_MET, *h_b_baseline_jetpt2, *h_b_baseline_jetpt4, *h_b_baseline_jet1_met_phi_diff, *h_b_baseline_jet2_met_phi_diff, *h_b_baseline_jet3_met_phi_diff;
   TH1D *h_b_acc_njets, *h_b_acc_nbjetsCSVM, *h_b_acc_bestTopMass, *h_b_acc_MET, *h_b_acc_jetpt2, *h_b_acc_jetpt4, *h_b_acc_jet1_met_phi_diff, *h_b_acc_jet2_met_phi_diff, *h_b_acc_jet3_met_phi_diff;
   TH1D *h_b_reco_nMuons, *h_b_reco_njets, *h_b_reco_nbjetsCSVM, *h_b_reco_bestTopMass, *h_b_reco_MET, *h_b_reco_jetpt2, *h_b_reco_jetpt4, *h_b_reco_jet1_met_phi_diff, *h_b_reco_jet2_met_phi_diff, *h_b_reco_jet3_met_phi_diff;
@@ -34,6 +43,7 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   oFile = new TFile(outFileName, "recreate");
 
   h_b_all_MET = new TH1D("h_b_all_MET","",1000,0,1000);
+  h_b_all_HT = new TH1D("h_b_all_HT","",2000,0,2000);
 
   h_b_baseline_nMuons = new TH1D("h_b_baseline_nMuons","",10,0,10);
   h_b_baseline_njets = new TH1D("h_b_baseline_njets","",10,0,10);
