@@ -15,15 +15,20 @@
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
 
+#define MET_BINS 2
 //############finish the definition of class AccRecoEffs######################
-//class QCDFactors
-//{
-// public:
-//  int 
-// private:
-//}
+class QCDFactors
+{
+ public:
+  double nQCDNormal[MET_BINS] = {0}, nQCDInverted[MET_BINS] = {0};
+  double QCDTFactor[MET_BINS] = {0};
 
-
+  void NumberNormalize();
+  void NumbertoTFactor();
+  void printQCDFactorInfo(); 
+ private:
+  
+};
 
 class BaseHistgram
 {
@@ -117,3 +122,22 @@ double DeltaR(double eta1, double phi1, double eta2, double phi2)
   double dphi = DeltaPhi(phi1, phi2);
   return std::sqrt(deta*deta + dphi*dphi);
 }
+
+int Set_metbin_number(
+                       double met
+                     )
+{
+  int metbin_num;
+
+  if(met >= 175 && met < 200)
+  {
+    metbin_num = 0;
+  }
+  else if(met >= 200)
+  {
+    metbin_num = 1;
+  }
+
+  return metbin_num;
+}
+

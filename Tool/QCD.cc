@@ -51,8 +51,8 @@ int main(int argc, char* argv[])
   const char *inputFileList = argv[1];
   const char *outFileName   = argv[2];
 
-  TChain *fChain = new TChain("stopTreeMaker/AUX");
-  //TChain *fChain = new TChain("AUX");
+  //TChain *fChain = new TChain("stopTreeMaker/AUX");
+  TChain *fChain = new TChain("AUX");
 
   if(!FillChain(fChain, inputFileList))
   {
@@ -67,37 +67,42 @@ int main(int argc, char* argv[])
   AnaFunctions::prepareTopTagger();
   //The passBaselineFunc is registered here
   tr.registerFunction(&passBaselineFunc);
+  //define my QCDFactors class to stroe counts and Translation factors
+  QCDFactors myQCDFactors;
+
   //define my histgram class
   BaseHistgram myBaseHistgram;
   myBaseHistgram.BookHistgram(outFileName);
 
-  int nevents_baseline = 0;
-  int nevents_baseline_dPhisInverted = 0;
-
   while(tr.getNextEvent())
   {
+    if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+
     double ht = tr.getVar<double>("ht");
     (myBaseHistgram.h_b_all_HT)->Fill(ht);
-
-    if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+    double met = tr.getVar<double>("met");
+    int metbin_number = Set_metbin_number(met);
 
     bool passBaseline = tr.getVar<bool>("passBaseline");
     if (passBaseline)
     {
-      ++nevents_baseline;
+      myQCDFactors.nQCDNormal[metbin_number]++;
     }
 
     bool passBaseline_dPhisInverted = tr.getVar<bool>("passBaseline_dPhisInverted");
     if (passBaseline_dPhisInverted)
     {
-      ++nevents_baseline_dPhisInverted;
+      myQCDFactors.nQCDInverted[metbin_number]++;
     }
 
   }//end of first loop
 
+  myQCDFactors.NumberNormalize();
+  myQCDFactors.NumbertoTFactor();
+  myQCDFactors.printQCDFactorInfo();
   //write into histgram
   (myBaseHistgram.oFile)->Write();
-  std::cout << "Normal:" << nevents_baseline << "Inverted:" << nevents_baseline_dPhisInverted << std::endl;
+  //std::cout << "Normal:" << nevents_baseline << "Inverted:" << nevents_baseline_dPhisInverted << std::endl;
   //const double ttbarCrossSection=806.1;
   //const double lumi=1000.0;
   //const double ntoteventsttbar=25446993.0;
@@ -109,3 +114,63 @@ int main(int argc, char* argv[])
   return 0;
 }
 
+
+void QCDFactors::NumberNormalize()
+{
+  double XSec = 670500+26740+769.7;
+  double Lumi = 1000.0;
+  double Nevents = 663953+849033+333733;
+
+  double scale = XSec*Lumi/Nevents;
+
+  for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    nQCDNormal[i_cal] = nQCDNormal[i_cal]*scale;
+    nQCDInverted[i_cal]= nQCDInverted[i_cal]*scale;
+  }
+}
+
+void QCDFactors::NumbertoTFactor()
+{
+  int i_cal;
+
+  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    QCDTFactor[i_cal] = nQCDNormal[i_cal]/nQCDInverted[i_cal];
+  }
+}
+
+void QCDFactors::printQCDFactorInfo()
+{
+  int i_cal = 0;
+
+  std::cout << "Counting Normal: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    std::cout << nQCDNormal[i_cal] << " , ";
+    if( i_cal == MET_BINS-1 )
+    {
+      std::cout << std::endl;
+    }
+  }
+
+  std::cout << "Counting Inverted: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    std::cout << nQCDInverted[i_cal] << " , ";
+    if( i_cal == MET_BINS-1 )
+    {
+      std::cout << std::endl;
+    }
+  }
+
+  std::cout << "Translation Factors: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    std::cout << QCDTFactor[i_cal] << " , ";
+    if( i_cal == MET_BINS-1 )
+    {
+      std::cout << std::endl;
+    }
+  }
+}
