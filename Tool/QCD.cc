@@ -86,19 +86,20 @@ int main(int argc, char* argv[])
     bool passBaseline = tr.getVar<bool>("passBaseline");
     if (passBaseline)
     {
-      myQCDFactors.nQCDNormal[metbin_number]++;
+      myQCDFactors.nQCDNormal_MC[metbin_number]++;
     }
 
     bool passBaseline_dPhisInverted = tr.getVar<bool>("passBaseline_dPhisInverted");
     if (passBaseline_dPhisInverted)
     {
-      myQCDFactors.nQCDInverted[metbin_number]++;
+      myQCDFactors.nQCDInverted_MC[metbin_number]++;
+      myQCDFactors.MET_sum[metbin_number] = myQCDFactors.MET_sum[metbin_number] + met;
     }
 
   }//end of first loop
 
-  myQCDFactors.NumberNormalize();
   myQCDFactors.NumbertoTFactor();
+  myQCDFactors.NumberNormalize();
   myQCDFactors.printQCDFactorInfo();
   //write into histgram
   (myBaseHistgram.oFile)->Write();
@@ -114,29 +115,33 @@ int main(int argc, char* argv[])
   return 0;
 }
 
-
-void QCDFactors::NumberNormalize()
-{
-  double XSec = 670500+26740+769.7;
-  double Lumi = 1000.0;
-  double Nevents = 663953+849033+333733;
-
-  double scale = XSec*Lumi/Nevents;
-
-  for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
-  {
-    nQCDNormal[i_cal] = nQCDNormal[i_cal]*scale;
-    nQCDInverted[i_cal]= nQCDInverted[i_cal]*scale;
-  }
-}
-
 void QCDFactors::NumbertoTFactor()
 {
   int i_cal;
 
   for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
-    QCDTFactor[i_cal] = nQCDNormal[i_cal]/nQCDInverted[i_cal];
+    QCDTFactor[i_cal] = nQCDNormal_MC[i_cal]/nQCDInverted_MC[i_cal];
+    QCDTFactor_err[i_cal] = get_stat_Error(nQCDNormal_MC[i_cal], nQCDInverted_MC[i_cal]);
+    MET_mean[i_cal] = MET_sum[i_cal]/nQCDInverted_MC[i_cal];
+  }
+}
+
+void QCDFactors::NumberNormalize()
+{
+  double XSec = 670500+26740+769.7;
+  double Lumi = 1000.0;
+  //double Nevents = 663953+849033+333733;
+  double Nevents = 2004219+3214312+1130720;
+
+  double scale = XSec*Lumi/Nevents;
+
+  std::cout << "scale: " << scale << std::endl;
+
+  for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    nQCDNormal[i_cal] = nQCDNormal_MC[i_cal]*scale;
+    nQCDInverted[i_cal]= nQCDInverted_MC[i_cal]*scale;
   }
 }
 
@@ -144,10 +149,30 @@ void QCDFactors::printQCDFactorInfo()
 {
   int i_cal = 0;
 
+  std::cout << "Counting Normal MC: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    std::cout << nQCDNormal_MC[i_cal] << " , ";
+    if( i_cal == MET_BINS-1 )
+    {
+      std::cout << std::endl;
+    }
+  }
+
   std::cout << "Counting Normal: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
     std::cout << nQCDNormal[i_cal] << " , ";
+    if( i_cal == MET_BINS-1 )
+    {
+      std::cout << std::endl;
+    }
+  }
+
+  std::cout << "Counting Inverted MC: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    std::cout << nQCDInverted_MC[i_cal] << " , ";
     if( i_cal == MET_BINS-1 )
     {
       std::cout << std::endl;
@@ -167,7 +192,17 @@ void QCDFactors::printQCDFactorInfo()
   std::cout << "Translation Factors: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    std::cout << QCDTFactor[i_cal] << " , ";
+    std::cout << QCDTFactor[i_cal] <<"(" << QCDTFactor_err[i_cal] << ")" << " , ";
+    if( i_cal == MET_BINS-1 )
+    {
+      std::cout << std::endl;
+    }
+  }
+
+  std::cout << "Mean MET: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    std::cout << MET_mean[i_cal] <<"(" << MET_mean[i_cal] << ")" << " , ";
     if( i_cal == MET_BINS-1 )
     {
       std::cout << std::endl;

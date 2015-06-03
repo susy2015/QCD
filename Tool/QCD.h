@@ -15,20 +15,50 @@
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
 
-#define MET_BINS 2
+#define MET_BINS 3
 //############finish the definition of class AccRecoEffs######################
 class QCDFactors
 {
  public:
+  double nQCDNormal_MC[MET_BINS] = {0}, nQCDInverted_MC[MET_BINS] = {0};
   double nQCDNormal[MET_BINS] = {0}, nQCDInverted[MET_BINS] = {0};
   double QCDTFactor[MET_BINS] = {0};
+  double QCDTFactor_err[MET_BINS] = {0};
+  double MET_sum[MET_BINS] = {0}, MET_mean[MET_BINS] = {0};
 
-  void NumberNormalize();
   void NumbertoTFactor();
+  void NumberNormalize();
   void printQCDFactorInfo(); 
  private:
-  
+  double get_stat_Error(double a,
+                        double an
+                       );
 };
+
+double QCDFactors::get_stat_Error(double a,
+                                  double an
+                                 )
+{
+  double n;
+  n = an - a;
+
+  double err;
+  err = 1000;
+
+  double alpha;
+  alpha = 1-0.6827;
+
+  if( a>=0 && n>=0 )
+  {
+    err = std::sqrt(n/(a+n)/(a+n)*n/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,a+1,1)+a/(a+n)/(a+n)*a/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,n+1,1));
+    return err;
+  }
+  else
+  {
+    return -1;
+  }
+}
+
 
 class BaseHistgram
 {
@@ -133,9 +163,13 @@ int Set_metbin_number(
   {
     metbin_num = 0;
   }
-  else if(met >= 200)
+  else if(met >= 200 && met < 350)
   {
     metbin_num = 1;
+  }
+  else if(met >= 350)
+  {
+    metbin_num = 2;
   }
 
   return metbin_num;
