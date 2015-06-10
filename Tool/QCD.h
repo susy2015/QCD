@@ -26,16 +26,24 @@ class QCDFactors
   double QCDTFactor_err[MET_BINS] = {0};
   double MET_sum[MET_BINS] = {0}, MET_mean[MET_BINS] = {0};
 
+  TFile *TFactorFitPlots = new TFile("TFactorFitPlots.root", "recreate");
+
   void NumbertoTFactor();
   void NumberNormalize();
   void printQCDFactorInfo(); 
+  void TFactorFit();
+
  private:
-  double get_stat_Error(double a,
+  double get_stat_Error(
+                        double a,
                         double an
                        );
+ 
+  double linearfitf(double *v, double *par);
 };
 
-double QCDFactors::get_stat_Error(double a,
+double QCDFactors::get_stat_Error(
+                                  double a,
                                   double an
                                  )
 {
@@ -59,6 +67,16 @@ double QCDFactors::get_stat_Error(double a,
   }
 }
 
+/*
+double QCDFactors::linearfitf(double *v, double *par)
+{
+   double arg = 0;
+   if (par[2] != 0) arg = (v[0] - par[1])/par[2];
+ 
+   double fitval = par[0]*TMath::Exp(-0.5*arg*arg);
+   return fitval;
+}
+*/
 
 class BaseHistgram
 {

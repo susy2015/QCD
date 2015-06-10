@@ -15,7 +15,7 @@ cmsenv
 
 git clone -b TestMiniAOD https://github.com/lihux25/recipeAUX.git
 
-git clone -b ntuple_prod_for_lostlepton_and_hadtau https://github.com/susy2015/SusyAnaTools.git
+git clone -b new_topTagger_and_top_projection_and_bug_fixes https://github.com/susy2015/SusyAnaTools.git
 
 git clone https://github.com/susy2015/QCD.git
 

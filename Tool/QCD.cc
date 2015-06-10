@@ -51,8 +51,8 @@ int main(int argc, char* argv[])
   const char *inputFileList = argv[1];
   const char *outFileName   = argv[2];
 
-  //TChain *fChain = new TChain("stopTreeMaker/AUX");
-  TChain *fChain = new TChain("AUX");
+  TChain *fChain = new TChain("stopTreeMaker/AUX");
+  //TChain *fChain = new TChain("AUX");
 
   if(!FillChain(fChain, inputFileList))
   {
@@ -81,6 +81,9 @@ int main(int argc, char* argv[])
     double ht = tr.getVar<double>("ht");
     (myBaseHistgram.h_b_all_HT)->Fill(ht);
     double met = tr.getVar<double>("met");
+
+    if( met < 175 ) continue;
+
     int metbin_number = Set_metbin_number(met);
 
     bool passBaseline = tr.getVar<bool>("passBaseline");
@@ -99,7 +102,7 @@ int main(int argc, char* argv[])
   }//end of first loop
 
   myQCDFactors.NumbertoTFactor();
-  myQCDFactors.NumberNormalize();
+  //myQCDFactors.NumberNormalize();
   myQCDFactors.printQCDFactorInfo();
   //write into histgram
   (myBaseHistgram.oFile)->Write();
@@ -144,6 +147,20 @@ void QCDFactors::NumberNormalize()
     nQCDInverted[i_cal]= nQCDInverted_MC[i_cal]*scale;
   }
 }
+
+/*
+void fitexample()
+{
+  TFile *f = new TFile("hsimple.root");
+
+  TH1F *hpx = (TH1F*)f->Get("hpx");
+  //create a function with 3 parameters in the range [-3,3]
+  TF1 *func = new TF1("fit",linearfitf,-3,3,3);
+  func->SetParameters(500,hpx->GetMean(),hpx->GetRMS());
+  func->SetParNames("Constant","Mean_value","Sigma");
+  hpx->Fit("fit");
+}
+*/
 
 void QCDFactors::printQCDFactorInfo()
 {
