@@ -16,15 +16,18 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 
 #define MET_BINS 3
+#define QCD_BINS 7
+
 //############finish the definition of class AccRecoEffs######################
 class QCDFactors
 {
  public:
-  double nQCDNormal_MC[MET_BINS] = {0}, nQCDInverted_MC[MET_BINS] = {0};
-  double nQCDNormal[MET_BINS] = {0}, nQCDInverted[MET_BINS] = {0};
+  double nQCDNormal_MC[QCD_BINS][MET_BINS] = {{0}}, nQCDInverted_MC[QCD_BINS][MET_BINS] = {{0}};
+  double nQCDNormal[QCD_BINS][MET_BINS] = {{0}}, nQCDInverted[QCD_BINS][MET_BINS] = {{0}};
+  double nQCDNormal_all[MET_BINS] = {0}, nQCDInverted_all[MET_BINS] = {0};
   double QCDTFactor[MET_BINS] = {0};
   double QCDTFactor_err[MET_BINS] = {0};
-  double MET_sum[MET_BINS] = {0}, MET_mean[MET_BINS] = {0};
+  double MET_sum[QCD_BINS][MET_BINS] = {{0}}, MET_mean[MET_BINS] = {0};
 
   TFile *TFactorFitPlots = new TFile("TFactorFitPlots.root", "recreate");
 
@@ -96,7 +99,7 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   oFile = new TFile(outFileName, "recreate");
 
   h_b_all_MET = new TH1D("h_b_all_MET","",1000,0,1000);
-  h_b_all_HT = new TH1D("h_b_all_HT","",2000,0,2000);
+  h_b_all_HT = new TH1D("h_b_all_HT","",200,0,2000);
 
   h_b_baseline_nMuons = new TH1D("h_b_baseline_nMuons","",10,0,10);
   h_b_baseline_njets = new TH1D("h_b_baseline_njets","",10,0,10);
@@ -129,30 +132,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_b_reco_jet1_met_phi_diff = new TH1D("h_b_reco_jet1_met_phi_diff","",1000,-5,5);
   h_b_reco_jet2_met_phi_diff = new TH1D("h_b_reco_jet2_met_phi_diff","",1000,-5,5);
   h_b_reco_jet3_met_phi_diff = new TH1D("h_b_reco_jet3_met_phi_diff","",1000,-5,5);
-}
-
-//Fill chain from txt file
-bool FillChain(TChain *chain, const TString &inputFileList)
-{
-  ifstream infile(inputFileList, ifstream::in);
-  std::string buffer;
-
-  if(!infile.is_open())
-  {
-    std::cerr << "** ERROR: Can't open '" << inputFileList << "' for input" << std::endl;
-    return false;
-  }
-
-  std::cout << "TreeUtilities : FillChain " << std::endl;
-  while(1)
-  {
-    infile >> buffer;
-    if(!infile.good()) break;
-    //std::cout << "Adding tree from " << buffer.c_str() << std::endl;                                                              
-    chain->Add(buffer.c_str());
-  }
-  std::cout << "No. of Entries in this tree : " << chain->GetEntries() << std::endl;
-  return true;
 }
 
 //##########functions to calculate Delta_R and Delta Phi###############

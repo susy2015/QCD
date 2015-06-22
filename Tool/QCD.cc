@@ -17,9 +17,6 @@
 
 #include "TStopwatch.h"
 #include "TString.h"
-
-#include "Baseline.h"
-#include "QCD.h"
 #include "TGraph.h"
 #include "TCanvas.h"
 #include "TH1F.h"
@@ -36,6 +33,10 @@
 #include "TLorentzVector.h"
 //#include "TROOT.h"
 //#include "TInterpreter.h"
+#include "Baseline.h"
+#include "QCD.h"
+#include "QCDReWeighting.h"
+
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -51,55 +52,69 @@ int main(int argc, char* argv[])
   const char *inputFileList = argv[1];
   const char *outFileName   = argv[2];
 
-  TChain *fChain = new TChain("stopTreeMaker/AUX");
-  //TChain *fChain = new TChain("AUX");
-
-  if(!FillChain(fChain, inputFileList))
-  {
-    std::cerr << "Cannot get the tree " << std::endl;
-  }
-
   //clock to monitor the run time
   size_t t0 = clock();
-
-  NTupleReader tr(fChain);
-  //initialize the type3Ptr defined in the customize.h
-  AnaFunctions::prepareTopTagger();
-  //The passBaselineFunc is registered here
-  tr.registerFunction(&passBaselineFunc);
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
-
   //define my histgram class
   BaseHistgram myBaseHistgram;
   myBaseHistgram.BookHistgram(outFileName);
 
-  while(tr.getNextEvent())
-  {
-    if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+  QCDSampleWeight myQCDSampleWeight;
+  myQCDSampleWeight.FillQCDSampleInfos(inputFileList);
 
-    double ht = tr.getVar<double>("ht");
-    (myBaseHistgram.h_b_all_HT)->Fill(ht);
-    double met = tr.getVar<double>("met");
+  std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
+  int i = 0;  
 
-    if( met < 175 ) continue;
+  for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
+  {    
+    NTupleReader tr((*iter_QCDSampleInfos).chain);
+    //initialize the type3Ptr defined in the customize.h
+    AnaFunctions::prepareTopTagger();
+    //The passBaselineFunc is registered here
+    tr.registerFunction(&passBaselineFunc);
+        
+    double thisweight = (*iter_QCDSampleInfos).weight;
+    std::cout << "Weight" << thisweight << std::endl;
 
-    int metbin_number = Set_metbin_number(met);
-
-    bool passBaseline = tr.getVar<bool>("passBaseline");
-    if (passBaseline)
+    while(tr.getNextEvent())
     {
-      myQCDFactors.nQCDNormal_MC[metbin_number]++;
-    }
+      if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
 
-    bool passBaseline_dPhisInverted = tr.getVar<bool>("passBaseline_dPhisInverted");
-    if (passBaseline_dPhisInverted)
-    {
-      myQCDFactors.nQCDInverted_MC[metbin_number]++;
-      myQCDFactors.MET_sum[metbin_number] = myQCDFactors.MET_sum[metbin_number] + met;
-    }
+      //filling HT variables for quick weight check
+      double ht = tr.getVar<double>("ht");
+      (myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
 
-  }//end of first loop
+      //met variables for fast running
+      double met = tr.getVar<double>("met");
+      //if( met < 175 ) continue;
+
+      int metbin_number = Set_metbin_number(met);
+
+      bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
+      bool passdPhis = tr.getVar<bool>("passdPhisQCD");
+      bool passBaseline = false;
+      passBaseline = passBaselineQCD && passdPhis;
+    
+      if (passBaseline)
+      {
+        myQCDFactors.nQCDNormal_MC[i][metbin_number]++;
+        myQCDFactors.nQCDNormal[i][metbin_number]+=thisweight;
+
+      }  
+
+      bool passBaseline_dPhisInverted = false;
+      passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+
+      if (passBaseline_dPhisInverted)
+      {
+        myQCDFactors.nQCDInverted_MC[i][metbin_number]++;
+        myQCDFactors.nQCDInverted[i][metbin_number]+=thisweight;
+        myQCDFactors.MET_sum[i][metbin_number] = myQCDFactors.MET_sum[i][metbin_number] + met;
+      }
+    }//end of inner loop
+    i++;
+  }//end of QCD Samples loop
 
   myQCDFactors.NumbertoTFactor();
   //myQCDFactors.NumberNormalize();
@@ -120,31 +135,19 @@ int main(int argc, char* argv[])
 
 void QCDFactors::NumbertoTFactor()
 {
-  int i_cal;
+  int i_cal,j_cal;
 
   for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
-    QCDTFactor[i_cal] = nQCDNormal_MC[i_cal]/nQCDInverted_MC[i_cal];
-    QCDTFactor_err[i_cal] = get_stat_Error(nQCDNormal_MC[i_cal], nQCDInverted_MC[i_cal]);
-    MET_mean[i_cal] = MET_sum[i_cal]/nQCDInverted_MC[i_cal];
-  }
-}
-
-void QCDFactors::NumberNormalize()
-{
-  double XSec = 670500+26740+769.7;
-  double Lumi = 1000.0;
-  //double Nevents = 663953+849033+333733;
-  double Nevents = 2004219+3214312+1130720;
-
-  double scale = XSec*Lumi/Nevents;
-
-  std::cout << "scale: " << scale << std::endl;
-
-  for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
-  {
-    nQCDNormal[i_cal] = nQCDNormal_MC[i_cal]*scale;
-    nQCDInverted[i_cal]= nQCDInverted_MC[i_cal]*scale;
+    for(j_cal = 0 ; j_cal < QCD_BINS ; j_cal++)
+    {
+       nQCDNormal_all[i_cal] += nQCDNormal[j_cal][i_cal];
+       nQCDInverted_all[i_cal] += nQCDInverted[j_cal][i_cal];
+    }
+    
+    QCDTFactor[i_cal] = nQCDNormal_all[i_cal]/nQCDInverted_all[i_cal];
+    //QCDTFactor_err[i_cal] = get_stat_Error(nQCDNormal_MC[i_cal], nQCDInverted_MC[i_cal]);
+    //MET_mean[i_cal] = MET_sum[i_cal]/nQCDInverted_MC[i_cal];
   }
 }
 
@@ -164,22 +167,25 @@ void fitexample()
 
 void QCDFactors::printQCDFactorInfo()
 {
-  int i_cal = 0;
+  int i_cal,j_cal;
 
   std::cout << "Counting Normal MC: " << std::endl;
-  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  for( i_cal=0 ; i_cal < QCD_BINS ; i_cal++ )
   {
-    std::cout << nQCDNormal_MC[i_cal] << " , ";
-    if( i_cal == MET_BINS-1 )
+    for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
     {
-      std::cout << std::endl;
+      std::cout << nQCDNormal_MC[i_cal][j_cal] << " , ";
+      if( j_cal == MET_BINS-1 )
+      {
+        std::cout << std::endl;
+      }
     }
   }
 
   std::cout << "Counting Normal: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    std::cout << nQCDNormal[i_cal] << " , ";
+    std::cout << nQCDNormal_all[i_cal] << " , ";
     if( i_cal == MET_BINS-1 )
     {
       std::cout << std::endl;
@@ -187,19 +193,22 @@ void QCDFactors::printQCDFactorInfo()
   }
 
   std::cout << "Counting Inverted MC: " << std::endl;
-  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  for( i_cal=0 ; i_cal < QCD_BINS ; i_cal++ )
   {
-    std::cout << nQCDInverted_MC[i_cal] << " , ";
-    if( i_cal == MET_BINS-1 )
+    for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
     {
-      std::cout << std::endl;
+      std::cout << nQCDInverted_MC[i_cal][j_cal] << " , ";
+      if( j_cal == MET_BINS-1 )
+      {
+        std::cout << std::endl;
+      }
     }
   }
 
   std::cout << "Counting Inverted: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    std::cout << nQCDInverted[i_cal] << " , ";
+    std::cout << nQCDInverted_all[i_cal] << " , ";
     if( i_cal == MET_BINS-1 )
     {
       std::cout << std::endl;
