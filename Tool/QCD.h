@@ -17,7 +17,7 @@
 
 #define MET_BINS 3
 #define QCD_BINS 7
-
+#define NSEARCH_BINS 64
 //############finish the definition of class AccRecoEffs######################
 class QCDFactors
 {
@@ -25,16 +25,20 @@ class QCDFactors
   double nQCDNormal_MC[QCD_BINS][MET_BINS] = {{0}}, nQCDInverted_MC[QCD_BINS][MET_BINS] = {{0}};
   double nQCDNormal[QCD_BINS][MET_BINS] = {{0}}, nQCDInverted[QCD_BINS][MET_BINS] = {{0}};
   double nQCDNormal_all[MET_BINS] = {0}, nQCDInverted_all[MET_BINS] = {0};
-  double QCDTFactor[MET_BINS] = {0};
-  double QCDTFactor_err[MET_BINS] = {0};
-  double MET_sum[QCD_BINS][MET_BINS] = {{0}}, MET_mean[MET_BINS] = {0};
+  double nQCDNormal_all_err[MET_BINS] = {0}, nQCDInverted_all_err[MET_BINS] = {0};
+  double QCDTFactor[MET_BINS] = {0}, QCDTFactor_err[MET_BINS] = {0};
+  double MET_sum[QCD_BINS][MET_BINS] = {{0}}, MET_sum_weight[QCD_BINS][MET_BINS] = {{0}};
+  double MET_sum_all[MET_BINS] = {0}, MET_sum_weight_all[MET_BINS] = {0};
+  double MET_mean[MET_BINS] = {0}, MET_mean_err[MET_BINS] = {0};
+  double QCDWeights[QCD_BINS] = {0};
+  double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
 
   TFile *TFactorFitPlots = new TFile("TFactorFitPlots.root", "recreate");
 
   void NumbertoTFactor();
-  void NumberNormalize();
-  void printQCDFactorInfo(); 
   void TFactorFit();
+  void printQCDFactorInfo(); 
+  void printQCDClosure();
 
  private:
   double get_stat_Error(
