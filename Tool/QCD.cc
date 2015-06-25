@@ -94,19 +94,24 @@ int main(int argc, char* argv[])
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
       int nbottomjets = tr.getVar<int>("cntCSVS"+spec);
       double MT2 = tr.getVar<double>("best_had_brJet_MT2"+spec);
+      
       double met = tr.getVar<double>("met");
+      int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
+
       //if( met < 175 ) continue;
       int metbin_number = Set_metbin_number(met);
+      int njetsbin_number = Set_njetsbin_number(njets30);
 
       bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
       bool passdPhis = tr.getVar<bool>("passdPhisQCD");
+      //std::cout << !passdPhis << std::endl;
       bool passBaseline = false;
       passBaseline = passBaselineQCD && passdPhis;
     
       if (passBaseline)
       {
-        myQCDFactors.nQCDNormal_MC[i][metbin_number]++;
-        myQCDFactors.nQCDNormal[i][metbin_number]+=thisweight;
+        myQCDFactors.nQCDNormal_MC[i][metbin_number][njetsbin_number]++;
+        myQCDFactors.nQCDNormal[i][metbin_number][njetsbin_number]+=thisweight;
         
         int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0 )
@@ -120,18 +125,17 @@ int main(int argc, char* argv[])
 
       if (passBaseline_dPhisInverted)
       {
-        myQCDFactors.nQCDInverted_MC[i][metbin_number]++;
-        myQCDFactors.nQCDInverted[i][metbin_number]+=thisweight;
-        myQCDFactors.MET_sum[i][metbin_number] = myQCDFactors.MET_sum[i][metbin_number] + met * thisweight;
-        myQCDFactors.MET_sum_weight[i][metbin_number] = myQCDFactors.MET_sum_weight[i][metbin_number] + thisweight;
+        myQCDFactors.nQCDInverted_MC[i][metbin_number][njetsbin_number]++;
+        myQCDFactors.nQCDInverted[i][metbin_number][njetsbin_number]+=thisweight;
+        myQCDFactors.MET_sum[i][metbin_number][njetsbin_number] = myQCDFactors.MET_sum[i][metbin_number][njetsbin_number] + met * thisweight;
+        myQCDFactors.MET_sum_weight[i][metbin_number][njetsbin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][njetsbin_number] + thisweight;
       }
     }//end of inner loop
     i++;
   }//end of QCD Samples loop
 
   myQCDFactors.NumbertoTFactor();
-  //myQCDFactors.NumberNormalize();
-  myQCDFactors.TFactorFit();
+  //myQCDFactors.TFactorFit();
 
   std::cout << "Second Loop start(Prediction): " << std::endl;
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
@@ -143,7 +147,7 @@ int main(int argc, char* argv[])
     tr.registerFunction(&passBaselineFunc);
         
     double thisweight = (*iter_QCDSampleInfos).weight;
-    std::cout << "Weight" << thisweight << std::endl;
+    std::cout << "Weight " << thisweight << std::endl;
 
     while(tr.getNextEvent())
     {
@@ -154,9 +158,10 @@ int main(int argc, char* argv[])
       int nbottomjets = tr.getVar<int>("cntCSVS"+spec);
       double MT2 = tr.getVar<double>("best_had_brJet_MT2"+spec);
       double met = tr.getVar<double>("met");
+      int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       //if( met < 175 ) continue;
-
       int metbin_number = Set_metbin_number(met);
+      int njetsbin_number = Set_njetsbin_number(njets30);
 
       bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
       bool passdPhis = tr.getVar<bool>("passdPhisQCD");
@@ -167,7 +172,7 @@ int main(int argc, char* argv[])
         int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0 )
         {
-          myQCDFactors.nQCD_pred_sb[searchbin_id] += (thisweight * myQCDFactors.QCDTFactor[metbin_number]);
+          myQCDFactors.nQCD_pred_sb[searchbin_id] += (thisweight * myQCDFactors.QCDTFactor[metbin_number][njetsbin_number]);
         }
       }
     }//end of inner loop
@@ -185,39 +190,37 @@ void QCDFactors::NumbertoTFactor()
   //value calculation
   for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
-    for(int j_cal = 0 ; j_cal < QCD_BINS ; j_cal++)
+    for(int j_cal = 0 ; j_cal < NJETS_BINS ; j_cal++)
     {
-       nQCDNormal_all[i_cal] += nQCDNormal[j_cal][i_cal];
-       nQCDInverted_all[i_cal] += nQCDInverted[j_cal][i_cal];
-       MET_sum_all[i_cal] += MET_sum[j_cal][i_cal];
-       MET_sum_weight_all[i_cal] += MET_sum_weight[j_cal][i_cal];
+      for(int k_cal = 0 ; k_cal < QCD_BINS ; k_cal++)
+      {
+         nQCDNormal_all[i_cal][j_cal] += nQCDNormal[k_cal][i_cal][j_cal];
+         nQCDInverted_all[i_cal][j_cal] += nQCDInverted[k_cal][i_cal][j_cal];
+         MET_sum_all[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal];
+         MET_sum_weight_all[i_cal][j_cal] += MET_sum_weight[k_cal][i_cal][j_cal];
+      }
+      QCDTFactor[i_cal][j_cal] = nQCDNormal_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal];
+      MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];
     }
-    
-    QCDTFactor[i_cal] = nQCDNormal_all[i_cal]/nQCDInverted_all[i_cal];
-    //QCDTFactor_err[i_cal] = get_stat_Error(nQCDNormal_MC[i_cal], nQCDInverted_MC[i_cal]);
-    MET_mean[i_cal] = MET_sum_all[i_cal]/MET_sum_weight_all[i_cal];
   }
 
   //uncertainty calculation
-  double sumQCDWeights = 0;
-  for(int i_cal = 0 ; i_cal < QCD_BINS ; i_cal++)
-  {
-    sumQCDWeights += QCDWeights[i_cal];
-  }
-
   for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
-    for(int j_cal = 0 ; j_cal < QCD_BINS ; j_cal++)
+    for(int j_cal = 0 ; j_cal < NJETS_BINS ; j_cal++)
     {
-       nQCDNormal_all_err[i_cal] += nQCDNormal[j_cal][i_cal] * QCDWeights[j_cal] * QCDWeights[j_cal] / sumQCDWeights / sumQCDWeights;
-       nQCDInverted_all_err[i_cal] += nQCDInverted[j_cal][i_cal] * QCDWeights[j_cal] * QCDWeights[j_cal]  / sumQCDWeights / sumQCDWeights;
+      for(int k_cal = 0 ; k_cal < QCD_BINS ; k_cal++)
+      {
+        nQCDNormal_all_err[i_cal][j_cal] += nQCDNormal_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal] ;
+        nQCDInverted_all_err[i_cal][j_cal] += nQCDInverted_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal];
+      }
+      nQCDNormal_all_err[i_cal][j_cal] = std::sqrt( nQCDNormal_all_err[i_cal][j_cal] );
+      nQCDInverted_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_all_err[i_cal][j_cal] );
+      QCDTFactor_err[i_cal][j_cal] = QCDTFactor[i_cal][j_cal] * std::sqrt( nQCDNormal_all_err[i_cal][j_cal]*nQCDNormal_all_err[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal] + nQCDInverted_all_err[i_cal][j_cal]*nQCDInverted_all_err[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal] );
     }
-    nQCDNormal_all_err[i_cal] = std::sqrt( nQCDNormal_all_err[i_cal] );
-    nQCDInverted_all_err[i_cal] = std::sqrt( nQCDInverted_all_err[i_cal] );
-    QCDTFactor_err[i_cal] = QCDTFactor[i_cal] * std::sqrt( nQCDNormal_all_err[i_cal]*nQCDNormal_all_err[i_cal]/nQCDNormal_all[i_cal]/nQCDNormal_all[i_cal] + nQCDInverted_all_err[i_cal]*nQCDInverted_all_err[i_cal]/nQCDInverted_all[i_cal]/nQCDInverted_all[i_cal] );
   }
 }
-
+/*
 void QCDFactors::TFactorFit()
 {
   TCanvas *c = new TCanvas("c","A Simple Graph with error bars",200,10,700,500);
@@ -238,34 +241,24 @@ void QCDFactors::TFactorFit()
   c->SaveAs( "TFactor.C" );
   TFactorFitPlots->Write();
 }
-
-/*
-void fitexample()
-{
-  TFile *f = new TFile("hsimple.root");
-
-  TH1F *hpx = (TH1F*)f->Get("hpx");
-  //create a function with 3 parameters in the range [-3,3]
-  TF1 *func = new TF1("fit",linearfitf,-3,3,3);
-  func->SetParameters(500,hpx->GetMean(),hpx->GetRMS());
-  func->SetParNames("Constant","Mean_value","Sigma");
-  hpx->Fit("fit");
-}
 */
 
 void QCDFactors::printQCDFactorInfo()
 {
-  int i_cal,j_cal;
+  int i_cal,j_cal,k_cal;
 
   std::cout << "Counting Normal MC: " << std::endl;
   for( i_cal=0 ; i_cal < QCD_BINS ; i_cal++ )
   {
     for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
     {
-      std::cout << nQCDNormal_MC[i_cal][j_cal] << " , ";
-      if( j_cal == MET_BINS-1 )
+      for(k_cal = 0 ; k_cal < NJETS_BINS ; k_cal++)
       {
-        std::cout << std::endl;
+        std::cout << nQCDNormal_MC[i_cal][j_cal][k_cal] << " , ";
+        if( k_cal == NJETS_BINS-1 )
+        {
+          std::cout << std::endl;
+        }
       }
     }
   }
@@ -273,10 +266,13 @@ void QCDFactors::printQCDFactorInfo()
   std::cout << "Counting Normal: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    std::cout << nQCDNormal_all[i_cal] << "(" << nQCDNormal_all_err[i_cal] << ") , ";
-    if( i_cal == MET_BINS-1 )
+    for(j_cal = 0 ; j_cal < NJETS_BINS ; j_cal++)
     {
-      std::cout << std::endl;
+      std::cout << nQCDNormal_all[i_cal][j_cal] << "(" << nQCDNormal_all_err[i_cal][j_cal] << ") , ";
+      if( j_cal == NJETS_BINS-1 )
+      {
+        std::cout << std::endl;
+      }
     }
   }
 
@@ -285,10 +281,13 @@ void QCDFactors::printQCDFactorInfo()
   {
     for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
     {
-      std::cout << nQCDInverted_MC[i_cal][j_cal] << " , ";
-      if( j_cal == MET_BINS-1 )
+      for(k_cal = 0 ; k_cal < NJETS_BINS ; k_cal++)
       {
-        std::cout << std::endl;
+        std::cout << nQCDInverted_MC[i_cal][j_cal][k_cal] << " , ";
+        if( k_cal == NJETS_BINS-1 )
+        {
+          std::cout << std::endl;
+        }
       }
     }
   }
@@ -296,33 +295,40 @@ void QCDFactors::printQCDFactorInfo()
   std::cout << "Counting Inverted: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    std::cout << nQCDInverted_all[i_cal] << "(" << nQCDInverted_all_err[i_cal] << ") , ";;
-    if( i_cal == MET_BINS-1 )
+    for(j_cal = 0 ; j_cal < NJETS_BINS ; j_cal++)
     {
-      std::cout << std::endl;
+      std::cout << nQCDInverted_all[i_cal][j_cal] << "(" << nQCDInverted_all_err[i_cal][j_cal] << ") , ";;
+      if( j_cal == NJETS_BINS-1 )
+      {
+        std::cout << std::endl;
+      }
     }
   }
 
   std::cout << "Translation Factors: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    std::cout << QCDTFactor[i_cal] <<"(" << QCDTFactor_err[i_cal] << ")" << " , ";
-    if( i_cal == MET_BINS-1 )
+    for(j_cal = 0 ; j_cal < NJETS_BINS ; j_cal++)
     {
-      std::cout << std::endl;
+      std::cout << QCDTFactor[i_cal][j_cal] <<"(" << QCDTFactor_err[i_cal][j_cal] << ")" << " , ";
+      if( j_cal == NJETS_BINS-1 )
+      {
+        std::cout << std::endl;
+      }
     }
   }
 
+  /*
   std::cout << "Mean MET: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    std::cout << MET_mean[i_cal] <<"(" << MET_mean_err[i_cal] << ")" << " , ";
+    std::cout << MET_mean[i_cal][j_cal] <<"(" << MET_mean_err[i_cal][j_cal] << ")" << " , ";
     if( i_cal == MET_BINS-1 )
     {
       std::cout << std::endl;
     }
   }
-
+  */
   std::cout << "#QCD in Search Bins: " << std::endl;
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {

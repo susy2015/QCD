@@ -64,6 +64,8 @@ void QCDSampleWeight::FillQCDSampleInfos( const TString &inputFileList )
 {
   QCDSampleInfos.clear();
  
+  //ttbar test
+  //QCDSampleInfo_push_back( "_ttbar_", 806.1, 25446993, 10000, inputFileList );
   //QCD HT binning Samples
   //QCDSampleInfo_push_back( "QCD_HT_250To500_", 670500, 2004219, 10000, inputFileList );
   //QCDSampleInfo_push_back( "QCD_HT_500To1000_", 26740, 3214312, 10000, inputFileList );
@@ -73,7 +75,7 @@ void QCDSampleWeight::FillQCDSampleInfos( const TString &inputFileList )
   //QCDSampleInfo_push_back( "QCD_PT_50To80_", 22110000, , 10000, inputFileList );
   //QCDSampleInfo_push_back( "QCD_PT_80To120_", 3000114, , 10000, inputFileList );
   //QCDSampleInfo_push_back( "QCD_PT_120To170_", 493200, , 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_PT_170To300_", 120300, , 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_170To300_", 120300, 2000704, 10000, inputFileList );
   QCDSampleInfo_push_back( "QCD_PT_300To470_", 7475, 2700637, 10000, inputFileList );
   QCDSampleInfo_push_back( "QCD_PT_470To600_", 587.1, 2907137, 10000, inputFileList );
   QCDSampleInfo_push_back( "QCD_PT_600To800_", 167, 2853619, 10000, inputFileList );

@@ -29,3 +29,4 @@
 /uscms/home/hwei/work/stop/CMSSW_7_2_0/src/flattrees/QCD_HT_1000ToInf_skimmed_MET_175_3.root
 /uscms/home/hwei/work/stop/CMSSW_7_2_0/src/flattrees/QCD_HT_1000ToInf_skimmed_MET_175_4.root
 /uscms/home/hwei/work/stop/CMSSW_7_2_0/src/flattrees/QCD_HT_1000ToInf_skimmed_MET_175_5.root
+/uscms/home/hwei/work/stop/CMSSW_7_2_0/src/flattrees/stop_ttbar_skimmed_tree_v2.root

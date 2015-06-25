@@ -16,20 +16,22 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 
 #define MET_BINS 3
+#define NJETS_BINS 1
 #define QCD_BINS 7
 #define NSEARCH_BINS 64
 //############finish the definition of class AccRecoEffs######################
 class QCDFactors
 {
  public:
-  double nQCDNormal_MC[QCD_BINS][MET_BINS] = {{0}}, nQCDInverted_MC[QCD_BINS][MET_BINS] = {{0}};
-  double nQCDNormal[QCD_BINS][MET_BINS] = {{0}}, nQCDInverted[QCD_BINS][MET_BINS] = {{0}};
-  double nQCDNormal_all[MET_BINS] = {0}, nQCDInverted_all[MET_BINS] = {0};
-  double nQCDNormal_all_err[MET_BINS] = {0}, nQCDInverted_all_err[MET_BINS] = {0};
-  double QCDTFactor[MET_BINS] = {0}, QCDTFactor_err[MET_BINS] = {0};
-  double MET_sum[QCD_BINS][MET_BINS] = {{0}}, MET_sum_weight[QCD_BINS][MET_BINS] = {{0}};
-  double MET_sum_all[MET_BINS] = {0}, MET_sum_weight_all[MET_BINS] = {0};
-  double MET_mean[MET_BINS] = {0}, MET_mean_err[MET_BINS] = {0};
+  double nQCDNormal_MC[QCD_BINS][MET_BINS][NJETS_BINS] = {{{0}}}, nQCDInverted_MC[QCD_BINS][MET_BINS][NJETS_BINS] = {{{0}}};
+  double nQCDNormal[QCD_BINS][MET_BINS][NJETS_BINS] = {{{0}}}, nQCDInverted[QCD_BINS][MET_BINS][NJETS_BINS] = {{{0}}};
+  double nQCDNormal_all[MET_BINS][NJETS_BINS] = {{0}}, nQCDInverted_all[MET_BINS][NJETS_BINS] = {{0}};
+  double nQCDNormal_all_err[MET_BINS][NJETS_BINS] = {{0}}, nQCDInverted_all_err[MET_BINS][NJETS_BINS] = {{0}};
+  double QCDTFactor[MET_BINS][NJETS_BINS] = {{0}}, QCDTFactor_err[MET_BINS][NJETS_BINS] = {{0}};
+  double MET_sum[QCD_BINS][MET_BINS][NJETS_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][NJETS_BINS] = {{{0}}};
+  double MET_sum_all[MET_BINS][NJETS_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][NJETS_BINS] = {{0}};
+  double MET_mean[MET_BINS][NJETS_BINS] = {{0}}, MET_mean_err[MET_BINS][NJETS_BINS] = {{0}};
+
   double QCDWeights[QCD_BINS] = {0};
   double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
 
@@ -74,17 +76,6 @@ double QCDFactors::get_stat_Error(
   }
 }
 
-/*
-double QCDFactors::linearfitf(double *v, double *par)
-{
-   double arg = 0;
-   if (par[2] != 0) arg = (v[0] - par[1])/par[2];
- 
-   double fitval = par[0]*TMath::Exp(-0.5*arg*arg);
-   return fitval;
-}
-*/
-
 class BaseHistgram
 {
  public:
@@ -115,16 +106,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_b_baseline_jet1_met_phi_diff = new TH1D("h_b_baseline_jet1_met_phi_diff","",1000,-5,5);
   h_b_baseline_jet2_met_phi_diff = new TH1D("h_b_baseline_jet2_met_phi_diff","",1000,-5,5);
   h_b_baseline_jet3_met_phi_diff = new TH1D("h_b_baseline_jet3_met_phi_diff","",1000,-5,5);
-
-  h_b_acc_njets = new TH1D("h_b_acc_njets","",10,0,10);
-  h_b_acc_nbjetsCSVM = new TH1D("h_b_acc_nbjetsCSVM","",10,0,10);
-  h_b_acc_bestTopMass = new TH1D("h_b_acc_bestTopMass","",1000,0,500);
-  h_b_acc_MET = new TH1D("h_b_acc_MET","",1000,0,1000);
-  h_b_acc_jetpt4 = new TH1D("h_b_acc_jetpt4","",1000,0,1000);
-  h_b_acc_jetpt2 = new TH1D("h_b_acc_jetpt2","",1000,0,1000);
-  h_b_acc_jet1_met_phi_diff = new TH1D("h_b_acc_jet1_met_phi_diff","",1000,-5,5);
-  h_b_acc_jet2_met_phi_diff = new TH1D("h_b_acc_jet2_met_phi_diff","",1000,-5,5);
-  h_b_acc_jet3_met_phi_diff = new TH1D("h_b_acc_jet3_met_phi_diff","",1000,-5,5);
 
   h_b_reco_nMuons = new TH1D("h_b_reco_nMuons","",10,0,10);
   h_b_reco_njets = new TH1D("h_b_reco_njets","",10,0,10);
@@ -174,5 +155,27 @@ int Set_metbin_number(
   }
 
   return metbin_num;
+}
+
+int Set_njetsbin_number(
+                        int njets
+                       )
+{
+  int njetsbin_num = 0;
+
+  //if( njets == 4 || njets == 5 )
+  //{
+    //njetsbin_num = 0;
+  //}
+  //else if( njets == 6 || njets == 7 || njets == 8 )
+  //{
+    //njetsbin_num = 1;
+  //}
+  //else if(njets >= 6)
+  //{
+    //njetsbin_num = 1;
+  //}
+
+  return njetsbin_num;
 }
 
