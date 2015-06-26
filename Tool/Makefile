@@ -21,7 +21,7 @@ LDFLAGS    =
 
 LIBS       = $(shell root-config --glibs)
 
-PROGRAMS = tupleTest QCD
+PROGRAMS = tupleTest QCD ClosurePlots
 
 all: $(PROGRAMS)
 
@@ -45,6 +45,9 @@ tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/tupleReadTest.o
 
 QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o
 	$(LD) $^ $(LIBS) -L${CMSSW_BASE}/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2 -o $@
+
+ClosurePlots: $(ODIR)/ClosurePlots.o
+	$(LD) $^ $(LIBS)  -o $@
 
 clean:
 	rm -f $(ODIR)/*.o $(ODIR)/*.d $(PROGRAMS) core 
