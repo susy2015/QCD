@@ -14,11 +14,8 @@
 #include "TMath.h"
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
+#include "QCDBinFunction.h"
 
-#define MET_BINS 3
-#define NBJETS_BINS 2
-#define QCD_BINS 7
-#define NSEARCH_BINS 64
 //############finish the definition of class AccRecoEffs######################
 class BaseHistgram;
 
@@ -163,48 +160,3 @@ double DeltaR(double eta1, double phi1, double eta2, double phi2)
   double dphi = DeltaPhi(phi1, phi2);
   return std::sqrt(deta*deta + dphi*dphi);
 }
-
-int Set_metbin_number(
-                       double met
-                     )
-{
-  int metbin_num;
-
-  if(met >= 175 && met < 200)
-  {
-    metbin_num = 0;
-  }
-  else if(met >= 200 && met < 300)
-  {
-    metbin_num = 1;
-  }
-  //else if(met >= 250 && met < 350)
-  //{
-  //  metbin_num = 2;
-  //}
-  else if(met >= 300)
-  {
-    metbin_num = 2;
-  }
-
-  return metbin_num;
-}
-
-int Set_nbjetsbin_number(
-                          int nbjets
-                        )
-{
-  int nbjetsbin_num = 0;
-
-  if( nbjets == 1 )
-  {
-    nbjetsbin_num = 0;
-  }
-  else if( nbjets >= 2 )
-  {
-    nbjetsbin_num = 1;
-  }
-
-  return nbjetsbin_num;
-}
-
