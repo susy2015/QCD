@@ -212,6 +212,8 @@ int main(int argc, char* argv[])
 
   myQCDFactors.printQCDFactorInfo();
   myQCDFactors.printQCDClosure(myBaseHistgram);
+  myQCDFactors.TFactorsPlotsGen();
+
   //write into histgram
   (myBaseHistgram.oFile)->Write();
   return 0;
@@ -378,7 +380,6 @@ void QCDFactors::printQCDFactorInfo()
   }
 }
 
-
 void QCDFactors::printQCDClosure(BaseHistgram& myBaseHistgram)
 {
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
@@ -391,3 +392,45 @@ void QCDFactors::printQCDClosure(BaseHistgram& myBaseHistgram)
   return ;
 }
 
+void QCDFactors::TFactorsPlotsGen()
+{
+  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
+
+  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
+  c->SetFillColor(0);
+  c->cd();
+
+  double xbins[MET_BINS+1] = {175.0,200.0,300.0,500.0};
+  double ybins[NBJETS_BINS+1] = {1.0,2.0,5.0};
+  TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,xbins,NBJETS_BINS,ybins);
+
+  int i_cal;
+  int j_cal;
+
+  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    for(j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
+    {
+      tfactors2d->SetBinContent( i_cal+1 , j_cal+1, QCDTFactor[i_cal][j_cal] );
+      tfactors2d->SetBinError( i_cal+1 , j_cal+1, QCDTFactor_err[i_cal][j_cal] );
+    }
+  }
+
+  tfactors2d->SetTitle("");
+  tfactors2d->SetXTitle("MET [GeV]");
+  tfactors2d->SetYTitle("NbJets");
+  tfactors2d->SetStats(0);
+
+  gStyle->SetPaintTextFormat("1.2f");
+  tfactors2d->Draw("colztexte");
+
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+  title->Draw("same");
+
+  c->SaveAs( "_tfactors2d.png" );
+  c->SaveAs( "_tfactors2d.C" );
+  
+  return ;
+}

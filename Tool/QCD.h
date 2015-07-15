@@ -43,6 +43,7 @@ class QCDFactors
   void TFactorFit();
   void printQCDFactorInfo(); 
   void printQCDClosure( BaseHistgram& myBaseHistgram );
+  void TFactorsPlotsGen();
 
  private:
   double get_stat_Error(
