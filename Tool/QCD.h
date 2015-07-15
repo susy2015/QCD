@@ -33,13 +33,16 @@ class QCDFactors
 
   double QCDWeights[QCD_BINS] = {0};
   double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
+  double nQCD_exp_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}}, nQCD_pred_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}};
+  double nQCD_exp_sb_err[NSEARCH_BINS] = {0}, nQCD_pred_sb_err[NSEARCH_BINS] = {0};
 
-  TFile *TFactorFitPlots = new TFile("TFactorFitPlots.root", "recreate");
+
+  //TFile *TFactorFitPlots = new TFile("TFactorFitPlots.root", "recreate");
 
   void NumbertoTFactor();
   void TFactorFit();
   void printQCDFactorInfo(); 
-  void printQCDClosure(BaseHistgram& myBaseHistgram);
+  void printQCDClosure( BaseHistgram& myBaseHistgram );
 
  private:
   double get_stat_Error(
@@ -47,7 +50,6 @@ class QCDFactors
                         double an
                        );
  
-  double linearfitf(double *v, double *par);
 };
 
 double QCDFactors::get_stat_Error(

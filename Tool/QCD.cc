@@ -108,6 +108,8 @@ int main(int argc, char* argv[])
       bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
       bool passdPhis = tr.getVar<bool>("passdPhisQCD");
       //std::cout << !passdPhis << std::endl;
+      
+      //normal baseline
       bool passBaseline = false;
       passBaseline = passBaselineQCD && passdPhis;
     
@@ -129,6 +131,7 @@ int main(int argc, char* argv[])
         if( searchbin_id >= 0 )
         {
           myQCDFactors.nQCD_exp_sb[searchbin_id] += thisweight;
+          myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
         }
       }  
 
@@ -233,7 +236,7 @@ void QCDFactors::NumbertoTFactor()
     }
   }
 
-  //uncertainty calculation
+  //TFactor uncertainty calculation
   for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
     for(int j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
@@ -247,6 +250,16 @@ void QCDFactors::NumbertoTFactor()
       nQCDInverted_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_all_err[i_cal][j_cal] );
       QCDTFactor_err[i_cal][j_cal] = QCDTFactor[i_cal][j_cal] * std::sqrt( nQCDNormal_all_err[i_cal][j_cal]*nQCDNormal_all_err[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal] + nQCDInverted_all_err[i_cal][j_cal]*nQCDInverted_all_err[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal] );
     }
+  }
+
+  //Expected QCD uncertainty calculation
+  for(int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++)
+  {
+    for(int j_cal = 0 ; j_cal < QCD_BINS ; j_cal++)
+    {
+      nQCD_exp_sb_err[i_cal] += nQCD_exp_sb_MC[j_cal][i_cal] * QCDWeights[j_cal] * QCDWeights[j_cal];
+    }
+    nQCD_exp_sb_err[i_cal] = std::sqrt( nQCD_exp_sb_err[i_cal] );
   }
 }
 /*
@@ -361,7 +374,7 @@ void QCDFactors::printQCDFactorInfo()
   std::cout << "#QCD in Search Bins: " << std::endl;
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    std::cout << "Search Bin Id:" << i_cal << "; Exp: " << nQCD_exp_sb[i_cal] << "; Pred: " << nQCD_pred_sb[i_cal] << "; (exp - pred)/pred: " << (nQCD_exp_sb[i_cal] - nQCD_pred_sb[i_cal])/nQCD_pred_sb[i_cal] << std::endl;
+    std::cout << "Search Bin Id:" << i_cal << "; Exp: " << nQCD_exp_sb[i_cal] << "(" << nQCD_exp_sb_err[i_cal] << "); Pred: " << nQCD_pred_sb[i_cal] << "(" << nQCD_pred_sb_err[i_cal] << "); (exp - pred)/pred: " << (nQCD_exp_sb[i_cal] - nQCD_pred_sb[i_cal])/nQCD_pred_sb[i_cal] << std::endl;
   }
 }
 
@@ -371,9 +384,9 @@ void QCDFactors::printQCDClosure(BaseHistgram& myBaseHistgram)
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     myBaseHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_pred_sb[i_cal] );
-    myBaseHistgram.h_pred_sb->SetBinError( i_cal+1 , std::sqrt( nQCD_pred_sb[i_cal] ) );
+    myBaseHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_pred_sb_err[i_cal] );
     myBaseHistgram.h_exp_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
-    myBaseHistgram.h_exp_sb->SetBinError( i_cal+1 , std::sqrt( nQCD_exp_sb[i_cal] ) );
+    myBaseHistgram.h_exp_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
   }
   return ;
 }
