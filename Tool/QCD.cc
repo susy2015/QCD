@@ -87,6 +87,11 @@ int main(int argc, char* argv[])
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
 
+      //fliter variables in the tree
+      int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
+      int metfilter = tr.getVar<int>("METFilters");  
+      if ( ( jetidfilter == 0 ) || ( metfilter == 0 ) ) continue;
+
       //filling HT variables for quick weight check
       //double ht = tr.getVar<double>("ht");
       //(myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
@@ -113,7 +118,9 @@ int main(int argc, char* argv[])
       bool passBaseline = false;
       passBaseline = passBaselineQCD && passdPhis;
     
-      if (passBaseline)
+      if (
+          passBaseline
+         )
       {
         myQCDFactors.nQCDNormal_MC[i][metbin_number][njetsbin_number]++;
         myQCDFactors.nQCDNormal[i][metbin_number][njetsbin_number]+=thisweight;
@@ -138,7 +145,9 @@ int main(int argc, char* argv[])
       bool passBaseline_dPhisInverted = false;
       passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
 
-      if (passBaseline_dPhisInverted)
+      if (
+          passBaseline_dPhisInverted
+         )
       {
         myQCDFactors.nQCDInverted_MC[i][metbin_number][njetsbin_number]++;
         myQCDFactors.nQCDInverted[i][metbin_number][njetsbin_number]+=thisweight;
@@ -167,6 +176,10 @@ int main(int argc, char* argv[])
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+      //fliter variables in the tree
+      int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
+      int metfilter = tr.getVar<int>("METFilters");  
+      if ( ( jetidfilter == 0 ) || ( metfilter == 0 ) ) continue;
 
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
@@ -301,10 +314,11 @@ void QCDFactors::printQCDFactorInfo()
         std::cout << nQCDNormal_MC[i_cal][j_cal][k_cal] << " , ";
         if( k_cal == NBJETS_BINS-1 )
         {
-          std::cout << std::endl;
+          std::cout << "  ;";
         }
       }
     }
+    std::cout << std::endl;
   }
 
   std::cout << "Counting Normal: " << std::endl;
@@ -330,10 +344,11 @@ void QCDFactors::printQCDFactorInfo()
         std::cout << nQCDInverted_MC[i_cal][j_cal][k_cal] << " , ";
         if( k_cal == NBJETS_BINS-1 )
         {
-          std::cout << std::endl;
+          std::cout << "  ;";
         }
       }
     }
+    std::cout << std::endl;
   }
 
   std::cout << "Counting Inverted: " << std::endl;

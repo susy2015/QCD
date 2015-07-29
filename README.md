@@ -21,7 +21,7 @@ git clone https://github.com/susy2015/QCD.git
 
 scram b -j9
 
-3.Go to LostLepton directory and then compile the code
+3.Go to QCD directory and then compile the code
 
 cd QCD/Tool
 
@@ -41,7 +41,7 @@ This will generate a soft link : libtbb.so.2
 
 And it will be involved into make command automatically and we do not have error report anymore
 
-4.Run the LostLepton code:
+4.Run the QCD code:
 
 ./QCD runList_inputfile.txt outputfile.root
 

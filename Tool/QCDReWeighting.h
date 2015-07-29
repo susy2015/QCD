@@ -67,22 +67,26 @@ void QCDSampleWeight::FillQCDSampleInfos( const TString &inputFileList )
   //ttbar test
   //QCDSampleInfo_push_back( "_ttbar_", 806.1, 25446993, 10000, inputFileList );
   //QCD HT binning Samples
-  //QCDSampleInfo_push_back( "QCD_HT_250To500_", 670500, 2004219, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_500To1000_", 26740, 3214312, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_1000ToInf_", 769.7, 1130720, 10000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT_200To300_"  , 1735000, 18712796, 10000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT_300To500_"  , 306800 , 20086103, 10000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT_500To700_"  , 29370  , 19542847, 10000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT_700To1000_" , 6524   , 15011016, 10000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT_1000To1500_", 1064   ,  4963895, 10000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT_1500To2000_", 121.5  ,  3848411, 10000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT_2000ToInf_" , 25.42  ,  1961774, 10000, inputFileList );
   //QCD PT binning Samples
   //QCDSampleInfo_push_back( "QCD_PT_30To50_", 161500000, , 10000, inputFileList );
   //QCDSampleInfo_push_back( "QCD_PT_50To80_", 22110000, , 10000, inputFileList );
   //QCDSampleInfo_push_back( "QCD_PT_80To120_", 3000114, , 10000, inputFileList );
   //QCDSampleInfo_push_back( "QCD_PT_120To170_", 493200, , 10000, inputFileList );
   //QCDSampleInfo_push_back( "QCD_PT_170To300_", 120300, 2000704, 10000, inputFileList );
-  QCDSampleInfo_push_back( "QCD_PT_300To470_", 7475, 2700637, 10000, inputFileList );
-  QCDSampleInfo_push_back( "QCD_PT_470To600_", 587.1, 2907137, 10000, inputFileList );
-  QCDSampleInfo_push_back( "QCD_PT_600To800_", 167, 2853619, 10000, inputFileList );
-  QCDSampleInfo_push_back( "QCD_PT_800To1000_", 28.25, 2875729, 10000, inputFileList );
-  QCDSampleInfo_push_back( "QCD_PT_1000To1400_", 8.195, 2884228, 10000, inputFileList );
-  QCDSampleInfo_push_back( "QCD_PT_1400To1800_", 0.7346, 2931414, 10000, inputFileList );
-  QCDSampleInfo_push_back( "QCD_PT_1800ToInf_", 0.1086, 2935195, 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_300To470_", 7475, 2700637, 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_470To600_", 587.1, 2907137, 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_600To800_", 167, 2853619, 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_800To1000_", 28.25, 2875729, 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_1000To1400_", 8.195, 2884228, 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_1400To1800_", 0.7346, 2931414, 10000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_PT_1800ToInf_", 0.1086, 2935195, 10000, inputFileList );
 }
 
 void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, double nevents, double lumi, const TString &inputFileList)
