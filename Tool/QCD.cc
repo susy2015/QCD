@@ -109,6 +109,7 @@ int main(int argc, char* argv[])
       //if( met < 175 ) continue;
       int metbin_number = Set_metbin_number(met);
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
+      int mt2bin_number = Set_mt2bin_number(MT2);
 
       bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
       bool passdPhis = tr.getVar<bool>("passdPhisQCD");
@@ -122,8 +123,8 @@ int main(int argc, char* argv[])
           passBaseline
          )
       {
-        myQCDFactors.nQCDNormal_MC[i][metbin_number][njetsbin_number]++;
-        myQCDFactors.nQCDNormal[i][metbin_number][njetsbin_number]+=thisweight;
+        myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
+        myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=thisweight;
  
         (myBaseHistgram.h_exp_met)->Fill(met,thisweight);
         (myBaseHistgram.h_exp_njets)->Fill(njets30,thisweight);
@@ -149,10 +150,10 @@ int main(int argc, char* argv[])
           passBaseline_dPhisInverted
          )
       {
-        myQCDFactors.nQCDInverted_MC[i][metbin_number][njetsbin_number]++;
-        myQCDFactors.nQCDInverted[i][metbin_number][njetsbin_number]+=thisweight;
-        myQCDFactors.MET_sum[i][metbin_number][njetsbin_number] = myQCDFactors.MET_sum[i][metbin_number][njetsbin_number] + met * thisweight;
-        myQCDFactors.MET_sum_weight[i][metbin_number][njetsbin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][njetsbin_number] + thisweight;
+        myQCDFactors.nQCDInverted_MC[i][metbin_number][mt2bin_number]++;
+        myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=thisweight;
+        myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight;
+        myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight;
       }
     }//end of inner loop
     i++;
@@ -195,6 +196,7 @@ int main(int argc, char* argv[])
       //if( met < 175 ) continue;
       int metbin_number = Set_metbin_number(met);
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
+      int mt2bin_number = Set_mt2bin_number(MT2);
 
       bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
       bool passdPhis = tr.getVar<bool>("passdPhisQCD");
@@ -203,7 +205,7 @@ int main(int argc, char* argv[])
 
       if (passBaseline_dPhisInverted)
       {
-        double predweight = thisweight * myQCDFactors.QCDTFactor[metbin_number][njetsbin_number];
+        double predweight = thisweight * myQCDFactors.QCDTFactor[metbin_number][mt2bin_number];
         (myBaseHistgram.h_pred_met)->Fill(met,predweight);
         (myBaseHistgram.h_pred_njets)->Fill(njets30,predweight);
         (myBaseHistgram.h_pred_mt2)->Fill(MT2,predweight);
@@ -237,7 +239,7 @@ void QCDFactors::NumbertoTFactor()
   //value calculation
   for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
-    for(int j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
+    for(int j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
       for(int k_cal = 0 ; k_cal < QCD_BINS ; k_cal++)
       {
@@ -254,7 +256,7 @@ void QCDFactors::NumbertoTFactor()
   //TFactor uncertainty calculation
   for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
-    for(int j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
+    for(int j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
       for(int k_cal = 0 ; k_cal < QCD_BINS ; k_cal++)
       {
@@ -309,10 +311,10 @@ void QCDFactors::printQCDFactorInfo()
   {
     for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
     {
-      for(k_cal = 0 ; k_cal < NBJETS_BINS ; k_cal++)
+      for(k_cal = 0 ; k_cal < MT2_BINS ; k_cal++)
       {
         std::cout << nQCDNormal_MC[i_cal][j_cal][k_cal] << " , ";
-        if( k_cal == NBJETS_BINS-1 )
+        if( k_cal == MT2_BINS-1 )
         {
           std::cout << "  ;";
         }
@@ -324,10 +326,10 @@ void QCDFactors::printQCDFactorInfo()
   std::cout << "Counting Normal: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    for(j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
       std::cout << nQCDNormal_all[i_cal][j_cal] << "(" << nQCDNormal_all_err[i_cal][j_cal] << ") , ";
-      if( j_cal == NBJETS_BINS-1 )
+      if( j_cal == MT2_BINS-1 )
       {
         std::cout << std::endl;
       }
@@ -339,10 +341,10 @@ void QCDFactors::printQCDFactorInfo()
   {
     for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
     {
-      for(k_cal = 0 ; k_cal < NBJETS_BINS ; k_cal++)
+      for(k_cal = 0 ; k_cal < MT2_BINS ; k_cal++)
       {
         std::cout << nQCDInverted_MC[i_cal][j_cal][k_cal] << " , ";
-        if( k_cal == NBJETS_BINS-1 )
+        if( k_cal == MT2_BINS-1 )
         {
           std::cout << "  ;";
         }
@@ -354,10 +356,10 @@ void QCDFactors::printQCDFactorInfo()
   std::cout << "Counting Inverted: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    for(j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
       std::cout << nQCDInverted_all[i_cal][j_cal] << "(" << nQCDInverted_all_err[i_cal][j_cal] << ") , ";;
-      if( j_cal == NBJETS_BINS-1 )
+      if( j_cal == MT2_BINS-1 )
       {
         std::cout << std::endl;
       }
@@ -367,10 +369,10 @@ void QCDFactors::printQCDFactorInfo()
   std::cout << "Translation Factors: " << std::endl;
   for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
   {
-    for(j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
       std::cout << QCDTFactor[i_cal][j_cal] <<"(" << QCDTFactor_err[i_cal][j_cal] << ")" << " , ";
-      if( j_cal == NBJETS_BINS-1 )
+      if( j_cal == MT2_BINS-1 )
       {
         std::cout << std::endl;
       }
@@ -416,15 +418,17 @@ void QCDFactors::TFactorsPlotsGen()
   c->cd();
 
   double xbins[MET_BINS+1] = {175.0,200.0,300.0,500.0};
-  double ybins[NBJETS_BINS+1] = {1.0,2.0,5.0};
-  TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,xbins,NBJETS_BINS,ybins);
+  //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};
+  double ybins[MT2_BINS+1] = {0.0,200.0,1000.0};
+
+  TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,xbins,MT2_BINS,ybins);
 
   int i_cal;
   int j_cal;
 
   for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
-    for(j_cal = 0 ; j_cal < NBJETS_BINS ; j_cal++)
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
       tfactors2d->SetBinContent( i_cal+1 , j_cal+1, QCDTFactor[i_cal][j_cal] );
       tfactors2d->SetBinError( i_cal+1 , j_cal+1, QCDTFactor_err[i_cal][j_cal] );
@@ -433,7 +437,8 @@ void QCDFactors::TFactorsPlotsGen()
 
   tfactors2d->SetTitle("");
   tfactors2d->SetXTitle("MET [GeV]");
-  tfactors2d->SetYTitle("NbJets");
+  tfactors2d->SetYTitle("MT2 [GeV]");
+  //tfactors2d->SetYTitle("NbJets");
   tfactors2d->SetStats(0);
 
   gStyle->SetPaintTextFormat("1.2f");
