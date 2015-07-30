@@ -509,3 +509,4 @@
 /uscms/home/hwei/work/stop/CMSSW_7_4_5/src/flattrees/QCD_HT_2000ToInf_skimmed_MET_175_12.root
 /uscms/home/hwei/work/stop/CMSSW_7_4_5/src/flattrees/QCD_HT_2000ToInf_skimmed_MET_175_13.root
 /uscms/home/hwei/work/stop/CMSSW_7_4_5/src/flattrees/QCD_HT_2000ToInf_skimmed_MET_175_14.root
+/uscms/home/hwei/work/stop/CMSSW_7_4_5/src/flattrees/QCD_HT_500To700_skimmed_MET_175_101.root
