@@ -92,9 +92,6 @@ int main(int argc, char* argv[])
       int metfilter = tr.getVar<int>("METFilters");  
       if ( ( jetidfilter == 0 ) || ( metfilter == 0 ) ) continue;
 
-      //filling HT variables for quick weight check
-      //double ht = tr.getVar<double>("ht");
-      //(myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
       int nbottomjets = tr.getVar<int>("cntCSVS"+spec);
@@ -106,7 +103,9 @@ int main(int argc, char* argv[])
       double bestTopJetMass = tr.getVar<double>("bestTopJetMass"+spec);
       double mht = tr.getVar<double>("mht");
 
-      //if( met < 175 ) continue;
+      //filling HT variables for quick weight check
+      (myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
+
       int metbin_number = Set_metbin_number(met);
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
       int mt2bin_number = Set_mt2bin_number(MT2);
@@ -419,7 +418,7 @@ void QCDFactors::TFactorsPlotsGen()
 
   double xbins[MET_BINS+1] = {175.0,200.0,300.0,500.0};
   //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};
-  double ybins[MT2_BINS+1] = {0.0,200.0,1000.0};
+  double ybins[MT2_BINS+1] = {0.0,200.0,350.0,1000.0};
 
   TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,xbins,MT2_BINS,ybins);
 

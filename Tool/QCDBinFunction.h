@@ -1,7 +1,7 @@
 #define MET_BINS 3
 #define NBJETS_BINS 2
-#define MT2_BINS 2
-#define QCD_BINS 7
+#define MT2_BINS 3
+#define QCD_BINS 8
 #define NSEARCH_BINS 64
 
 int Set_metbin_number(
@@ -59,9 +59,13 @@ int Set_mt2bin_number(
   {
     mt2bin_num = 0;
   }
-  else if(mt2 >= 200)
+  else if(mt2 >= 200 && mt2 < 350)
   {
     mt2bin_num = 1;
+  }
+  else
+  {
+    mt2bin_num = 2;
   }
 
   return mt2bin_num;

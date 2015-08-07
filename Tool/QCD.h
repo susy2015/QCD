@@ -22,14 +22,14 @@ class BaseHistgram;
 class QCDFactors
 {
  public:
-  double nQCDNormal_MC[QCD_BINS][MET_BINS][NBJETS_BINS] = {{{0}}}, nQCDInverted_MC[QCD_BINS][MET_BINS][NBJETS_BINS] = {{{0}}};
-  double nQCDNormal[QCD_BINS][MET_BINS][NBJETS_BINS] = {{{0}}}, nQCDInverted[QCD_BINS][MET_BINS][NBJETS_BINS] = {{{0}}};
-  double nQCDNormal_all[MET_BINS][NBJETS_BINS] = {{0}}, nQCDInverted_all[MET_BINS][NBJETS_BINS] = {{0}};
-  double nQCDNormal_all_err[MET_BINS][NBJETS_BINS] = {{0}}, nQCDInverted_all_err[MET_BINS][NBJETS_BINS] = {{0}};
-  double QCDTFactor[MET_BINS][NBJETS_BINS] = {{0}}, QCDTFactor_err[MET_BINS][NBJETS_BINS] = {{0}};
-  double MET_sum[QCD_BINS][MET_BINS][NBJETS_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][NBJETS_BINS] = {{{0}}};
-  double MET_sum_all[MET_BINS][NBJETS_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][NBJETS_BINS] = {{0}};
-  double MET_mean[MET_BINS][NBJETS_BINS] = {{0}}, MET_mean_err[MET_BINS][NBJETS_BINS] = {{0}};
+  double nQCDNormal_MC[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, nQCDInverted_MC[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
+  double nQCDNormal[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, nQCDInverted[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
+  double nQCDNormal_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all[MET_BINS][MT2_BINS] = {{0}};
+  double nQCDNormal_all_err[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all_err[MET_BINS][MT2_BINS] = {{0}};
+  double QCDTFactor[MET_BINS][MT2_BINS] = {{0}}, QCDTFactor_err[MET_BINS][MT2_BINS] = {{0}};
+  double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
+  double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
+  double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
 
   double QCDWeights[QCD_BINS] = {0};
   double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
