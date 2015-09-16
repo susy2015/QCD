@@ -93,7 +93,10 @@ class BaseHistgram
   //closure plots on different variables and search bins
   TH1D *h_pred_met, *h_pred_njets, *h_pred_mt2, *h_pred_topmass, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
   TH1D *h_exp_met, *h_exp_njets, *h_exp_mt2, *h_exp_topmass, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
+  TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_topmass, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
   TH1D *h_exp_sb, *h_pred_sb;
+
+  TH2D *h_met_mt2;
 };
 
 void BaseHistgram::BookHistgram(const char *outFileName)
@@ -144,8 +147,19 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_exp_ntopjets = new TH1D("h_exp_ntopjets","",20,0,20);
   h_exp_nbjets = new TH1D("h_exp_nbjets","",20,0,20);
 
+  h_inverted_met = new TH1D("h_inverted_met","",50,0,1000);
+  h_inverted_njets = new TH1D("h_inverted_njets","",20,0,20);
+  h_inverted_mt2 = new TH1D("h_inverted_mt2","",50,0,1000);
+  h_inverted_topmass = new TH1D("h_inverted_topmass","",100,50,300);
+  h_inverted_ht = new TH1D("h_inverted_ht","",150,0,3000);
+  h_inverted_mht = new TH1D("h_inverted_mht","",50,0,1000);
+  h_inverted_ntopjets = new TH1D("h_inverted_ntopjets","",20,0,20);
+  h_inverted_nbjets = new TH1D("h_inverted_nbjets","",20,0,20);
+
   h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+
+  h_met_mt2  = new TH2D("h_met_mt2","",15,150,300,25,100,350);
 }
 
 //##########functions to calculate Delta_R and Delta Phi###############

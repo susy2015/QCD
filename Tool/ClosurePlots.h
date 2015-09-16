@@ -30,6 +30,12 @@ class ClosurePlots
                        double min,
                        double max
                        );
+  void CompareTemplate(
+                       TString hist_tag,
+                       TString XTitle,
+                       double min,
+                       double max
+                       );
 };
 
 void ClosurePlots::Initialization()
@@ -91,6 +97,7 @@ void ClosurePlots::ClosureTemplate(
   pad1->SetPad("", "", 0, divRatio, 1.0, 1.0, kWhite);
   pad1->SetBottomMargin(0.005);
   pad1->SetBorderMode(0);
+  if( hist_tag == "_sb" ){ pad1->SetLogy(); }
 
   h_pred->GetXaxis()->SetRangeUser(min,max);
   h_pred->GetXaxis()->SetTitle(XTitle);
@@ -169,6 +176,70 @@ void ClosurePlots::ClosureTemplate(
   c->SaveAs( hist_tag + TString(".C") );
 }
 
+void ClosurePlots::CompareTemplate(
+                                   TString hist_tag,
+                                   TString XTitle,
+                                   double min,
+                                   double max
+                                  )
+{ 
+  TH1D * h_inverted;
+  TH1D * h_normal;
+
+  for(int i  = 0 ; i < list->GetSize() ; i++)
+  {
+    if( TString(list->At(i)->GetName()).Contains( hist_tag ) )
+    {
+      if( TString(list->At(i)->GetName()).Contains( "_inverted_" ) )
+      {
+        h_inverted = (TH1D*)fin->Get(list->At(i)->GetName())->Clone();
+      }
+      if( TString(list->At(i)->GetName()).Contains( "_exp_" ) )
+      {
+        h_normal = (TH1D*)fin->Get(list->At(i)->GetName())->Clone();
+      }
+    }
+    else
+      continue;
+  }
+
+  TCanvas *c = new TCanvas("c","A Simple Graph Example",200,10,700,500); 
+  gStyle->SetOptStat(0);
+
+  h_inverted->GetXaxis()->SetRangeUser(min,max);
+  h_inverted->GetXaxis()->SetTitle(XTitle);
+  h_inverted->SetLineColor(1);
+  h_inverted->SetLineWidth(3);
+  h_inverted->Sumw2();
+  h_inverted->Scale(scale);
+
+  h_normal->GetXaxis()->SetRangeUser(min,max);
+  h_normal->GetXaxis()->SetTitle(XTitle);
+  h_normal->SetLineColor(2);
+  h_normal->SetLineWidth(3);
+  h_normal->Sumw2();
+  h_normal->Scale(scale);
+
+  h_inverted->Draw(); 
+  h_normal->Draw("same");
+
+  const std::string titre="CMS Preliminary 2015, 10 fb^{-1}, #sqrt{s} = 13 TeV";
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+  title->Draw("same");
+
+  TLegend* leg = new TLegend(0.6,0.75,0.85,0.85);
+  leg->SetBorderSize(0);
+  leg->SetTextFont(42);
+  leg->SetFillColor(0);
+  leg->AddEntry(h_normal,"Normal","l");
+  leg->AddEntry(h_inverted,"Inverted Delat Phi","l");
+  leg->Draw("same");
+
+  c->SaveAs( hist_tag + TString("_normal_inverted.png") );
+  c->SaveAs( hist_tag + TString("_normal_inverted.C") );
+}
 
 struct Plotting_Parameter
 {

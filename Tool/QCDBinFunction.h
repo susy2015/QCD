@@ -1,6 +1,6 @@
 #define MET_BINS 3
 #define NBJETS_BINS 2
-#define MT2_BINS 3
+#define MT2_BINS 4
 #define QCD_BINS 8
 #define NSEARCH_BINS 64
 
@@ -14,15 +14,15 @@ int Set_metbin_number(
   {
     metbin_num = 0;
   }
-  else if(met >= 200 && met < 300)
+  else if(met >= 200 && met < 400)
   {
     metbin_num = 1;
   }
-  //else if(met >= 250 && met < 350)
+  //else if(met >= 300 && met < 400)
   //{
-  //  metbin_num = 2;
+    //metbin_num = 2;
   //}
-  else if(met >= 300)
+  else if(met >= 400)
   {
     metbin_num = 2;
   }
@@ -59,13 +59,17 @@ int Set_mt2bin_number(
   {
     mt2bin_num = 0;
   }
-  else if(mt2 >= 200 && mt2 < 350)
+  else if(mt2 >= 200 && mt2 < 300)
   {
     mt2bin_num = 1;
   }
-  else
+  else if(mt2 >= 300 && mt2 < 400) 
   {
     mt2bin_num = 2;
+  }
+  else
+  {
+    mt2bin_num = 3;
   }
 
   return mt2bin_num;

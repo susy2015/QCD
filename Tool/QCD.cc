@@ -89,8 +89,12 @@ int main(int argc, char* argv[])
 
       //fliter variables in the tree
       int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
+      int ecaltpfilter = tr.getVar<int>("EcalDeadCellTriggerPrimitiveFilter");
       int metfilter = tr.getVar<int>("METFilters");  
-      if ( ( jetidfilter == 0 ) || ( metfilter == 0 ) ) continue;
+      if ( ( jetidfilter == 0 ) 
+         ||( ecaltpfilter == 0 )
+        //|| ( metfilter == 0 ) 
+         ) continue;
 
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
@@ -105,6 +109,8 @@ int main(int argc, char* argv[])
 
       //filling HT variables for quick weight check
       (myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
+      //filling MET MT2 2d plots to check correlation
+      (myBaseHistgram.h_met_mt2)->Fill(met,MT2,thisweight);
 
       int metbin_number = Set_metbin_number(met);
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
@@ -153,6 +159,15 @@ int main(int argc, char* argv[])
         myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=thisweight;
         myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight;
         myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight;
+
+        (myBaseHistgram.h_inverted_met)->Fill(met,thisweight);
+        (myBaseHistgram.h_inverted_njets)->Fill(njets30,thisweight);
+        (myBaseHistgram.h_inverted_mt2)->Fill(MT2,thisweight);
+        (myBaseHistgram.h_inverted_topmass)->Fill(bestTopJetMass,thisweight);
+        (myBaseHistgram.h_inverted_ht)->Fill(ht,thisweight);
+        (myBaseHistgram.h_inverted_mht)->Fill(mht,thisweight);
+        (myBaseHistgram.h_inverted_ntopjets)->Fill(ntopjets,thisweight);
+        (myBaseHistgram.h_inverted_nbjets)->Fill(nbottomjets,thisweight);
       }
     }//end of inner loop
     i++;
@@ -205,6 +220,7 @@ int main(int argc, char* argv[])
       if (passBaseline_dPhisInverted)
       {
         double predweight = thisweight * myQCDFactors.QCDTFactor[metbin_number][mt2bin_number];
+        double predweight_err = thisweight * myQCDFactors.QCDTFactor_err[metbin_number][mt2bin_number];
         (myBaseHistgram.h_pred_met)->Fill(met,predweight);
         (myBaseHistgram.h_pred_njets)->Fill(njets30,predweight);
         (myBaseHistgram.h_pred_mt2)->Fill(MT2,predweight);
@@ -219,6 +235,7 @@ int main(int argc, char* argv[])
         {
           //std::cout << predweight << std::endl;
           myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
+          //myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight_err);
         }
       }
     }//end of inner loop
@@ -416,9 +433,9 @@ void QCDFactors::TFactorsPlotsGen()
   c->SetFillColor(0);
   c->cd();
 
-  double xbins[MET_BINS+1] = {175.0,200.0,300.0,500.0};
+  double xbins[MET_BINS+1] = {175.0,200.0,      400.0,1000.0};
   //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};
-  double ybins[MT2_BINS+1] = {0.0,200.0,350.0,1000.0};
+  double ybins[MT2_BINS+1] = {0.0  ,200.0,300.0,400.0,1000.0};
 
   TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,xbins,MT2_BINS,ybins);
 

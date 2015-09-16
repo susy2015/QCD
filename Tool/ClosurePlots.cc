@@ -35,8 +35,7 @@ int main()
     {"_ntopjets", "Number of Top jets"    ,0   , 5    },
     {"_nbjets"  , "Number of B Jets"      ,0   , 10   },
     //search bin closure plots
-    {"_sb"   , "Search Bins"           ,0   , 65  },
-
+    //{"_sb"   , "Search Bins"           ,0   , 65  },
   };
 
   
@@ -50,8 +49,21 @@ int main()
                                    (*iter_p).min,
                                    (*iter_p).max 
                                   );
+    myClosurePlots.CompareTemplate(
+                                   (*iter_p).hist_tag,
+                                   (*iter_p).XTitle,
+                                   (*iter_p).min,
+                                   (*iter_p).max
+                                  );
   }
-  
+
+  myClosurePlots.ClosureTemplate(
+                                 "_sb",
+                                 "Search Bins",
+                                 0,
+                                 65
+                                );  
+
   return 0;
 }
 
