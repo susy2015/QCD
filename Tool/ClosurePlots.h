@@ -173,6 +173,7 @@ void ClosurePlots::ClosureTemplate(
   zero->DrawCopy("same");
 
   c->SaveAs( hist_tag + TString(".png") );
+  c->SaveAs( hist_tag + TString(".pdf") );
   c->SaveAs( hist_tag + TString(".C") );
 }
 
@@ -238,6 +239,7 @@ void ClosurePlots::CompareTemplate(
   leg->Draw("same");
 
   c->SaveAs( hist_tag + TString("_normal_inverted.png") );
+  c->SaveAs( hist_tag + TString("_normal_inverted.pdf") );
   c->SaveAs( hist_tag + TString("_normal_inverted.C") );
 }
 

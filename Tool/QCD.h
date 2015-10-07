@@ -97,6 +97,7 @@ class BaseHistgram
   TH1D *h_exp_sb, *h_pred_sb;
 
   TH2D *h_met_mt2;
+  TH1D *h_mt2_cutmet0, *h_mt2_cutmet50, *h_mt2_cutmet100, *h_mt2_cutmet150, *h_mt2_cutmet200;
 };
 
 void BaseHistgram::BookHistgram(const char *outFileName)
@@ -159,7 +160,13 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
 
-  h_met_mt2  = new TH2D("h_met_mt2","",15,150,300,25,100,350);
+  //study mt2 met correlation, run on the full QCD HT bin sample
+  h_met_mt2  = new TH2D("h_met_mt2","",30,0,300,40,0,400);
+  h_mt2_cutmet0 = new TH1D("h_mt2_cutmet0","",50,0,1000);
+  h_mt2_cutmet50 = new TH1D("h_mt2_cutmet50","",50,0,1000); 
+  h_mt2_cutmet100 = new TH1D("h_mt2_cutmet100","",50,0,1000); 
+  h_mt2_cutmet150 = new TH1D("h_mt2_cutmet150","",50,0,1000); 
+  h_mt2_cutmet200 = new TH1D("h_mt2_cutmet200","",50,0,1000); 
 }
 
 //##########functions to calculate Delta_R and Delta Phi###############

@@ -1,0 +1,16 @@
+universe = vanilla
+Executable = $ENV(CMSSW_BASE)/src/QCD/Tool/condor/goMakePlots.sh
+Requirements = Memory >= 199 &&OpSys == "LINUX"&& (Arch != "DUMMY" )&& Disk > 1000000
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT
+
+Transfer_Input_Files = $ENV(CMSSW_BASE)/src/QCD/Tool/QCD, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/goMakePlots.sh, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/AutoDict_vector_TLorentzVector__cxx.so, $ENV(CMSSW_BASE)/lib/$ENV(SCRAM_ARCH)/librecipeAUXOxbridgeMT2.so, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.00, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.01, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.02, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.03, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.04, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.05, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.06, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.07, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.08, $ENV(CMSSW_BASE)/src/QCD/Tool/condor/list.txt.09
+
+Output = $ENV(CMSSW_BASE)/src/QCD/Tool/condor/res/makePlots_$(Process).stdout
+Error = $ENV(CMSSW_BASE)/src/QCD/Tool/condor/res/makePlots_$(Process).stderr
+Log = $ENV(CMSSW_BASE)/src/QCD/Tool/condor/res/makePlots_$(Process).log
+
+x509userproxy = $ENV(X509_USER_PROXY)
+
+Arguments = $ENV(CMSSW_BASE) list.txt.00 QCDTest00.root
+Queue

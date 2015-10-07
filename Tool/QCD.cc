@@ -87,15 +87,6 @@ int main(int argc, char* argv[])
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
 
-      //fliter variables in the tree
-      int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
-      int ecaltpfilter = tr.getVar<int>("EcalDeadCellTriggerPrimitiveFilter");
-      int metfilter = tr.getVar<int>("METFilters");  
-      if ( ( jetidfilter == 0 ) 
-         ||( ecaltpfilter == 0 )
-        //|| ( metfilter == 0 ) 
-         ) continue;
-
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
       int nbottomjets = tr.getVar<int>("cntCSVS"+spec);
@@ -107,10 +98,29 @@ int main(int argc, char* argv[])
       double bestTopJetMass = tr.getVar<double>("bestTopJetMass"+spec);
       double mht = tr.getVar<double>("mht");
 
+      /*
+      //checking plots for full QCD samples
       //filling HT variables for quick weight check
       (myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
       //filling MET MT2 2d plots to check correlation
       (myBaseHistgram.h_met_mt2)->Fill(met,MT2,thisweight);
+      //mt2 1d plot for different met cut
+      (myBaseHistgram.h_mt2_cutmet0)->Fill(MT2,thisweight);
+      if( met > 50  ) (myBaseHistgram.h_mt2_cutmet50 )->Fill(MT2,thisweight);
+      if( met > 100 ) (myBaseHistgram.h_mt2_cutmet100)->Fill(MT2,thisweight);
+      if( met > 150 ) (myBaseHistgram.h_mt2_cutmet150)->Fill(MT2,thisweight);
+      if( met > 200 ) (myBaseHistgram.h_mt2_cutmet200)->Fill(MT2,thisweight);
+      if( met < 175 ) continue;
+      */
+
+      //fliter variables in the tree
+      int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
+      int ecaltpfilter = tr.getVar<int>("EcalDeadCellTriggerPrimitiveFilter");
+      int metfilter = tr.getVar<int>("METFilters");
+      if ( ( jetidfilter == 0 )
+         ||( ecaltpfilter == 0 )
+        //|| ( metfilter == 0 ) 
+         ) continue;
 
       int metbin_number = Set_metbin_number(met);
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
@@ -466,6 +476,7 @@ void QCDFactors::TFactorsPlotsGen()
   title->Draw("same");
 
   c->SaveAs( "_tfactors2d.png" );
+  c->SaveAs( "_tfactors2d.pdf" );
   c->SaveAs( "_tfactors2d.C" );
   
   return ;

@@ -1,7 +1,7 @@
 #define MET_BINS 3
 #define NBJETS_BINS 2
 #define MT2_BINS 4
-#define QCD_BINS 8
+#define QCD_BINS 5
 #define NSEARCH_BINS 64
 
 int Set_metbin_number(
