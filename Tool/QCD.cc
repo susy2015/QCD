@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "SusyAnaTools/Tools/samples.h"
-#include "SusyAnaTools/Tools/customize.h"
 #include "SusyAnaTools/Tools/searchBins.h"
 
 #include "TStopwatch.h"
@@ -36,7 +35,6 @@
 #include "TLorentzVector.h"
 //#include "TROOT.h"
 //#include "TInterpreter.h"
-#include "Baseline.h"
 #include "QCD.h"
 #include "QCDReWeighting.h"
 
@@ -66,19 +64,24 @@ int main(int argc, char* argv[])
   QCDSampleWeight myQCDSampleWeight;
   myQCDSampleWeight.FillQCDSampleInfos(inputFileList);
 
+  //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
+  const std::string spec = "QCD";
+  myBaselineVessel = new BaselineVessel(spec);
+
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
   int i = 0;  
 
   std::cout << "First Loop start(Factorization and Expectation): " << std::endl;
 
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
-  {    
+  {  
+    //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
     NTupleReader tr((*iter_QCDSampleInfos).chain);
     //initialize the type3Ptr defined in the customize.h
     AnaFunctions::prepareTopTagger();
-    //The passBaselineFunc is registered here
-    tr.registerFunction(&passBaselineFunc);
-        
+    //The passBaseline is registered here
+    tr.registerFunction(&mypassBaselineFunc);    
+ 
     double thisweight = (*iter_QCDSampleInfos).weight;
     myQCDFactors.QCDWeights[i] = thisweight;
     std::cout << "Weight " << thisweight << std::endl;
@@ -126,9 +129,9 @@ int main(int argc, char* argv[])
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
       int mt2bin_number = Set_mt2bin_number(MT2);
 
-      bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
-      bool passdPhis = tr.getVar<bool>("passdPhisQCD");
-      //std::cout << !passdPhis << std::endl;
+      bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
+      bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      if( passBaselineQCD ) { std::cout << passBaselineQCD << std::endl; }
       
       //normal baseline
       bool passBaseline = false;
@@ -189,12 +192,13 @@ int main(int argc, char* argv[])
   std::cout << "Second Loop start(Prediction): " << std::endl;
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
+    //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
     NTupleReader tr((*iter_QCDSampleInfos).chain);
     //initialize the type3Ptr defined in the customize.h
     AnaFunctions::prepareTopTagger();
-    //The passBaselineFunc is registered here
-    tr.registerFunction(&passBaselineFunc);
-        
+    //The passBaseline is registered here
+    tr.registerFunction(&mypassBaselineFunc);
+
     double thisweight = (*iter_QCDSampleInfos).weight;
     std::cout << "Weight " << thisweight << std::endl;
 
@@ -222,8 +226,8 @@ int main(int argc, char* argv[])
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
       int mt2bin_number = Set_mt2bin_number(MT2);
 
-      bool passBaselineQCD = tr.getVar<bool>("passBaselineQCD");
-      bool passdPhis = tr.getVar<bool>("passdPhisQCD");
+      bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
+      bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
       bool passBaseline_dPhisInverted = false;
       passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
 

@@ -107,8 +107,8 @@ void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, dou
 
   oneInfo.QCDTag = tag;
   oneInfo.weight = xsec*lumi/nevents;
-  oneInfo.chain= new TChain("AUX");
-  //oneInfo.chain= new TChain("stopTreeMaker/AUX");
+  //oneInfo.chain= new TChain("AUX");
+  oneInfo.chain= new TChain("stopTreeMaker/AUX");
   if(!FillChain(oneInfo.chain, inputFileList,oneInfo.QCDTag))
   {
     std::cerr << "Cannot get the tree " << std::endl;

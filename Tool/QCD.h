@@ -14,9 +14,18 @@
 #include "TMath.h"
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
+#include "SusyAnaTools/Tools/baselineDef.h"
+
 #include "QCDBinFunction.h"
 
 //############finish the definition of class AccRecoEffs######################
+//baseline cut function definition
+static BaselineVessel *myBaselineVessel;
+void mypassBaselineFunc(NTupleReader& tr)
+{
+  (*myBaselineVessel)(tr);
+}
+
 class BaseHistgram;
 
 class QCDFactors
