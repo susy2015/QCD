@@ -116,7 +116,7 @@ void ClosurePlots::ClosureTemplate(
   h_exp->Draw(); 
   h_pred->Draw("same");
 
-  const std::string titre="CMS Preliminary 2015, 10 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2015, 3 fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -224,7 +224,7 @@ void ClosurePlots::CompareTemplate(
   h_inverted->Draw(); 
   h_normal->Draw("same");
 
-  const std::string titre="CMS Preliminary 2015, 10 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2015, 3 fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);

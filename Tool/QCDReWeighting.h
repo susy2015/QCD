@@ -18,7 +18,7 @@
 //Fill chain from txt file
 bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
 {
-  std::ifstream infile(inputFileList, std::ifstream::in);
+  std::ifstream infile( inputFileList, std::ifstream::in );
   std::string buffer;
 
   if(!infile.is_open())
@@ -30,9 +30,12 @@ bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
   std::cout << "TreeUtilities : FillChain " << std::endl;
   while(1)
   {
+    buffer.clear();
     infile >> buffer;
+
     if(!infile.good()) break;
-    //std::cout << "Adding tree from " << buffer.c_str() << std::endl;      
+    //std::cout << "Adding tree from " << buffer.c_str() << std::endl;
+    std::cout << (buffer.find(tag) != std::string::npos) << std::endl;
     if (buffer.find(tag) != std::string::npos) 
     {
       //std::cout << "found!" << '\n';
@@ -66,25 +69,16 @@ void QCDSampleWeight::FillQCDSampleInfos( const TString &inputFileList )
  
   //ttbar test
   //QCDSampleInfo_push_back( "_ttbar_", 806.1, 25446993, 10000, inputFileList );
-  //QCD HT binning Samples, skimmed
-  //QCDSampleInfo_push_back( "QCD_HT_100To200_"  , 27540000, 80093092, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_200To300_"  , 1735000 , 18712796, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_300To500_"  , 306800  , 20086103, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_500To700_"  , 29370   , 19542847, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_700To1000_" , 6524    , 15011016, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_1000To1500_", 1064    ,  4963895, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_1500To2000_", 121.5   ,  3848411, 10000, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT_2000ToInf_" , 25.42   ,  1961774, 10000, inputFileList );
 
   //QCD HT binnning samples, all
-  QCDSampleInfo_push_back( "QCD_HT100to200_"  , 27540000, 80093092, 2500, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT200to300_"  , 1735000 , 18717349, 2500, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT300to500_"  , 367000  , 20086103, 2500, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19542847, 2500, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15011016, 2500, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, 2500, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3848411, 2500, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1961774, 2500, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_HT100to200_"  , 27540000, 80093092, 3000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_HT200to300_"  , 1735000 , 18717349, 3000, inputFileList );
+  //QCDSampleInfo_push_back( "QCD_HT300to500_"  , 367000  , 20086103, 3000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19542847, 3000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15011016, 3000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, 3000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3848411, 3000, inputFileList );
+  QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1961774, 3000, inputFileList );
 
   //QCD PT binning Samples
   //QCDSampleInfo_push_back( "QCD_PT_30To50_", 161500000, , 10000, inputFileList );
@@ -109,7 +103,7 @@ void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, dou
   oneInfo.weight = xsec*lumi/nevents;
   //oneInfo.chain= new TChain("AUX");
   oneInfo.chain= new TChain("stopTreeMaker/AUX");
-  if(!FillChain(oneInfo.chain, inputFileList,oneInfo.QCDTag))
+  if(!FillChain(oneInfo.chain, inputFileList, oneInfo.QCDTag))
   {
     std::cerr << "Cannot get the tree " << std::endl;
   }

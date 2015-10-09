@@ -1,0 +1,15 @@
+SysError in <TFile::TFile>: file QCDTest00.root can not be opened (Read-only file system)
+** ERROR: Can't open 'list.txt.00' for input
+Cannot get the tree 
+** ERROR: Can't open 'list.txt.00' for input
+Cannot get the tree 
+** ERROR: Can't open 'list.txt.00' for input
+Cannot get the tree 
+** ERROR: Can't open 'list.txt.00' for input
+Cannot get the tree 
+** ERROR: Can't open 'list.txt.00' for input
+Cannot get the tree 
+RootApp ERROR: cannot open image file "_tfactors2d.png" for writing. Please check permissions.
+Error in <TASImage::WriteImage>: error writing file _tfactors2d.png
+Error in <TCanvas::SaveSource>: Cannot open file: _tfactors2d.C
+Warning in <TFile::Write>: file QCDTest00.root not opened in write mode

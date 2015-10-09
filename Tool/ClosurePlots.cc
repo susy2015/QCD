@@ -29,7 +29,6 @@ int main()
     {"_met"     , "MET [GeV]"             ,150 , 600  },
     {"_njets"   , "Number of 30 GeV jets" ,2   , 17   }, 
     {"_mt2"     , "MT2 [GeV]"             ,100 , 600  },                                               
-    {"_topmass" , "Top mass [GeV]"        ,50  , 300  },
     {"_ht"      , "HT [GeV]"              ,200 , 1600 },
     {"_mht"     , "MHT [GeV]"             ,100 , 500  },
     {"_ntopjets", "Number of Top jets"    ,0   , 5    },

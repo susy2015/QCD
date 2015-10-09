@@ -98,13 +98,13 @@ int main(int argc, char* argv[])
       //closure plots variables
       int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       double ht = tr.getVar<double>("ht");
-      double bestTopJetMass = tr.getVar<double>("bestTopJetMass"+spec);
       double mht = tr.getVar<double>("mht");
 
-      /*
+      
       //checking plots for full QCD samples
       //filling HT variables for quick weight check
       (myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
+      /*
       //filling MET MT2 2d plots to check correlation
       (myBaseHistgram.h_met_mt2)->Fill(met,MT2,thisweight);
       //mt2 1d plot for different met cut
@@ -116,13 +116,15 @@ int main(int argc, char* argv[])
       if( met < 175 ) continue;
       */
 
-      //fliter variables in the tree
+      //filter variables in the tree
       int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
       int ecaltpfilter = tr.getVar<int>("EcalDeadCellTriggerPrimitiveFilter");
-      int metfilter = tr.getVar<int>("METFilters");
+      int hbhenoisefilter = tr.getVar<int>("HBHENoiseFilter");
+      int cschalofilter = tr.getVar<int>("CSCTightHaloFilter");
       if ( ( jetidfilter == 0 )
          ||( ecaltpfilter == 0 )
-        //|| ( metfilter == 0 ) 
+         ||( hbhenoisefilter == 0 ) 
+         ||( cschalofilter == 0 )
          ) continue;
 
       int metbin_number = Set_metbin_number(met);
@@ -131,7 +133,7 @@ int main(int argc, char* argv[])
 
       bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
-      if( passBaselineQCD ) { std::cout << passBaselineQCD << std::endl; }
+      //if( passBaselineQCD ) { std::cout << passBaselineQCD << std::endl; }
       
       //normal baseline
       bool passBaseline = false;
@@ -147,7 +149,6 @@ int main(int argc, char* argv[])
         (myBaseHistgram.h_exp_met)->Fill(met,thisweight);
         (myBaseHistgram.h_exp_njets)->Fill(njets30,thisweight);
         (myBaseHistgram.h_exp_mt2)->Fill(MT2,thisweight);
-        (myBaseHistgram.h_exp_topmass)->Fill(bestTopJetMass,thisweight);
         (myBaseHistgram.h_exp_ht)->Fill(ht,thisweight);
         (myBaseHistgram.h_exp_mht)->Fill(mht,thisweight);
         (myBaseHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight);
@@ -176,7 +177,6 @@ int main(int argc, char* argv[])
         (myBaseHistgram.h_inverted_met)->Fill(met,thisweight);
         (myBaseHistgram.h_inverted_njets)->Fill(njets30,thisweight);
         (myBaseHistgram.h_inverted_mt2)->Fill(MT2,thisweight);
-        (myBaseHistgram.h_inverted_topmass)->Fill(bestTopJetMass,thisweight);
         (myBaseHistgram.h_inverted_ht)->Fill(ht,thisweight);
         (myBaseHistgram.h_inverted_mht)->Fill(mht,thisweight);
         (myBaseHistgram.h_inverted_ntopjets)->Fill(ntopjets,thisweight);
@@ -205,10 +205,16 @@ int main(int argc, char* argv[])
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
-      //fliter variables in the tree
+      //filter variables in the tree
       int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
-      int metfilter = tr.getVar<int>("METFilters");  
-      if ( ( jetidfilter == 0 ) || ( metfilter == 0 ) ) continue;
+      int ecaltpfilter = tr.getVar<int>("EcalDeadCellTriggerPrimitiveFilter");
+      int hbhenoisefilter = tr.getVar<int>("HBHENoiseFilter");
+      int cschalofilter = tr.getVar<int>("CSCTightHaloFilter");
+      if ( ( jetidfilter == 0 )
+         ||( ecaltpfilter == 0 )
+         ||( hbhenoisefilter == 0 )
+         ||( cschalofilter == 0 )
+         ) continue;
 
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
@@ -218,7 +224,6 @@ int main(int argc, char* argv[])
       //closure plots variables
       int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       double ht = tr.getVar<double>("ht");
-      double bestTopJetMass = tr.getVar<double>("bestTopJetMass"+spec);
       double mht = tr.getVar<double>("mht");
 
       //if( met < 175 ) continue;
@@ -238,7 +243,6 @@ int main(int argc, char* argv[])
         (myBaseHistgram.h_pred_met)->Fill(met,predweight);
         (myBaseHistgram.h_pred_njets)->Fill(njets30,predweight);
         (myBaseHistgram.h_pred_mt2)->Fill(MT2,predweight);
-        (myBaseHistgram.h_pred_topmass)->Fill(bestTopJetMass,predweight);
         (myBaseHistgram.h_pred_ht)->Fill(ht,predweight);
         (myBaseHistgram.h_pred_mht)->Fill(mht,predweight);
         (myBaseHistgram.h_pred_ntopjets)->Fill(ntopjets,predweight);
@@ -447,9 +451,9 @@ void QCDFactors::TFactorsPlotsGen()
   c->SetFillColor(0);
   c->cd();
 
-  double xbins[MET_BINS+1] = {175.0,200.0,      400.0,1000.0};
+  double xbins[MET_BINS+1] = {175.0,200.0,400.0,1000.0};
   //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};
-  double ybins[MT2_BINS+1] = {0.0  ,200.0,300.0,400.0,1000.0};
+  double ybins[MT2_BINS+1] = {200.0,250.0,350.0,1000.0};
 
   TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,xbins,MT2_BINS,ybins);
 

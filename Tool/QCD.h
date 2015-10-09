@@ -95,14 +95,14 @@ class BaseHistgram
   TFile *oFile;
   TH1D *h_b_all_MET;
   TH1D *h_b_all_HT;
-  TH1D *h_b_baseline_nMuons, *h_b_baseline_njets, *h_b_baseline_nbjetsCSVM, *h_b_baseline_bestTopMass, *h_b_baseline_MET, *h_b_baseline_jetpt2, *h_b_baseline_jetpt4, *h_b_baseline_jet1_met_phi_diff, *h_b_baseline_jet2_met_phi_diff, *h_b_baseline_jet3_met_phi_diff;
-  TH1D *h_b_acc_njets, *h_b_acc_nbjetsCSVM, *h_b_acc_bestTopMass, *h_b_acc_MET, *h_b_acc_jetpt2, *h_b_acc_jetpt4, *h_b_acc_jet1_met_phi_diff, *h_b_acc_jet2_met_phi_diff, *h_b_acc_jet3_met_phi_diff;
-  TH1D *h_b_reco_nMuons, *h_b_reco_njets, *h_b_reco_nbjetsCSVM, *h_b_reco_bestTopMass, *h_b_reco_MET, *h_b_reco_jetpt2, *h_b_reco_jetpt4, *h_b_reco_jet1_met_phi_diff, *h_b_reco_jet2_met_phi_diff, *h_b_reco_jet3_met_phi_diff;
+  TH1D *h_b_baseline_nMuons, *h_b_baseline_njets, *h_b_baseline_nbjetsCSVM, *h_b_baseline_MET, *h_b_baseline_jetpt2, *h_b_baseline_jetpt4, *h_b_baseline_jet1_met_phi_diff, *h_b_baseline_jet2_met_phi_diff, *h_b_baseline_jet3_met_phi_diff;
+  TH1D *h_b_acc_njets, *h_b_acc_nbjetsCSVM, *h_b_acc_MET, *h_b_acc_jetpt2, *h_b_acc_jetpt4, *h_b_acc_jet1_met_phi_diff, *h_b_acc_jet2_met_phi_diff, *h_b_acc_jet3_met_phi_diff;
+  TH1D *h_b_reco_nMuons, *h_b_reco_njets, *h_b_reco_nbjetsCSVM, *h_b_reco_MET, *h_b_reco_jetpt2, *h_b_reco_jetpt4, *h_b_reco_jet1_met_phi_diff, *h_b_reco_jet2_met_phi_diff, *h_b_reco_jet3_met_phi_diff;
 
   //closure plots on different variables and search bins
-  TH1D *h_pred_met, *h_pred_njets, *h_pred_mt2, *h_pred_topmass, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
-  TH1D *h_exp_met, *h_exp_njets, *h_exp_mt2, *h_exp_topmass, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
-  TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_topmass, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
+  TH1D *h_pred_met, *h_pred_njets, *h_pred_mt2, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
+  TH1D *h_exp_met, *h_exp_njets, *h_exp_mt2, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
+  TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
   TH1D *h_exp_sb, *h_pred_sb;
 
   TH2D *h_met_mt2;
@@ -119,7 +119,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_b_baseline_nMuons = new TH1D("h_b_baseline_nMuons","",10,0,10);
   h_b_baseline_njets = new TH1D("h_b_baseline_njets","",10,0,10);
   h_b_baseline_nbjetsCSVM = new TH1D("h_b_baseline_nbjetsCSVM","",10,0,10);
-  h_b_baseline_bestTopMass = new TH1D("h_b_baseline_bestTopMass","",1000,0,500);
   h_b_baseline_MET = new TH1D("h_b_baseline_MET","",1000,0,1000);
   h_b_baseline_jetpt4 = new TH1D("h_b_baseline_jetpt4","",1000,0,1000);
   h_b_baseline_jetpt2 = new TH1D("h_b_baseline_jetpt2","",1000,0,1000);
@@ -130,7 +129,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_b_reco_nMuons = new TH1D("h_b_reco_nMuons","",10,0,10);
   h_b_reco_njets = new TH1D("h_b_reco_njets","",10,0,10);
   h_b_reco_nbjetsCSVM = new TH1D("h_b_reco_nbjetsCSVM","",10,0,10);
-  h_b_reco_bestTopMass = new TH1D("h_b_reco_bestTopMass","",1000,0,500);
   h_b_reco_MET = new TH1D("h_b_reco_MET","",1000,0,1000);
   h_b_reco_jetpt4 = new TH1D("h_b_reco_jetpt4","",1000,0,1000);
   h_b_reco_jetpt2 = new TH1D("h_b_reco_jetpt2","",1000,0,1000);
@@ -142,7 +140,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_pred_met = new TH1D("h_pred_met","",50,0,1000);
   h_pred_njets = new TH1D("h_pred_njets","",20,0,20);
   h_pred_mt2 = new TH1D("h_pred_mt2","",50,0,1000);
-  h_pred_topmass = new TH1D("h_pred_topmass","",100,50,300);
   h_pred_ht = new TH1D("h_pred_ht","",150,0,3000);
   h_pred_mht = new TH1D("h_pred_mht","",50,0,1000);
   h_pred_ntopjets = new TH1D("h_pred_ntopjets","",20,0,20);
@@ -151,7 +148,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_exp_met = new TH1D("h_exp_met","",50,0,1000);
   h_exp_njets = new TH1D("h_exp_njets","",20,0,20);
   h_exp_mt2 = new TH1D("h_exp_mt2","",50,0,1000);
-  h_exp_topmass = new TH1D("h_exp_topmass","",100,50,300);
   h_exp_ht = new TH1D("h_exp_ht","",150,0,3000);
   h_exp_mht = new TH1D("h_exp_mht","",50,0,1000);
   h_exp_ntopjets = new TH1D("h_exp_ntopjets","",20,0,20);
@@ -160,7 +156,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_inverted_met = new TH1D("h_inverted_met","",50,0,1000);
   h_inverted_njets = new TH1D("h_inverted_njets","",20,0,20);
   h_inverted_mt2 = new TH1D("h_inverted_mt2","",50,0,1000);
-  h_inverted_topmass = new TH1D("h_inverted_topmass","",100,50,300);
   h_inverted_ht = new TH1D("h_inverted_ht","",150,0,3000);
   h_inverted_mht = new TH1D("h_inverted_mht","",50,0,1000);
   h_inverted_ntopjets = new TH1D("h_inverted_ntopjets","",20,0,20);
