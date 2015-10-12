@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
   TFile* output = new TFile(outputFileName, "RECREATE");
   TDirectory *mydict = output->mkdir("stopTreeMaker");
   mydict->cd();
-  TTree* selectedTree = originalTree->CopyTree("met>175.");
+  TTree* selectedTree = originalTree->CopyTree("met>200.");
 
   selectedTree->Write();
   output->Close();
