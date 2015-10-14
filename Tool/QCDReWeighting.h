@@ -36,7 +36,7 @@ bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
 
     if(!infile.good()) break;
     //std::cout << "Adding tree from " << buffer.c_str() << std::endl;
-    std::cout << (buffer.find(tag) != std::string::npos) << std::endl;
+    //std::cout << (buffer.find(tag) != std::string::npos) << std::endl;
     if (buffer.find(tag) != std::string::npos) 
     {
       //std::cout << "found!" << '\n';

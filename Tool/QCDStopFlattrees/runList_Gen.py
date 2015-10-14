@@ -1,6 +1,6 @@
 import glob, os
 # Skimmed QCD samples location
-d = "/eos/uscms/store/group/lpcsusyhad/hua/"
+d = "/eos/uscms/store/group/lpcsusyhad/hua/TTJets_Leptonic_SkimmedTreeMET200_HT500_20151013"
 # Full QCD samples location
 # d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/"
 for dirname, dirnames, filenames in os.walk(d):
@@ -8,9 +8,9 @@ for dirname, dirnames, filenames in os.walk(d):
   # for subdirname in dirnames:
   #    print(os.path.join(dirname, subdirname))
 
-  if "QCD_HT" not in dirname: 
+  # if "TTJets_DiLept" not in dirname: 
   # if "QCD_Pt" not in dirname:
-    continue
+    #continue
   if 'failed' in dirnames:
     # don't go into any failed root sample directories.
     dirnames.remove('failed')
