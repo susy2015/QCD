@@ -36,6 +36,12 @@ class ClosurePlots
                        double min,
                        double max
                        );
+  void BTStudyTemplate(
+                       TString hist_tag,
+                       TString XTitle,
+                       double min,
+                       double max
+                       );
 };
 
 void ClosurePlots::Initialization()
@@ -241,6 +247,75 @@ void ClosurePlots::CompareTemplate(
   c->SaveAs( hist_tag + TString("_normal_inverted.png") );
   c->SaveAs( hist_tag + TString("_normal_inverted.pdf") );
   c->SaveAs( hist_tag + TString("_normal_inverted.C") );
+}
+
+void ClosurePlots::BTStudyTemplate(
+                                   TString hist_tag,
+                                   TString XTitle,
+                                   double min,
+                                   double max
+                                  )
+{ 
+  TH1D * h_nbnt;
+  TH1D * h_ybyt;
+
+  for(int i  = 0 ; i < list->GetSize() ; i++)
+  {
+    if( TString(list->At(i)->GetName()).Contains( hist_tag ) )
+    {
+      if( TString(list->At(i)->GetName()).Contains( "_nbnt" ) )
+      {
+        h_nbnt = (TH1D*)fin->Get(list->At(i)->GetName())->Clone();
+      }
+      if( TString(list->At(i)->GetName()).Contains( "_ybyt" ) )
+      {
+        h_ybyt = (TH1D*)fin->Get(list->At(i)->GetName())->Clone();
+      }
+    }
+    else
+      continue;
+  }
+
+  double scaletmp;
+  TCanvas *c = new TCanvas("c","A Simple Graph Example",200,10,700,500); 
+  gStyle->SetOptStat(0);
+
+  h_nbnt->GetXaxis()->SetRangeUser(min,max);
+  h_nbnt->GetXaxis()->SetTitle(XTitle);
+  h_nbnt->SetLineColor(1);
+  h_nbnt->SetLineWidth(3);
+  h_nbnt->Sumw2();
+  scaletmp = 1/(h_nbnt->Integral());
+  h_nbnt->Scale(scaletmp);
+
+  h_ybyt->GetXaxis()->SetRangeUser(min,max);
+  h_ybyt->GetXaxis()->SetTitle(XTitle);
+  h_ybyt->SetLineColor(2);
+  h_ybyt->SetLineWidth(3);
+  h_ybyt->Sumw2();
+  scaletmp = 1/(h_ybyt->Integral());
+  h_ybyt->Scale(scaletmp);
+
+  h_nbnt->Draw(); 
+  h_ybyt->Draw("same");
+
+  const std::string titre="CMS Preliminary 2015, #sqrt{s} = 13 TeV";
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+  title->Draw("same");
+
+  TLegend* leg = new TLegend(0.6,0.75,0.85,0.85);
+  leg->SetBorderSize(0);
+  leg->SetTextFont(42);
+  leg->SetFillColor(0);
+  leg->AddEntry(h_nbnt,"No Bottom and Tagger","l");
+  leg->AddEntry(h_ybyt,"Bottom and Tagger","l");
+  leg->Draw("same");
+
+  c->SaveAs( hist_tag + TString("_nbnt_ybyt.png") );
+  c->SaveAs( hist_tag + TString("_nbnt_ybyt.pdf") );
+  c->SaveAs( hist_tag + TString("_nbnt_ybyt.C") );
 }
 
 struct Plotting_Parameter

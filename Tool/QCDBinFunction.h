@@ -14,7 +14,7 @@ int Set_metbin_number(
   {
     metbin_num = 0;
   }
-  else if(met >= 200 && met < 400)
+  else if(met >= 200 && met < 350)
   {
     metbin_num = 1;
   }
@@ -22,7 +22,7 @@ int Set_metbin_number(
   //{
     //metbin_num = 2;
   //}
-  else if(met >= 400)
+  else if(met >= 350)
   {
     metbin_num = 2;
   }
@@ -55,11 +55,11 @@ int Set_mt2bin_number(
 {
   int mt2bin_num;
 
-  if(mt2 >= 200 && mt2 < 250)
+  if(mt2 >= 200 && mt2 < 300)
   {
     mt2bin_num = 0;
   }
-  else if(mt2 >= 250 && mt2 < 350) 
+  else if(mt2 >= 300 && mt2 < 400) 
   {
     mt2bin_num = 1;
   }

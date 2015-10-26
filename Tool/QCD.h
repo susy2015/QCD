@@ -53,6 +53,7 @@ class QCDFactors
   void printQCDFactorInfo(); 
   void printQCDClosure( BaseHistgram& myBaseHistgram );
   void TFactorsPlotsGen();
+  void CountingPlotsGen();
 
  private:
   double get_stat_Error(
@@ -95,18 +96,14 @@ class BaseHistgram
   TFile *oFile;
   TH1D *h_b_all_MET;
   TH1D *h_b_all_HT;
-  TH1D *h_b_baseline_nMuons, *h_b_baseline_njets, *h_b_baseline_nbjetsCSVM, *h_b_baseline_MET, *h_b_baseline_jetpt2, *h_b_baseline_jetpt4, *h_b_baseline_jet1_met_phi_diff, *h_b_baseline_jet2_met_phi_diff, *h_b_baseline_jet3_met_phi_diff;
-  TH1D *h_b_acc_njets, *h_b_acc_nbjetsCSVM, *h_b_acc_MET, *h_b_acc_jetpt2, *h_b_acc_jetpt4, *h_b_acc_jet1_met_phi_diff, *h_b_acc_jet2_met_phi_diff, *h_b_acc_jet3_met_phi_diff;
-  TH1D *h_b_reco_nMuons, *h_b_reco_njets, *h_b_reco_nbjetsCSVM, *h_b_reco_MET, *h_b_reco_jetpt2, *h_b_reco_jetpt4, *h_b_reco_jet1_met_phi_diff, *h_b_reco_jet2_met_phi_diff, *h_b_reco_jet3_met_phi_diff;
 
+  TH1D *h_b_mt2_nbnt, *h_b_mt2_ybyt, *h_b_met_nbnt, *h_b_met_ybyt;
+  TH1D *h_b_dphi0_nbnt, *h_b_dphi0_ybyt, *h_b_dphi1_nbnt, *h_b_dphi1_ybyt, *h_b_dphi2_nbnt, *h_b_dphi2_ybyt;
   //closure plots on different variables and search bins
   TH1D *h_pred_met, *h_pred_njets, *h_pred_mt2, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
   TH1D *h_exp_met, *h_exp_njets, *h_exp_mt2, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
   TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
   TH1D *h_exp_sb, *h_pred_sb;
-
-  TH2D *h_met_mt2;
-  TH1D *h_mt2_cutmet0, *h_mt2_cutmet50, *h_mt2_cutmet100, *h_mt2_cutmet150, *h_mt2_cutmet200;
 };
 
 void BaseHistgram::BookHistgram(const char *outFileName)
@@ -116,25 +113,16 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_b_all_MET = new TH1D("h_b_all_MET","",1000,0,1000);
   h_b_all_HT = new TH1D("h_b_all_HT","",200,0,2000);
 
-  h_b_baseline_nMuons = new TH1D("h_b_baseline_nMuons","",10,0,10);
-  h_b_baseline_njets = new TH1D("h_b_baseline_njets","",10,0,10);
-  h_b_baseline_nbjetsCSVM = new TH1D("h_b_baseline_nbjetsCSVM","",10,0,10);
-  h_b_baseline_MET = new TH1D("h_b_baseline_MET","",1000,0,1000);
-  h_b_baseline_jetpt4 = new TH1D("h_b_baseline_jetpt4","",1000,0,1000);
-  h_b_baseline_jetpt2 = new TH1D("h_b_baseline_jetpt2","",1000,0,1000);
-  h_b_baseline_jet1_met_phi_diff = new TH1D("h_b_baseline_jet1_met_phi_diff","",1000,-5,5);
-  h_b_baseline_jet2_met_phi_diff = new TH1D("h_b_baseline_jet2_met_phi_diff","",1000,-5,5);
-  h_b_baseline_jet3_met_phi_diff = new TH1D("h_b_baseline_jet3_met_phi_diff","",1000,-5,5);
-
-  h_b_reco_nMuons = new TH1D("h_b_reco_nMuons","",10,0,10);
-  h_b_reco_njets = new TH1D("h_b_reco_njets","",10,0,10);
-  h_b_reco_nbjetsCSVM = new TH1D("h_b_reco_nbjetsCSVM","",10,0,10);
-  h_b_reco_MET = new TH1D("h_b_reco_MET","",1000,0,1000);
-  h_b_reco_jetpt4 = new TH1D("h_b_reco_jetpt4","",1000,0,1000);
-  h_b_reco_jetpt2 = new TH1D("h_b_reco_jetpt2","",1000,0,1000);
-  h_b_reco_jet1_met_phi_diff = new TH1D("h_b_reco_jet1_met_phi_diff","",1000,-5,5);
-  h_b_reco_jet2_met_phi_diff = new TH1D("h_b_reco_jet2_met_phi_diff","",1000,-5,5);
-  h_b_reco_jet3_met_phi_diff = new TH1D("h_b_reco_jet3_met_phi_diff","",1000,-5,5);
+  h_b_mt2_nbnt = new TH1D("h_b_mt2_nbnt","",100,0,1000);
+  h_b_mt2_ybyt = new TH1D("h_b_mt2_ybyt","",100,0,1000);
+  h_b_met_nbnt = new TH1D("h_b_met_nbnt","",85,150,1000);
+  h_b_met_ybyt = new TH1D("h_b_met_ybyt","",85,150,1000);
+  h_b_dphi0_nbnt = new TH1D("h_b_dphi0_nbnt","",1000,-5,5);
+  h_b_dphi0_ybyt = new TH1D("h_b_dphi0_ybyt","",1000,-5,5);
+  h_b_dphi1_nbnt = new TH1D("h_b_dphi1_nbnt","",1000,-5,5);
+  h_b_dphi1_ybyt = new TH1D("h_b_dphi1_ybyt","",1000,-5,5);
+  h_b_dphi2_nbnt = new TH1D("h_b_dphi2_nbnt","",1000,-5,5);
+  h_b_dphi2_ybyt = new TH1D("h_b_dphi2_ybyt","",1000,-5,5);
 
   //closure plots on different variables
   h_pred_met = new TH1D("h_pred_met","",50,0,1000);
@@ -163,16 +151,7 @@ void BaseHistgram::BookHistgram(const char *outFileName)
 
   h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
-
-  //study mt2 met correlation, run on the full QCD HT bin sample
-  h_met_mt2  = new TH2D("h_met_mt2","",30,0,300,40,0,400);
-  h_mt2_cutmet0 = new TH1D("h_mt2_cutmet0","",50,0,1000);
-  h_mt2_cutmet50 = new TH1D("h_mt2_cutmet50","",50,0,1000); 
-  h_mt2_cutmet100 = new TH1D("h_mt2_cutmet100","",50,0,1000); 
-  h_mt2_cutmet150 = new TH1D("h_mt2_cutmet150","",50,0,1000); 
-  h_mt2_cutmet200 = new TH1D("h_mt2_cutmet200","",50,0,1000); 
 }
-
 //##########functions to calculate Delta_R and Delta Phi###############
 double DeltaPhi(double phi1, double phi2) 
 {

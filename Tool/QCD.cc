@@ -71,6 +71,8 @@ int main(int argc, char* argv[])
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
   int i = 0;  
 
+  double pybjets, pnbjets, pydphis, pndphis;
+
   std::cout << "First Loop start(Factorization and Expectation): " << std::endl;
 
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
@@ -100,32 +102,14 @@ int main(int argc, char* argv[])
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
 
+      bool passTagger = tr.getVar<bool>("passTagger"+spec);
+      bool passBJets = tr.getVar<bool>("passBJets"+spec);
+
+      std::vector<double> dPhiVec = tr.getVec<double>("dPhiVec"+spec);
       
       //checking plots for full QCD samples
       //filling HT variables for quick weight check
       (myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
-      /*
-      //filling MET MT2 2d plots to check correlation
-      (myBaseHistgram.h_met_mt2)->Fill(met,MT2,thisweight);
-      //mt2 1d plot for different met cut
-      (myBaseHistgram.h_mt2_cutmet0)->Fill(MT2,thisweight);
-      if( met > 50  ) (myBaseHistgram.h_mt2_cutmet50 )->Fill(MT2,thisweight);
-      if( met > 100 ) (myBaseHistgram.h_mt2_cutmet100)->Fill(MT2,thisweight);
-      if( met > 150 ) (myBaseHistgram.h_mt2_cutmet150)->Fill(MT2,thisweight);
-      if( met > 200 ) (myBaseHistgram.h_mt2_cutmet200)->Fill(MT2,thisweight);
-      if( met < 175 ) continue;
-      */
-
-      //filter variables in the tree
-      int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
-      int ecaltpfilter = tr.getVar<int>("EcalDeadCellTriggerPrimitiveFilter");
-      int hbhenoisefilter = tr.getVar<int>("HBHENoiseFilter");
-      int cschalofilter = tr.getVar<int>("CSCTightHaloFilter");
-      if ( ( jetidfilter == 0 )
-         ||( ecaltpfilter == 0 )
-         ||( hbhenoisefilter == 0 ) 
-         ||( cschalofilter == 0 )
-         ) continue;
 
       int metbin_number = Set_metbin_number(met);
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
@@ -133,37 +117,76 @@ int main(int argc, char* argv[])
 
       bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      bool passnJets = tr.getVar<bool>("passnJets"+spec);
+      
+      if( passnJets )
+      { 
+        if( passBJets && passTagger ) pybjets+=thisweight;
+        else pnbjets+=thisweight;
+        if( passdPhis )  pydphis+=thisweight;
+        else pndphis+=thisweight; 
+      }
       //if( passBaselineQCD ) { std::cout << passBaselineQCD << std::endl; }
       
       //normal baseline
       bool passBaseline = false;
-      passBaseline = passBaselineQCD && passdPhis;
+      passBaseline = passBaselineQCD; 
+                     //&& passdPhis; 
+                     //&& passTagger
+                     //&& passBJets;
     
       if (
           passBaseline
          )
       {
-        myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
-        myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=thisweight;
- 
-        (myBaseHistgram.h_exp_met)->Fill(met,thisweight);
-        (myBaseHistgram.h_exp_njets)->Fill(njets30,thisweight);
-        (myBaseHistgram.h_exp_mt2)->Fill(MT2,thisweight);
-        (myBaseHistgram.h_exp_ht)->Fill(ht,thisweight);
-        (myBaseHistgram.h_exp_mht)->Fill(mht,thisweight);
-        (myBaseHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight);
-        (myBaseHistgram.h_exp_nbjets)->Fill(nbottomjets,thisweight);
-
-        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
-        if( searchbin_id >= 0 )
+        if ( passTagger && passBJets )
         {
-          myQCDFactors.nQCD_exp_sb[searchbin_id] += thisweight;
-          myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
+          (myBaseHistgram.h_b_mt2_ybyt)->Fill(MT2,thisweight);
+          (myBaseHistgram.h_b_met_ybyt)->Fill(met,thisweight);
+          (myBaseHistgram.h_b_dphi0_ybyt)->Fill(dPhiVec.at(0),thisweight);
+          (myBaseHistgram.h_b_dphi1_ybyt)->Fill(dPhiVec.at(1),thisweight);
+          (myBaseHistgram.h_b_dphi2_ybyt)->Fill(dPhiVec.at(2),thisweight);
+        }
+
+        if ( (!passTagger) && (!passBJets) )
+        {
+          (myBaseHistgram.h_b_mt2_nbnt)->Fill(MT2,thisweight);
+          (myBaseHistgram.h_b_met_nbnt)->Fill(met,thisweight);
+          (myBaseHistgram.h_b_dphi0_nbnt)->Fill(dPhiVec.at(0),thisweight);
+          (myBaseHistgram.h_b_dphi1_nbnt)->Fill(dPhiVec.at(1),thisweight);
+          (myBaseHistgram.h_b_dphi2_nbnt)->Fill(dPhiVec.at(2),thisweight);
+        }
+
+        if ( passdPhis )
+        {
+          myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
+          myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=thisweight;
+ 
+          if ( passTagger && passBJets )
+          {
+            (myBaseHistgram.h_exp_met)->Fill(met,thisweight);
+            (myBaseHistgram.h_exp_njets)->Fill(njets30,thisweight);
+            (myBaseHistgram.h_exp_mt2)->Fill(MT2,thisweight);
+            (myBaseHistgram.h_exp_ht)->Fill(ht,thisweight);
+            (myBaseHistgram.h_exp_mht)->Fill(mht,thisweight);
+            (myBaseHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight);
+            (myBaseHistgram.h_exp_nbjets)->Fill(nbottomjets,thisweight);
+          
+            int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+            if( searchbin_id >= 0 )
+            {
+              myQCDFactors.nQCD_exp_sb[searchbin_id] += thisweight;
+              myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
+            }
+          }
         }
       }  
 
       bool passBaseline_dPhisInverted = false;
-      passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+      passBaseline_dPhisInverted = passBaselineQCD 
+                                   && (!passdPhis);
+                                   //&& passTagger
+                                   //&& passBJets;
 
       if (
           passBaseline_dPhisInverted
@@ -186,6 +209,7 @@ int main(int argc, char* argv[])
     i++;
   }//end of QCD Samples loop
 
+  std::cout << pybjets << ", " << pnbjets << ", "<< pydphis << ", "<< pndphis << std::endl;
   myQCDFactors.NumbertoTFactor();
   //myQCDFactors.TFactorFit();
 
@@ -205,16 +229,6 @@ int main(int argc, char* argv[])
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
-      //filter variables in the tree
-      int jetidfilter = tr.getVar<int>("prodJetIDEventFilter");
-      int ecaltpfilter = tr.getVar<int>("EcalDeadCellTriggerPrimitiveFilter");
-      int hbhenoisefilter = tr.getVar<int>("HBHENoiseFilter");
-      int cschalofilter = tr.getVar<int>("CSCTightHaloFilter");
-      if ( ( jetidfilter == 0 )
-         ||( ecaltpfilter == 0 )
-         ||( hbhenoisefilter == 0 )
-         ||( cschalofilter == 0 )
-         ) continue;
 
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
@@ -233,8 +247,11 @@ int main(int argc, char* argv[])
 
       bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      bool passBJets = tr.getVar<bool>("passBJets"+spec);
+      bool passTagger = tr.getVar<bool>("passTagger"+spec);
       bool passBaseline_dPhisInverted = false;
-      passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+
+      passBaseline_dPhisInverted = passBaselineQCD && passBJets && passTagger && (!passdPhis);
 
       if (passBaseline_dPhisInverted)
       {
@@ -262,6 +279,7 @@ int main(int argc, char* argv[])
   myQCDFactors.printQCDFactorInfo();
   myQCDFactors.printQCDClosure(myBaseHistgram);
   myQCDFactors.TFactorsPlotsGen();
+  myQCDFactors.CountingPlotsGen();
 
   //write into histgram
   (myBaseHistgram.oFile)->Write();
@@ -313,28 +331,6 @@ void QCDFactors::NumbertoTFactor()
     nQCD_exp_sb_err[i_cal] = std::sqrt( nQCD_exp_sb_err[i_cal] );
   }
 }
-/*
-void QCDFactors::TFactorFit()
-{
-  TCanvas *c = new TCanvas("c","A Simple Graph with error bars",200,10,700,500);
-  //c->SetFillColor(42);
-  //c->SetGrid();
-  //c->GetFrame()->SetFillColor(21);
-  //c->GetFrame()->SetBorderSize(12);
-
-  TGraphErrors *gr = new TGraphErrors( MET_BINS , MET_mean , QCDTFactor , MET_mean_err , QCDTFactor_err );
-  gr->SetTitle("MC Translation Factor vs. MET");
-  gr->GetXaxis()->SetTitle("MET [GeV]");
-  gr->GetYaxis()->SetTitle("T QCD");
-  gr->SetMarkerColor(2);
-  gr->SetMarkerStyle(21);
-  gr->Draw("ALP");
-
-  c->SaveAs( "TFactor.png" );
-  c->SaveAs( "TFactor.C" );
-  TFactorFitPlots->Write();
-}
-*/
 
 void QCDFactors::printQCDFactorInfo()
 {
@@ -347,14 +343,9 @@ void QCDFactors::printQCDFactorInfo()
     {
       for(k_cal = 0 ; k_cal < MT2_BINS ; k_cal++)
       {
-        std::cout << nQCDNormal_MC[i_cal][j_cal][k_cal] << " , ";
-        if( k_cal == MT2_BINS-1 )
-        {
-          std::cout << "  ;";
-        }
+        std::cout << "QCD Files:" << i_cal << ", METBin:" << j_cal << ",MT2Bin:" << k_cal << "; :" << nQCDNormal_MC[i_cal][j_cal][k_cal] << std::endl;
       }
     }
-    std::cout << std::endl;
   }
 
   std::cout << "Counting Normal: " << std::endl;
@@ -362,11 +353,7 @@ void QCDFactors::printQCDFactorInfo()
   {
     for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
-      std::cout << nQCDNormal_all[i_cal][j_cal] << "(" << nQCDNormal_all_err[i_cal][j_cal] << ") , ";
-      if( j_cal == MT2_BINS-1 )
-      {
-        std::cout << std::endl;
-      }
+      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << nQCDNormal_all[i_cal][j_cal] << "(" << nQCDNormal_all_err[i_cal][j_cal] << ")"<< std::endl;
     }
   }
 
@@ -377,14 +364,9 @@ void QCDFactors::printQCDFactorInfo()
     {
       for(k_cal = 0 ; k_cal < MT2_BINS ; k_cal++)
       {
-        std::cout << nQCDInverted_MC[i_cal][j_cal][k_cal] << " , ";
-        if( k_cal == MT2_BINS-1 )
-        {
-          std::cout << "  ;";
-        }
+        std::cout << "QCD Files:" << i_cal << ", METBin:" << j_cal << ",MT2Bin:" << k_cal << "; :" << nQCDInverted_MC[i_cal][j_cal][k_cal] << std::endl;
       }
     }
-    std::cout << std::endl;
   }
 
   std::cout << "Counting Inverted: " << std::endl;
@@ -392,11 +374,7 @@ void QCDFactors::printQCDFactorInfo()
   {
     for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
-      std::cout << nQCDInverted_all[i_cal][j_cal] << "(" << nQCDInverted_all_err[i_cal][j_cal] << ") , ";;
-      if( j_cal == MT2_BINS-1 )
-      {
-        std::cout << std::endl;
-      }
+      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << nQCDInverted_all[i_cal][j_cal] << "(" << nQCDInverted_all_err[i_cal][j_cal] << ")"<< std::endl;
     }
   }
 
@@ -405,11 +383,7 @@ void QCDFactors::printQCDFactorInfo()
   {
     for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
-      std::cout << QCDTFactor[i_cal][j_cal] <<"(" << QCDTFactor_err[i_cal][j_cal] << ")" << " , ";
-      if( j_cal == MT2_BINS-1 )
-      {
-        std::cout << std::endl;
-      }
+      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << QCDTFactor[i_cal][j_cal] << "(" << QCDTFactor_err[i_cal][j_cal] << ")"<< std::endl;
     }
   }
 
@@ -451,11 +425,11 @@ void QCDFactors::TFactorsPlotsGen()
   c->SetFillColor(0);
   c->cd();
 
-  double xbins[MET_BINS+1] = {175.0,200.0,400.0,1000.0};
+  double metbins[MET_BINS+1] = {175.0,200.0,350.0,650.0};
   //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};
-  double ybins[MT2_BINS+1] = {200.0,250.0,350.0,1000.0};
+  double mt2bins[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
 
-  TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,xbins,MT2_BINS,ybins);
+  TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,metbins,MT2_BINS,mt2bins);
 
   int i_cal;
   int j_cal;
@@ -487,5 +461,91 @@ void QCDFactors::TFactorsPlotsGen()
   c->SaveAs( "_tfactors2d.pdf" );
   c->SaveAs( "_tfactors2d.C" );
   
+  return ;
+}
+
+void QCDFactors::CountingPlotsGen()
+{
+  const std::string titre="CMS Simulation 2015, 3fb-1, #sqrt{s} = 13 TeV";
+  double metbins[MET_BINS+1] = {175.0,200.0,350.0,650.0};
+  //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};  
+  double mt2bins[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
+
+  TH2D *countNormal_MC  = new TH2D("countNormal_MC","countNormal_MC",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *countNormal  = new TH2D("countNormal","countNormal",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *countInverted_MC  = new TH2D("countInverted_MC","countInverted_MC",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *countInverted  = new TH2D("countInverted","countInverted",MET_BINS,metbins,MT2_BINS,mt2bins);
+      
+  double nQCDNormal_MC_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_MC_all[MET_BINS][MT2_BINS] = {{0}};
+
+  int i_cal;
+  int j_cal;
+
+  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      for(int tmp = 0 ; tmp < QCD_BINS ; tmp++)
+      {
+        nQCDNormal_MC_all[i_cal][j_cal] +=nQCDNormal_MC[tmp][i_cal][j_cal];
+        nQCDInverted_MC_all[i_cal][j_cal] +=nQCDInverted_MC[tmp][i_cal][j_cal];
+      }
+
+      countNormal_MC->SetBinContent( i_cal+1 , j_cal+1, nQCDNormal_MC_all[i_cal][j_cal] );
+      countNormal->SetBinContent( i_cal+1 , j_cal+1, nQCDNormal_all[i_cal][j_cal] );
+      countNormal->SetBinError( i_cal+1 , j_cal+1, nQCDNormal_all_err[i_cal][j_cal] );
+
+      countInverted_MC->SetBinContent( i_cal+1 , j_cal+1, nQCDInverted_MC_all[i_cal][j_cal] );
+      countInverted->SetBinContent( i_cal+1 , j_cal+1, nQCDInverted_all[i_cal][j_cal] );
+      countInverted->SetBinError( i_cal+1 , j_cal+1, nQCDInverted_all_err[i_cal][j_cal] );
+    }
+  }
+
+  countNormal_MC->SetTitle("QCD Signal MC");
+  countNormal_MC->SetXTitle("MET [GeV]");
+  countNormal_MC->SetYTitle("MT2 [GeV]");
+  countNormal_MC->SetStats(0);
+  countNormal->SetTitle("QCD Signal Normalized");
+  countNormal->SetXTitle("MET [GeV]");
+  countNormal->SetYTitle("MT2 [GeV]");
+  countNormal->SetStats(0);
+  countInverted_MC->SetTitle("QCD Inverted DeltaPhi MC");
+  countInverted_MC->SetXTitle("MET [GeV]");
+  countInverted_MC->SetYTitle("MT2 [GeV]");
+  countInverted_MC->SetStats(0);
+  countInverted->SetTitle("QCD Inverted DeltaPhi Normalized");
+  countInverted->SetXTitle("MET [GeV]");
+  countInverted->SetYTitle("MT2 [GeV]");
+  countInverted->SetStats(0);
+
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+
+  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
+  c->Divide(2,2);
+  c->SetFillColor(0);
+  gStyle->SetPaintTextFormat("1.2f");
+  
+  c->cd(1);
+  countNormal_MC->Draw("colztexte");
+  title->Draw("same");
+
+  c->cd(2);
+  countNormal->Draw("colztexte");
+  title->Draw("same");
+
+  c->cd(3);
+  countInverted_MC->Draw("colztexte");
+  title->Draw("same");
+
+  c->cd(4);
+  countInverted->Draw("colztexte");
+  title->Draw("same");
+
+  c->SaveAs( "_Allcount2d.png" );
+  c->SaveAs( "_Allcount2d.pdf" );
+  c->SaveAs( "_Allcount2d.C" );
+
   return ;
 }
