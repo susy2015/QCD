@@ -51,7 +51,7 @@ And it will be involved into make command automatically and we do not have error
 
 cd QCD/Tool/QCDStopFlattrees
 
-g++ stopNTuple_skim.cc `root-config --libs --cflags` -o NTupleSkim
+g++ stopNTuple_skim.cc `root-config --libs --cflags` -o PrivateSkim
 
 PS: For QCD, MET > 175 while for all ttbar samples, MET > 200
 

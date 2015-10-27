@@ -8,8 +8,8 @@ def find_nth(haystack, needle, n):
     n -= 1
   return start
 
-#d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/"
-d = "/eos/uscms/store/group/lpcsusyhad/hua/"
+d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/"
+#d = "/eos/uscms/store/group/lpcsusyhad/hua/"
 #os.chdir(d)
 
 for dirname, dirnames, filenames in os.walk(d):
@@ -28,7 +28,6 @@ for dirname, dirnames, filenames in os.walk(d):
   #begin = find_nth( dirname, "TTJets", 2)
   #end = dirname.find('Asympt25ns', begin)
   #tag = dirname[begin:end] + 'skimmed_'
-  tag = "HT500skimmed_"
   #if 'QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8' in dirnames:
     #dirnames.remove('QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8')
   #if 'QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8' in dirnames:
@@ -39,8 +38,7 @@ for dirname, dirnames, filenames in os.walk(d):
   # print path to all filenames.
   for filename in filenames:
     input_tmp = os.path.join(dirname, filename)
-    output_tmp = tag + filename
-    cmd = './NTupleSkim ' + input_tmp + ' ' + output_tmp
+    cmd = './PrivateSkim ' + input_tmp
     print(cmd) 
     os.system(cmd)
 
