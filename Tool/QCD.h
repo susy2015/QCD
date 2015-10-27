@@ -117,12 +117,12 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_b_mt2_ybyt = new TH1D("h_b_mt2_ybyt","",100,0,1000);
   h_b_met_nbnt = new TH1D("h_b_met_nbnt","",85,150,1000);
   h_b_met_ybyt = new TH1D("h_b_met_ybyt","",85,150,1000);
-  h_b_dphi0_nbnt = new TH1D("h_b_dphi0_nbnt","",1000,-5,5);
-  h_b_dphi0_ybyt = new TH1D("h_b_dphi0_ybyt","",1000,-5,5);
-  h_b_dphi1_nbnt = new TH1D("h_b_dphi1_nbnt","",1000,-5,5);
-  h_b_dphi1_ybyt = new TH1D("h_b_dphi1_ybyt","",1000,-5,5);
-  h_b_dphi2_nbnt = new TH1D("h_b_dphi2_nbnt","",1000,-5,5);
-  h_b_dphi2_ybyt = new TH1D("h_b_dphi2_ybyt","",1000,-5,5);
+  h_b_dphi0_nbnt = new TH1D("h_b_dphi0_nbnt","",40,-5,5);
+  h_b_dphi0_ybyt = new TH1D("h_b_dphi0_ybyt","",40,-5,5);
+  h_b_dphi1_nbnt = new TH1D("h_b_dphi1_nbnt","",40,-5,5);
+  h_b_dphi1_ybyt = new TH1D("h_b_dphi1_ybyt","",40,-5,5);
+  h_b_dphi2_nbnt = new TH1D("h_b_dphi2_nbnt","",40,-5,5);
+  h_b_dphi2_ybyt = new TH1D("h_b_dphi2_ybyt","",40,-5,5);
 
   //closure plots on different variables
   h_pred_met = new TH1D("h_pred_met","",50,0,1000);

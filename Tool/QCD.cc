@@ -102,9 +102,6 @@ int main(int argc, char* argv[])
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
 
-      bool passTagger = tr.getVar<bool>("passTagger"+spec);
-      bool passBJets = tr.getVar<bool>("passBJets"+spec);
-
       std::vector<double> dPhiVec = tr.getVec<double>("dPhiVec"+spec);
       
       //checking plots for full QCD samples
@@ -115,31 +112,31 @@ int main(int argc, char* argv[])
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
       int mt2bin_number = Set_mt2bin_number(MT2);
 
-      bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
-      bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
       bool passnJets = tr.getVar<bool>("passnJets"+spec);
-      
-      if( passnJets )
-      { 
-        if( passBJets && passTagger ) pybjets+=thisweight;
-        else pnbjets+=thisweight;
-        if( passdPhis )  pydphis+=thisweight;
-        else pndphis+=thisweight; 
-      }
-      //if( passBaselineQCD ) { std::cout << passBaselineQCD << std::endl; }
+      //bool passMET = tr.getVar<bool>("passMET"+spec);
+      bool passHT = tr.getVar<bool>("passHT"+spec);
+      bool passMT2 = tr.getVar<bool>("passMT2"+spec);
+      bool passTagger = tr.getVar<bool>("passTagger"+spec);
+      bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
+
+      bool passBJets = tr.getVar<bool>("passBJets"+spec);
+      bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
       
       //normal baseline
-      bool passBaseline = false;
-      passBaseline = passBaselineQCD; 
-                     //&& passdPhis; 
-                     //&& passTagger
-                     //&& passBJets;
+      bool passBaselineQCD = false;
+      passBaselineQCD = passLeptVeto
+                     && passnJets
+                     && passHT
+                     && passMT2
+                     && passTagger
+                     && passNoiseEventFilter;
     
       if (
-          passBaseline
+          passBaselineQCD
          )
       {
-        if ( passTagger && passBJets )
+        if ( passBJets )
         {
           (myBaseHistgram.h_b_mt2_ybyt)->Fill(MT2,thisweight);
           (myBaseHistgram.h_b_met_ybyt)->Fill(met,thisweight);
@@ -148,7 +145,7 @@ int main(int argc, char* argv[])
           (myBaseHistgram.h_b_dphi2_ybyt)->Fill(dPhiVec.at(2),thisweight);
         }
 
-        if ( (!passTagger) && (!passBJets) )
+        if ( (!passBJets) )
         {
           (myBaseHistgram.h_b_mt2_nbnt)->Fill(MT2,thisweight);
           (myBaseHistgram.h_b_met_nbnt)->Fill(met,thisweight);
@@ -162,7 +159,7 @@ int main(int argc, char* argv[])
           myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
           myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=thisweight;
  
-          if ( passTagger && passBJets )
+          if ( passBJets )
           {
             (myBaseHistgram.h_exp_met)->Fill(met,thisweight);
             (myBaseHistgram.h_exp_njets)->Fill(njets30,thisweight);
@@ -185,8 +182,6 @@ int main(int argc, char* argv[])
       bool passBaseline_dPhisInverted = false;
       passBaseline_dPhisInverted = passBaselineQCD 
                                    && (!passdPhis);
-                                   //&& passTagger
-                                   //&& passBJets;
 
       if (
           passBaseline_dPhisInverted
@@ -247,11 +242,9 @@ int main(int argc, char* argv[])
 
       bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
-      bool passBJets = tr.getVar<bool>("passBJets"+spec);
-      bool passTagger = tr.getVar<bool>("passTagger"+spec);
       bool passBaseline_dPhisInverted = false;
 
-      passBaseline_dPhisInverted = passBaselineQCD && passBJets && passTagger && (!passdPhis);
+      passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
 
       if (passBaseline_dPhisInverted)
       {

@@ -309,8 +309,8 @@ void ClosurePlots::BTStudyTemplate(
   leg->SetBorderSize(0);
   leg->SetTextFont(42);
   leg->SetFillColor(0);
-  leg->AddEntry(h_nbnt,"No Bottom and Tagger","l");
-  leg->AddEntry(h_ybyt,"Bottom and Tagger","l");
+  leg->AddEntry(h_nbnt,"No Bottom cut","l");
+  leg->AddEntry(h_ybyt,"Bottom cut","l");
   leg->Draw("same");
 
   c->SaveAs( hist_tag + TString("_nbnt_ybyt.png") );
