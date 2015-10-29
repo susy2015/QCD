@@ -53,7 +53,7 @@ cd QCD/Tool/QCDStopFlattrees
 
 g++ stopNTuple_skim.cc `root-config --libs --cflags` -o PrivateSkim
 
-PS: For QCD, MET > 175 while for all ttbar samples, MET > 200
+PS: For QCD, MET > 175, while for all other samples, MET > 200 && HT > 500
 
-python NTuple_Skim.py
+python NTuple_Skim.py Sample_Tag(like "QCD_HT", etc)
 

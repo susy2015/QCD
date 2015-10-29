@@ -280,6 +280,20 @@ void ClosurePlots::BTStudyTemplate(
   TCanvas *c = new TCanvas("c","A Simple Graph Example",200,10,700,500); 
   gStyle->SetOptStat(0);
 
+  TPad *pad = (TPad*) c->GetPad(0); 
+  pad->Clear();
+  pad->Divide(2, 1);
+
+  double divRatio = 0.20;
+  double labelRatio = (1-divRatio)/divRatio;
+  double small = 0;
+
+  pad->cd(1); 
+  TPad *pad1 = (TPad*) pad->GetPad(1);
+  pad1->SetPad("", "", 0, divRatio, 1.0, 1.0, kWhite);
+  pad1->SetBottomMargin(0.005);
+  pad1->SetBorderMode(0);
+
   h_nbnt->GetXaxis()->SetRangeUser(min,max);
   h_nbnt->GetXaxis()->SetTitle(XTitle);
   h_nbnt->SetLineColor(1);
@@ -312,6 +326,46 @@ void ClosurePlots::BTStudyTemplate(
   leg->AddEntry(h_nbnt,"No Bottom cut","l");
   leg->AddEntry(h_ybyt,"Bottom cut","l");
   leg->Draw("same");
+
+  pad->cd(2); 
+  TPad *pad2 = (TPad*) pad->GetPad(2);
+  pad2->SetPad("ratio", "", 0, 0, 1.0, divRatio, kWhite);
+  pad2->SetBottomMargin(0.3);
+  pad2->SetTopMargin(small);
+  pad2->SetBorderMode(0);
+
+  TH1D *ratio = (TH1D*) h_nbnt->Clone();
+  TH1D *allmc = (TH1D*) h_ybyt->Clone();
+
+  ratio->Add(allmc, -1);
+  ratio->Divide(allmc);
+  ratio->GetYaxis()->SetTitle( "(NB - YB)/YB" );
+
+  TAxis* xHT = ratio->GetXaxis();
+
+  xHT->SetTickLength(xHT->GetTickLength()*labelRatio);
+  xHT->SetLabelSize(xHT->GetLabelSize()*labelRatio);
+  xHT->SetLabelOffset(xHT->GetLabelOffset()*labelRatio);
+  ratio->SetMinimum(-1.0);
+  ratio->SetMaximum(1.0);
+
+  TAxis* yHT = ratio->GetYaxis();
+  yHT->SetNdivisions(010);
+  yHT->SetLabelSize(yHT->GetLabelSize()*2.0);
+  yHT->SetTitleOffset(0.3);
+  yHT->SetTitleSize(0.08);
+
+  ratio->SetTitleSize(0.15);
+  ratio->SetStats(kFALSE);
+  ratio->SetMarkerStyle(kFullDotMedium);
+  //ratio->Sumw2();
+  ratio->DrawCopy();
+
+  TH1D *zero = (TH1D*)ratio->Clone(); 
+  zero->Reset();
+  for(int ib=0; ib<ratio->GetNbinsX(); ib++){ zero->SetBinContent(ib+1, 0); }
+  zero->SetLineColor(kRed); zero->SetLineWidth(1);
+  zero->DrawCopy("same");
 
   c->SaveAs( hist_tag + TString("_nbnt_ybyt.png") );
   c->SaveAs( hist_tag + TString("_nbnt_ybyt.pdf") );

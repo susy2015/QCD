@@ -11,36 +11,58 @@
 #include "TDirectory.h"
 #include "TTree.h"
 
+size_t find_Nth
+(
+  const std::string & str ,   // where to work
+  unsigned            N ,     // N'th ocurrence
+  const std::string & find    // what to 'find'
+) 
+{
+  if ( 0==N ) { return std::string::npos; }
+  size_t pos,from=0;
+  unsigned i=0;
+  while ( i<N ) 
+  {
+    pos=str.find(find,from);
+    if ( std::string::npos == pos ) { break; }
+    from = pos + 1; // from = pos + find.size();
+    ++i;
+  }
+  return pos;
+}
+
 int main(int argc, char* argv[])
 {
   if (argc < 1)
   {
     std::cerr <<"Please give 1 argument " << "inputFileName " << std::endl;
     std::cerr <<"Valid configurations are: " << std::endl;
-    std::cerr <<"./ stopFlatNtuples_1.root" << std::endl;
+    std::cerr <<"./PrivateSkim /eos/uscms/store/user/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/QCD_HT500to700_Spring15DR74_Asympt25ns_Ntp_v2/150928_140039/0000/stopFlatNtuples_1.root" << std::endl;
     return -1;
   }
   std::string input_str(argv[1]); 
   std::string trim;
+  
   std::string output_str;
-
-  if (input_str.find("TTJets_") != std::string::npos) 
-  {
-    trim = "met>200 && ht>500";
-    output_str = "Skimmed_MET200_HT500_" + input_str;
-    std::cout << "Output File Name: " << output_str << std::endl;
-  }
-  else if(input_str.find("QCD_") != std::string::npos)
+  //here is a little bit tricky when dealing with the slash... need to improve
+  std::string tag = input_str.substr(find_Nth(input_str,7,"/") + 1,find_Nth(input_str,8,"/")-find_Nth(input_str,7,"/")-1);
+  std::size_t idpos = input_str.find("stopFlatNtuples");
+  std::string fileid = input_str.substr (idpos);
+  
+  //cut every tree with MET 200 and HT 500 except QCD tree
+  if(input_str.find("QCD_") != std::string::npos)
   {
     trim = "met>175";
-    output_str = "Skimmed_MET175_" + input_str;
+    output_str = "Skimmed_MET175_" + tag + fileid;
     std::cout << "Output File Name: " << output_str << std::endl;
   }
   else
-  {
-    std::cout << "No Trim Parameters available for this Tree!" << std::endl;
-    return 0;
+  { 
+    trim = "met>200 && ht>500";
+    output_str = "Skimmed_MET200_HT500_" + tag + fileid;
+    std::cout << "Output File Name: " << output_str << std::endl;
   }
+
 
   TFile* input = TFile::Open(input_str.c_str());
   TTree* originalTree = (TTree*)input->Get("/stopTreeMaker/AUX");

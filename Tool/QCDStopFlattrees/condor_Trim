@@ -1,0 +1,43 @@
+universe = vanilla
+request_disk   = 500 GB
+request_memory = 1.5 GB
+executable = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/goTrim.sh
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/PrivateSkim, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/NTuple_Skim.py, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/goTrim.sh
+
+Output = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stdout
+Error = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stderr
+Log = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).log
+notify_user = hua.wei@cern.ch
+
+#arguments = $ENV(CMSSW_BASE) TTJets_
+#Queue 
+
+#arguments = $ENV(CMSSW_BASE) TTWJetsToLNu_
+#Queue 
+
+#arguments = $ENV(CMSSW_BASE) TTWJetsToQQ_
+#Queue 
+
+#arguments = $ENV(CMSSW_BASE) TTZToLLNuNu_
+#Queue 
+
+arguments = $ENV(CMSSW_BASE) TTZToQQ_
+Queue
+
+#arguments = $ENV(CMSSW_BASE) ST_tW
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_Pt
+#Queue
