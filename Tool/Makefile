@@ -1,6 +1,6 @@
 IDIR       = .
 ODIR       = obj
-SDIR       = ../../SusyAnaTools/Tools/
+SDIR       = ../../SusyAnaTools/Tools
 
 #CXX       = ~/.vim/bundle/ClangComplete/bin/cc_args.py g++
 CXX        = g++
@@ -16,14 +16,17 @@ CXXFLAGS  += $(shell root-config --cflags)
 
 CXXDEPFLAGS = -MMD -MP
 
-LD         = g++
-LDFLAGS    =
+LD       = g++
+LDFLAGS  =
 
-LIBS       = $(shell root-config --glibs)
+LIBS     = $(shell root-config --glibs)
 
 PROGRAMS = tupleTest QCD ClosurePlots
 
-all: $(PROGRAMS)
+all: mkobj $(PROGRAMS)
+
+mkobj:
+	@mkdir -p obj
 
 $(ODIR)/%.o : $(SDIR)/%.C
 	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<

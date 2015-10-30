@@ -71,8 +71,6 @@ int main(int argc, char* argv[])
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
   int i = 0;  
 
-  double pybjets, pnbjets, pydphis, pndphis;
-
   std::cout << "First Loop start(Factorization and Expectation): " << std::endl;
 
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
@@ -204,7 +202,6 @@ int main(int argc, char* argv[])
     i++;
   }//end of QCD Samples loop
 
-  std::cout << pybjets << ", " << pnbjets << ", "<< pydphis << ", "<< pndphis << std::endl;
   myQCDFactors.NumbertoTFactor();
   //myQCDFactors.TFactorFit();
 

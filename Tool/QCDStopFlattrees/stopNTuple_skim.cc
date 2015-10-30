@@ -42,7 +42,8 @@ int main(int argc, char* argv[])
   }
   std::string input_str(argv[1]); 
   std::string trim;
-  
+  std::string outputpath = "/eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Oct29/";
+ 
   std::string output_str;
   //here is a little bit tricky when dealing with the slash... need to improve
   std::string tag = input_str.substr(find_Nth(input_str,7,"/") + 1,find_Nth(input_str,8,"/")-find_Nth(input_str,7,"/")-1);
@@ -67,7 +68,7 @@ int main(int argc, char* argv[])
   TFile* input = TFile::Open(input_str.c_str());
   TTree* originalTree = (TTree*)input->Get("/stopTreeMaker/AUX");
 
-  TFile* output = new TFile(output_str.c_str(), "RECREATE");
+  TFile* output = new TFile((outputpath+output_str).c_str(), "RECREATE");
   TDirectory *mydict = output->mkdir("stopTreeMaker");
   mydict->cd();
   TTree* selectedTree = originalTree->CopyTree(trim.c_str());

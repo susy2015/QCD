@@ -22,6 +22,7 @@ for dirname, dirnames, filenames in os.walk(d):
   #if "ZJetsToNuNu_" not in dirname: 
   if sample_tag not in dirname:
     continue
+
   if 'failed' in dirnames:
     # don't go into any failed root sample directories.
     dirnames.remove('failed')
