@@ -20,8 +20,9 @@ LD       = g++
 LDFLAGS  =
 
 LIBS     = $(shell root-config --glibs)
+MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2
 
-PROGRAMS = tupleTest QCD ClosurePlots
+PROGRAMS = tupleTest QCD ClosurePlots BasicQCDCheck
 
 all: mkobj $(PROGRAMS)
 
@@ -43,14 +44,14 @@ $(ODIR)/%.o : $(IDIR)/%.cc
 tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/tupleReadTest.o
 	$(LD) $^ $(LIBS)  -o $@
 
-#makePlots: $(ODIR)/NTupleReader.o $(ODIR)/Plotter.o $(ODIR)/MakePlots.o
-#	$(LD) $^ $(LIBS) -L .TupleDict_h.so -o $@
-
 QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o
-	$(LD) $^ $(LIBS) -L${CMSSW_BASE}/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2 -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 ClosurePlots: $(ODIR)/ClosurePlots.o
 	$(LD) $^ $(LIBS)  -o $@
+
+BasicQCDCheck:$(ODIR)/BasicQCDCheck.o $(ODIR)/NTupleReader.o $(ODIR)/samples.o
+	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 clean:
 	rm -f $(ODIR)/*.o $(ODIR)/*.d $(PROGRAMS) core 
