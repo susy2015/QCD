@@ -19,7 +19,7 @@
 #include "SusyAnaTools/Tools/tdrstyle.h"
 #include "SusyAnaTools/Tools/searchBins.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
-#include "SusyAnaTools/Tools/basicHists.h"
+#include "BasicQCDHists.h"
 
 BaselineVessel * SRblv = 0;
 const std::string spec = "QCD";
@@ -185,15 +185,6 @@ void anaFunc(NTupleReader *tr, std::vector<TTree *> treeVec, const std::vector<s
       if( !passMuonVeto ) continue; h1_cutFlowVec.back()->Fill("passMuonVeto", evtWeight * scaleMC);
       if( !passEleVeto ) continue; h1_cutFlowVec.back()->Fill("passEleVeto", evtWeight * scaleMC);
       if( !passIsoTrkVeto ) continue; h1_cutFlowVec.back()->Fill("passIsoTrkVeto", evtWeight * scaleMC);
-      /*
-      int cntMuons = 0;
-      for(unsigned int im=0; im<muonsLVec.size(); im++)
-      {
-        if( !AnaFunctions::passMuon(muonsLVec.at(im), muonsMiniIso.at(im), muonsMtw.at(im), muonsFlagMedium.at(im), AnaConsts::muonsMiniIsoArr) ) continue;
-        cntMuons ++;
-      }
-      if( cntMuons != 1 ) continue;
-      */
 
       // Fill histograms with looser requirement -> trigger req. for data...
       if( passHT && passMET && passBJets )
