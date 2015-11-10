@@ -26,68 +26,6 @@ void mypassBaselineFunc(NTupleReader& tr)
   (*myBaselineVessel)(tr);
 }
 
-class BaseHistgram;
-
-class QCDFactors
-{
- public:
-  double nQCDNormal_MC[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, nQCDInverted_MC[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
-  double nQCDNormal[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, nQCDInverted[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
-  double nQCDNormal_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all[MET_BINS][MT2_BINS] = {{0}};
-  double nQCDNormal_all_err[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all_err[MET_BINS][MT2_BINS] = {{0}};
-  double QCDTFactor[MET_BINS][MT2_BINS] = {{0}}, QCDTFactor_err[MET_BINS][MT2_BINS] = {{0}};
-  double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
-  double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
-  double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
-
-  double QCDWeights[QCD_BINS] = {0};
-  double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
-  double nQCD_exp_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}}, nQCD_pred_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}};
-  double nQCD_exp_sb_err[NSEARCH_BINS] = {0}, nQCD_pred_sb_err[NSEARCH_BINS] = {0};
-
-
-  //TFile *TFactorFitPlots = new TFile("TFactorFitPlots.root", "recreate");
-
-  void NumbertoTFactor();
-  void TFactorFit();
-  void printQCDFactorInfo(); 
-  void printQCDClosure( BaseHistgram& myBaseHistgram );
-  void TFactorsPlotsGen();
-  void CountingPlotsGen();
-
- private:
-  double get_stat_Error(
-                        double a,
-                        double an
-                       );
- 
-};
-
-double QCDFactors::get_stat_Error(
-                                  double a,
-                                  double an
-                                 )
-{
-  double n;
-  n = an - a;
-
-  double err;
-  err = 1000;
-
-  double alpha;
-  alpha = 1-0.6827;
-
-  if( a>=0 && n>=0 )
-  {
-    err = std::sqrt(n/(a+n)/(a+n)*n/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,a+1,1)+a/(a+n)/(a+n)*a/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,n+1,1));
-    return err;
-  }
-  else
-  {
-    return -1;
-  }
-}
-
 class BaseHistgram
 {
  public:
@@ -152,6 +90,328 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
 }
+
+class QCDFactors
+{
+ public:
+  double nQCDNormal_MC[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, nQCDInverted_MC[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
+  double nQCDNormal[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, nQCDInverted[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
+  double nQCDNormal_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all[MET_BINS][MT2_BINS] = {{0}};
+  double nQCDNormal_all_err[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all_err[MET_BINS][MT2_BINS] = {{0}};
+  double QCDTFactor[MET_BINS][MT2_BINS] = {{0}}, QCDTFactor_err[MET_BINS][MT2_BINS] = {{0}};
+  double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
+  double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
+  double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
+
+  double QCDWeights[QCD_BINS] = {0};
+  double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
+  double nQCD_exp_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}}, nQCD_pred_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}};
+  double nQCD_exp_sb_err[NSEARCH_BINS] = {0}, nQCD_pred_sb_err[NSEARCH_BINS] = {0};
+
+  void NumbertoTFactor();
+  void TFactorFit();
+  void printQCDFactorInfo(); 
+  void printQCDClosureExp( BaseHistgram& myBaseHistgram );
+  void printQCDClosurePred( BaseHistgram& myBaseHistgram );
+  void TFactorsPlotsGen();
+  void CountingPlotsGen();
+
+ private:
+  double get_stat_Error(
+                        double a,
+                        double an
+                       );
+ 
+};
+
+double QCDFactors::get_stat_Error(
+                                  double a,
+                                  double an
+                                 )
+{
+  double n;
+  n = an - a;
+
+  double err;
+  err = 1000;
+
+  double alpha;
+  alpha = 1-0.6827;
+
+  if( a>=0 && n>=0 )
+  {
+    err = std::sqrt(n/(a+n)/(a+n)*n/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,a+1,1)+a/(a+n)/(a+n)*a/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,n+1,1));
+    return err;
+  }
+  else
+  {
+    return -1;
+  }
+}
+
+void QCDFactors::NumbertoTFactor()
+{
+  //value calculation
+  for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    for(int j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      for(int k_cal = 0 ; k_cal < QCD_BINS ; k_cal++)
+      {
+         nQCDNormal_all[i_cal][j_cal] += nQCDNormal[k_cal][i_cal][j_cal];
+         nQCDInverted_all[i_cal][j_cal] += nQCDInverted[k_cal][i_cal][j_cal];
+         MET_sum_all[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal];
+         MET_sum_weight_all[i_cal][j_cal] += MET_sum_weight[k_cal][i_cal][j_cal];
+      }
+      QCDTFactor[i_cal][j_cal] = nQCDNormal_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal];
+      MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];
+    }
+  }
+
+  //TFactor uncertainty calculation
+  for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    for(int j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      for(int k_cal = 0 ; k_cal < QCD_BINS ; k_cal++)
+      {
+        nQCDNormal_all_err[i_cal][j_cal] += nQCDNormal_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal] ;
+        nQCDInverted_all_err[i_cal][j_cal] += nQCDInverted_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal];
+      }
+      nQCDNormal_all_err[i_cal][j_cal] = std::sqrt( nQCDNormal_all_err[i_cal][j_cal] );
+      nQCDInverted_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_all_err[i_cal][j_cal] );
+      QCDTFactor_err[i_cal][j_cal] = QCDTFactor[i_cal][j_cal] * std::sqrt( nQCDNormal_all_err[i_cal][j_cal]*nQCDNormal_all_err[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal] + nQCDInverted_all_err[i_cal][j_cal]*nQCDInverted_all_err[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal] );
+    }
+  }
+
+  //Expected QCD uncertainty calculation
+  for(int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++)
+  {
+    for(int j_cal = 0 ; j_cal < QCD_BINS ; j_cal++)
+    {
+      nQCD_exp_sb_err[i_cal] += nQCD_exp_sb_MC[j_cal][i_cal] * QCDWeights[j_cal] * QCDWeights[j_cal];
+    }
+    nQCD_exp_sb_err[i_cal] = std::sqrt( nQCD_exp_sb_err[i_cal] );
+  }
+}
+
+void QCDFactors::printQCDFactorInfo()
+{
+  int i_cal,j_cal,k_cal;
+
+  std::cout << "Counting Normal MC: " << std::endl;
+  for( i_cal=0 ; i_cal < QCD_BINS ; i_cal++ )
+  {
+    for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
+    {
+      for(k_cal = 0 ; k_cal < MT2_BINS ; k_cal++)
+      {
+        std::cout << "QCD Files:" << i_cal << ", METBin:" << j_cal << ",MT2Bin:" << k_cal << "; :" << nQCDNormal_MC[i_cal][j_cal][k_cal] << std::endl;
+      }
+    }
+  }
+
+  std::cout << "Counting Normal: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << nQCDNormal_all[i_cal][j_cal] << "(" << nQCDNormal_all_err[i_cal][j_cal] << ")"<< std::endl;
+    }
+  }
+
+  std::cout << "Counting Inverted MC: " << std::endl;
+  for( i_cal=0 ; i_cal < QCD_BINS ; i_cal++ )
+  {
+    for(j_cal = 0 ; j_cal < MET_BINS ; j_cal++)
+    {
+      for(k_cal = 0 ; k_cal < MT2_BINS ; k_cal++)
+      {
+        std::cout << "QCD Files:" << i_cal << ", METBin:" << j_cal << ",MT2Bin:" << k_cal << "; :" << nQCDInverted_MC[i_cal][j_cal][k_cal] << std::endl;
+      }
+    }
+  }
+
+  std::cout << "Counting Inverted: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << nQCDInverted_all[i_cal][j_cal] << "(" << nQCDInverted_all_err[i_cal][j_cal] << ")"<< std::endl;
+    }
+  }
+
+  std::cout << "Translation Factors: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << QCDTFactor[i_cal][j_cal] << "(" << QCDTFactor_err[i_cal][j_cal] << ")"<< std::endl;
+    }
+  }
+
+  /*
+  std::cout << "#QCD in Search Bins: " << std::endl;
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << "Search Bin Id:" << i_cal << "; Exp: " << nQCD_exp_sb[i_cal] << "(" << nQCD_exp_sb_err[i_cal] << "); Pred: " << nQCD_pred_sb[i_cal] << "(" << nQCD_pred_sb_err[i_cal] << "); (exp - pred)/pred: " << (nQCD_exp_sb[i_cal] - nQCD_pred_sb[i_cal])/nQCD_pred_sb[i_cal] << std::endl;
+  }
+  */
+}
+
+void QCDFactors::printQCDClosureExp(BaseHistgram& myBaseHistgram)
+{
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    myBaseHistgram.h_exp_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
+    myBaseHistgram.h_exp_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
+  }
+  return ;
+}
+
+void QCDFactors::printQCDClosurePred(BaseHistgram& myBaseHistgram)
+{
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    myBaseHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
+    myBaseHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
+  }
+  return ;
+}
+
+void QCDFactors::TFactorsPlotsGen()
+{
+  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
+
+  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
+  c->SetFillColor(0);
+  c->cd();
+
+  double metbins[MET_BINS+1] = {175.0,200.0,350.0,650.0};
+  //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};
+  double mt2bins[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
+
+  TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,metbins,MT2_BINS,mt2bins);
+
+  int i_cal;
+  int j_cal;
+
+  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      tfactors2d->SetBinContent( i_cal+1 , j_cal+1, QCDTFactor[i_cal][j_cal] );
+      tfactors2d->SetBinError( i_cal+1 , j_cal+1, QCDTFactor_err[i_cal][j_cal] );
+    }
+  }
+
+  tfactors2d->SetTitle("");
+  tfactors2d->SetXTitle("MET [GeV]");
+  tfactors2d->SetYTitle("MT2 [GeV]");
+  //tfactors2d->SetYTitle("NbJets");
+  tfactors2d->SetStats(0);
+
+  gStyle->SetPaintTextFormat("1.2f");
+  tfactors2d->Draw("colztexte");
+
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+  title->Draw("same");
+
+  c->SaveAs( "_tfactors2d.png" );
+  c->SaveAs( "_tfactors2d.pdf" );
+  c->SaveAs( "_tfactors2d.C" );
+  
+  return ;
+}
+
+void QCDFactors::CountingPlotsGen()
+{
+  const std::string titre="CMS Simulation 2015, 3fb-1, #sqrt{s} = 13 TeV";
+  double metbins[MET_BINS+1] = {175.0,200.0,350.0,650.0};
+  //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};  
+  double mt2bins[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
+
+  TH2D *countNormal_MC  = new TH2D("countNormal_MC","countNormal_MC",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *countNormal  = new TH2D("countNormal","countNormal",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *countInverted_MC  = new TH2D("countInverted_MC","countInverted_MC",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *countInverted  = new TH2D("countInverted","countInverted",MET_BINS,metbins,MT2_BINS,mt2bins);
+      
+  double nQCDNormal_MC_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_MC_all[MET_BINS][MT2_BINS] = {{0}};
+
+  int i_cal;
+  int j_cal;
+
+  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      for(int tmp = 0 ; tmp < QCD_BINS ; tmp++)
+      {
+        nQCDNormal_MC_all[i_cal][j_cal] +=nQCDNormal_MC[tmp][i_cal][j_cal];
+        nQCDInverted_MC_all[i_cal][j_cal] +=nQCDInverted_MC[tmp][i_cal][j_cal];
+      }
+
+      countNormal_MC->SetBinContent( i_cal+1 , j_cal+1, nQCDNormal_MC_all[i_cal][j_cal] );
+      countNormal->SetBinContent( i_cal+1 , j_cal+1, nQCDNormal_all[i_cal][j_cal] );
+      countNormal->SetBinError( i_cal+1 , j_cal+1, nQCDNormal_all_err[i_cal][j_cal] );
+
+      countInverted_MC->SetBinContent( i_cal+1 , j_cal+1, nQCDInverted_MC_all[i_cal][j_cal] );
+      countInverted->SetBinContent( i_cal+1 , j_cal+1, nQCDInverted_all[i_cal][j_cal] );
+      countInverted->SetBinError( i_cal+1 , j_cal+1, nQCDInverted_all_err[i_cal][j_cal] );
+    }
+  }
+
+  countNormal_MC->SetTitle("QCD Signal MC");
+  countNormal_MC->SetXTitle("MET [GeV]");
+  countNormal_MC->SetYTitle("MT2 [GeV]");
+  countNormal_MC->SetStats(0);
+  countNormal->SetTitle("QCD Signal Normalized");
+  countNormal->SetXTitle("MET [GeV]");
+  countNormal->SetYTitle("MT2 [GeV]");
+  countNormal->SetStats(0);
+  countInverted_MC->SetTitle("QCD Inverted DeltaPhi MC");
+  countInverted_MC->SetXTitle("MET [GeV]");
+  countInverted_MC->SetYTitle("MT2 [GeV]");
+  countInverted_MC->SetStats(0);
+  countInverted->SetTitle("QCD Inverted DeltaPhi Normalized");
+  countInverted->SetXTitle("MET [GeV]");
+  countInverted->SetYTitle("MT2 [GeV]");
+  countInverted->SetStats(0);
+
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+
+  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
+  c->Divide(2,2);
+  c->SetFillColor(0);
+  gStyle->SetPaintTextFormat("1.2f");
+  
+  c->cd(1);
+  countNormal_MC->Draw("colztexte");
+  title->Draw("same");
+
+  c->cd(2);
+  countNormal->Draw("colztexte");
+  title->Draw("same");
+
+  c->cd(3);
+  countInverted_MC->Draw("colztexte");
+  title->Draw("same");
+
+  c->cd(4);
+  countInverted->Draw("colztexte");
+  title->Draw("same");
+
+  c->SaveAs( "_Allcount2d.png" );
+  c->SaveAs( "_Allcount2d.pdf" );
+  c->SaveAs( "_Allcount2d.C" );
+
+  return ;
+}
+
 //##########functions to calculate Delta_R and Delta Phi###############
 double DeltaPhi(double phi1, double phi2) 
 {
