@@ -122,6 +122,7 @@ class QCDFactors
   void NumbertoTFactor();
   void TFactorFit();
   void printQCDFactorInfo(); 
+  void printTFactorsHeader();
   void printQCDClosureExp( ClosureHistgram& myClosureHistgram );
   void printQCDClosurePred( ClosureHistgram& myClosureHistgram );
   void TFactorsPlotsGen();
@@ -268,6 +269,49 @@ void QCDFactors::printQCDFactorInfo()
     std::cout << "Search Bin Id:" << i_cal << "; Exp: " << nQCD_exp_sb[i_cal] << "(" << nQCD_exp_sb_err[i_cal] << "); Pred: " << nQCD_pred_sb[i_cal] << "(" << nQCD_pred_sb_err[i_cal] << "); (exp - pred)/pred: " << (nQCD_exp_sb[i_cal] - nQCD_pred_sb[i_cal])/nQCD_pred_sb[i_cal] << std::endl;
   }
   */
+}
+
+void QCDFactors::printTFactorsHeader()
+{
+  std::ofstream TFactorsHeader;
+  TFactorsHeader.open ("TFactorsHeader.h");
+
+  int i_cal = 0;
+  int j_cal = 0;
+
+  TFactorsHeader << "  const double QCDTFactor[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
+    {
+      if( i_cal == 0 && j_cal == 0 ) { TFactorsHeader << "{{"; }
+      if( i_cal != 0 && j_cal == 0 ) { TFactorsHeader << "{"; }
+
+      TFactorsHeader << QCDTFactor[i_cal][j_cal];
+      if( j_cal != MT2_BINS-1 ) { TFactorsHeader << ","; }
+
+      if( i_cal != MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "},"; }
+      if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
+    }
+  }
+
+  TFactorsHeader << "  const double QCDTFactor_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
+    {
+      if( i_cal == 0 && j_cal == 0 ) { TFactorsHeader << "{{"; }
+      if( i_cal != 0 && j_cal == 0 ) { TFactorsHeader << "{"; }
+
+      TFactorsHeader << QCDTFactor_err[i_cal][j_cal];
+      if( j_cal != MT2_BINS-1 ) { TFactorsHeader << ","; }
+
+      if( i_cal != MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "},"; }
+      if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
+    }
+  }
+
+  TFactorsHeader.close();
 }
 
 void QCDFactors::printQCDClosureExp(ClosureHistgram& myClosureHistgram)

@@ -35,9 +35,13 @@
 //#include "TInterpreter.h"
 #include "QCD.h"
 #include "QCDReWeighting.h"
+#include "TFactorsHeader.h"
 
-void LoopQCDExpTfactor( QCDFactors& myQCDFactors, ClosureHistgram& myClosureHistgram, QCDSampleWeight& myQCDSampleWeight )
+void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
+  ClosureHistgram myClosureHistgram;
+  myClosureHistgram.BookHistgram("ExpQCD.root");
+
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
@@ -182,11 +186,15 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, ClosureHistgram& myClosureHist
   (myClosureHistgram.oFile)->Close();
   myQCDFactors.NumbertoTFactor();
   myQCDFactors.printQCDFactorInfo();
+  myQCDFactors.printTFactorsHeader();
+
   return ;
 }
 
-void LoopQCDPred( QCDFactors& myQCDFactors, ClosureHistgram& myClosureHistgram, QCDSampleWeight& myQCDSampleWeight )
+void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
+  ClosureHistgram myClosureHistgram;
+  myClosureHistgram.BookHistgram("PredQCD.root");
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
@@ -236,8 +244,8 @@ void LoopQCDPred( QCDFactors& myQCDFactors, ClosureHistgram& myClosureHistgram, 
 
       if (passBaseline_dPhisInverted)
       {
-        double predweight = thisweight * myQCDFactors.QCDTFactor[metbin_number][mt2bin_number];
-        double predweight_err = thisweight * myQCDFactors.QCDTFactor_err[metbin_number][mt2bin_number];
+        double predweight = thisweight * QCDTFactor[metbin_number][mt2bin_number];
+        double predweight_err = thisweight * QCDTFactor_err[metbin_number][mt2bin_number];
         (myClosureHistgram.h_pred_met)->Fill(met,predweight);
         (myClosureHistgram.h_pred_njets)->Fill(njets30,predweight);
         (myClosureHistgram.h_pred_mt2)->Fill(MT2,predweight);
@@ -265,31 +273,72 @@ void LoopQCDPred( QCDFactors& myQCDFactors, ClosureHistgram& myClosureHistgram, 
 
 int main(int argc, char* argv[])
 {
-
   if (argc < 2)
   {
-    std::cerr <<"Please give 2 arguments " << "runList " << " " << "outputFileName" << std::endl;
+    std::cerr <<"Please give at least 2 arguments " << "RunMode " << " " << "runListMC " << " " << "runListData"<< std::endl;
     std::cerr <<" Valid configurations are " << std::endl;
-    std::cerr <<" ./QCD runlist_QCD.txt test.root" << std::endl;
+    std::cerr <<" ./QCD RunMode runlist_QCDMC.txt runlist_Data.txt" << std::endl;
     return -1;
   }
-  const char *inputFileList_QCDMC = argv[1];
-  const char *outFileName   = argv[2];
-
+  std::string RunMode = argv[1];
+  std::string inputFileList_QCDMC = argv[2];
+  //const char *outFileName   = argv[3];
+  std::cout << "The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData" << std::endl;
+  std::cout << "The run mode we have right now is: " << RunMode << std::endl;
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
   //define my histgram class
-  ClosureHistgram myClosureHistgramExp ,myClosureHistgramPred;
-  myClosureHistgramExp.BookHistgram("ExpQCD.root");
-  myClosureHistgramPred.BookHistgram("PredQCD.root");
+  //ClosureHistgram myClosureHistgramExp ,myClosureHistgramPred;
+  //myClosureHistgramExp.BookHistgram("ExpQCD.root");
+  //myClosureHistgramPred.BookHistgram("PredQCD.root");
 
   QCDSampleWeight myQCDSampleWeight;
-  myQCDSampleWeight.FillQCDSampleInfos(inputFileList_QCDMC);
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19542847, LUMI, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15011016, LUMI, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, LUMI, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3848411, LUMI, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1856112, LUMI, inputFileList_QCDMC.c_str() );
+  //myQCDSampleWeight.FillQCDSampleInfos(inputFileList_QCDMC.c_str());
+  if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
+  {
+    std::cout << "QCD_BINS in QCDBinFunction.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
+    return 0;
+  }
 
-  LoopQCDExpTfactor( myQCDFactors, myClosureHistgramExp, myQCDSampleWeight );
-  LoopQCDPred      ( myQCDFactors, myClosureHistgramPred, myQCDSampleWeight );
-  
-  myQCDFactors.TFactorsPlotsGen();
-  myQCDFactors.CountingPlotsGen();
+
+  if( RunMode == "ExpMCOnly" )
+  {
+    LoopQCDExpTfactor( myQCDFactors, myQCDSampleWeight );
+    myQCDFactors.TFactorsPlotsGen();
+    myQCDFactors.CountingPlotsGen();
+    return 0;
+  }
+  else if( RunMode == "PredMCOnly" )
+  {
+    LoopQCDPred      ( myQCDFactors, myQCDSampleWeight );
+    return 0;
+  }
+  else if( RunMode == "PredDataOnly" )
+  {
+    return 0;
+  }
+  else if( RunMode == "ExpMCPredMC" )
+  {
+    LoopQCDExpTfactor( myQCDFactors, myQCDSampleWeight );
+    LoopQCDPred      ( myQCDFactors, myQCDSampleWeight );
+    myQCDFactors.TFactorsPlotsGen();
+    myQCDFactors.CountingPlotsGen();
+    return 0;
+  }
+  else if( RunMode == "ExpMCPredData" )
+  {
+    return 0;
+  }
+  else
+  {
+    std::cout << "Invalide RunMode!!" << std::endl;
+    return 0;
+  }
+
   return 0;
 }

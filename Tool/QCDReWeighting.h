@@ -58,47 +58,39 @@ class QCDSampleWeight
 {
  public:
   std::vector<QCDSampleInfo> QCDSampleInfos;
-  
-  void FillQCDSampleInfos( const TString &inputFileList );
- private:
   void QCDSampleInfo_push_back( std::string tag, double xsec, double nevents, double lumi, const TString &inputFileList );
 };
 
-void QCDSampleWeight::FillQCDSampleInfos( const TString &inputFileList )
-{
-  QCDSampleInfos.clear();
- 
-  //ttbar test
-  //QCDSampleInfo_push_back( "_ttbar_", 806.1, 25446993, LUMI, inputFileList );
+//ttbar test
+//QCDSampleInfo_push_back( "_ttbar_", 806.1, 25446993, LUMI, inputFileList );
 
-  //QCD HT binnning samples, all
-  //QCDSampleInfo_push_back( "QCD_HT100to200_"  , 27540000, 80093092, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT200to300_"  , 1735000 , 18717349, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_HT300to500_"  , 367000  , 20086103, LUMI, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19542847, LUMI, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15011016, LUMI, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, LUMI, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3848411, LUMI, inputFileList );
-  QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1856112, LUMI, inputFileList );
+//QCD HT binnning samples, all
+//QCDSampleInfo_push_back( "QCD_HT100to200_"  , 27540000, 80093092, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_HT200to300_"  , 1735000 , 18717349, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_HT300to500_"  , 367000  , 20086103, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19542847, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15011016, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3848411, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1856112, LUMI, inputFileList );
 
-  //QCD PT binning Samples
-  //QCDSampleInfo_push_back( "QCD_Pt_10to15_"    , 5887580000 , 3449170, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_15to30_"    , 1837410000 , 4942232, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_30to50_"    , 140932000  , 4957245, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_50to80_"    , 19204300   , 4978425, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_80to120_"   , 2762530    , 3424782, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_120to170_"  , 471100     , 3452896, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_170to300_"  , 117276     , 3364368, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_300to470_"  , 7823       , 2933611, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_470to600_"  , 648.2      , 1936832, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_600to800_"  , 186.9      , 1964128, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_800to1000_" , 32.293     , 1937216, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_1000to1400_", 9.4183     , 1487136, LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_1400to1800_", 0.84265    , 197959 , LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_1800to2400_", 0.114943   , 193608 , LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_2400to3200_", 0.00682981 , 194456 , LUMI, inputFileList );
-  //QCDSampleInfo_push_back( "QCD_Pt_3200toInf_" , 0.000165445, 192944 , LUMI, inputFileList );
-}
+//QCD PT binning Samples
+//QCDSampleInfo_push_back( "QCD_Pt_10to15_"    , 5887580000 , 3449170, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_15to30_"    , 1837410000 , 4942232, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_30to50_"    , 140932000  , 4957245, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_50to80_"    , 19204300   , 4978425, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_80to120_"   , 2762530    , 3424782, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_120to170_"  , 471100     , 3452896, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_170to300_"  , 117276     , 3364368, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_300to470_"  , 7823       , 2933611, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_470to600_"  , 648.2      , 1936832, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_600to800_"  , 186.9      , 1964128, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_800to1000_" , 32.293     , 1937216, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_1000to1400_", 9.4183     , 1487136, LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_1400to1800_", 0.84265    , 197959 , LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_1800to2400_", 0.114943   , 193608 , LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_2400to3200_", 0.00682981 , 194456 , LUMI, inputFileList );
+//QCDSampleInfo_push_back( "QCD_Pt_3200toInf_" , 0.000165445, 192944 , LUMI, inputFileList );
 
 void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, double nevents, double lumi, const TString &inputFileList)
 {

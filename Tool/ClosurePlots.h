@@ -77,9 +77,9 @@ void ClosurePlots::ClosureTemplate(
   TH1D * h_exp;
 
   int NHist;
-  std::cout << listPred->GetSize() << "," << listExp->GetSize() << std::endl;
+  std::cout << listExp->GetSize() << "," << listPred->GetSize() << std::endl;
   if( listPred->GetSize() == listExp->GetSize() ) NHist = listExp->GetSize();
-  else { NHist = -1; std::cout << "We do not have equal number of hist in Pred and Exp, what the fuck is going on??" << std::endl; return ; }  
+  else { NHist = -1; std::cout << "We do not have equal number of hist in Exp and Pred, what the fuck is going on??" << std::endl; return ; }  
 
   for(int i  = 0 ; i < NHist ; i++)
   {
