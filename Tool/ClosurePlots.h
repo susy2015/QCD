@@ -17,8 +17,11 @@
 class ClosurePlots
 {
  public:
-  TFile * fin;
-  TList * list;
+  TFile * finExp;
+  TList * listExp;
+
+  TFile * finPred;
+  TList * listPred;
 
   double scale = 1;
 
@@ -46,15 +49,18 @@ class ClosurePlots
 
 void ClosurePlots::Initialization()
 {
-  fin = TFile::Open("test.root");
-  list = fin->GetListOfKeys();
+  finExp = TFile::Open("ExpQCD.root");
+  listExp = finExp->GetListOfKeys();
+  finPred = TFile::Open("PredQCD.root");
+  listPred = finPred->GetListOfKeys();
+
 }
 
 void ClosurePlots::PrintPlotsName()
 {
-  for(int i  = 0 ; i < list->GetSize() ; i++)
+  for(int i  = 0 ; i < listExp->GetSize() ; i++)
   {
-    std::cout<<"Name: "<< list->At(i)->GetName() << "("<< i <<")"<<std::endl;
+    std::cout<<"Name: "<< listExp->At(i)->GetName() << "("<< i <<")"<<std::endl;
   }
   
   return ;
@@ -70,17 +76,25 @@ void ClosurePlots::ClosureTemplate(
   TH1D * h_pred;
   TH1D * h_exp;
 
-  for(int i  = 0 ; i < list->GetSize() ; i++)
+  int NHist;
+  std::cout << listPred->GetSize() << "," << listExp->GetSize() << std::endl;
+  if( listPred->GetSize() == listExp->GetSize() ) NHist = listExp->GetSize();
+  else { NHist = -1; std::cout << "We do not have equal number of hist in Pred and Exp, what the fuck is going on??" << std::endl; return ; }  
+
+  for(int i  = 0 ; i < NHist ; i++)
   {
-    if( TString(list->At(i)->GetName()).Contains( hist_tag ) )
+    if( TString(listPred->At(i)->GetName()).Contains( hist_tag ) )
     {
-      if( TString(list->At(i)->GetName()).Contains( "_pred_" ) )
+      if( TString(listPred->At(i)->GetName()).Contains( "_pred_" ) )
       {
-        h_pred = (TH1D*)fin->Get(list->At(i)->GetName())->Clone();
+        h_pred = (TH1D*)finPred->Get(listPred->At(i)->GetName())->Clone();
       }
-      if( TString(list->At(i)->GetName()).Contains( "_exp_" ) )
+    }
+    if( TString(listExp->At(i)->GetName()).Contains( hist_tag ) )
+    {
+      if( TString(listExp->At(i)->GetName()).Contains( "_exp_" ) )
       {
-        h_exp = (TH1D*)fin->Get(list->At(i)->GetName())->Clone();
+        h_exp = (TH1D*)finExp->Get(listExp->At(i)->GetName())->Clone();
       }
     }
     else
@@ -183,6 +197,7 @@ void ClosurePlots::ClosureTemplate(
   c->SaveAs( hist_tag + TString(".C") );
 }
 
+/*
 void ClosurePlots::CompareTemplate(
                                    TString hist_tag,
                                    TString XTitle,
@@ -371,6 +386,7 @@ void ClosurePlots::BTStudyTemplate(
   c->SaveAs( hist_tag + TString("_nbnt_ybyt.pdf") );
   c->SaveAs( hist_tag + TString("_nbnt_ybyt.C") );
 }
+*/
 
 struct Plotting_Parameter
 {

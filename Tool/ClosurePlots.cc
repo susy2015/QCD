@@ -48,16 +48,16 @@ int main()
                                    (*iter_p).min,
                                    (*iter_p).max 
                                   );
-    myClosurePlots.CompareTemplate(
-                                   (*iter_p).hist_tag,
-                                   (*iter_p).XTitle,
-                                   (*iter_p).min,
-                                   (*iter_p).max
-                                  );
+    //myClosurePlots.CompareTemplate(
+    //                               (*iter_p).hist_tag,
+    //                               (*iter_p).XTitle,
+    //                               (*iter_p).min,
+    //                               (*iter_p).max
+    //                              );
   }
 
   myPlotting_Paramete.clear();
-  
+  /*
   myPlotting_Paramete =
   {
     //QCD closure plots
@@ -80,14 +80,15 @@ int main()
                                    (*iter_p).max
                                   );
   }
-
+  
+  
   myClosurePlots.ClosureTemplate(
                                  "_sb",
                                  "Search Bins",
                                  0,
                                  50
                                 );  
-
+  */
   return 0;
 }
 

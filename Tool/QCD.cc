@@ -36,7 +36,7 @@
 #include "QCD.h"
 #include "QCDReWeighting.h"
 
-void LoopQCDExpTfactor( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, QCDSampleWeight& myQCDSampleWeight )
+void LoopQCDExpTfactor( QCDFactors& myQCDFactors, ClosureHistgram& myClosureHistgram, QCDSampleWeight& myQCDSampleWeight )
 {
   //clock to monitor the run time
   size_t t0 = clock();
@@ -79,7 +79,7 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, 
       
       //checking plots for full QCD samples
       //filling HT variables for quick weight check
-      (myBaseHistgram.h_b_all_HT)->Fill(ht,thisweight);
+      //(myClosureHistgram.h_b_all_HT)->Fill(ht,thisweight);
 
       int metbin_number = Set_metbin_number(met);
       int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
@@ -111,20 +111,20 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, 
       {
         if ( passBJets )
         {
-          (myBaseHistgram.h_b_mt2_ybyt)->Fill(MT2,thisweight);
-          (myBaseHistgram.h_b_met_ybyt)->Fill(met,thisweight);
-          (myBaseHistgram.h_b_dphi0_ybyt)->Fill(dPhiVec.at(0),thisweight);
-          (myBaseHistgram.h_b_dphi1_ybyt)->Fill(dPhiVec.at(1),thisweight);
-          (myBaseHistgram.h_b_dphi2_ybyt)->Fill(dPhiVec.at(2),thisweight);
+          //(myClosureHistgram.h_b_mt2_ybyt)->Fill(MT2,thisweight);
+          //(myClosureHistgram.h_b_met_ybyt)->Fill(met,thisweight);
+          //(myClosureHistgram.h_b_dphi0_ybyt)->Fill(dPhiVec.at(0),thisweight);
+          //(myClosureHistgram.h_b_dphi1_ybyt)->Fill(dPhiVec.at(1),thisweight);
+          //(myClosureHistgram.h_b_dphi2_ybyt)->Fill(dPhiVec.at(2),thisweight);
         }
 
         if ( (!passBJets) )
         {
-          (myBaseHistgram.h_b_mt2_nbnt)->Fill(MT2,thisweight);
-          (myBaseHistgram.h_b_met_nbnt)->Fill(met,thisweight);
-          (myBaseHistgram.h_b_dphi0_nbnt)->Fill(dPhiVec.at(0),thisweight);
-          (myBaseHistgram.h_b_dphi1_nbnt)->Fill(dPhiVec.at(1),thisweight);
-          (myBaseHistgram.h_b_dphi2_nbnt)->Fill(dPhiVec.at(2),thisweight);
+          //(myClosureHistgram.h_b_mt2_nbnt)->Fill(MT2,thisweight);
+          //(myClosureHistgram.h_b_met_nbnt)->Fill(met,thisweight);
+          //(myClosureHistgram.h_b_dphi0_nbnt)->Fill(dPhiVec.at(0),thisweight);
+          //(myClosureHistgram.h_b_dphi1_nbnt)->Fill(dPhiVec.at(1),thisweight);
+          //(myClosureHistgram.h_b_dphi2_nbnt)->Fill(dPhiVec.at(2),thisweight);
         }
 
         if ( passdPhis )
@@ -134,13 +134,13 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, 
  
           if ( passBJets )
           {
-            (myBaseHistgram.h_exp_met)->Fill(met,thisweight);
-            (myBaseHistgram.h_exp_njets)->Fill(njets30,thisweight);
-            (myBaseHistgram.h_exp_mt2)->Fill(MT2,thisweight);
-            (myBaseHistgram.h_exp_ht)->Fill(ht,thisweight);
-            (myBaseHistgram.h_exp_mht)->Fill(mht,thisweight);
-            (myBaseHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight);
-            (myBaseHistgram.h_exp_nbjets)->Fill(nbottomjets,thisweight);
+            (myClosureHistgram.h_exp_met)->Fill(met,thisweight);
+            (myClosureHistgram.h_exp_njets)->Fill(njets30,thisweight);
+            (myClosureHistgram.h_exp_mt2)->Fill(MT2,thisweight);
+            (myClosureHistgram.h_exp_ht)->Fill(ht,thisweight);
+            (myClosureHistgram.h_exp_mht)->Fill(mht,thisweight);
+            (myClosureHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight);
+            (myClosureHistgram.h_exp_nbjets)->Fill(nbottomjets,thisweight);
           
             int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
             if( searchbin_id >= 0 )
@@ -165,28 +165,27 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, 
         myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight;
         myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight;
 
-        (myBaseHistgram.h_inverted_met)->Fill(met,thisweight);
-        (myBaseHistgram.h_inverted_njets)->Fill(njets30,thisweight);
-        (myBaseHistgram.h_inverted_mt2)->Fill(MT2,thisweight);
-        (myBaseHistgram.h_inverted_ht)->Fill(ht,thisweight);
-        (myBaseHistgram.h_inverted_mht)->Fill(mht,thisweight);
-        (myBaseHistgram.h_inverted_ntopjets)->Fill(ntopjets,thisweight);
-        (myBaseHistgram.h_inverted_nbjets)->Fill(nbottomjets,thisweight);
+        //(myClosureHistgram.h_inverted_met)->Fill(met,thisweight);
+        //(myClosureHistgram.h_inverted_njets)->Fill(njets30,thisweight);
+        //(myClosureHistgram.h_inverted_mt2)->Fill(MT2,thisweight);
+        //(myClosureHistgram.h_inverted_ht)->Fill(ht,thisweight);
+        //(myClosureHistgram.h_inverted_mht)->Fill(mht,thisweight);
+        //(myClosureHistgram.h_inverted_ntopjets)->Fill(ntopjets,thisweight);
+        //(myClosureHistgram.h_inverted_nbjets)->Fill(nbottomjets,thisweight);
       }
     }//end of inner loop
     i++;
   }//end of QCD Samples loop
 
+  myQCDFactors.printQCDClosureExp(myClosureHistgram);
+  (myClosureHistgram.oFile)->Write();
+  (myClosureHistgram.oFile)->Close();
   myQCDFactors.NumbertoTFactor();
   myQCDFactors.printQCDFactorInfo();
-  myQCDFactors.printQCDClosureExp(myBaseHistgram);
-  myQCDFactors.TFactorsPlotsGen();
-  myQCDFactors.CountingPlotsGen();
-
   return ;
 }
 
-void LoopQCDPred( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, QCDSampleWeight& myQCDSampleWeight )
+void LoopQCDPred( QCDFactors& myQCDFactors, ClosureHistgram& myClosureHistgram, QCDSampleWeight& myQCDSampleWeight )
 {
   //clock to monitor the run time
   size_t t0 = clock();
@@ -239,13 +238,13 @@ void LoopQCDPred( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, QCDSam
       {
         double predweight = thisweight * myQCDFactors.QCDTFactor[metbin_number][mt2bin_number];
         double predweight_err = thisweight * myQCDFactors.QCDTFactor_err[metbin_number][mt2bin_number];
-        (myBaseHistgram.h_pred_met)->Fill(met,predweight);
-        (myBaseHistgram.h_pred_njets)->Fill(njets30,predweight);
-        (myBaseHistgram.h_pred_mt2)->Fill(MT2,predweight);
-        (myBaseHistgram.h_pred_ht)->Fill(ht,predweight);
-        (myBaseHistgram.h_pred_mht)->Fill(mht,predweight);
-        (myBaseHistgram.h_pred_ntopjets)->Fill(ntopjets,predweight);
-        (myBaseHistgram.h_pred_nbjets)->Fill(nbottomjets,predweight);
+        (myClosureHistgram.h_pred_met)->Fill(met,predweight);
+        (myClosureHistgram.h_pred_njets)->Fill(njets30,predweight);
+        (myClosureHistgram.h_pred_mt2)->Fill(MT2,predweight);
+        (myClosureHistgram.h_pred_ht)->Fill(ht,predweight);
+        (myClosureHistgram.h_pred_mht)->Fill(mht,predweight);
+        (myClosureHistgram.h_pred_ntopjets)->Fill(ntopjets,predweight);
+        (myClosureHistgram.h_pred_nbjets)->Fill(nbottomjets,predweight);
 
         int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0 )
@@ -258,8 +257,9 @@ void LoopQCDPred( QCDFactors& myQCDFactors, BaseHistgram& myBaseHistgram, QCDSam
     }//end of inner loop
   }//end of QCD Samples loop
 
-  myQCDFactors.printQCDClosureExp(myBaseHistgram);
-  
+  myQCDFactors.printQCDClosurePred(myClosureHistgram);
+  (myClosureHistgram.oFile)->Write();
+  (myClosureHistgram.oFile)->Close();
   return ;
 }
 
@@ -279,16 +279,17 @@ int main(int argc, char* argv[])
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
   //define my histgram class
-  BaseHistgram myBaseHistgram;
-  myBaseHistgram.BookHistgram(outFileName);
+  ClosureHistgram myClosureHistgramExp ,myClosureHistgramPred;
+  myClosureHistgramExp.BookHistgram("ExpQCD.root");
+  myClosureHistgramPred.BookHistgram("PredQCD.root");
 
   QCDSampleWeight myQCDSampleWeight;
   myQCDSampleWeight.FillQCDSampleInfos(inputFileList_QCDMC);
 
-  LoopQCDExpTfactor( myQCDFactors, myBaseHistgram, myQCDSampleWeight );
-  LoopQCDPred      ( myQCDFactors, myBaseHistgram, myQCDSampleWeight );
-
-  //write into histgram
-  (myBaseHistgram.oFile)->Write();
+  LoopQCDExpTfactor( myQCDFactors, myClosureHistgramExp, myQCDSampleWeight );
+  LoopQCDPred      ( myQCDFactors, myClosureHistgramPred, myQCDSampleWeight );
+  
+  myQCDFactors.TFactorsPlotsGen();
+  myQCDFactors.CountingPlotsGen();
   return 0;
 }

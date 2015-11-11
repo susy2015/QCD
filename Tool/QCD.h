@@ -26,6 +26,41 @@ void mypassBaselineFunc(NTupleReader& tr)
   (*myBaselineVessel)(tr);
 }
 
+class ClosureHistgram
+{
+ public:
+  void BookHistgram(const char *);
+  TFile *oFile;
+  //closure plots on different variables and search bins
+  TH1D *h_pred_met, *h_pred_njets, *h_pred_mt2, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
+  TH1D *h_exp_met, *h_exp_njets, *h_exp_mt2, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
+  TH1D *h_exp_sb, *h_pred_sb;
+};
+
+void ClosureHistgram::BookHistgram(const char *outFileName)
+{
+  oFile = new TFile(outFileName, "recreate");
+  //closure plots on different variables
+  h_pred_met = new TH1D("h_pred_met","",50,0,1000);
+  h_pred_njets = new TH1D("h_pred_njets","",20,0,20);
+  h_pred_mt2 = new TH1D("h_pred_mt2","",50,0,1000);
+  h_pred_ht = new TH1D("h_pred_ht","",150,0,3000);
+  h_pred_mht = new TH1D("h_pred_mht","",50,0,1000);
+  h_pred_ntopjets = new TH1D("h_pred_ntopjets","",20,0,20);
+  h_pred_nbjets = new TH1D("h_pred_nbjets","",20,0,20);
+
+  h_exp_met = new TH1D("h_exp_met","",50,0,1000);
+  h_exp_njets = new TH1D("h_exp_njets","",20,0,20);
+  h_exp_mt2 = new TH1D("h_exp_mt2","",50,0,1000);
+  h_exp_ht = new TH1D("h_exp_ht","",150,0,3000);
+  h_exp_mht = new TH1D("h_exp_mht","",50,0,1000);
+  h_exp_ntopjets = new TH1D("h_exp_ntopjets","",20,0,20);
+  h_exp_nbjets = new TH1D("h_exp_nbjets","",20,0,20);
+
+  h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+  h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+}
+
 class BaseHistgram
 {
  public:
@@ -37,11 +72,7 @@ class BaseHistgram
 
   TH1D *h_b_mt2_nbnt, *h_b_mt2_ybyt, *h_b_met_nbnt, *h_b_met_ybyt;
   TH1D *h_b_dphi0_nbnt, *h_b_dphi0_ybyt, *h_b_dphi1_nbnt, *h_b_dphi1_ybyt, *h_b_dphi2_nbnt, *h_b_dphi2_ybyt;
-  //closure plots on different variables and search bins
-  TH1D *h_pred_met, *h_pred_njets, *h_pred_mt2, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
-  TH1D *h_exp_met, *h_exp_njets, *h_exp_mt2, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
   TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
-  TH1D *h_exp_sb, *h_pred_sb;
 };
 
 void BaseHistgram::BookHistgram(const char *outFileName)
@@ -62,23 +93,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_b_dphi2_nbnt = new TH1D("h_b_dphi2_nbnt","",40,-5,5);
   h_b_dphi2_ybyt = new TH1D("h_b_dphi2_ybyt","",40,-5,5);
 
-  //closure plots on different variables
-  h_pred_met = new TH1D("h_pred_met","",50,0,1000);
-  h_pred_njets = new TH1D("h_pred_njets","",20,0,20);
-  h_pred_mt2 = new TH1D("h_pred_mt2","",50,0,1000);
-  h_pred_ht = new TH1D("h_pred_ht","",150,0,3000);
-  h_pred_mht = new TH1D("h_pred_mht","",50,0,1000);
-  h_pred_ntopjets = new TH1D("h_pred_ntopjets","",20,0,20);
-  h_pred_nbjets = new TH1D("h_pred_nbjets","",20,0,20);
-
-  h_exp_met = new TH1D("h_exp_met","",50,0,1000);
-  h_exp_njets = new TH1D("h_exp_njets","",20,0,20);
-  h_exp_mt2 = new TH1D("h_exp_mt2","",50,0,1000);
-  h_exp_ht = new TH1D("h_exp_ht","",150,0,3000);
-  h_exp_mht = new TH1D("h_exp_mht","",50,0,1000);
-  h_exp_ntopjets = new TH1D("h_exp_ntopjets","",20,0,20);
-  h_exp_nbjets = new TH1D("h_exp_nbjets","",20,0,20);
-
   h_inverted_met = new TH1D("h_inverted_met","",50,0,1000);
   h_inverted_njets = new TH1D("h_inverted_njets","",20,0,20);
   h_inverted_mt2 = new TH1D("h_inverted_mt2","",50,0,1000);
@@ -86,9 +100,6 @@ void BaseHistgram::BookHistgram(const char *outFileName)
   h_inverted_mht = new TH1D("h_inverted_mht","",50,0,1000);
   h_inverted_ntopjets = new TH1D("h_inverted_ntopjets","",20,0,20);
   h_inverted_nbjets = new TH1D("h_inverted_nbjets","",20,0,20);
-
-  h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
-  h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
 }
 
 class QCDFactors
@@ -111,8 +122,8 @@ class QCDFactors
   void NumbertoTFactor();
   void TFactorFit();
   void printQCDFactorInfo(); 
-  void printQCDClosureExp( BaseHistgram& myBaseHistgram );
-  void printQCDClosurePred( BaseHistgram& myBaseHistgram );
+  void printQCDClosureExp( ClosureHistgram& myClosureHistgram );
+  void printQCDClosurePred( ClosureHistgram& myClosureHistgram );
   void TFactorsPlotsGen();
   void CountingPlotsGen();
 
@@ -259,22 +270,22 @@ void QCDFactors::printQCDFactorInfo()
   */
 }
 
-void QCDFactors::printQCDClosureExp(BaseHistgram& myBaseHistgram)
+void QCDFactors::printQCDClosureExp(ClosureHistgram& myClosureHistgram)
 {
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    myBaseHistgram.h_exp_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
-    myBaseHistgram.h_exp_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
+    myClosureHistgram.h_exp_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
+    myClosureHistgram.h_exp_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
   }
   return ;
 }
 
-void QCDFactors::printQCDClosurePred(BaseHistgram& myBaseHistgram)
+void QCDFactors::printQCDClosurePred(ClosureHistgram& myClosureHistgram)
 {
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    myBaseHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
-    myBaseHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
+    myClosureHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
+    myClosureHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
   }
   return ;
 }
@@ -322,7 +333,7 @@ void QCDFactors::TFactorsPlotsGen()
   c->SaveAs( "_tfactors2d.png" );
   c->SaveAs( "_tfactors2d.pdf" );
   c->SaveAs( "_tfactors2d.C" );
-  
+  c->Close();
   return ;
 }
 
@@ -408,6 +419,7 @@ void QCDFactors::CountingPlotsGen()
   c->SaveAs( "_Allcount2d.png" );
   c->SaveAs( "_Allcount2d.pdf" );
   c->SaveAs( "_Allcount2d.C" );
+  c->Close();
 
   return ;
 }
