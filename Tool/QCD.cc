@@ -259,7 +259,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         {
           //std::cout << predweight << std::endl;
           myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
-          //myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight_err);
+          myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight_err);
         }
       }
     }//end of inner loop
@@ -328,6 +328,7 @@ int main(int argc, char* argv[])
     LoopQCDPred      ( myQCDFactors, myQCDSampleWeight );
     myQCDFactors.TFactorsPlotsGen();
     myQCDFactors.CountingPlotsGen();
+    myQCDFactors.printSBInfo();
     return 0;
   }
   else if( RunMode == "ExpMCPredData" )

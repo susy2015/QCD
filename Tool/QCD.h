@@ -127,6 +127,7 @@ class QCDFactors
   void printQCDClosurePred( ClosureHistgram& myClosureHistgram );
   void TFactorsPlotsGen();
   void CountingPlotsGen();
+  void printSBInfo();
 
  private:
   double get_stat_Error(
@@ -261,14 +262,6 @@ void QCDFactors::printQCDFactorInfo()
       std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << QCDTFactor[i_cal][j_cal] << "(" << QCDTFactor_err[i_cal][j_cal] << ")"<< std::endl;
     }
   }
-
-  /*
-  std::cout << "#QCD in Search Bins: " << std::endl;
-  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
-  {
-    std::cout << "Search Bin Id:" << i_cal << "; Exp: " << nQCD_exp_sb[i_cal] << "(" << nQCD_exp_sb_err[i_cal] << "); Pred: " << nQCD_pred_sb[i_cal] << "(" << nQCD_pred_sb_err[i_cal] << "); (exp - pred)/pred: " << (nQCD_exp_sb[i_cal] - nQCD_pred_sb[i_cal])/nQCD_pred_sb[i_cal] << std::endl;
-  }
-  */
 }
 
 void QCDFactors::printTFactorsHeader()
@@ -328,8 +321,8 @@ void QCDFactors::printQCDClosurePred(ClosureHistgram& myClosureHistgram)
 {
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    myClosureHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
-    myClosureHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
+    myClosureHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_pred_sb[i_cal] );
+    myClosureHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_pred_sb_err[i_cal] );
   }
   return ;
 }
@@ -466,6 +459,15 @@ void QCDFactors::CountingPlotsGen()
   c->Close();
 
   return ;
+}
+
+void QCDFactors::printSBInfo()
+{
+  std::cout << "#QCD in Search Bins: " << std::endl;
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << "Search Bin Id:" << i_cal << "; Exp: " << nQCD_exp_sb[i_cal] << "(" << nQCD_exp_sb_err[i_cal] << "); Pred: " << nQCD_pred_sb[i_cal] << "(" << nQCD_pred_sb_err[i_cal] << "); (exp - pred)/pred: " << (nQCD_exp_sb[i_cal] - nQCD_pred_sb[i_cal])/nQCD_pred_sb[i_cal] << std::endl;
+  }
 }
 
 //##########functions to calculate Delta_R and Delta Phi###############

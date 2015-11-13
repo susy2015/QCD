@@ -81,14 +81,14 @@ int main()
                                   );
   }
   
-  
+  */
   myClosurePlots.ClosureTemplate(
                                  "_sb",
                                  "Search Bins",
                                  0,
                                  50
                                 );  
-  */
+  
   return 0;
 }
 

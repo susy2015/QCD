@@ -43,9 +43,17 @@ And it will be involved into make command automatically and we do not have error
 
 4.Run the QCD code:
 
-./QCD runList_inputfile.txt outputfile.root
+./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175.txt runList_Data_MC(ttbar,Zinv,etc)??
 
-5.Some useful tools:
+The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly(not done yet), ExpMCPredMC, ExpMCPredData(not done yet)
+
+5.Closure plots:
+
+Read information from 3 root files: PredQCD.root, ExpQCD.root and also BaseQCD.root to get all plots
+
+./Closure
+
+6.Some useful tools:
 
 cd QCD/Tool/QCDStopFlattrees
 
