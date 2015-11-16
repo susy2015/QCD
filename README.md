@@ -43,7 +43,7 @@ And it will be involved into make command automatically and we do not have error
 
 4.Run the QCD code:
 
-./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175.txt runList_Data_MC(ttbar,Zinv,etc)??
+./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt runList_Data_MC(ttbar,Zinv,etc)??
 
 The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly(not done yet), ExpMCPredMC, ExpMCPredData(not done yet)
 

@@ -8,7 +8,7 @@ def find_nth(haystack, needle, n):
     n -= 1
   return start
 
-d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/"
+d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Nov_2015_Ntp_v3X/"
 #d = "/eos/uscms/store/group/lpcsusyhad/hua/"
 #os.chdir(d)
 sample_tag = sys.argv[1]

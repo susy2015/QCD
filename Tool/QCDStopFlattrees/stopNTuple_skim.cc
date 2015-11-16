@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
   }
   std::string input_str(argv[1]); 
   std::string trim;
-  std::string outputpath = "/eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Oct29/";
+  std::string outputpath = "/eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/";
  
   std::string output_str;
   //here is a little bit tricky when dealing with the slash... need to improve
