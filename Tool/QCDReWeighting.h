@@ -15,7 +15,8 @@
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
 //define lumi in pb-1
-#define LUMI 3000
+//#define LUMI 3000
+#define LUMI 993.99
 //Fill chain from txt file
 bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
 {
@@ -28,7 +29,7 @@ bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
     return false;
   }
 
-  std::cout << "TreeUtilities : FillChain " << std::endl;
+  std::cout << "TreeUtilities : FillChain " << tag << std::endl;
   while(1)
   {
     buffer.clear();
@@ -98,7 +99,12 @@ void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, dou
 
   oneInfo.QCDTag = tag;
   oneInfo.weight = xsec*lumi/nevents;
-  //oneInfo.chain= new TChain("AUX");
+  //weight is one if we are reading data
+  //if( tag.find("HTMHT") != std::string::npos ) oneInfo.weight = 1;
+  //negative weight for the sample other than QCD and HTMHT
+  if( !(tag.find("QCD") != std::string::npos) ) oneInfo.weight = -xsec*lumi/nevents;
+  if( tag.find("HTMHT") != std::string::npos ) oneInfo.weight = 1;
+
   oneInfo.chain= new TChain("stopTreeMaker/AUX");
   if(!FillChain(oneInfo.chain, inputFileList, oneInfo.QCDTag))
   {

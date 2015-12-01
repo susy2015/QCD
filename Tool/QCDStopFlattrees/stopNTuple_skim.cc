@@ -51,18 +51,18 @@ int main(int argc, char* argv[])
   std::string fileid = input_str.substr (idpos);
   
   //cut every tree with MET 200 and HT 500 except QCD tree
-  if(input_str.find("QCD_") != std::string::npos)
-  {
+  //if( input_str.find("QCD_") != std::string::npos || input_str.find("_HTMHT") != std::string::npos )
+  //{
     trim = "met>175";
     output_str = "Skimmed_MET175_" + tag + fileid;
     std::cout << "Output File Name: " << output_str << std::endl;
-  }
-  else
-  { 
-    trim = "met>200 && ht>500";
-    output_str = "Skimmed_MET200_HT500_" + tag + fileid;
-    std::cout << "Output File Name: " << output_str << std::endl;
-  }
+  //}
+  //else
+  //{ 
+    //trim = "met>200 && ht>500";
+    //output_str = "Skimmed_MET200_HT500_" + tag + fileid;
+    //std::cout << "Output File Name: " << output_str << std::endl;
+  //}
 
 
   TFile* input = TFile::Open(input_str.c_str());

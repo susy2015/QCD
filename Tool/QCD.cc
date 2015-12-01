@@ -63,7 +63,7 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
  
     double thisweight = (*iter_QCDSampleInfos).weight;
     myQCDFactors.QCDWeights[i] = thisweight;
-    std::cout << "Weight " << thisweight << std::endl;
+    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
     {
@@ -215,7 +215,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
     tr.registerFunction(&mypassBaselineFunc);
 
     double thisweight = (*iter_QCDSampleInfos).weight;
-    std::cout << "Weight " << thisweight << std::endl;
+    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
     {
@@ -273,25 +273,24 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 
 int main(int argc, char* argv[])
 {
-  if (argc < 2)
+  if (argc < 3)
   {
-    std::cerr <<"Please give at least 2 arguments " << "RunMode " << " " << "runListMC " << " " << "runListData"<< std::endl;
+    std::cerr <<"Please give at least 3 arguments " << "RunMode " << " " << "runListMC " << " " << "runListData"<< std::endl;
     std::cerr <<" Valid configurations are " << std::endl;
     std::cerr <<" ./QCD RunMode runlist_QCDMC.txt runlist_Data.txt" << std::endl;
     return -1;
   }
+
   std::string RunMode = argv[1];
   std::string inputFileList_QCDMC = argv[2];
+  std::string inputFileList_Data = argv[3];
   //const char *outFileName   = argv[3];
   std::cout << "The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
-  //define my histgram class
-  //ClosureHistgram myClosureHistgramExp ,myClosureHistgramPred;
-  //myClosureHistgramExp.BookHistgram("ExpQCD.root");
-  //myClosureHistgramPred.BookHistgram("PredQCD.root");
 
+  //Sample needed in the calculation and expectation loop
   QCDSampleWeight myQCDSampleWeight;
   myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19542847, LUMI, inputFileList_QCDMC.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15011016, LUMI, inputFileList_QCDMC.c_str() );
@@ -304,7 +303,12 @@ int main(int argc, char* argv[])
     std::cout << "QCD_BINS in QCDBinFunction.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
     return 0;
   }
-
+  //sample needed in the prediction loop
+  QCDSampleWeight myDataSampleWeight;
+  myDataSampleWeight.QCDSampleInfo_push_back( "HTMHT"                   ,      1,        1, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "TTJets_"                 , 831.76, 11339232, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-400To600_",  10.42,  1018882, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-600ToInf_",   4.20,  1008333, LUMI, inputFileList_Data.c_str() );
 
   if( RunMode == "ExpMCOnly" )
   {
@@ -320,6 +324,7 @@ int main(int argc, char* argv[])
   }
   else if( RunMode == "PredDataOnly" )
   {
+    LoopQCDPred      ( myQCDFactors, myDataSampleWeight );
     return 0;
   }
   else if( RunMode == "ExpMCPredMC" )
@@ -333,6 +338,11 @@ int main(int argc, char* argv[])
   }
   else if( RunMode == "ExpMCPredData" )
   {
+    LoopQCDExpTfactor( myQCDFactors, myQCDSampleWeight );
+    LoopQCDPred      ( myQCDFactors, myDataSampleWeight );
+    myQCDFactors.TFactorsPlotsGen();
+    myQCDFactors.CountingPlotsGen();
+    myQCDFactors.printSBInfo();
     return 0;
   }
   else

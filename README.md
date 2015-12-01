@@ -5,9 +5,9 @@
 
 setenv SCRAM_ARCH slc6_amd64_gcc491(export SCRAM_ARCH = slc6_amd64_gcc491)
 
-cmsrel CMSSW_7_4_6_patch6
+cmsrel CMSSW_7_4_15
 
-cd CMSSW_7_4_6_patch6/src
+cd CMSSW_7_4_15/src
 
 cmsenv
 
@@ -17,7 +17,7 @@ git cms-merge-topic -u cms-met:METCorUnc74X
 
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 
-git clone git@github.com:susy2015/SusyAnaTools.git
+git clone -b Ana_74X_30Nov2015_v3.1 git@github.com:susy2015/SusyAnaTools.git
 
 git clone https://github.com/susy2015/QCD.git
 
@@ -57,7 +57,7 @@ Read information from 3 root files: PredQCD.root, ExpQCD.root and also BaseQCD.r
 
 cd QCD/Tool/QCDStopFlattrees
 
-g++ stopNTuple_skim.cc `root-config --libs --cflags` -o PrivateSkim
+g++ stopNTuple_skim.cc \`root-config --libs --cflags\` -o PrivateSkim
 
 PS: For QCD, MET > 175, while for all other samples, MET > 200 && HT > 500
 

@@ -12,7 +12,19 @@ Error = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stder
 Log = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).log
 notify_user = hua.wei@cern.ch
 
-#arguments = $ENV(CMSSW_BASE) TTJets_
+#arguments = $ENV(CMSSW_BASE) _HTMHT
+#Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_TuneCUETP8M1
+Queue 
+
+#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_
+#Queue 
+
+#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) TTJets_DiLept_
 #Queue 
 
 #arguments = $ENV(CMSSW_BASE) TTWJetsToLNu_
@@ -33,11 +45,11 @@ notify_user = hua.wei@cern.ch
 #arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT
-#Queue
-
-arguments = $ENV(CMSSW_BASE) QCD_HT
+arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_
 Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT
+#Queue
 
 #arguments = $ENV(CMSSW_BASE) QCD_Pt
 #Queue
