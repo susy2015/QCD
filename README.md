@@ -21,7 +21,7 @@ git clone -b Ana_74X_30Nov2015_v3.1 git@github.com:susy2015/SusyAnaTools.git
 
 git clone https://github.com/susy2015/QCD.git
 
-scram b -j9
+scram b -j 9
 
 3.Go to QCD directory and then compile the code
 
@@ -43,13 +43,13 @@ And it will be involved into make command automatically and we do not have error
 
 4.Run the QCD code:
 
-./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt runList_Data_MC(ttbar,Zinv,etc)??
+./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v3.txt
 
-The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly(not done yet), ExpMCPredMC, ExpMCPredData(not done yet)
+The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheck
 
 5.Closure plots:
 
-Read information from 3 root files: PredQCD.root, ExpQCD.root and also BaseQCD.root to get all plots
+Read information from 3 root files: PredQCD.root, ExpQCD.root and also BasicCheckQCD.root to get all plots
 
 ./Closure
 

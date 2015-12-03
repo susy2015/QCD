@@ -5,6 +5,7 @@
 
 #include "TH1D.h"
 #include "TH2D.h"
+#include "THStack.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
@@ -17,6 +18,7 @@
 #include "SusyAnaTools/Tools/baselineDef.h"
 
 #include "QCDBinFunction.h"
+#include "QCDReWeighting.h"
 
 //############finish the definition of class AccRecoEffs######################
 //baseline cut function definition
@@ -59,47 +61,135 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
 
   h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+
+  return ;
 }
 
-class BaseHistgram
+#define BCBin 4
+
+class BasicCheckHistgram
 {
  public:
   void BookHistgram(const char *);
+  void BasicCheckPlotsGen();
 
   TFile *oFile;
-  TH1D *h_b_all_MET;
-  TH1D *h_b_all_HT;
 
-  TH1D *h_b_mt2_nbnt, *h_b_mt2_ybyt, *h_b_met_nbnt, *h_b_met_ybyt;
-  TH1D *h_b_dphi0_nbnt, *h_b_dphi0_ybyt, *h_b_dphi1_nbnt, *h_b_dphi1_ybyt, *h_b_dphi2_nbnt, *h_b_dphi2_ybyt;
-  TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
+  TH1D *h_b_met_MC[BCBin], *h_b_mt2_MC[BCBin], *h_b_ntopjets_MC[BCBin], *h_b_nbjets_MC[BCBin];
+  TH1D *h_b_ht_MC[BCBin], *h_b_mht_MC[BCBin], *h_b_njets_MC[BCBin];
+
+  TH1D *h_b_met_Data, *h_b_mt2_Data, *h_b_ntopjets_Data, *h_b_nbjets_Data;
+  TH1D *h_b_ht_Data, *h_b_mht_Data, *h_b_njets_Data;
+
+  THStack *hs_b_met_MC, *hs_b_mt2_MC, *hs_b_ntopjets_MC, *hs_b_nbjets_MC;;
+  THStack *hs_b_ht_MC, *hs_b_mht_MC, *hs_b_njets_MC;
+
+  //TH1D *h_b_mt2_nbnt, *h_b_mt2_ybyt, *h_b_met_nbnt, *h_b_met_ybyt;
+  //TH1D *h_b_dphi0_nbnt, *h_b_dphi0_ybyt, *h_b_dphi1_nbnt, *h_b_dphi1_ybyt, *h_b_dphi2_nbnt, *h_b_dphi2_ybyt;
+  //TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
 };
 
-void BaseHistgram::BookHistgram(const char *outFileName)
+void BasicCheckHistgram::BookHistgram(const char *outFileName)
 {
   oFile = new TFile(outFileName, "recreate");
 
-  h_b_all_MET = new TH1D("h_b_all_MET","",1000,0,1000);
-  h_b_all_HT = new TH1D("h_b_all_HT","",200,0,2000);
+  for( int i = 0 ; i < BCBin ; i++ )
+  {
+    std::string smalltag;
+    if (i == 0) smalltag = "LLHadTau";
+    else if (i == 1) smalltag = "Zinv";
+    else if (i == 2) smalltag = "QCD";
+    else smalltag = "TTZ";
 
-  h_b_mt2_nbnt = new TH1D("h_b_mt2_nbnt","",100,0,1000);
-  h_b_mt2_ybyt = new TH1D("h_b_mt2_ybyt","",100,0,1000);
-  h_b_met_nbnt = new TH1D("h_b_met_nbnt","",85,150,1000);
-  h_b_met_ybyt = new TH1D("h_b_met_ybyt","",85,150,1000);
-  h_b_dphi0_nbnt = new TH1D("h_b_dphi0_nbnt","",40,-5,5);
-  h_b_dphi0_ybyt = new TH1D("h_b_dphi0_ybyt","",40,-5,5);
-  h_b_dphi1_nbnt = new TH1D("h_b_dphi1_nbnt","",40,-5,5);
-  h_b_dphi1_ybyt = new TH1D("h_b_dphi1_ybyt","",40,-5,5);
-  h_b_dphi2_nbnt = new TH1D("h_b_dphi2_nbnt","",40,-5,5);
-  h_b_dphi2_ybyt = new TH1D("h_b_dphi2_ybyt","",40,-5,5);
+    h_b_met_MC[i] = new TH1D( ("h_b_met_MC_" + smalltag).c_str(),"",50,0,1000);
+    h_b_njets_MC[i] = new TH1D( ("h_b_njets_MC_" + smalltag).c_str(),"",20,0,20);
+    h_b_mt2_MC[i] = new TH1D( ("h_b_mt2_MC_" + smalltag).c_str(),"",50,0,1000);
+    h_b_ht_MC[i] = new TH1D( ("h_b_ht_MC_" + smalltag).c_str(),"",150,0,3000);
+    h_b_mht_MC[i] = new TH1D( ("h_b_mht_MC_" + smalltag).c_str(),"",50,0,1000);
+    h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",20,0,20);
+    h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",20,0,20);
+  }
 
-  h_inverted_met = new TH1D("h_inverted_met","",50,0,1000);
-  h_inverted_njets = new TH1D("h_inverted_njets","",20,0,20);
-  h_inverted_mt2 = new TH1D("h_inverted_mt2","",50,0,1000);
-  h_inverted_ht = new TH1D("h_inverted_ht","",150,0,3000);
-  h_inverted_mht = new TH1D("h_inverted_mht","",50,0,1000);
-  h_inverted_ntopjets = new TH1D("h_inverted_ntopjets","",20,0,20);
-  h_inverted_nbjets = new TH1D("h_inverted_nbjets","",20,0,20);
+  h_b_met_Data = new TH1D("h_b_met_Data","",50,0,1000);
+  h_b_njets_Data = new TH1D("h_b_njets_Data","",20,0,20);
+  h_b_mt2_Data = new TH1D("h_b_mt2_Data","",50,0,1000);
+  h_b_ht_Data = new TH1D("h_b_ht_Data","",150,0,3000);
+  h_b_mht_Data = new TH1D("h_b_mht_Data","",50,0,1000);
+  h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",20,0,20);
+  h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",20,0,20);
+
+  hs_b_met_MC = new THStack("hs_b_met_MC","");
+  hs_b_mt2_MC = new THStack("hs_b_mt2_MC","");
+  hs_b_ntopjets_MC = new THStack("hs_b_ntopjets_MC","");
+  hs_b_nbjets_MC = new THStack("hs_b_nbjets_MC","");
+  hs_b_ht_MC = new THStack("hs_b_ht_MC","");
+  hs_b_mht_MC = new THStack("hs_b_mht_MC","");
+  hs_b_njets_MC = new THStack("hs_b_njets_MC","");
+
+  return ;
+}
+
+void BasicCheckHistgram::BasicCheckPlotsGen()
+{
+  for( Int_t i = 0 ; i < BCBin ; i++ )
+  {
+    h_b_met_MC[i]->SetFillColor(i+1);
+    h_b_mt2_MC[i]->SetFillColor(i+1);
+    h_b_ntopjets_MC[i]->SetFillColor(i+1);
+    h_b_nbjets_MC[i]->SetFillColor(i+1);
+    h_b_ht_MC[i]->SetFillColor(i+1);
+    h_b_mht_MC[i]->SetFillColor(i+1);
+    h_b_njets_MC[i]->SetFillColor(i+1);
+
+    hs_b_met_MC->Add(h_b_met_MC[i]);
+    hs_b_mt2_MC->Add(h_b_mt2_MC[i]);
+    hs_b_ntopjets_MC->Add(h_b_ntopjets_MC[i]);
+    hs_b_nbjets_MC->Add(h_b_nbjets_MC[i]);
+    hs_b_ht_MC->Add(h_b_ht_MC[i]);
+    hs_b_mht_MC->Add(h_b_mht_MC[i]);
+    hs_b_njets_MC->Add(h_b_njets_MC[i]);
+  }
+
+  std::ostringstream strs;
+  strs << (LUMI/1000);
+  std::string lumi_str = strs.str();
+  const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
+
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+
+  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
+  c->SetFillColor(0);
+  c->Divide(2,2);
+  //gStyle->SetPaintTextFormat("1.2f");
+  
+  c->cd(1);
+  hs_b_met_MC->Draw();
+  h_b_met_Data->Draw("same");
+  title->Draw("same");
+
+  c->cd(2);
+  hs_b_mt2_MC->Draw();
+  h_b_mt2_Data->Draw("same");
+  title->Draw("same");
+
+  c->cd(3);
+  hs_b_ntopjets_MC->Draw();
+  h_b_ntopjets_Data->Draw("same");
+  title->Draw("same");
+
+  c->cd(4);
+  hs_b_nbjets_MC->Draw();
+  h_b_nbjets_Data->Draw("same");
+  title->Draw("same");
+
+  c->SaveAs( "_BasicCheck_sb.png" );
+  c->SaveAs( "_BasicCheck_sb.pdf" );
+  c->SaveAs( "_BasicCheck_sb.C" );
+  c->Close();
+
+  return ;
 }
 
 class QCDFactors
@@ -329,8 +419,6 @@ void QCDFactors::printQCDClosurePred(ClosureHistgram& myClosureHistgram)
 
 void QCDFactors::TFactorsPlotsGen()
 {
-  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
-
   TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
   c->SetFillColor(0);
   c->cd();
@@ -362,6 +450,7 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2d->Draw("colztexte");
 
+  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -376,9 +465,7 @@ void QCDFactors::TFactorsPlotsGen()
 
 void QCDFactors::CountingPlotsGen()
 {
-  const std::string titre="CMS Simulation 2015, 3fb-1, #sqrt{s} = 13 TeV";
   double metbins[MET_BINS+1] = {175.0,200.0,350.0,650.0};
-  //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};  
   double mt2bins[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
 
   TH2D *countNormal_MC  = new TH2D("countNormal_MC","countNormal_MC",MET_BINS,metbins,MT2_BINS,mt2bins);
@@ -428,6 +515,10 @@ void QCDFactors::CountingPlotsGen()
   countInverted->SetYTitle("MT2 [GeV]");
   countInverted->SetStats(0);
 
+  std::ostringstream strs;
+  strs << (LUMI/1000);
+  std::string lumi_str = strs.str();
+  const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);

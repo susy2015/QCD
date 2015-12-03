@@ -12,11 +12,19 @@ Error = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stder
 Log = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).log
 notify_user = hua.wei@cern.ch
 
-#arguments = $ENV(CMSSW_BASE) _HTMHT
+####Data####
+#arguments = $ENV(CMSSW_BASE) _HTMHT-Run2015C-25ns
 #Queue
 
-arguments = $ENV(CMSSW_BASE) TTJets_TuneCUETP8M1
-Queue 
+#arguments = $ENV(CMSSW_BASE) _HTMHT-Run2015D-05O
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) _HTMHT-Run2015D-PromptReco
+#Queue
+
+####TTJets####
+#arguments = $ENV(CMSSW_BASE) TTJets_TuneCUETP8M1
+#Queue 
 
 #arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_
 #Queue 
@@ -27,27 +35,37 @@ Queue
 #arguments = $ENV(CMSSW_BASE) TTJets_DiLept_
 #Queue 
 
+####TTW####
 #arguments = $ENV(CMSSW_BASE) TTWJetsToLNu_
 #Queue 
 
 #arguments = $ENV(CMSSW_BASE) TTWJetsToQQ_
 #Queue 
 
+####TTZ####
 #arguments = $ENV(CMSSW_BASE) TTZToLLNuNu_
 #Queue 
 
 #arguments = $ENV(CMSSW_BASE) TTZToQQ_
 #Queue
 
+####SingleTop####
 #arguments = $ENV(CMSSW_BASE) ST_tW
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT
-#Queue
-
-arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_
+####WJets####
+arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT
 Queue
 
+####Drell Yan####
+arguments = $ENV(CMSSW_BASE) DYJetsToLL_
+Queue
+
+####ZtoNuNu####
+#arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_
+#Queue
+
+####Damn QCD####
 #arguments = $ENV(CMSSW_BASE) QCD_HT
 #Queue
 

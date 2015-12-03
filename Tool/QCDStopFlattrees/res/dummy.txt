@@ -1,1 +1,0 @@
-the Tool/QCDStopFlattrees/res directory is for the output information of condor 

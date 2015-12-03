@@ -34,8 +34,9 @@
 //#include "TROOT.h"
 //#include "TInterpreter.h"
 #include "QCD.h"
-#include "QCDReWeighting.h"
+//#include "QCDReWeighting.h"
 #include "TFactorsHeader.h"
+#include "TriggerEff.h"
 
 void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
@@ -64,7 +65,7 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
     double thisweight = (*iter_QCDSampleInfos).weight;
     myQCDFactors.QCDWeights[i] = thisweight;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
-
+    
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
@@ -108,7 +109,8 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
                      && passMT2
                      && passTagger
                      && passNoiseEventFilter;
-    
+      //apply the met efficiencies
+      double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
       if (
           passBaselineQCD
          )
@@ -134,23 +136,23 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
         if ( passdPhis )
         {
           myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
-          myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=thisweight;
+          myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
  
           if ( passBJets )
           {
-            (myClosureHistgram.h_exp_met)->Fill(met,thisweight);
-            (myClosureHistgram.h_exp_njets)->Fill(njets30,thisweight);
-            (myClosureHistgram.h_exp_mt2)->Fill(MT2,thisweight);
-            (myClosureHistgram.h_exp_ht)->Fill(ht,thisweight);
-            (myClosureHistgram.h_exp_mht)->Fill(mht,thisweight);
-            (myClosureHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight);
-            (myClosureHistgram.h_exp_nbjets)->Fill(nbottomjets,thisweight);
+            (myClosureHistgram.h_exp_met)->Fill(met,thisweight*metEff);
+            (myClosureHistgram.h_exp_njets)->Fill(njets30,thisweight*metEff);
+            (myClosureHistgram.h_exp_mt2)->Fill(MT2,thisweight*metEff);
+            (myClosureHistgram.h_exp_ht)->Fill(ht,thisweight*metEff);
+            (myClosureHistgram.h_exp_mht)->Fill(mht,thisweight*metEff);
+            (myClosureHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight*metEff);
+            (myClosureHistgram.h_exp_nbjets)->Fill(nbottomjets,thisweight*metEff);
           
             int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
             if( searchbin_id >= 0 )
             {
-              myQCDFactors.nQCD_exp_sb[searchbin_id] += thisweight;
               myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
+              myQCDFactors.nQCD_exp_sb[searchbin_id] += (thisweight*metEff);
             }
           }
         }
@@ -165,9 +167,9 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
          )
       {
         myQCDFactors.nQCDInverted_MC[i][metbin_number][mt2bin_number]++;
-        myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=thisweight;
-        myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight;
-        myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight;
+        myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
+        myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight * metEff;
+        myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight * metEff;
 
         //(myClosureHistgram.h_inverted_met)->Fill(met,thisweight);
         //(myClosureHistgram.h_inverted_njets)->Fill(njets30,thisweight);
@@ -215,6 +217,10 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
     tr.registerFunction(&mypassBaselineFunc);
 
     double thisweight = (*iter_QCDSampleInfos).weight;
+    //negative weight for other MC samples
+    if( !( ( (*iter_QCDSampleInfos).QCDTag ).find("QCD") != std::string::npos) ) thisweight = -thisweight;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1;
+
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -241,11 +247,13 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       bool passBaseline_dPhisInverted = false;
 
       passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+      //apply trigger efficiencies
+      double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
 
       if (passBaseline_dPhisInverted)
       {
-        double predweight = thisweight * QCDTFactor[metbin_number][mt2bin_number];
-        double predweight_err = thisweight * QCDTFactor_err[metbin_number][mt2bin_number];
+        double predweight = thisweight * metEff * QCDTFactor[metbin_number][mt2bin_number];
+        double predweight_err = thisweight * metEff * QCDTFactor_err[metbin_number][mt2bin_number];
         (myClosureHistgram.h_pred_met)->Fill(met,predweight);
         (myClosureHistgram.h_pred_njets)->Fill(njets30,predweight);
         (myClosureHistgram.h_pred_mt2)->Fill(MT2,predweight);
@@ -271,6 +279,103 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
   return ;
 }
 
+void LoopQCDBasicCheck( QCDSampleWeight& myQCDSampleWeight )
+{
+  BasicCheckHistgram myBasicCheckHistgram;
+  myBasicCheckHistgram.BookHistgram("BasicCheckQCD.root");
+  //clock to monitor the run time
+  size_t t0 = clock();
+  std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
+  int ih = 0;
+  //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
+  const std::string spec = "QCD";
+  myBaselineVessel = new BaselineVessel(spec);
+
+  std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;
+  
+  for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
+  {    
+    //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
+    NTupleReader tr((*iter_QCDSampleInfos).chain);
+    //initialize the type3Ptr defined in the customize.h
+    AnaFunctions::prepareTopTagger();
+    //The passBaseline is registered here
+    tr.registerFunction(&mypassBaselineFunc);
+
+    double thisweight = (*iter_QCDSampleInfos).weight;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1;
+    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
+
+    while(tr.getNextEvent())
+    {
+      if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+
+      //searchbin variables
+      int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
+      int nbottomjets = tr.getVar<int>("cntCSVS"+spec);
+      double MT2 = tr.getVar<double>("best_had_brJet_MT2"+spec);
+      double met = tr.getVar<double>("met");
+      //closure plots variables
+      int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
+      double ht = tr.getVar<double>("ht");
+      double mht = tr.getVar<double>("mht");
+
+      //if( met < 175 ) continue;
+      int metbin_number = Set_metbin_number(met);
+      int njetsbin_number = Set_nbjetsbin_number(nbottomjets);
+      int mt2bin_number = Set_mt2bin_number(MT2);
+
+      bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
+      bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      bool passBaseline_dPhisInverted = false;
+
+      passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+      //apply trigger efficiencies
+      double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
+
+      if (passBaseline_dPhisInverted)
+      {
+        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        {
+          (myBasicCheckHistgram.h_b_met_Data)->Fill(met,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mt2_Data)->Fill(MT2,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_nbjets_Data)->Fill(nbottomjets,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_njets_Data)->Fill(njets30,thisweight*metEff);
+        }
+        else
+        {
+          if( 
+              ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos 
+           || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
+           || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
+            ) ih = 0;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos ) ih = 1;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos ) ih = 2;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos ) ih = 3;
+          else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
+
+          (myBasicCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mt2_MC[ih])->Fill(MT2,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbottomjets,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_njets_MC)[ih]->Fill(njets30,thisweight*metEff);
+        }
+      }
+    }//end of inner loop
+  }//end of QCD Samples loop
+
+  myBasicCheckHistgram.BasicCheckPlotsGen();
+
+  (myBasicCheckHistgram.oFile)->Write();
+  (myBasicCheckHistgram.oFile)->Close();
+  return ;
+}
+
 int main(int argc, char* argv[])
 {
   if (argc < 3)
@@ -284,20 +389,19 @@ int main(int argc, char* argv[])
   std::string RunMode = argv[1];
   std::string inputFileList_QCDMC = argv[2];
   std::string inputFileList_Data = argv[3];
-  //const char *outFileName   = argv[3];
-  std::cout << "The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData" << std::endl;
+  
+  std::cout << "The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData, BasicCheck" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
 
   //Sample needed in the calculation and expectation loop
   QCDSampleWeight myQCDSampleWeight;
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19542847, LUMI, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15011016, LUMI, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19664159, LUMI, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15356448, LUMI, inputFileList_QCDMC.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, LUMI, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3848411, LUMI, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1856112, LUMI, inputFileList_QCDMC.c_str() );
-  //myQCDSampleWeight.FillQCDSampleInfos(inputFileList_QCDMC.c_str());
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3868886, LUMI, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1683349, LUMI, inputFileList_QCDMC.c_str() );
   if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
   {
     std::cout << "QCD_BINS in QCDBinFunction.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
@@ -305,10 +409,40 @@ int main(int argc, char* argv[])
   }
   //sample needed in the prediction loop
   QCDSampleWeight myDataSampleWeight;
-  myDataSampleWeight.QCDSampleInfo_push_back( "HTMHT"                   ,      1,        1, LUMI, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "TTJets_"                 , 831.76, 11339232, LUMI, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-400To600_",  10.42,  1018882, LUMI, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-600ToInf_",   4.20,  1008333, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "HTMHT"                   ,      1,             1, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "TTJets_"                 , 831.76,      11339232, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "ST_tW_top"               ,   35.6,        995600, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "ST_tW_antitop"           ,   35.6,        988500, LUMI, inputFileList_Data.c_str() );
+  //be careful!! WJets and ZJets samples have some tricky part, need to understand!
+  myDataSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-400To600_" ,  48.91,       1745914, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-600ToInf_" ,  18.77,       1039152, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-400To600_",  10.42,       1018882, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-600ToInf_",   4.20,       1008333, LUMI, inputFileList_Data.c_str() );
+  //be careful! TTZ has negative weight issue!!
+  myDataSampleWeight.QCDSampleInfo_push_back( "TTZToLLNuNu_"            , 0.2529, 291495-106505, LUMI, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "TTZToQQ_"                , 0.5297, 550599-199201, LUMI, inputFileList_Data.c_str() );
+
+  //sample needed in the basic check loop
+  QCDSampleWeight myBasicCheckSampleWeight;
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "HTMHT"                   ,      1,             1, LUMI, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "TTJets_"                 , 831.76,      11339232, LUMI, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "ST_tW_top"               ,   35.6,        995600, LUMI, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "ST_tW_antitop"           ,   35.6,        988500, LUMI, inputFileList_Data.c_str() );
+  //be careful!! WJets and ZJets samples have some tricky part, need to understand!
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-400To600_" ,  48.91,       1745914, LUMI, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-600ToInf_" ,  18.77,       1039152, LUMI, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-400To600_",  10.42,       1018882, LUMI, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-600ToInf_",   4.20,       1008333, LUMI, inputFileList_Data.c_str() );
+  //be careful! TTZ has negative weight issue!!
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "TTZToLLNuNu_"            , 0.2529, 291495-106505, LUMI, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "TTZToQQ_"                , 0.5297, 550599-199201, LUMI, inputFileList_Data.c_str() );  
+
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19664159, LUMI, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15356448, LUMI, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, LUMI, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3868886, LUMI, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1683349, LUMI, inputFileList_QCDMC.c_str() );
+
 
   if( RunMode == "ExpMCOnly" )
   {
@@ -343,6 +477,11 @@ int main(int argc, char* argv[])
     myQCDFactors.TFactorsPlotsGen();
     myQCDFactors.CountingPlotsGen();
     myQCDFactors.printSBInfo();
+    return 0;
+  }
+  else if( RunMode == "BasicCheck" )
+  {
+    LoopQCDBasicCheck( myBasicCheckSampleWeight );
     return 0;
   }
   else

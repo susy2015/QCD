@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
+#include <string>
 
 #include "TH1D.h"
 #include "TH2D.h"
@@ -15,8 +16,8 @@
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
 //define lumi in pb-1
-//#define LUMI 3000
-#define LUMI 993.99
+#define LUMI 1561.935
+
 //Fill chain from txt file
 bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
 {
@@ -40,7 +41,7 @@ bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
     //std::cout << (buffer.find(tag) != std::string::npos) << std::endl;
     if (buffer.find(tag) != std::string::npos) 
     {
-      //std::cout << "found!" << '\n';
+      //std::cout << tag << " found!" << std::endl;
       chain->Add(buffer.c_str());
     }
   }
@@ -102,8 +103,8 @@ void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, dou
   //weight is one if we are reading data
   //if( tag.find("HTMHT") != std::string::npos ) oneInfo.weight = 1;
   //negative weight for the sample other than QCD and HTMHT
-  if( !(tag.find("QCD") != std::string::npos) ) oneInfo.weight = -xsec*lumi/nevents;
-  if( tag.find("HTMHT") != std::string::npos ) oneInfo.weight = 1;
+  //if( !(tag.find("QCD") != std::string::npos) ) oneInfo.weight = -xsec*lumi/nevents;
+  //if( tag.find("HTMHT") != std::string::npos ) oneInfo.weight = 1;
 
   oneInfo.chain= new TChain("stopTreeMaker/AUX");
   if(!FillChain(oneInfo.chain, inputFileList, oneInfo.QCDTag))

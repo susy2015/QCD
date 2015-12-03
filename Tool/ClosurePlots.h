@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <sstream>
 
 #include "TFile.h"
 #include "TList.h"
@@ -13,6 +14,7 @@
 #include "TLatex.h"
 #include "TStyle.h"
 
+#include "QCDReWeighting.h"
 
 class ClosurePlots
 {
@@ -22,6 +24,8 @@ class ClosurePlots
 
   TFile * finPred;
   TList * listPred;
+
+  std::string lumi_str;  
 
   double scale = 1;
 
@@ -54,6 +58,10 @@ void ClosurePlots::Initialization()
   finPred = TFile::Open("PredQCD.root");
   listPred = finPred->GetListOfKeys();
 
+  //convert lumi from double pb-1 to string, fb-1
+  std::ostringstream strs;
+  strs << (LUMI/1000);
+  lumi_str = strs.str();
 }
 
 void ClosurePlots::PrintPlotsName()
@@ -136,7 +144,7 @@ void ClosurePlots::ClosureTemplate(
   h_exp->Draw(); 
   h_pred->Draw("same");
 
-  const std::string titre="CMS Preliminary 2015, 3 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
