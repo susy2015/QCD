@@ -182,11 +182,11 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
     }//end of inner loop
     i++;
   }//end of QCD Samples loop
-
+  //be careful!! NumbertoTFactor must be in front of sb plot generation! otherwise we may get all 0 in expectation error!!
+  myQCDFactors.NumbertoTFactor();
   myQCDFactors.printQCDClosureExp(myClosureHistgram);
   (myClosureHistgram.oFile)->Write();
   (myClosureHistgram.oFile)->Close();
-  myQCDFactors.NumbertoTFactor();
   myQCDFactors.printQCDFactorInfo();
   myQCDFactors.printTFactorsHeader();
 

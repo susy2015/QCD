@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include <sstream>
+#include <stdlib.h>
 
 #include "TFile.h"
 #include "TList.h"
@@ -19,6 +20,8 @@
 class ClosurePlots
 {
  public:
+  std::string target_DIR;
+
   TFile * finExp;
   TList * listExp;
 
@@ -29,7 +32,7 @@ class ClosurePlots
 
   double scale = 1;
 
-  void Initialization(); 
+  void Initialization(std::string dir); 
   void PrintPlotsName();
   void ClosureTemplate(
                        TString hist_tag,
@@ -51,8 +54,11 @@ class ClosurePlots
                        );
 };
 
-void ClosurePlots::Initialization()
+void ClosurePlots::Initialization(std::string dir)
 {
+  target_DIR = dir;
+  system( ("mkdir " + dir).c_str() );
+
   finExp = TFile::Open("ExpQCD.root");
   listExp = finExp->GetListOfKeys();
   finPred = TFile::Open("PredQCD.root");
@@ -141,8 +147,8 @@ void ClosurePlots::ClosureTemplate(
   h_exp->Sumw2();
   h_exp->Scale(scale);
 
-  h_exp->Draw(); 
-  h_pred->Draw("same");
+  h_exp->Draw("e1"); 
+  h_pred->Draw("e0 same");
 
   const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
@@ -170,8 +176,31 @@ void ClosurePlots::ClosureTemplate(
   TH1D *ratio = (TH1D*) h_pred->Clone();
   TH1D *allmc = (TH1D*) h_exp->Clone();
 
-  ratio->Add(allmc, -1);
-  ratio->Divide(allmc);
+  if( hist_tag == "_sb" )
+  { 
+    Double_t pred,exp,pred_err,exp_err;
+    for (Int_t i = 1; i < h_pred->GetNbinsX(); i++)
+    {
+      pred = h_pred->GetBinContent(i);
+      exp = h_exp->GetBinContent(i);
+      pred_err = h_pred->GetBinError(i);
+      exp_err = h_exp->GetBinError(i);
+      //std::cout << "i: " << i << " pred_err: " << pred_err << " exp_err: " << exp_err << std::endl;
+      if ( pred && exp ) 
+      { 
+        double r = pred/exp;
+        ratio->SetBinContent(i,r-1);
+        double e = std::sqrt( pred_err*pred_err + exp_err*exp_err*r*r );
+        std::cout << "i: " << i << " Ratio: " << r-1 << " Error: " << e << std::endl;
+        ratio->SetBinError( i , e );
+      }
+    }
+  }
+  else
+  {
+    ratio->Add(allmc, -1);
+    ratio->Divide(allmc);
+  }
   ratio->GetYaxis()->SetTitle( "(Pred - Exp)/Exp" );
 
   TAxis* xHT = ratio->GetXaxis();
@@ -191,7 +220,7 @@ void ClosurePlots::ClosureTemplate(
   ratio->SetTitleSize(0.15);
   ratio->SetStats(kFALSE);
   ratio->SetMarkerStyle(kFullDotMedium);
-  ratio->Sumw2();
+  //ratio->Sumw2();
   ratio->DrawCopy();
 
   TH1D *zero = (TH1D*)ratio->Clone(); 
@@ -200,9 +229,9 @@ void ClosurePlots::ClosureTemplate(
   zero->SetLineColor(kRed); zero->SetLineWidth(1);
   zero->DrawCopy("same");
 
-  c->SaveAs( hist_tag + TString(".png") );
-  c->SaveAs( hist_tag + TString(".pdf") );
-  c->SaveAs( hist_tag + TString(".C") );
+  c->SaveAs( target_DIR + TString("/") + hist_tag + TString(".png") );
+  c->SaveAs( target_DIR + TString("/") + hist_tag + TString(".pdf") );
+  c->SaveAs( target_DIR + TString("/") + hist_tag + TString(".C") );
 }
 
 /*

@@ -18,10 +18,20 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
+
+  if (argc < 1)
+  {
+    std::cerr <<"Please give at least 1 argument " << "TargetDirName" << std::endl;
+    std::cerr <<" Valid configurations are " << std::endl;
+    std::cerr <<" ./Closure QCDClosure20151204" << std::endl;
+    return -1;
+  }
+
+
   ClosurePlots myClosurePlots;
-  myClosurePlots.Initialization();
+  myClosurePlots.Initialization("20151204");
   //initialize the closure plots parameter we want to investigate
   vector<Plotting_Parameter> myPlotting_Paramete = 
   { 

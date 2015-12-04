@@ -51,7 +51,7 @@ The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMC
 
 Read information from 3 root files: PredQCD.root, ExpQCD.root and also BasicCheckQCD.root to get all plots
 
-./Closure
+./Closure TargetDirName
 
 6.Some useful tools:
 
