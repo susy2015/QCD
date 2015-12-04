@@ -29,9 +29,10 @@ int main(int argc, char* argv[])
     return -1;
   }
 
+  std::string DirName = argv[1];
 
   ClosurePlots myClosurePlots;
-  myClosurePlots.Initialization("20151204");
+  myClosurePlots.Initialization(DirName);
   //initialize the closure plots parameter we want to investigate
   vector<Plotting_Parameter> myPlotting_Paramete = 
   { 
