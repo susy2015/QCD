@@ -103,9 +103,12 @@ double QCDGetTriggerEff( std::string tag, double met )
   else if( tag.find("QCD") != std::string::npos ){ METEff = FakeMET::GetTriggerEffWeight( met ); return METEff; }
   else if( 
            tag.find("TTJets") != std::string::npos 
+        || tag.find("ST_tW_") != std::string::npos
+        || tag.find("WJetsToLNu_HT") != std::string::npos
         || tag.find("ZJetsToNuNu_HT") != std::string::npos
+        || tag.find("TTZ") != std::string::npos
          ){ METEff = RealMET::GetTriggerEffWeight( met ); return METEff; }
-  else{ std::cout << "QCDTag not in the list! What is going on??!!" << std::endl; return 1; }
+  else{ std::cout << "QCDTag not in the list! What the fuck is going on ??!! Please check TriggerEff.h" << std::endl; return 1; }
 }
 
 

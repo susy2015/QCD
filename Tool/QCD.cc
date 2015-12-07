@@ -249,11 +249,11 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
       //apply trigger efficiencies
       double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
-
+      
       if (passBaseline_dPhisInverted)
       {
         double predweight = thisweight * metEff * QCDTFactor[metbin_number][mt2bin_number];
-        double predweight_err = thisweight * metEff * QCDTFactor_err[metbin_number][mt2bin_number];
+        //double predweight_err = thisweight * metEff * QCDTFactor_err[metbin_number][mt2bin_number];
         (myClosureHistgram.h_pred_met)->Fill(met,predweight);
         (myClosureHistgram.h_pred_njets)->Fill(njets30,predweight);
         (myClosureHistgram.h_pred_mt2)->Fill(MT2,predweight);
@@ -267,11 +267,16 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         {
           //std::cout << predweight << std::endl;
           myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
-          myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight_err);
+          myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
+
+  for( int i=0 ; i<NSEARCH_BINS ; i++ )
+  {
+    myQCDFactors.nQCD_pred_sb_err[i] = std::sqrt( myQCDFactors.nQCD_pred_sb_err[i] );
+  }
 
   myQCDFactors.printQCDClosurePred(myClosureHistgram);
   (myClosureHistgram.oFile)->Write();

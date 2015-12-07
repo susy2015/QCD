@@ -30,8 +30,6 @@ class ClosurePlots
 
   std::string lumi_str;  
 
-  double scale = 1;
-
   void Initialization(std::string dir); 
   void PrintPlotsName();
   void ClosureTemplate(
@@ -138,14 +136,12 @@ void ClosurePlots::ClosureTemplate(
   h_pred->SetLineColor(1);
   h_pred->SetLineWidth(3);
   h_pred->Sumw2();
-  h_pred->Scale(scale);
 
   h_exp->GetXaxis()->SetRangeUser(min,max);
   h_exp->GetXaxis()->SetTitle(XTitle);
   h_exp->SetLineColor(2);
   h_exp->SetLineWidth(3);
   h_exp->Sumw2();
-  h_exp->Scale(scale);
 
   h_exp->Draw("e1"); 
   h_pred->Draw("e0 same");
@@ -270,14 +266,12 @@ void ClosurePlots::CompareTemplate(
   h_inverted->SetLineColor(1);
   h_inverted->SetLineWidth(3);
   h_inverted->Sumw2();
-  h_inverted->Scale(scale);
 
   h_normal->GetXaxis()->SetRangeUser(min,max);
   h_normal->GetXaxis()->SetTitle(XTitle);
   h_normal->SetLineColor(2);
   h_normal->SetLineWidth(3);
   h_normal->Sumw2();
-  h_normal->Scale(scale);
 
   h_inverted->Draw(); 
   h_normal->Draw("same");
