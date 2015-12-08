@@ -93,7 +93,7 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
 {
   oFile = new TFile(outFileName, "recreate");
 
-  for( int i = 0 ; i < BCBin ; i++ )
+  for( Int_t i = 0 ; i < BCBin ; i++ )
   {
     std::string smalltag;
     if (i == 0) smalltag = "LLHadTau";
@@ -101,22 +101,38 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     else if (i == 2) smalltag = "QCD";
     else smalltag = "TTZ";
 
-    h_b_met_MC[i] = new TH1D( ("h_b_met_MC_" + smalltag).c_str(),"",50,0,1000);
+    h_b_met_MC[i] = new TH1D( ("h_b_met_MC_" + smalltag).c_str(),"",20,150,550);
     h_b_njets_MC[i] = new TH1D( ("h_b_njets_MC_" + smalltag).c_str(),"",20,0,20);
-    h_b_mt2_MC[i] = new TH1D( ("h_b_mt2_MC_" + smalltag).c_str(),"",50,0,1000);
+    h_b_mt2_MC[i] = new TH1D( ("h_b_mt2_MC_" + smalltag).c_str(),"",20,200,600);
     h_b_ht_MC[i] = new TH1D( ("h_b_ht_MC_" + smalltag).c_str(),"",150,0,3000);
     h_b_mht_MC[i] = new TH1D( ("h_b_mht_MC_" + smalltag).c_str(),"",50,0,1000);
-    h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",20,0,20);
-    h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",20,0,20);
+    h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",5,1,6);
+    h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",5,1,6);
+
+    h_b_met_MC[i]->SetFillColor(i+2);
+    h_b_mt2_MC[i]->SetFillColor(i+2);
+    h_b_ntopjets_MC[i]->SetFillColor(i+2);
+    h_b_nbjets_MC[i]->SetFillColor(i+2);
+    h_b_ht_MC[i]->SetFillColor(i+2);
+    h_b_mht_MC[i]->SetFillColor(i+2);
+    h_b_njets_MC[i]->SetFillColor(i+2);
+
+    h_b_met_MC[i]->SetLineColor(i+2);
+    h_b_mt2_MC[i]->SetLineColor(i+2);
+    h_b_ntopjets_MC[i]->SetLineColor(i+2);
+    h_b_nbjets_MC[i]->SetLineColor(i+2);
+    h_b_ht_MC[i]->SetLineColor(i+2);
+    h_b_mht_MC[i]->SetLineColor(i+2);
+    h_b_njets_MC[i]->SetLineColor(i+2);
   }
 
-  h_b_met_Data = new TH1D("h_b_met_Data","",50,0,1000);
+  h_b_met_Data = new TH1D("h_b_met_Data","",20,150,550);
   h_b_njets_Data = new TH1D("h_b_njets_Data","",20,0,20);
-  h_b_mt2_Data = new TH1D("h_b_mt2_Data","",50,0,1000);
+  h_b_mt2_Data = new TH1D("h_b_mt2_Data","",20,200,600);
   h_b_ht_Data = new TH1D("h_b_ht_Data","",150,0,3000);
   h_b_mht_Data = new TH1D("h_b_mht_Data","",50,0,1000);
-  h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",20,0,20);
-  h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",20,0,20);
+  h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",5,1,6);
+  h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",5,1,6);
 
   hs_b_met_MC = new THStack("hs_b_met_MC","");
   hs_b_mt2_MC = new THStack("hs_b_mt2_MC","");
@@ -131,16 +147,11 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
 
 void BasicCheckHistgram::BasicCheckPlotsGen()
 {
+  TLegend* leg = new TLegend(0.6,0.75,0.85,0.85);
+  leg->AddEntry(h_b_met_Data,"Data","l");
+
   for( Int_t i = 0 ; i < BCBin ; i++ )
   {
-    h_b_met_MC[i]->SetFillColor(i+1);
-    h_b_mt2_MC[i]->SetFillColor(i+1);
-    h_b_ntopjets_MC[i]->SetFillColor(i+1);
-    h_b_nbjets_MC[i]->SetFillColor(i+1);
-    h_b_ht_MC[i]->SetFillColor(i+1);
-    h_b_mht_MC[i]->SetFillColor(i+1);
-    h_b_njets_MC[i]->SetFillColor(i+1);
-
     hs_b_met_MC->Add(h_b_met_MC[i]);
     hs_b_mt2_MC->Add(h_b_mt2_MC[i]);
     hs_b_ntopjets_MC->Add(h_b_ntopjets_MC[i]);
@@ -148,6 +159,14 @@ void BasicCheckHistgram::BasicCheckPlotsGen()
     hs_b_ht_MC->Add(h_b_ht_MC[i]);
     hs_b_mht_MC->Add(h_b_mht_MC[i]);
     hs_b_njets_MC->Add(h_b_njets_MC[i]);
+
+    std::string smalltag;
+    if (i == 0) smalltag = "LLHadTau";
+    else if (i == 1) smalltag = "Zinv";
+    else if (i == 2) smalltag = "QCD";
+    else smalltag = "TTZ";
+ 
+    leg->AddEntry(h_b_met_MC[i],smalltag.c_str(),"l");
   }
 
   std::ostringstream strs;
@@ -165,24 +184,28 @@ void BasicCheckHistgram::BasicCheckPlotsGen()
   //gStyle->SetPaintTextFormat("1.2f");
   
   c->cd(1);
-  hs_b_met_MC->Draw();
-  h_b_met_Data->Draw("same");
+  h_b_met_Data->Draw("");
+  hs_b_met_MC->Draw("same hist");
   title->Draw("same");
+  leg->Draw("same");
 
   c->cd(2);
-  hs_b_mt2_MC->Draw();
-  h_b_mt2_Data->Draw("same");
+  h_b_mt2_Data->Draw();
+  hs_b_mt2_MC->Draw("same hist");
   title->Draw("same");
+  leg->Draw("same");
 
   c->cd(3);
-  hs_b_ntopjets_MC->Draw();
-  h_b_ntopjets_Data->Draw("same");
+  h_b_ntopjets_Data->Draw();
+  hs_b_ntopjets_MC->Draw("same hist");
   title->Draw("same");
+  leg->Draw("same");
 
   c->cd(4);
-  hs_b_nbjets_MC->Draw();
-  h_b_nbjets_Data->Draw("same");
+  h_b_nbjets_Data->Draw();
+  hs_b_nbjets_MC->Draw("same hist");
   title->Draw("same");
+  leg->Draw("same");
 
   c->SaveAs( "_BasicCheck_sb.png" );
   c->SaveAs( "_BasicCheck_sb.pdf" );

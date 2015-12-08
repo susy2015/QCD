@@ -60,7 +60,7 @@ class QCDSampleWeight
 {
  public:
   std::vector<QCDSampleInfo> QCDSampleInfos;
-  void QCDSampleInfo_push_back( std::string tag, double xsec, double nevents, double lumi, const TString &inputFileList );
+  void QCDSampleInfo_push_back( std::string tag, double xsec, double nevents, double lumi, double kf, const TString &inputFileList );
 };
 
 //ttbar test
@@ -94,12 +94,12 @@ class QCDSampleWeight
 //QCDSampleInfo_push_back( "QCD_Pt_2400to3200_", 0.00682981 , 194456 , LUMI, inputFileList );
 //QCDSampleInfo_push_back( "QCD_Pt_3200toInf_" , 0.000165445, 192944 , LUMI, inputFileList );
 
-void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, double nevents, double lumi, const TString &inputFileList)
+void QCDSampleWeight::QCDSampleInfo_push_back( std::string tag, double xsec, double nevents, double lumi, double kf, const TString &inputFileList)
 {
   QCDSampleInfo oneInfo;
 
   oneInfo.QCDTag = tag;
-  oneInfo.weight = xsec*lumi/nevents;
+  oneInfo.weight = xsec*lumi*kf/nevents;
   //weight is one if we are reading data
   //if( tag.find("HTMHT") != std::string::npos ) oneInfo.weight = 1;
   //negative weight for the sample other than QCD and HTMHT
