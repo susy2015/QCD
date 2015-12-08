@@ -17,7 +17,7 @@ git cms-merge-topic -u cms-met:METCorUnc74X
 
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 
-git clone -b Ana_74X_30Nov2015_v3.1 git@github.com:susy2015/SusyAnaTools.git
+git clone -b Ntp_74X_04Dec2015_v4.0 git@github.com:susy2015/SusyAnaTools.git
 
 git clone https://github.com/susy2015/QCD.git
 
