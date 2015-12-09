@@ -10,6 +10,7 @@
 #include "TLorentzVector.h"
 #include "TVector3.h"
 #include "TChain.h"
+#include "TList.h"
 
 #include "Math/QuantFuncMathCore.h"
 #include "TMath.h"
@@ -34,8 +35,8 @@ class ClosureHistgram
   void BookHistgram(const char *);
   TFile *oFile;
   //closure plots on different variables and search bins
-  TH1D *h_pred_met, *h_pred_njets, *h_pred_mt2, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
-  TH1D *h_exp_met, *h_exp_njets, *h_exp_mt2, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
+  TH1D *h_pred_met, *h_pred_njets30, *h_pred_njets50, *h_pred_mt2, *h_pred_ht, *h_pred_mht, *h_pred_ntopjets, *h_pred_nbjets;
+  TH1D *h_exp_met, *h_exp_njets30, *h_exp_njets50, *h_exp_mt2, *h_exp_ht, *h_exp_mht, *h_exp_ntopjets, *h_exp_nbjets;
   TH1D *h_exp_sb, *h_pred_sb;
 };
 
@@ -44,7 +45,8 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   oFile = new TFile(outFileName, "recreate");
   //closure plots on different variables
   h_pred_met = new TH1D("h_pred_met","",50,0,1000);
-  h_pred_njets = new TH1D("h_pred_njets","",20,0,20);
+  h_pred_njets30 = new TH1D("h_pred_njets30","",20,0,20);
+  h_pred_njets50 = new TH1D("h_pred_njets50","",20,0,20);
   h_pred_mt2 = new TH1D("h_pred_mt2","",50,0,1000);
   h_pred_ht = new TH1D("h_pred_ht","",150,0,3000);
   h_pred_mht = new TH1D("h_pred_mht","",50,0,1000);
@@ -52,7 +54,8 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   h_pred_nbjets = new TH1D("h_pred_nbjets","",20,0,20);
 
   h_exp_met = new TH1D("h_exp_met","",50,0,1000);
-  h_exp_njets = new TH1D("h_exp_njets","",20,0,20);
+  h_exp_njets30 = new TH1D("h_exp_njets30","",20,0,20);
+  h_exp_njets50 = new TH1D("h_exp_njets50","",20,0,20);
   h_exp_mt2 = new TH1D("h_exp_mt2","",50,0,1000);
   h_exp_ht = new TH1D("h_exp_ht","",150,0,3000);
   h_exp_mht = new TH1D("h_exp_mht","",50,0,1000);
@@ -71,18 +74,14 @@ class BasicCheckHistgram
 {
  public:
   void BookHistgram(const char *);
-  void BasicCheckPlotsGen();
 
   TFile *oFile;
 
   TH1D *h_b_met_MC[BCBin], *h_b_mt2_MC[BCBin], *h_b_ntopjets_MC[BCBin], *h_b_nbjets_MC[BCBin];
-  TH1D *h_b_ht_MC[BCBin], *h_b_mht_MC[BCBin], *h_b_njets_MC[BCBin];
+  TH1D *h_b_ht_MC[BCBin], *h_b_mht_MC[BCBin], *h_b_njets30_MC[BCBin], *h_b_njets50_MC[BCBin];
 
   TH1D *h_b_met_Data, *h_b_mt2_Data, *h_b_ntopjets_Data, *h_b_nbjets_Data;
-  TH1D *h_b_ht_Data, *h_b_mht_Data, *h_b_njets_Data;
-
-  THStack *hs_b_met_MC, *hs_b_mt2_MC, *hs_b_ntopjets_MC, *hs_b_nbjets_MC;;
-  THStack *hs_b_ht_MC, *hs_b_mht_MC, *hs_b_njets_MC;
+  TH1D *h_b_ht_Data, *h_b_mht_Data, *h_b_njets30_Data, *h_b_njets50_Data;
 
   //TH1D *h_b_mt2_nbnt, *h_b_mt2_ybyt, *h_b_met_nbnt, *h_b_met_ybyt;
   //TH1D *h_b_dphi0_nbnt, *h_b_dphi0_ybyt, *h_b_dphi1_nbnt, *h_b_dphi1_ybyt, *h_b_dphi2_nbnt, *h_b_dphi2_ybyt;
@@ -102,9 +101,10 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     else smalltag = "TTZ";
 
     h_b_met_MC[i] = new TH1D( ("h_b_met_MC_" + smalltag).c_str(),"",20,150,550);
-    h_b_njets_MC[i] = new TH1D( ("h_b_njets_MC_" + smalltag).c_str(),"",20,0,20);
+    h_b_njets30_MC[i] = new TH1D( ("h_b_njets30_MC_" + smalltag).c_str(),"",10,4,14);
+    h_b_njets50_MC[i] = new TH1D( ("h_b_njets50_MC_" + smalltag).c_str(),"",15,2,17);
     h_b_mt2_MC[i] = new TH1D( ("h_b_mt2_MC_" + smalltag).c_str(),"",20,200,600);
-    h_b_ht_MC[i] = new TH1D( ("h_b_ht_MC_" + smalltag).c_str(),"",150,0,3000);
+    h_b_ht_MC[i] = new TH1D( ("h_b_ht_MC_" + smalltag).c_str(),"",50,500,3000);
     h_b_mht_MC[i] = new TH1D( ("h_b_mht_MC_" + smalltag).c_str(),"",50,0,1000);
     h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",5,1,6);
     h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",5,1,6);
@@ -115,7 +115,8 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     h_b_nbjets_MC[i]->SetFillColor(i+2);
     h_b_ht_MC[i]->SetFillColor(i+2);
     h_b_mht_MC[i]->SetFillColor(i+2);
-    h_b_njets_MC[i]->SetFillColor(i+2);
+    h_b_njets30_MC[i]->SetFillColor(i+2);
+    h_b_njets50_MC[i]->SetFillColor(i+2);
 
     h_b_met_MC[i]->SetLineColor(i+2);
     h_b_mt2_MC[i]->SetLineColor(i+2);
@@ -123,94 +124,18 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     h_b_nbjets_MC[i]->SetLineColor(i+2);
     h_b_ht_MC[i]->SetLineColor(i+2);
     h_b_mht_MC[i]->SetLineColor(i+2);
-    h_b_njets_MC[i]->SetLineColor(i+2);
+    h_b_njets30_MC[i]->SetLineColor(i+2);
+    h_b_njets50_MC[i]->SetLineColor(i+2);
   }
 
   h_b_met_Data = new TH1D("h_b_met_Data","",20,150,550);
-  h_b_njets_Data = new TH1D("h_b_njets_Data","",20,0,20);
+  h_b_njets30_Data = new TH1D("h_b_njets30_Data","",10,4,14);
+  h_b_njets50_Data = new TH1D("h_b_njets50_Data","",15,2,17);
   h_b_mt2_Data = new TH1D("h_b_mt2_Data","",20,200,600);
-  h_b_ht_Data = new TH1D("h_b_ht_Data","",150,0,3000);
+  h_b_ht_Data = new TH1D("h_b_ht_Data","",50,500,3000);
   h_b_mht_Data = new TH1D("h_b_mht_Data","",50,0,1000);
   h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",5,1,6);
   h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",5,1,6);
-
-  hs_b_met_MC = new THStack("hs_b_met_MC","");
-  hs_b_mt2_MC = new THStack("hs_b_mt2_MC","");
-  hs_b_ntopjets_MC = new THStack("hs_b_ntopjets_MC","");
-  hs_b_nbjets_MC = new THStack("hs_b_nbjets_MC","");
-  hs_b_ht_MC = new THStack("hs_b_ht_MC","");
-  hs_b_mht_MC = new THStack("hs_b_mht_MC","");
-  hs_b_njets_MC = new THStack("hs_b_njets_MC","");
-
-  return ;
-}
-
-void BasicCheckHistgram::BasicCheckPlotsGen()
-{
-  TLegend* leg = new TLegend(0.6,0.75,0.85,0.85);
-  leg->AddEntry(h_b_met_Data,"Data","l");
-
-  for( Int_t i = 0 ; i < BCBin ; i++ )
-  {
-    hs_b_met_MC->Add(h_b_met_MC[i]);
-    hs_b_mt2_MC->Add(h_b_mt2_MC[i]);
-    hs_b_ntopjets_MC->Add(h_b_ntopjets_MC[i]);
-    hs_b_nbjets_MC->Add(h_b_nbjets_MC[i]);
-    hs_b_ht_MC->Add(h_b_ht_MC[i]);
-    hs_b_mht_MC->Add(h_b_mht_MC[i]);
-    hs_b_njets_MC->Add(h_b_njets_MC[i]);
-
-    std::string smalltag;
-    if (i == 0) smalltag = "LLHadTau";
-    else if (i == 1) smalltag = "Zinv";
-    else if (i == 2) smalltag = "QCD";
-    else smalltag = "TTZ";
- 
-    leg->AddEntry(h_b_met_MC[i],smalltag.c_str(),"l");
-  }
-
-  std::ostringstream strs;
-  strs << (LUMI/1000);
-  std::string lumi_str = strs.str();
-  const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-
-  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
-  title->SetNDC();
-  title->SetTextSize(0.045);
-
-  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
-  c->SetFillColor(0);
-  c->Divide(2,2);
-  //gStyle->SetPaintTextFormat("1.2f");
-  
-  c->cd(1);
-  h_b_met_Data->Draw("");
-  hs_b_met_MC->Draw("same hist");
-  title->Draw("same");
-  leg->Draw("same");
-
-  c->cd(2);
-  h_b_mt2_Data->Draw();
-  hs_b_mt2_MC->Draw("same hist");
-  title->Draw("same");
-  leg->Draw("same");
-
-  c->cd(3);
-  h_b_ntopjets_Data->Draw();
-  hs_b_ntopjets_MC->Draw("same hist");
-  title->Draw("same");
-  leg->Draw("same");
-
-  c->cd(4);
-  h_b_nbjets_Data->Draw();
-  hs_b_nbjets_MC->Draw("same hist");
-  title->Draw("same");
-  leg->Draw("same");
-
-  c->SaveAs( "_BasicCheck_sb.png" );
-  c->SaveAs( "_BasicCheck_sb.pdf" );
-  c->SaveAs( "_BasicCheck_sb.C" );
-  c->Close();
 
   return ;
 }

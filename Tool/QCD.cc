@@ -38,6 +38,8 @@
 #include "TFactorsHeader.h"
 #include "TriggerEff.h"
 
+const double Scale = 3/2.1;
+
 void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
   ClosureHistgram myClosureHistgram;
@@ -77,6 +79,7 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
       double met = tr.getVar<double>("met");
       //closure plots variables
       int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
+      int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
 
@@ -141,7 +144,8 @@ void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWe
           if ( passBJets )
           {
             (myClosureHistgram.h_exp_met)->Fill(met,thisweight*metEff);
-            (myClosureHistgram.h_exp_njets)->Fill(njets30,thisweight*metEff);
+            (myClosureHistgram.h_exp_njets30)->Fill(njets30,thisweight*metEff);
+            (myClosureHistgram.h_exp_njets50)->Fill(njets50,thisweight*metEff);
             (myClosureHistgram.h_exp_mt2)->Fill(MT2,thisweight*metEff);
             (myClosureHistgram.h_exp_ht)->Fill(ht,thisweight*metEff);
             (myClosureHistgram.h_exp_mht)->Fill(mht,thisweight*metEff);
@@ -219,7 +223,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
     double thisweight = (*iter_QCDSampleInfos).weight;
     //negative weight for other MC samples
     if( !( ( (*iter_QCDSampleInfos).QCDTag ).find("QCD") != std::string::npos) ) thisweight = -thisweight;
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
 
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
@@ -234,6 +238,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       double met = tr.getVar<double>("met");
       //closure plots variables
       int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
+      int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
 
@@ -255,12 +260,15 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         double predweight = thisweight * metEff * QCDTFactor[metbin_number][mt2bin_number];
         //double predweight_err = thisweight * metEff * QCDTFactor_err[metbin_number][mt2bin_number];
         (myClosureHistgram.h_pred_met)->Fill(met,predweight);
-        (myClosureHistgram.h_pred_njets)->Fill(njets30,predweight);
+        (myClosureHistgram.h_pred_njets30)->Fill(njets30,predweight);
+        (myClosureHistgram.h_pred_njets50)->Fill(njets50,predweight);
         (myClosureHistgram.h_pred_mt2)->Fill(MT2,predweight);
         (myClosureHistgram.h_pred_ht)->Fill(ht,predweight);
         (myClosureHistgram.h_pred_mht)->Fill(mht,predweight);
         (myClosureHistgram.h_pred_ntopjets)->Fill(ntopjets,predweight);
         (myClosureHistgram.h_pred_nbjets)->Fill(nbottomjets,predweight);
+
+        if( ht < 500) std::cout << ht << " small ht, what the fuck!!" << std::endl;
 
         int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0 )
@@ -307,7 +315,7 @@ void LoopQCDBasicCheck( QCDSampleWeight& myQCDSampleWeight )
     tr.registerFunction(&mypassBaselineFunc);
 
     double thisweight = (*iter_QCDSampleInfos).weight;
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -321,6 +329,7 @@ void LoopQCDBasicCheck( QCDSampleWeight& myQCDSampleWeight )
       double met = tr.getVar<double>("met");
       //closure plots variables
       int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
+      int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
 
@@ -347,7 +356,8 @@ void LoopQCDBasicCheck( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_nbjets_Data)->Fill(nbottomjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_njets_Data)->Fill(njets30,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*metEff);
         }
         else
         {
@@ -369,13 +379,12 @@ void LoopQCDBasicCheck( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbottomjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_njets_MC)[ih]->Fill(njets30,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*metEff);
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
-
-  myBasicCheckHistgram.BasicCheckPlotsGen();
 
   (myBasicCheckHistgram.oFile)->Write();
   (myBasicCheckHistgram.oFile)->Close();

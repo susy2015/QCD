@@ -25,7 +25,7 @@ LIBS     = $(shell root-config --glibs)
 MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 
-PROGRAMS = tupleTest QCD ClosurePlots
+PROGRAMS = tupleTest QCD ClosurePlots BasicCheckPlots
 
 all: mkobj sampPyWrap $(PROGRAMS)
 
@@ -64,6 +64,9 @@ QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 ClosurePlots: $(ODIR)/ClosurePlots.o
+	$(LD) $^ $(LIBS)  -o $@
+
+BasicCheckPlots: $(ODIR)/BasicCheckPlots.o
 	$(LD) $^ $(LIBS)  -o $@
 
 clean:

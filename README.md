@@ -47,11 +47,15 @@ And it will be involved into make command automatically and we do not have error
 
 The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheck
 
-5.Closure plots:
+5.Making plots:
 
-Read information from 3 root files: PredQCD.root, ExpQCD.root and also BasicCheckQCD.root to get all plots
+For closure and MCExp vs DataPred, reading PredQCD.root and ExpQCD.root:
 
-./Closure closure_QCD_20151204(target directory name)
+./ClosurePlots QCDClosure20151204 or ./ClosurePlots QCDDataMC20151209
+
+For Data/MC comparison in CS, reading BasicCheckQCD.root:
+
+./BasicCheckPlots QCDBasicCheck20151209
 
 6.Some useful tools:
 

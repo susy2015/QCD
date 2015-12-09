@@ -9,8 +9,7 @@ def find_nth(haystack, needle, n):
   return start
 
 d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Nov_2015_Ntp_v3X/"
-#d = "/eos/uscms/store/group/lpcsusyhad/hua/"
-#os.chdir(d)
+#d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X/"
 sample_tag = sys.argv[1]
 
 for dirname, dirnames, filenames in os.walk(d):
