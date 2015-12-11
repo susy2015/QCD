@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
   {
     std::cerr <<"Please give at least 1 argument " << "TargetDirName" << std::endl;
     std::cerr <<" Valid configurations are " << std::endl;
-    std::cerr <<" ./BasicCheckPlots QCDBasicCheck20151209" << std::endl;
+    std::cerr <<" ./BasicCheckPlots BasicCheckQCD20151209 or ./BasicCheckPlots BasicCheckLL20151211" << std::endl;
     return -1;
   }
 

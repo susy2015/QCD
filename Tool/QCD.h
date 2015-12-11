@@ -21,6 +21,8 @@
 #include "QCDBinFunction.h"
 #include "QCDReWeighting.h"
 
+std::string dir_out = "/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/";
+
 //############finish the definition of class AccRecoEffs######################
 //baseline cut function definition
 static BaselineVessel *myBaselineVessel;
@@ -305,7 +307,7 @@ void QCDFactors::printQCDFactorInfo()
 void QCDFactors::printTFactorsHeader()
 {
   std::ofstream TFactorsHeader;
-  TFactorsHeader.open ("TFactorsHeader.h");
+  TFactorsHeader.open ( (dir_out + "TFactorsHeader.h").c_str() );
 
   int i_cal = 0;
   int j_cal = 0;
@@ -404,9 +406,9 @@ void QCDFactors::TFactorsPlotsGen()
   title->SetTextSize(0.045);
   title->Draw("same");
 
-  c->SaveAs( "_tfactors2d.png" );
-  c->SaveAs( "_tfactors2d.pdf" );
-  c->SaveAs( "_tfactors2d.C" );
+  c->SaveAs( (dir_out + "_tfactors2d.png").c_str() );
+  c->SaveAs( (dir_out + "_tfactors2d.pdf").c_str() );
+  c->SaveAs( (dir_out + "_tfactors2d.C").c_str() );
   c->Close();
   return ;
 }
@@ -492,9 +494,9 @@ void QCDFactors::CountingPlotsGen()
   countInverted->Draw("colztexte");
   title->Draw("same");
 
-  c->SaveAs( "_Allcount2d.png" );
-  c->SaveAs( "_Allcount2d.pdf" );
-  c->SaveAs( "_Allcount2d.C" );
+  c->SaveAs( (dir_out + "_Allcount2d.png").c_str() );
+  c->SaveAs( (dir_out + "_Allcount2d.pdf").c_str() );
+  c->SaveAs( (dir_out + "_Allcount2d.C").c_str() );
   c->Close();
 
   return ;

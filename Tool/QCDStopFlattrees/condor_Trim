@@ -22,6 +22,15 @@ notify_user = hua.wei@cern.ch
 #arguments = $ENV(CMSSW_BASE) _HTMHT-Run2015D-PromptReco
 #Queue
 
+arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015C-25ns
+Queue
+
+arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-05O
+Queue
+
+arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-PromptReco
+Queue
+
 ####TTJets####
 #arguments = $ENV(CMSSW_BASE) TTJets_TuneCUETP8M1
 #Queue 
@@ -49,31 +58,31 @@ notify_user = hua.wei@cern.ch
 #arguments = $ENV(CMSSW_BASE) TTZToQQ_
 #Queue
 
-arguments = $ENV(CMSSW_BASE) TTWJetsToLNu_
-Queue
+#arguments = $ENV(CMSSW_BASE) TTWJetsToLNu_
+#Queue
 
-arguments = $ENV(CMSSW_BASE) TTWJetsToQQ_
-Queue
+#arguments = $ENV(CMSSW_BASE) TTWJetsToQQ_
+#Queue
 
 ####Di-Boson####
-arguments = $ENV(CMSSW_BASE) WW_
-Queue
+#arguments = $ENV(CMSSW_BASE) WW_
+#Queue
 
-arguments = $ENV(CMSSW_BASE) WZ_
-Queue
+#arguments = $ENV(CMSSW_BASE) WZ_
+#Queue
 
-arguments = $ENV(CMSSW_BASE) ZZ_
-Queue
+#arguments = $ENV(CMSSW_BASE) ZZ_
+#Queue
 
 ####Tri-Boson
-arguments = $ENV(CMSSW_BASE) WWZ_
-Queue
+#arguments = $ENV(CMSSW_BASE) WWZ_
+#Queue
 
-arguments = $ENV(CMSSW_BASE) WZZ_
-Queue
+#arguments = $ENV(CMSSW_BASE) WZZ_
+#Queue
 
-arguments = $ENV(CMSSW_BASE) ZZZ_
-Queue
+#arguments = $ENV(CMSSW_BASE) ZZZ_
+#Queue
 
 ####SingleTop####
 #arguments = $ENV(CMSSW_BASE) ST_tW

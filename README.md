@@ -43,9 +43,9 @@ And it will be involved into make command automatically and we do not have error
 
 4.Run the QCD code:
 
-./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v3.txt
+./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt
 
-The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheck
+The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheckQCD BasicCheckLL
 
 5.Making plots:
 
@@ -55,7 +55,7 @@ For closure and MCExp vs DataPred, reading PredQCD.root and ExpQCD.root:
 
 For Data/MC comparison in CS, reading BasicCheckQCD.root:
 
-./BasicCheckPlots QCDBasicCheck20151209
+./BasicCheckPlots BasicCheckQCD20151209
 
 6.Some useful tools:
 

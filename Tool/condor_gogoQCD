@@ -1,0 +1,37 @@
+universe = vanilla
+request_disk   = 50 GB
+request_memory = 1.5 GB
+executable = $ENV(CMSSW_BASE)/src/QCD/Tool/gogoQCD.sh
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/Tool/QCD, $ENV(CMSSW_BASE)/src/QCD/Tool/gogoQCD.sh
+
+Output = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stdout
+Error = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stderr
+Log = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).log
+notify_user = hua.wei@cern.ch
+
+####Expectation from QCD MC####
+
+arguments = ExpMCOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
+
+####Prediction from QCD MC####
+
+arguments = PredMCOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
+
+####Prediction from Data####
+
+arguments = PredDataOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
+
+####BasicCheck QCD Inverted Delta Phi####
+
+arguments = BasicCheckQCD QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
+
+####BasicCheck LL Single Muon####
+
+

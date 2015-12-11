@@ -99,7 +99,9 @@ namespace FakeMET
 double QCDGetTriggerEff( std::string tag, double met )
 {
   double METEff = 1;
-  if( tag.find("HTMHT") != std::string::npos ){ METEff = 1; return METEff; }
+  if( tag.find("HTMHT") != std::string::npos 
+    ||tag.find("SingleMuon") != std::string::npos
+    ){ METEff = 1; return METEff; }
   else if( tag.find("QCD") != std::string::npos ){ METEff = FakeMET::GetTriggerEffWeight( met ); return METEff; }
   else if( 
            tag.find("TTJets") != std::string::npos 

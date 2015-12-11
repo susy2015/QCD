@@ -186,14 +186,16 @@ void ClosurePlots::ClosureTemplate(
       pred_err = h_pred->GetBinError(i);
       exp_err = h_exp->GetBinError(i);
       //std::cout << "i: " << i << " pred_err: " << pred_err << " exp_err: " << exp_err << std::endl;
-      if ( pred && exp ) 
+      double r = 1;
+      double e = 10;
+      if ( (pred > 0) && (exp > 0) ) 
       { 
-        double r = pred/exp;
-        ratio->SetBinContent(i,r-1);
-        double e = std::sqrt( pred_err*pred_err + exp_err*exp_err*r*r );
-        std::cout << "i: " << i << " Ratio: " << r-1 << " Error: " << e << std::endl;
-        ratio->SetBinError( i , e );
+        r = pred/exp;
+        e = std::sqrt( pred_err*pred_err + exp_err*exp_err*r*r ) / exp;
+        std::cout << "i: " << i << " Pred: "<< pred << " Exp: "<< exp << " Ratio: " << r-1 << " Error: " << e << std::endl;
       }
+      ratio->SetBinContent(i,r-1);
+      ratio->SetBinError(i,e);
     }
   }
   else

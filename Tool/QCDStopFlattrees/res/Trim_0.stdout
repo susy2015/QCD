@@ -1,0 +1,208 @@
+The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData, BasicCheckQCD, BasicCheckLL
+The run mode we have right now is: ExpMCOnly
+TreeUtilities : FillChain QCD_HT500to700_
+No. of Entries in this tree : 5271
+TreeUtilities : FillChain QCD_HT700to1000_
+No. of Entries in this tree : 28564
+TreeUtilities : FillChain QCD_HT1000to1500_
+No. of Entries in this tree : 37283
+TreeUtilities : FillChain QCD_HT1500to2000_
+No. of Entries in this tree : 95577
+TreeUtilities : FillChain QCD_HT2000toInf_
+No. of Entries in this tree : 103859
+TreeUtilities : FillChain HTMHT
+No. of Entries in this tree : 362948
+TreeUtilities : FillChain TTJets_
+No. of Entries in this tree : 258283
+TreeUtilities : FillChain ST_tW_top
+No. of Entries in this tree : 20791
+TreeUtilities : FillChain ST_tW_antitop
+No. of Entries in this tree : 20701
+TreeUtilities : FillChain WJetsToLNu_HT-400To600_
+No. of Entries in this tree : 227002
+TreeUtilities : FillChain WJetsToLNu_HT-600ToInf_
+No. of Entries in this tree : 189061
+TreeUtilities : FillChain ZJetsToNuNu_HT-400To600_
+No. of Entries in this tree : 292933
+TreeUtilities : FillChain ZJetsToNuNu_HT-600ToInf_
+No. of Entries in this tree : 367422
+TreeUtilities : FillChain TTZToLLNuNu_
+No. of Entries in this tree : 85132
+TreeUtilities : FillChain TTZToQQ_
+No. of Entries in this tree : 41234
+TreeUtilities : FillChain HTMHT
+No. of Entries in this tree : 362948
+TreeUtilities : FillChain TTJets_
+No. of Entries in this tree : 258283
+TreeUtilities : FillChain ST_tW_top
+No. of Entries in this tree : 20791
+TreeUtilities : FillChain ST_tW_antitop
+No. of Entries in this tree : 20701
+TreeUtilities : FillChain WJetsToLNu_HT-400To600_
+No. of Entries in this tree : 227002
+TreeUtilities : FillChain WJetsToLNu_HT-600ToInf_
+No. of Entries in this tree : 189061
+TreeUtilities : FillChain ZJetsToNuNu_HT-400To600_
+No. of Entries in this tree : 292933
+TreeUtilities : FillChain ZJetsToNuNu_HT-600ToInf_
+No. of Entries in this tree : 367422
+TreeUtilities : FillChain TTZToLLNuNu_
+No. of Entries in this tree : 85132
+TreeUtilities : FillChain TTZToQQ_
+No. of Entries in this tree : 41234
+TreeUtilities : FillChain QCD_HT500to700_
+No. of Entries in this tree : 5326
+TreeUtilities : FillChain QCD_HT700to1000_
+No. of Entries in this tree : 28971
+TreeUtilities : FillChain QCD_HT1000to1500_
+No. of Entries in this tree : 38818
+TreeUtilities : FillChain QCD_HT1500to2000_
+No. of Entries in this tree : 95577
+TreeUtilities : FillChain QCD_HT2000toInf_
+No. of Entries in this tree : 103859
+TFactor calculation and Expectation plots: 
+Sample Type: QCD_HT500to700_; Weight: 0.74679
+----------------------------------------------------------------------
+ M_T2 : a variable for measuring masses when missing energy is expected.
+ If you use MT2 or this library, please cite:
+ 	(o) C.G.Lester, D.J.Summers 
+ 	    Phys.Lett.B.463:99-103 (1999) hep-ph/9906349
+ 	(o) A.J.Barr, C.G.Lester, P.Stephens 
+ 	    J.Phys.G 29:2343-2363  (2003) hep-ph/0304226
+ If you use MTGEN please also cite:
+ 	(o) C.G.Lester, A.J.Barr (2007) arXiv:0708.1028 (hep-ph)
+ 	    JHEP 12(2007)102
+ If you use the ChengHanBisection MT2 calculator, please also cite:
+ 	(o) H.Cheng, Z.Han,  arXiv:0810.5178
+----------------------------------------------------------------------
+Sample Type: QCD_HT700to1000_; Weight: 0.21241891354
+Sample Type: QCD_HT1000to1500_; Weight: 0.10717390275
+Sample Type: QCD_HT1500to2000_; Weight: 0.015702194378
+Sample Type: QCD_HT2000toInf_; Weight: 0.0075504247782
+20000	16.1
+40000	25.6
+60000	34.98
+80000	44.38
+100000	53.67
+Counting Normal MC: 
+QCD Files:0, METBin:0,MT2Bin:0; :2
+QCD Files:0, METBin:0,MT2Bin:1; :0
+QCD Files:0, METBin:0,MT2Bin:2; :0
+QCD Files:0, METBin:1,MT2Bin:0; :1
+QCD Files:0, METBin:1,MT2Bin:1; :1
+QCD Files:0, METBin:1,MT2Bin:2; :0
+QCD Files:0, METBin:2,MT2Bin:0; :0
+QCD Files:0, METBin:2,MT2Bin:1; :0
+QCD Files:0, METBin:2,MT2Bin:2; :1
+QCD Files:1, METBin:0,MT2Bin:0; :6
+QCD Files:1, METBin:0,MT2Bin:1; :0
+QCD Files:1, METBin:0,MT2Bin:2; :0
+QCD Files:1, METBin:1,MT2Bin:0; :5
+QCD Files:1, METBin:1,MT2Bin:1; :2
+QCD Files:1, METBin:1,MT2Bin:2; :0
+QCD Files:1, METBin:2,MT2Bin:0; :1
+QCD Files:1, METBin:2,MT2Bin:1; :0
+QCD Files:1, METBin:2,MT2Bin:2; :0
+QCD Files:2, METBin:0,MT2Bin:0; :0
+QCD Files:2, METBin:0,MT2Bin:1; :0
+QCD Files:2, METBin:0,MT2Bin:2; :0
+QCD Files:2, METBin:1,MT2Bin:0; :0
+QCD Files:2, METBin:1,MT2Bin:1; :0
+QCD Files:2, METBin:1,MT2Bin:2; :0
+QCD Files:2, METBin:2,MT2Bin:0; :0
+QCD Files:2, METBin:2,MT2Bin:1; :0
+QCD Files:2, METBin:2,MT2Bin:2; :0
+QCD Files:3, METBin:0,MT2Bin:0; :7
+QCD Files:3, METBin:0,MT2Bin:1; :3
+QCD Files:3, METBin:0,MT2Bin:2; :0
+QCD Files:3, METBin:1,MT2Bin:0; :6
+QCD Files:3, METBin:1,MT2Bin:1; :2
+QCD Files:3, METBin:1,MT2Bin:2; :1
+QCD Files:3, METBin:2,MT2Bin:0; :1
+QCD Files:3, METBin:2,MT2Bin:1; :0
+QCD Files:3, METBin:2,MT2Bin:2; :1
+QCD Files:4, METBin:0,MT2Bin:0; :246
+QCD Files:4, METBin:0,MT2Bin:1; :57
+QCD Files:4, METBin:0,MT2Bin:2; :15
+QCD Files:4, METBin:1,MT2Bin:0; :229
+QCD Files:4, METBin:1,MT2Bin:1; :76
+QCD Files:4, METBin:1,MT2Bin:2; :37
+QCD Files:4, METBin:2,MT2Bin:0; :20
+QCD Files:4, METBin:2,MT2Bin:1; :7
+QCD Files:4, METBin:2,MT2Bin:2; :21
+Counting Normal: 
+METBin:0,MT2Bin:0; :3.3867678153(1.1840067114)
+METBin:0,MT2Bin:1; :0.34149426494(0.063159993998)
+METBin:0,MT2Bin:2; :0.081000957021(0.029242669423)
+METBin:1,MT2Bin:0; :2.9650949769(0.89321827018)
+METBin:1,MT2Bin:1; :1.473706185(0.80793866981)
+METBin:1,MT2Bin:2; :0.246420915(0.048537498273)
+METBin:2,MT2Bin:0; :0.34995126595(0.21565836878)
+METBin:2,MT2Bin:1; :0.048250234503(0.019976546256)
+METBin:2,MT2Bin:2; :0.85554142576(0.74775614696)
+Counting Inverted MC: 
+QCD Files:0, METBin:0,MT2Bin:0; :23
+QCD Files:0, METBin:0,MT2Bin:1; :1
+QCD Files:0, METBin:0,MT2Bin:2; :0
+QCD Files:0, METBin:1,MT2Bin:0; :7
+QCD Files:0, METBin:1,MT2Bin:1; :2
+QCD Files:0, METBin:1,MT2Bin:2; :0
+QCD Files:0, METBin:2,MT2Bin:0; :1
+QCD Files:0, METBin:2,MT2Bin:1; :2
+QCD Files:0, METBin:2,MT2Bin:2; :0
+QCD Files:1, METBin:0,MT2Bin:0; :62
+QCD Files:1, METBin:0,MT2Bin:1; :13
+QCD Files:1, METBin:0,MT2Bin:2; :0
+QCD Files:1, METBin:1,MT2Bin:0; :52
+QCD Files:1, METBin:1,MT2Bin:1; :20
+QCD Files:1, METBin:1,MT2Bin:2; :0
+QCD Files:1, METBin:2,MT2Bin:0; :2
+QCD Files:1, METBin:2,MT2Bin:1; :0
+QCD Files:1, METBin:2,MT2Bin:2; :0
+QCD Files:2, METBin:0,MT2Bin:0; :1
+QCD Files:2, METBin:0,MT2Bin:1; :0
+QCD Files:2, METBin:0,MT2Bin:2; :0
+QCD Files:2, METBin:1,MT2Bin:0; :1
+QCD Files:2, METBin:1,MT2Bin:1; :0
+QCD Files:2, METBin:1,MT2Bin:2; :0
+QCD Files:2, METBin:2,MT2Bin:0; :1
+QCD Files:2, METBin:2,MT2Bin:1; :0
+QCD Files:2, METBin:2,MT2Bin:2; :0
+QCD Files:3, METBin:0,MT2Bin:0; :92
+QCD Files:3, METBin:0,MT2Bin:1; :20
+QCD Files:3, METBin:0,MT2Bin:2; :3
+QCD Files:3, METBin:1,MT2Bin:0; :110
+QCD Files:3, METBin:1,MT2Bin:1; :37
+QCD Files:3, METBin:1,MT2Bin:2; :32
+QCD Files:3, METBin:2,MT2Bin:0; :16
+QCD Files:3, METBin:2,MT2Bin:1; :7
+QCD Files:3, METBin:2,MT2Bin:2; :14
+QCD Files:4, METBin:0,MT2Bin:0; :2253
+QCD Files:4, METBin:0,MT2Bin:1; :488
+QCD Files:4, METBin:0,MT2Bin:2; :290
+QCD Files:4, METBin:1,MT2Bin:0; :3652
+QCD Files:4, METBin:1,MT2Bin:1; :819
+QCD Files:4, METBin:1,MT2Bin:2; :909
+QCD Files:4, METBin:2,MT2Bin:0; :715
+QCD Files:4, METBin:2,MT2Bin:1; :223
+QCD Files:4, METBin:2,MT2Bin:2; :703
+Counting Inverted: 
+METBin:0,MT2Bin:0; :34.979737261(3.9733057698)
+METBin:0,MT2Bin:1; :5.3689257202(1.0849103052)
+METBin:0,MT2Bin:2; :1.5997091307(0.13142397757)
+METBin:1,MT2Bin:0; :37.638081896(2.548922552)
+METBin:1,MT2Bin:1; :10.374389656(1.4400138525)
+METBin:1,MT2Bin:2; :6.2134026413(0.24435831926)
+METBin:2,MT2Bin:0; :6.3805973607(0.83912553326)
+METBin:2,MT2Bin:1; :3.0422386196(1.0629345787)
+METBin:2,MT2Bin:2; :5.1015971959(0.208636266)
+Translation Factors: 
+METBin:0,MT2Bin:0; :0.096820847739(0.035590198007)
+METBin:0,MT2Bin:1; :0.06360569744(0.017423820897)
+METBin:0,MT2Bin:2; :0.050634803208(0.018747342355)
+METBin:1,MT2Bin:0; :0.078779120176(0.024324059267)
+METBin:1,MT2Bin:1; :0.14205232634(0.080335503362)
+METBin:1,MT2Bin:2; :0.039659576117(0.0079659292457)
+METBin:2,MT2Bin:0; :0.054846160347(0.034560160646)
+METBin:2,MT2Bin:1; :0.015860108472(0.0085921283743)
+METBin:2,MT2Bin:2; :0.16770070096(0.14673331652)

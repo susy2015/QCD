@@ -47,9 +47,9 @@ int main(int argc, char* argv[])
   std::string output_str;
   //here is a little bit tricky when dealing with the slash... need to improve
   //for all the MC samples
-  std::string tag = input_str.substr(find_Nth(input_str,7,"/") + 1,find_Nth(input_str,8,"/")-find_Nth(input_str,7,"/")-1);
+  //std::string tag = input_str.substr(find_Nth(input_str,7,"/") + 1,find_Nth(input_str,8,"/")-find_Nth(input_str,7,"/")-1);
   //for all the data samples
-  //std::string tag = input_str.substr(find_Nth(input_str,8,"/") + 1,find_Nth(input_str,9,"/")-find_Nth(input_str,8,"/")-1);
+  std::string tag = input_str.substr(find_Nth(input_str,8,"/") + 1,find_Nth(input_str,9,"/")-find_Nth(input_str,8,"/")-1);
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
   
