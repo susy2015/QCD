@@ -1,0 +1,19 @@
+SysError in <TFile::ReadBuffer>: error reading from file /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_71.root (No such file or directory)
+Error in <TFile::Init>: /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_71.root failed to read the file type data.
+Error in <TFile::ReadBuffer>: error reading all requested bytes from file /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_1.root, got 0 of 5495
+Warning in <TFile::GetRecordHeader>: /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_1.root: failed to read the StreamerInfo data from disk.
+Error in <TFile::ReadBuffer>: error reading all requested bytes from file /eos/uscms/store/user/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_v3/Skimmed_MET175_ZJetsToNuNu_HT-400To600_13TeV-madgraphstopFlatNtuples.root, got 259893 of 457739
+Error in <TKey::ReadFile>: Failed to read data.
+Error in <TChain::LoadTree>: Cannot find tree with name stopTreeMaker/AUX in file /eos/uscms/store/user/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_v3/Skimmed_MET175_ZJetsToNuNu_HT-400To600_13TeV-madgraphstopFlatNtuples.root
+Error in <TFile::ReadBuffer>: error reading all requested bytes from file /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_1.root, got 0 of 300
+Error in <TFile::Init>: /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_1.root failed to read the file type data.
+Warning in <TBasket::ReadBasketBuffers>: basket: has fNevBuf=0 but fEntryOffset=0, pos=200282, len=16252, fNbytes=0, fObjlen=0, trying to repair
+Error in <TBranchElement::GetBasket>: File: /eos/uscms/store/user/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_v3/Skimmed_MET175_ZJetsToNuNu_HT-400To600_13TeV-madgraphstopFlatNtuples.root at byte:0, branch:trksForIsoVetoLVec, entry:144, badread=0, nerrors=1, basketnumber=1
+R__unzip: error -5 in inflate (zlib)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 16322, fKeylen = 74, fObjlen = 31734, noutot = 0, nout=0, nin=16248, nbuf=31734
+Error in <TBranchElement::GetBasket>: File: /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_71.root at byte:1643, branch:jetsLVec, entry:0, badread=1, nerrors=2, basketnumber=0
+R__unzip: error -3 in inflate (zlib)
+Error in <TBasket::ReadBasketBuffers>: fNbytes = 22621, fKeylen = 85, fObjlen = 30452, noutot = 0, nout=0, nin=22536, nbuf=30452
+Error in <TBranchElement::GetBasket>: File: /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_17.root at byte:1021779, branch:ScaleWeightsMiniAOD, entry:354, badread=1, nerrors=3, basketnumber=1
+Error in <TFile::ReadBuffer>: error reading all requested bytes from file /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_10.root, got 4338 of 5086
+Error in <TBranchElement::GetBasket>: File: /eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_MET175_v3/Skimmed_MET175_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_10.root at byte:0, branch:loose_isoTrks_charge, entry:0, badread=1, nerrors=4, basketnumber=0

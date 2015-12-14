@@ -70,7 +70,7 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   return ;
 }
 
-#define BCBin 4
+#define BCBin 6
 
 class BasicCheckHistgram
 {
@@ -97,9 +97,12 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
   for( Int_t i = 0 ; i < BCBin ; i++ )
   {
     std::string smalltag;
-    if (i == 0) smalltag = "LLHadTau";
-    else if (i == 1) smalltag = "Zinv";
-    else if (i == 2) smalltag = "QCD";
+
+    if (i == 0) smalltag = "TTJets";
+    else if (i == 1) smalltag = "SingleTop";
+    else if (i == 2) smalltag = "WJets";
+    else if (i == 3) smalltag = "ZJets";
+    else if (i == 4) smalltag = "QCD";
     else smalltag = "TTZ";
 
     h_b_met_MC[i] = new TH1D( ("h_b_met_MC_" + smalltag).c_str(),"",20,150,550);

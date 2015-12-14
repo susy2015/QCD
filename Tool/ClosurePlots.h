@@ -51,7 +51,7 @@ class ClosurePlots
                        TString XTitle,
                        double min,
                        double max
-                       );
+                      );
 };
 
 void ClosurePlots::Initialization(std::string dir)
@@ -61,7 +61,7 @@ void ClosurePlots::Initialization(std::string dir)
 
   finExp = TFile::Open("ExpQCD.root");
   listExp = finExp->GetListOfKeys();
-  finPred = TFile::Open("PredQCD.root");
+  finPred = TFile::Open("PredQCDData.root");
   listPred = finPred->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1
@@ -150,7 +150,9 @@ void ClosurePlots::ClosureTemplate(
   h_exp->Draw("e1"); 
   h_pred->Draw("e0 same");
 
-  const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
+  //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2015, 0.59 fb^{-1}, #sqrt{s} = 13 TeV";
+
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);

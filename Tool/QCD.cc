@@ -38,7 +38,7 @@
 #include "TFactorsHeader.h"
 #include "TriggerEff.h"
 
-const double Scale = 0.5/2.1;
+const double Scale = 0.59/2.1;
 
 void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
@@ -260,6 +260,23 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
       
       if (passBaseline_dPhisInverted)
       {
+        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        {
+          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
+          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
+          bool foundTrigger = false;
+
+          for(unsigned it=0; it<TriggerNames.size(); it++)
+          {
+            if( TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_v*") )
+            {
+              if( PassTrigger[it] ) foundTrigger = true;
+            }
+          }
+
+          if( !foundTrigger ) continue;
+        }
+
         double predweight = thisweight * metEff * QCDTFactor[metbin_number][mt2bin_number];
         //double predweight_err = thisweight * metEff * QCDTFactor_err[metbin_number][mt2bin_number];
         (myClosureHistgram.h_pred_met)->Fill(met,predweight);
@@ -353,6 +370,20 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
       {
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
+          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
+          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
+          bool foundTrigger = false;
+
+          for(unsigned it=0; it<TriggerNames.size(); it++)
+          {
+            if( TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_v*") )
+            {
+              if( PassTrigger[it] ) foundTrigger = true;
+            }
+          }
+
+          if( !foundTrigger ) continue;
+
           (myBasicCheckHistgram.h_b_met_Data)->Fill(met,thisweight*metEff);
           (myBasicCheckHistgram.h_b_mt2_Data)->Fill(MT2,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*metEff);
@@ -366,14 +397,12 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
         {
           Int_t ih = -1;
 
-          if( 
-              ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos 
-           || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
-           || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
-            ) ih = 0;
-          else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos ) ih = 1;
-          else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos ) ih = 2;
-          else if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos ) ih = 3;
+          if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ih = 0;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos ) ih = 1;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos ) ih = 2;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos ) ih = 3;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos ) ih = 4;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos ) ih = 5;
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
 
           (myBasicCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*metEff);
@@ -417,7 +446,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
     tr.registerFunction(&mypassBaselineFunc);
 
     double thisweight = (*iter_QCDSampleInfos).weight;
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("SingleMuon") != std::string::npos ) thisweight = 1 * Scale;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -449,8 +478,22 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
 
       if ( passBaselineLL && (nMuons == 1) )
       {
-        if( (*iter_QCDSampleInfos).QCDTag == "SingleMuon" )
+        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
+          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
+          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
+          bool foundTrigger = false;
+
+          for(unsigned it=0; it<TriggerNames.size(); it++)
+          {
+            if( TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_v*") )
+            {
+              if( PassTrigger[it] ) foundTrigger = true;
+            }
+          }
+
+          if( !foundTrigger ) continue;
+
           (myBasicCheckHistgram.h_b_met_Data)->Fill(met,thisweight*metEff);
           (myBasicCheckHistgram.h_b_mt2_Data)->Fill(MT2,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*metEff);
@@ -464,14 +507,12 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
         {
           Int_t ih = -1;
 
-          if( 
-              ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos 
-           || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
-           || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
-            ) ih = 0;
-          else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos ) ih = 1;
-          else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos ) ih = 2;
-          else if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos ) ih = 3;
+          if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ih = 0;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos ) ih = 1;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos ) ih = 2;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos ) ih = 3;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos ) ih = 4;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos ) ih = 5;
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
 
           (myBasicCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*metEff);

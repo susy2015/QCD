@@ -1,0 +1,177 @@
+The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData, BasicCheckQCD, BasicCheckLL
+The run mode we have right now is: PredDataOnly
+TreeUtilities : FillChain QCD_HT500to700_
+No. of Entries in this tree : 5326
+TreeUtilities : FillChain QCD_HT700to1000_
+No. of Entries in this tree : 28971
+TreeUtilities : FillChain QCD_HT1000to1500_
+No. of Entries in this tree : 38818
+TreeUtilities : FillChain QCD_HT1500to2000_
+No. of Entries in this tree : 95577
+TreeUtilities : FillChain QCD_HT2000toInf_
+No. of Entries in this tree : 103859
+TreeUtilities : FillChain HTMHT
+No. of Entries in this tree : 362948
+TreeUtilities : FillChain TTJets_
+No. of Entries in this tree : 258283
+TreeUtilities : FillChain ST_tW_top
+No. of Entries in this tree : 20791
+TreeUtilities : FillChain ST_tW_antitop
+No. of Entries in this tree : 20701
+TreeUtilities : FillChain WJetsToLNu_HT-400To600_
+No. of Entries in this tree : 227002
+TreeUtilities : FillChain WJetsToLNu_HT-600ToInf_
+No. of Entries in this tree : 189061
+TreeUtilities : FillChain ZJetsToNuNu_HT-400To600_
+No. of Entries in this tree : 292933
+TreeUtilities : FillChain ZJetsToNuNu_HT-600ToInf_
+No. of Entries in this tree : 367422
+TreeUtilities : FillChain TTZToLLNuNu_
+No. of Entries in this tree : 85132
+TreeUtilities : FillChain TTZToQQ_
+No. of Entries in this tree : 41234
+TreeUtilities : FillChain HTMHT
+No. of Entries in this tree : 362948
+TreeUtilities : FillChain TTJets_
+No. of Entries in this tree : 258283
+TreeUtilities : FillChain ST_tW_top
+No. of Entries in this tree : 20791
+TreeUtilities : FillChain ST_tW_antitop
+No. of Entries in this tree : 20701
+TreeUtilities : FillChain WJetsToLNu_HT-400To600_
+No. of Entries in this tree : 227002
+TreeUtilities : FillChain WJetsToLNu_HT-600ToInf_
+No. of Entries in this tree : 189061
+TreeUtilities : FillChain ZJetsToNuNu_HT-400To600_
+No. of Entries in this tree : 292933
+TreeUtilities : FillChain ZJetsToNuNu_HT-600ToInf_
+No. of Entries in this tree : 367422
+TreeUtilities : FillChain TTZToLLNuNu_
+No. of Entries in this tree : 85132
+TreeUtilities : FillChain TTZToQQ_
+No. of Entries in this tree : 41234
+TreeUtilities : FillChain QCD_HT500to700_
+No. of Entries in this tree : 5326
+TreeUtilities : FillChain QCD_HT700to1000_
+No. of Entries in this tree : 28971
+TreeUtilities : FillChain QCD_HT1000to1500_
+No. of Entries in this tree : 38818
+TreeUtilities : FillChain QCD_HT1500to2000_
+No. of Entries in this tree : 95577
+TreeUtilities : FillChain QCD_HT2000toInf_
+No. of Entries in this tree : 103859
+Prediction: 
+Sample Type: HTMHT; Weight: 0.280952
+----------------------------------------------------------------------
+ M_T2 : a variable for measuring masses when missing energy is expected.
+ If you use MT2 or this library, please cite:
+ 	(o) C.G.Lester, D.J.Summers 
+ 	    Phys.Lett.B.463:99-103 (1999) hep-ph/9906349
+ 	(o) A.J.Barr, C.G.Lester, P.Stephens 
+ 	    J.Phys.G 29:2343-2363  (2003) hep-ph/0304226
+ If you use MTGEN please also cite:
+ 	(o) C.G.Lester, A.J.Barr (2007) arXiv:0708.1028 (hep-ph)
+ 	    JHEP 12(2007)102
+ If you use the ChengHanBisection MT2 calculator, please also cite:
+ 	(o) H.Cheng, Z.Han,  arXiv:0810.5178
+----------------------------------------------------------------------
+WARNING ... cannot fake b jet?! (hint: check NaN of CSV value)
+20000	5.04
+40000	9.84
+60000	14.66
+80000	19.53
+100000	24.41
+120000	29.45
+140000	34.31
+160000	39.06
+180000	43.86
+200000	48.84
+220000	53.81
+240000	58.63
+260000	63.51
+280000	68.41
+300000	73.53
+320000	78.42
+340000	83.4
+360000	88.32
+Sample Type: TTJets_; Weight: -0.043277922173
+20000	98.8
+40000	108.54
+60000	118.23
+80000	127.92
+100000	137.6
+120000	147.29
+140000	157.07
+160000	166.78
+180000	176.54
+200000	186.37
+220000	196.19
+240000	205.88
+Sample Type: ST_tW_top; Weight: -0.021096826035
+20000	222.81
+Sample Type: ST_tW_antitop; Weight: -0.021248356095
+20000	231.11
+Sample Type: WJetsToLNu_HT-400To600_; Weight: -0.019999180372
+20000	237.16
+40000	242.97
+60000	248.77
+80000	254.52
+100000	260.3
+120000	266.07
+140000	271.87
+160000	277.64
+180000	283.43
+200000	289.2
+220000	294.96
+Sample Type: WJetsToLNu_HT-600ToInf_; Weight: -0.01289503653
+20000	304.71
+40000	312.37
+60000	319.97
+80000	327.64
+100000	335.28
+120000	343
+140000	350.65
+160000	358.27
+180000	365.88
+Sample Type: ZJetsToNuNu_HT-400To600_; Weight: -0.0076424561431
+20000	374.42
+40000	379.41
+60000	384.4
+80000	389.39
+100000	394.37
+120000	399.35
+140000	404.34
+160000	409.34
+180000	414.34
+200000	419.33
+220000	424.32
+240000	429.33
+260000	434.34
+280000	439.34
+Sample Type: ZJetsToNuNu_HT-600ToInf_; Weight: -0.0029622963842
+20000	448.91
+40000	455.33
+60000	461.71
+80000	468.14
+100000	474.52
+120000	480.9
+140000	487.23
+160000	493.63
+180000	500.02
+200000	506.35
+220000	512.79
+240000	519.09
+260000	525.48
+280000	531.86
+300000	538.24
+320000	544.6
+340000	550.91
+360000	557.23
+Sample Type: TTZToLLNuNu_; Weight: -0.00080658954538
+20000	573.7
+40000	587.85
+60000	602.07
+80000	616.22
+Sample Type: TTZToQQ_; Weight: -0.00088937045743
+20000	638.67
+40000	657.59

@@ -34,4 +34,6 @@ Queue
 
 ####BasicCheck LL Single Muon####
 
+arguments = BasicCheckLL QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
 
