@@ -1,0 +1,1 @@
+res directory is where we store the out put for condor QCD

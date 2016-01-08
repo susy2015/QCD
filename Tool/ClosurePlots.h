@@ -151,7 +151,7 @@ void ClosurePlots::ClosureTemplate(
   h_pred->Draw("e0 same");
 
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2015, 0.59 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2015, 2.2 fb^{-1}, #sqrt{s} = 13 TeV";
 
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
@@ -188,8 +188,8 @@ void ClosurePlots::ClosureTemplate(
       pred_err = h_pred->GetBinError(i);
       exp_err = h_exp->GetBinError(i);
       //std::cout << "i: " << i << " pred_err: " << pred_err << " exp_err: " << exp_err << std::endl;
-      double r = 1;
-      double e = 10;
+      double r = 100;
+      double e = 5;
       if ( (pred > 0) && (exp > 0) ) 
       { 
         r = pred/exp;

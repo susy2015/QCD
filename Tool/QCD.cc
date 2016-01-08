@@ -38,7 +38,8 @@
 #include "TFactorsHeader.h"
 #include "TriggerEff.h"
 
-const double Scale = 0.59/2.1;
+const double Scale = 1;
+//const double Scale = 591.5/2153.736;
 
 void LoopQCDExpTfactor( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
@@ -268,7 +269,11 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
 
           for(unsigned it=0; it<TriggerNames.size(); it++)
           {
-            if( TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_v*") )
+            if
+            (   TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") != std::string::npos 
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_v") != std::string::npos
+            )
             {
               if( PassTrigger[it] ) foundTrigger = true;
             }
@@ -376,7 +381,12 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
 
           for(unsigned it=0; it<TriggerNames.size(); it++)
           {
-            if( TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_v*") )
+            if
+            (   TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_v") != std::string::npos
+            )
+
             {
               if( PassTrigger[it] ) foundTrigger = true;
             }
@@ -472,11 +482,12 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       int mt2bin_number = Set_mt2bin_number(MT2);
 
       bool passBaselineLL = tr.getVar<bool>("passBaseline"+spec);
+      bool passEleVeto = tr.getVar<bool>("passEleVeto"+spec);
 
       //apply trigger efficiencies
       double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
 
-      if ( passBaselineLL && (nMuons == 1) )
+      if ( passBaselineLL && passEleVeto && (nMuons == 1) )
       {
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
@@ -486,7 +497,12 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
 
           for(unsigned it=0; it<TriggerNames.size(); it++)
           {
-            if( TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") || TriggerNames[it].find("HLT_PFHT350_PFMET100_v*") )
+            if
+            (   TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_v") != std::string::npos
+            )
+
             {
               if( PassTrigger[it] ) foundTrigger = true;
             }
@@ -533,6 +549,114 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
   return ;
 }
 
+void LoopQCDCombine( QCDSampleWeight& myQCDSampleWeight )
+{
+  CombineHistgram myCombineHistgram;
+  myCombineHistgram.BookHistgram( (dir_out + "QCDCombine.root").c_str() );
+
+  //clock to monitor the run time
+  size_t t0 = clock();
+  std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
+  int i = 0;
+  //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
+  const std::string spec = "QCD";
+  myBaselineVessel = new BaselineVessel(spec);
+
+  std::cout << "Combination: QCD Prediction plots and TTJets Inc cutflow" << std::endl;
+  
+  for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
+  {    
+    //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
+    NTupleReader tr((*iter_QCDSampleInfos).chain);
+    //initialize the type3Ptr defined in the customize.h
+    AnaFunctions::prepareTopTagger();
+    //The passBaseline is registered here
+    tr.registerFunction(&mypassBaselineFunc);
+
+    double thisweight = (*iter_QCDSampleInfos).weight;
+    //negative weight for other MC samples
+    if( !( ( (*iter_QCDSampleInfos).QCDTag ).find("QCD") != std::string::npos) ) thisweight = -thisweight;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
+
+    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
+
+    while(tr.getNextEvent())
+    {
+      if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+
+      //searchbin variables
+      int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
+      int nbottomjets = tr.getVar<int>("cntCSVS"+spec);
+      double MT2 = tr.getVar<double>("best_had_brJet_MT2"+spec);
+      double met = tr.getVar<double>("met");
+      //closure plots variables
+      int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
+      int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
+      double ht = tr.getVar<double>("HT"+spec);
+
+      //if( met < 175 ) continue;
+      int metbin_number = Set_metbin_number(met);
+      int mt2bin_number = Set_mt2bin_number(MT2);
+
+      bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
+      bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      bool passBaseline_dPhisInverted = false;
+
+      passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+      //apply trigger efficiencies
+      double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
+      metEff = 1;      
+
+      if (passBaseline_dPhisInverted)
+      {
+        if( met < 200 ) continue;
+
+        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        {
+          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
+          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
+          bool foundTrigger = false;
+
+          for(unsigned it=0; it<TriggerNames.size(); it++)
+          {
+            if
+            (   TriggerNames[it].find("HLT_PFHT350_PFMET100_JetIdCleaned_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_NoiseCleaned_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFHT350_PFMET100_v") != std::string::npos
+            )
+            {
+              if( PassTrigger[it] ) foundTrigger = true;
+            }
+          }
+
+          if( !foundTrigger ) continue;
+        }
+
+        double predweight = thisweight * metEff * QCDTFactor[metbin_number][mt2bin_number];
+        //double predweight_err = thisweight * metEff * QCDTFactor_err[metbin_number][mt2bin_number];
+        (myCombineHistgram.h_zb_met)->Fill(met,predweight);
+        (myCombineHistgram.h_zb_njets30)->Fill(njets30,predweight);
+        (myCombineHistgram.h_zb_njets50)->Fill(njets50,predweight);
+        (myCombineHistgram.h_zb_mt2)->Fill(MT2,predweight);
+        (myCombineHistgram.h_zb_ht)->Fill(ht,predweight);
+        (myCombineHistgram.h_zb_ntopjets)->Fill(ntopjets,predweight);
+        (myCombineHistgram.h_zb_nbjets)->Fill(nbottomjets,predweight);
+
+        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+        if( searchbin_id >= 0 )
+        {
+          //std::cout << predweight << std::endl;
+          (myCombineHistgram.h_zb_sb)->Fill(searchbin_id,predweight);
+        }
+      }
+    }//end of inner loop
+  }//end of QCD Samples loop
+
+  (myCombineHistgram.oFile)->Write();
+  (myCombineHistgram.oFile)->Close();
+  return ;
+}
+
 int main(int argc, char* argv[])
 {
   if (argc < 3)
@@ -547,7 +671,7 @@ int main(int argc, char* argv[])
   std::string inputFileList_QCDMC = argv[2];
   std::string inputFileList_Data = argv[3];
   
-  std::cout << "The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData, BasicCheckQCD, BasicCheckLL" << std::endl;
+  std::cout << "The valid run modes are: ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData, BasicCheckQCD, BasicCheckLL QCDCombine" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
@@ -646,6 +770,10 @@ int main(int argc, char* argv[])
   {
     LoopBasicCheckLL( myBasicCheckSampleWeight );
     return 0;
+  }
+  else if( RunMode == "QCDCombine")
+  {
+    LoopQCDCombine( myDataSampleWeight );
   }
   else
   {

@@ -70,6 +70,34 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   return ;
 }
 
+class CombineHistgram
+{
+ public:
+  void BookHistgram(const char *);
+  TFile *oFile;
+  //Plots for zhenbin
+  TH1D *h_zb_met, *h_zb_njets30, *h_zb_njets50, *h_zb_mt2, *h_zb_ht, *h_zb_ntopjets, *h_zb_nbjets;
+  TH1D *h_zb_sb;
+
+  TH1D *h_cutflow;
+};
+
+void CombineHistgram::BookHistgram(const char *outFileName)
+{
+  oFile = new TFile(outFileName, "recreate");
+
+  h_zb_met = new TH1D("hMET","MET;#slash{E}_{T} [GeV];Events",24,200,800);
+  h_zb_njets30 = new TH1D("hNJets30","NJets30;N_{jets} (p_{T} > 30);Events",10,0,10);
+  h_zb_njets50 = new TH1D("hNJets50","NJets30;N_{jets} (p_{T} > 50);Events",10,0,10);
+  h_zb_mt2 = new TH1D("hMT2","MT2;M_{T2} [GeV];Events",24,200,800);
+  h_zb_ht = new TH1D("hHT","HT;H_{T} [GeV];Events",20,500,1000);
+  h_zb_ntopjets = new TH1D("hNTops","NTops;N_{tops};Events",5,0,5);
+  h_zb_nbjets = new TH1D("hNbJets","NbJets;N_{bjets};Events",5,0,5);
+
+  h_zb_sb = new TH1D("hSearchBins","Search Bins;Search Bin;Events",NSEARCH_BINS,0,NSEARCH_BINS);
+  return ;
+}
+
 #define BCBin 6
 
 class BasicCheckHistgram

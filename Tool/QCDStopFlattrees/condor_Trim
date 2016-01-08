@@ -13,23 +13,23 @@ Log = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).log
 notify_user = hua.wei@cern.ch
 
 ####Data####
-#arguments = $ENV(CMSSW_BASE) _HTMHT-Run2015C-25ns
+#arguments = $ENV(CMSSW_BASE) _fixListFilterBug_fixTriggerBug3_HTMHT-Run2015C-25ns
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) _HTMHT-Run2015D-05O
+#arguments = $ENV(CMSSW_BASE) _fixListFilterBug_fixTriggerBug_HTMHT-Run2015D-05O
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) _HTMHT-Run2015D-PromptReco
+arguments = $ENV(CMSSW_BASE) _fixListFilterBug_fixTriggerBug_HTMHT-Run2015D-PromptReco
+Queue
+
+#arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015C-25ns
 #Queue
 
-arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015C-25ns
-Queue
+#arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-05O
+#Queue
 
-arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-05O
-Queue
-
-arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-PromptReco
-Queue
+#arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-PromptReco
+#Queue
 
 ####TTJets####
 #arguments = $ENV(CMSSW_BASE) TTJets_TuneCUETP8M1
