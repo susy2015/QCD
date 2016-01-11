@@ -11,6 +11,8 @@
 #include "TVector3.h"
 #include "TChain.h"
 #include "TList.h"
+#include "TF1.h"
+#include "TFrame.h"
 
 #include "Math/QuantFuncMathCore.h"
 #include "TMath.h"
@@ -79,6 +81,10 @@ class CombineHistgram
   TH1D *h_zb_met, *h_zb_njets30, *h_zb_njets50, *h_zb_mt2, *h_zb_ht, *h_zb_ntopjets, *h_zb_nbjets;
   TH1D *h_zb_sb;
 
+  //Plots for zhenbin, top tagger study
+  TH1D *h_zb_htnjets30, *h_zb_htnjets50, *h_zb_htntopjets, *h_zb_htnbjets, *h_zb_htmet, *h_zb_htht;
+  TH1D *h_zb_httoppt, *h_zb_httopeta, *h_zb_httopphi, *h_zb_httopmass;
+
   TH1D *h_cutflow;
 };
 
@@ -95,6 +101,19 @@ void CombineHistgram::BookHistgram(const char *outFileName)
   h_zb_nbjets = new TH1D("hNbJets","NbJets;N_{bjets};Events",5,0,5);
 
   h_zb_sb = new TH1D("hSearchBins","Search Bins;Search Bin;Events",NSEARCH_BINS,0,NSEARCH_BINS);
+
+  h_zb_htnjets30 = new TH1D("hHTNJets30"    , "NJets30;N_{jets} (p_{T} > 30);Events" , 10 , 0    , 10);   // "cntNJetsPt30Eta24"
+  h_zb_htnjets50 = new TH1D("hHTNJets50"    , "NJets50;N_{jets} (p_{T} > 50);Events" , 10 , 0    , 10);   // "cntNJetsPt50Eta24"
+  h_zb_htntopjets = new TH1D("hHTNTops"      , "NTops;N_{tops};Events"                , 5  , 0    , 5);    // "nTopCandSortedCnt"
+  h_zb_htnbjets = new TH1D("hHTNbJets"     , "NbJets;N_{bjets};Events"              , 5  , 0    , 5);    // "cntCSVS"
+  h_zb_htmet = new TH1D("hHTMET"        , "MET;#slash{E}_{T} [GeV];Events"       , 24 , 200  , 800);  // "met"
+  h_zb_htht = new TH1D("hHTHT"         , "HT;H_{T} [GeV];Events"                , 20 , 500  , 1000); // "HT"
+
+  h_zb_httoppt = new TH1D("hHTTopPT"   , "Reco Top PT;p_{T} [GeV];Events" , 50 , 0  , 1000); 
+  h_zb_httopeta = new TH1D("hHTTopEta"  , "Reco Top Eta;#eta;Events" ,       20 , -5 , 5);
+  h_zb_httopphi = new TH1D("hHTTopPhi"  , "Reco Top Phi;#phi;Events" ,       20 , -5 , 5);
+  h_zb_httopmass = new TH1D("hHTTopMass" , "Reco Top Mass;Mass;Events" ,      40 , 80 , 280);
+
   return ;
 }
 
@@ -194,7 +213,7 @@ class QCDFactors
   void TFactorFit();
   void printQCDFactorInfo(); 
   void printTFactorsHeader();
-  void printQCDClosureExp( ClosureHistgram& myClosureHistgram );
+  void printQCDClosureExp ( ClosureHistgram& myClosureHistgram );
   void printQCDClosurePred( ClosureHistgram& myClosureHistgram );
   void TFactorsPlotsGen();
   void CountingPlotsGen();
@@ -205,7 +224,6 @@ class QCDFactors
                         double a,
                         double an
                        );
- 
 };
 
 double QCDFactors::get_stat_Error(
@@ -277,6 +295,71 @@ void QCDFactors::NumbertoTFactor()
     }
     nQCD_exp_sb_err[i_cal] = std::sqrt( nQCD_exp_sb_err[i_cal] );
   }
+}
+
+Double_t fitf(Double_t *v, Double_t *par)
+{
+  //Double_t arg = 0;
+  //if (par[2] != 0) arg = (v[0] - par[1])/par[2];
+
+  //Double_t fitval = par[0]*TMath::Exp(-0.5*arg*arg);
+  //return fitval;
+  Double_t arg = 0;
+  arg = v[0];
+
+  Double_t fitval = par[0] + par[1]*arg;
+  return fitval;
+}
+
+void QCDFactors::TFactorFit()
+{
+  for(int i = 0; i < MT2_BINS; i++)
+  {
+    std::string pname = "TFactorfit_MT2BIN" + std::to_string(i);
+
+    TCanvas *c = new TCanvas("c",pname.c_str(),200,10,700,500);
+
+    c->SetFillColor(42);
+    c->SetGrid();
+
+    const Int_t n = MET_BINS;
+    Double_t x[n], y[n], ex[n], ey[n];
+    for (int j = 0 ; j < MET_BINS ; j++)
+    {
+      x[j] = MET_mean[j][i];
+      y[j] = QCDTFactor[j][i];
+      ex[j] = MET_mean_err[j][i];
+      ey[j] = QCDTFactor_err[j][i];
+    }
+  
+    TGraph *gr = new TGraphErrors(n,x,y,ex,ey);
+
+    gr->SetLineColor(2);
+    gr->SetLineWidth(4);
+    gr->SetMarkerColor(4);
+    gr->SetMarkerStyle(21);
+    gr->SetTitle(pname.c_str());
+    gr->GetXaxis()->SetTitle("mean MET[GeV]");
+    gr->GetYaxis()->SetTitle("Translation Factor");
+    gr->Draw("AP");
+
+    //create a function with 2 parameters in the range [0,1000]
+    TF1 *func = new TF1("fit",fitf,0,1000,2);
+    func->SetParameters(0,0.01);
+    func->SetParNames("Offset","Slope");
+    gr->Fit("fit");
+
+    //TCanvas::Update() draws the frame, after which one can change it
+    c->Update();
+    c->GetFrame()->SetFillColor(21);
+    c->GetFrame()->SetBorderSize(12);
+    c->Modified();
+    
+    c->SaveAs( (dir_out + pname + ".png").c_str() );
+    c->SaveAs( (dir_out + pname + ".pdf").c_str() );
+    c->SaveAs( (dir_out + pname + ".C").c_str() );
+  }
+  return ;
 }
 
 void QCDFactors::printQCDFactorInfo()

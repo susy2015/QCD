@@ -12,30 +12,35 @@ Error = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stder
 Log = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).log
 notify_user = hua.wei@cern.ch
 
+####Model Parameters Calculation from QCD MC####
+
+arguments = CalOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
+
 ####Expectation from QCD MC####
 
-arguments = ExpMCOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = ExpMCOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+#Queue
 
 ####Prediction from QCD MC####
 
-arguments = PredMCOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = PredMCOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+#Queue
 
 ####Prediction from Data####
 
-arguments = PredDataOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = PredDataOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+#Queue
 
 ####BasicCheck QCD Inverted Delta Phi####
 
-arguments = BasicCheckQCD QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = BasicCheckQCD QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+#Queue
 
 ####BasicCheck LL Single Muon####
 
-arguments = BasicCheckLL QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = BasicCheckLL QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+#Queue
 
 ####QCDCombine####
 
