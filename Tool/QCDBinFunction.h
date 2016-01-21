@@ -1,8 +1,11 @@
 #define MET_BINS 3
 //#define NBJETS_BINS 2
-#define MT2_BINS 3
+#define MT2_BINS 2
 #define QCD_BINS 5
 #define NSEARCH_BINS 45
+
+const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,650.0};
+const double mt2bins_edge[MT2_BINS+1] = {200.0,300,500.0};
 
 int Set_metbin_number(
                        double met
@@ -34,7 +37,7 @@ int Set_nbjetsbin_number(
                           int nbjets
                         )
 {
-  int nbjetsbin_num = 0;
+  int nbjetsbin_num;
 
   if( nbjets == 1 )
   {
@@ -55,17 +58,19 @@ int Set_mt2bin_number(
 {
   int mt2bin_num;
 
+  //return 0;  
+
   if(mt2 >= 200 && mt2 < 300)
   {
     mt2bin_num = 0;
   }
-  else if(mt2 >= 300 && mt2 < 400) 
-  {
-    mt2bin_num = 1;
-  }
+  //else if(mt2 >= 300 && mt2 < 400) 
+  //{
+    //mt2bin_num = 1;
+  //}
   else
   {
-    mt2bin_num = 2;
+    mt2bin_num = 1;
   }
 
   return mt2bin_num;

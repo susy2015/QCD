@@ -13,6 +13,8 @@
 #include "TList.h"
 #include "TF1.h"
 #include "TFrame.h"
+#include "TGraphErrors.h"
+#include "TVirtualFitter.h"
 
 #include "Math/QuantFuncMathCore.h"
 #include "TMath.h"
@@ -22,6 +24,8 @@
 
 #include "QCDBinFunction.h"
 #include "QCDReWeighting.h"
+//Scale Tfactors with the Tfactor from Real Data
+#include "TFactorsfromDataHeader.h"
 
 std::string dir_out = "/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/";
 
@@ -69,6 +73,30 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
 
+  return ;
+}
+
+class TFactorsUncHistgram
+{
+ public:
+  void BookHistgram(const char *);
+  TFile *oFile;
+  //closure plots on different variables and search bins
+  TH1D *h_pred_sb_TFactorsUnc[MET_BINS][MT2_BINS];
+};
+
+void TFactorsUncHistgram::BookHistgram(const char *outFileName)
+{
+  oFile = new TFile(outFileName, "recreate");
+  for(int i=0;i<MET_BINS;i++)
+  {
+    for(int j=0;j<MT2_BINS;j++)
+    {
+      std::string met_index = std::to_string(i);
+      std::string mt2_index = std::to_string(j);
+      h_pred_sb_TFactorsUnc[i][j] = new TH1D( ("h_pred_sb_TFactorsUnc_" + met_index + mt2_index).c_str(),"",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+    }
+  }
   return ;
 }
 
@@ -199,10 +227,16 @@ class QCDFactors
   double nQCDNormal[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, nQCDInverted[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
   double nQCDNormal_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all[MET_BINS][MT2_BINS] = {{0}};
   double nQCDNormal_all_err[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_all_err[MET_BINS][MT2_BINS] = {{0}};
-  double QCDTFactor[MET_BINS][MT2_BINS] = {{0}}, QCDTFactor_err[MET_BINS][MT2_BINS] = {{0}};
+  double QCDTFactor[MET_BINS][MT2_BINS] = {{0}}, QCDTFactor_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors calculated from QCD MC
+  double QCDTFactorFit[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorFit_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors smoothed by linear fit
+  double QCDTFactorScaled[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorScaled_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors scaled by low MET bin Tfactor(from Data) and linear fit 
   double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
   double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
   double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
+
+  double nQCDNormalData_all[MT2_BINS] = {0}, nQCDInvertedData_all[MT2_BINS] = {0};
+  double nQCDNormalData_all_err[MT2_BINS] = {0}, nQCDInvertedData_all_err[MT2_BINS] = {0};
+  double QCDTFactorData[MT2_BINS] = {0}, QCDTFactorData_err[MT2_BINS] = {0};
 
   double QCDWeights[QCD_BINS] = {0};
   double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
@@ -211,7 +245,9 @@ class QCDFactors
 
   void NumbertoTFactor();
   void TFactorFit();
+  void TFactorScale();
   void printQCDFactorInfo(); 
+  void printTFactorsfromDataHeader();
   void printTFactorsHeader();
   void printQCDClosureExp ( ClosureHistgram& myClosureHistgram );
   void printQCDClosurePred( ClosureHistgram& myClosureHistgram );
@@ -285,16 +321,6 @@ void QCDFactors::NumbertoTFactor()
       QCDTFactor_err[i_cal][j_cal] = QCDTFactor[i_cal][j_cal] * std::sqrt( nQCDNormal_all_err[i_cal][j_cal]*nQCDNormal_all_err[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal] + nQCDInverted_all_err[i_cal][j_cal]*nQCDInverted_all_err[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal] );
     }
   }
-
-  //Expected QCD uncertainty calculation
-  for(int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++)
-  {
-    for(int j_cal = 0 ; j_cal < QCD_BINS ; j_cal++)
-    {
-      nQCD_exp_sb_err[i_cal] += nQCD_exp_sb_MC[j_cal][i_cal] * QCDWeights[j_cal] * QCDWeights[j_cal];
-    }
-    nQCD_exp_sb_err[i_cal] = std::sqrt( nQCD_exp_sb_err[i_cal] );
-  }
 }
 
 Double_t fitf(Double_t *v, Double_t *par)
@@ -341,7 +367,6 @@ void QCDFactors::TFactorFit()
     gr->SetTitle(pname.c_str());
     gr->GetXaxis()->SetTitle("mean MET[GeV]");
     gr->GetYaxis()->SetTitle("Translation Factor");
-    gr->Draw("AP");
 
     //create a function with 2 parameters in the range [0,1000]
     TF1 *func = new TF1("fit",fitf,0,1000,2);
@@ -349,16 +374,63 @@ void QCDFactors::TFactorFit()
     func->SetParNames("Offset","Slope");
     gr->Fit("fit");
 
-    //TCanvas::Update() draws the frame, after which one can change it
-    c->Update();
-    c->GetFrame()->SetFillColor(21);
-    c->GetFrame()->SetBorderSize(12);
-    c->Modified();
-    
+    //Create a TGraphErrors to hold the confidence intervals
+    TGraphErrors *grint = new TGraphErrors(n);
+    for (int j=0;j<n; j++){ grint->SetPoint(j, gr->GetX()[j], 0); }
+    //Compute the confidence intervals at the x points of the created graph
+    (TVirtualFitter::GetFitter())->GetConfidenceIntervals(grint);
+    //Now the "grint" graph contains function values as its y-coordinates
+    //and confidence intervals as the errors on these coordinates
+    //Draw the graph, the function and the confidence intervals
+    grint->SetLineColor(2);
+    grint->SetFillColor(3);
+    grint->SetFillStyle(3010);
+    grint->SetTitle(pname.c_str());
+    grint->GetXaxis()->SetTitle("mean MET[GeV]");
+    grint->GetYaxis()->SetTitle("Translation Factor");
+    grint->Draw("ap3");
+    gr->Draw("psame");
+
     c->SaveAs( (dir_out + pname + ".png").c_str() );
     c->SaveAs( (dir_out + pname + ".pdf").c_str() );
     c->SaveAs( (dir_out + pname + ".C").c_str() );
+
+
+    //Get value and uncertainty for Fit TFactor
+    for (int j = 0 ; j < MET_BINS ; j++)
+    {
+      QCDTFactorFit[j][i] = func->Eval( MET_mean[j][i] );
+      //temporary solution
+      QCDTFactorFit_err[j][i] = grint->GetErrorY(j);
+    }
   }
+  return ;
+}
+
+void QCDFactors::TFactorScale()
+{
+  double TFactorsdiff[MT2_BINS] = {0};
+
+  for(int i=0;i<MT2_BINS;i++)
+  {
+    TFactorsdiff[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
+  }
+
+  for(int i=0;i<MET_BINS;i++)
+  {
+    for(int j=0;j<MT2_BINS;j++)
+    {
+      QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsdiff[j];
+      if( QCDTFactorScaled[i][j] < 0 )
+      { 
+        std::cout << "METBIN,MT2BIN,TFactorScaled: " << i << "," << j << "," << QCDTFactorScaled[i][j] << std::endl;
+        QCDTFactorScaled[i][j] = 0.000000000001;
+      }
+      //uncertainty of scaled tfactor have 3 parts: statistical, fit, and data MC difference
+      QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j] + QCDTFactorFit_err[i][j]*QCDTFactorFit_err[i][j] + TFactorsdiff[j]*TFactorsdiff[j] );
+    }
+  }
+
   return ;
 }
 
@@ -413,9 +485,31 @@ void QCDFactors::printQCDFactorInfo()
   {
     for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
-      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << QCDTFactor[i_cal][j_cal] << "(" << QCDTFactor_err[i_cal][j_cal] << ")"<< std::endl;
+      std::cout << "PreFit, METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << QCDTFactor[i_cal][j_cal] << "(" << QCDTFactor_err[i_cal][j_cal] << ")"<< std::endl;
+      std::cout << "PostFit, METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << QCDTFactorFit[i_cal][j_cal] << "(" << QCDTFactorFit_err[i_cal][j_cal] << ")"<< std::endl;
+      std::cout << "Scaled, METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << QCDTFactorScaled[i_cal][j_cal] << "(" << QCDTFactorScaled_err[i_cal][j_cal] << ")"<< std::endl;
     }
   }
+}
+
+void QCDFactors::printTFactorsfromDataHeader()
+{
+  std::ofstream TFactorsfromDataHeader;
+  TFactorsfromDataHeader.open ( (dir_out + "TFactorsfromDataHeader.h").c_str() );
+  
+  int i_cal = 0;
+
+  TFactorsfromDataHeader << "  const double head_QCDTFactorData[" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MT2_BINS ; i_cal++ )
+  {
+    if( i_cal == 0 ) { TFactorsfromDataHeader << "{"; }
+
+    TFactorsfromDataHeader << QCDTFactorData[i_cal];
+    
+    if( i_cal != MT2_BINS-1 ) { TFactorsfromDataHeader << ","; }
+    else { TFactorsfromDataHeader << "};"; }
+  }
+  return ;
 }
 
 void QCDFactors::printTFactorsHeader()
@@ -458,6 +552,70 @@ void QCDFactors::printTFactorsHeader()
     }
   }
 
+  TFactorsHeader << "  const double QCDTFactorFit[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
+    {
+      if( i_cal == 0 && j_cal == 0 ) { TFactorsHeader << "{{"; }
+      if( i_cal != 0 && j_cal == 0 ) { TFactorsHeader << "{"; }
+
+      TFactorsHeader << QCDTFactorFit[i_cal][j_cal];
+      if( j_cal != MT2_BINS-1 ) { TFactorsHeader << ","; }
+
+      if( i_cal != MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "},"; }
+      if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
+    }
+  }
+
+  TFactorsHeader << "  const double QCDTFactorFit_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
+    {
+      if( i_cal == 0 && j_cal == 0 ) { TFactorsHeader << "{{"; }
+      if( i_cal != 0 && j_cal == 0 ) { TFactorsHeader << "{"; }
+
+      TFactorsHeader << QCDTFactorFit_err[i_cal][j_cal];
+      if( j_cal != MT2_BINS-1 ) { TFactorsHeader << ","; }
+
+      if( i_cal != MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "},"; }
+      if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
+    }
+  }
+
+  TFactorsHeader << "  const double QCDTFactorScaled[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
+    {
+      if( i_cal == 0 && j_cal == 0 ) { TFactorsHeader << "{{"; }
+      if( i_cal != 0 && j_cal == 0 ) { TFactorsHeader << "{"; }
+
+      TFactorsHeader << QCDTFactorScaled[i_cal][j_cal];
+      if( j_cal != MT2_BINS-1 ) { TFactorsHeader << ","; }
+
+      if( i_cal != MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "},"; }
+      if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
+    }
+  }
+
+  TFactorsHeader << "  const double QCDTFactorScaled_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
+    {
+      if( i_cal == 0 && j_cal == 0 ) { TFactorsHeader << "{{"; }
+      if( i_cal != 0 && j_cal == 0 ) { TFactorsHeader << "{"; }
+
+      TFactorsHeader << QCDTFactorScaled_err[i_cal][j_cal];
+      if( j_cal != MT2_BINS-1 ) { TFactorsHeader << ","; }
+
+      if( i_cal != MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "},"; }
+      if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
+    }
+  }
+
   TFactorsHeader.close();
 }
 
@@ -483,15 +641,16 @@ void QCDFactors::printQCDClosurePred(ClosureHistgram& myClosureHistgram)
 
 void QCDFactors::TFactorsPlotsGen()
 {
-  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
-  c->SetFillColor(0);
-  c->cd();
+  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
 
-  double metbins[MET_BINS+1] = {175.0,200.0,350.0,650.0};
-  //double ybins[MT2_BINS+1] = {1.0,2.0,5.0};
-  double mt2bins[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
+  TCanvas *c_prefit = new TCanvas("c_prefit", "",0,51,1920,1004);
+  c_prefit->SetFillColor(0);
+  c_prefit->cd();
 
-  TH2D *tfactors2d  = new TH2D("tfactors","TFactors",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *tfactors2dPreFit = new TH2D("tfactors_prefit","TFactors PreFit",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
 
   int i_cal;
   int j_cal;
@@ -500,42 +659,99 @@ void QCDFactors::TFactorsPlotsGen()
   {
     for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
-      tfactors2d->SetBinContent( i_cal+1 , j_cal+1, QCDTFactor[i_cal][j_cal] );
-      tfactors2d->SetBinError( i_cal+1 , j_cal+1, QCDTFactor_err[i_cal][j_cal] );
+      tfactors2dPreFit->SetBinContent( i_cal+1 , j_cal+1, QCDTFactor[i_cal][j_cal] );
+      tfactors2dPreFit->SetBinError( i_cal+1 , j_cal+1, QCDTFactor_err[i_cal][j_cal] );
     }
   }
 
-  tfactors2d->SetTitle("");
-  tfactors2d->SetXTitle("MET [GeV]");
-  tfactors2d->SetYTitle("MT2 [GeV]");
-  //tfactors2d->SetYTitle("NbJets");
-  tfactors2d->SetStats(0);
+  tfactors2dPreFit->SetTitle("");
+  tfactors2dPreFit->SetXTitle("MET [GeV]");
+  tfactors2dPreFit->SetYTitle("MT2 [GeV]");
+  //tfactors2dPreFit->SetYTitle("NbJets");
+  tfactors2dPreFit->SetStats(0);
 
   gStyle->SetPaintTextFormat("1.2f");
-  tfactors2d->Draw("colztexte");
+  tfactors2dPreFit->Draw("colztexte");
 
-  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
-  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
-  title->SetNDC();
-  title->SetTextSize(0.045);
   title->Draw("same");
 
-  c->SaveAs( (dir_out + "_tfactors2d.png").c_str() );
-  c->SaveAs( (dir_out + "_tfactors2d.pdf").c_str() );
-  c->SaveAs( (dir_out + "_tfactors2d.C").c_str() );
-  c->Close();
+  c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.png").c_str() );
+  c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.pdf").c_str() );
+  c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.C").c_str() );
+  c_prefit->Close();
+
+
+  //Post fit Tfactor plot
+  TCanvas *c_postfit = new TCanvas("c_postfit", "",0,51,1920,1004);
+  c_postfit->SetFillColor(0);
+  c_postfit->cd();
+
+  TH2D *tfactors2dPostFit = new TH2D("tfactors_postfit","TFactors PostFit",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+  
+  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  { 
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    { 
+      tfactors2dPostFit->SetBinContent( i_cal+1 , j_cal+1, QCDTFactorFit[i_cal][j_cal] );
+      tfactors2dPostFit->SetBinError( i_cal+1 , j_cal+1, QCDTFactorFit_err[i_cal][j_cal] );
+    }
+  }
+
+  tfactors2dPostFit->SetTitle("");
+  tfactors2dPostFit->SetXTitle("MET [GeV]");
+  tfactors2dPostFit->SetYTitle("MT2 [GeV]");
+  tfactors2dPostFit->SetStats(0);
+
+  gStyle->SetPaintTextFormat("1.2f");
+  tfactors2dPostFit->Draw("colztexte");
+
+  title->Draw("same");
+
+  c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.png").c_str() );
+  c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.pdf").c_str() );
+  c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.C").c_str() );
+  c_postfit->Close();
+
+  //Scaled Tfactor plot
+  TCanvas *c_scaled = new TCanvas("c_scaled", "",0,51,1920,1004);
+  c_scaled->SetFillColor(0);
+  c_scaled->cd();
+
+  TH2D *tfactors2dScaled = new TH2D("tfactors_scaled","TFactors Scaled",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+
+  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      tfactors2dScaled->SetBinContent( i_cal+1 , j_cal+1, QCDTFactorScaled[i_cal][j_cal] );
+      tfactors2dScaled->SetBinError( i_cal+1 , j_cal+1, QCDTFactorScaled_err[i_cal][j_cal] );
+    }
+  }
+
+  tfactors2dScaled->SetTitle("");
+  tfactors2dScaled->SetXTitle("MET [GeV]");
+  tfactors2dScaled->SetYTitle("MT2 [GeV]");
+  tfactors2dScaled->SetStats(0);
+
+  gStyle->SetPaintTextFormat("1.2f");
+  tfactors2dScaled->Draw("colztexte");
+
+  title->Draw("same");
+
+  c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.png").c_str() );
+  c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.pdf").c_str() );
+  c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.C").c_str() );
+  c_scaled->Close();
+
   return ;
 }
 
 void QCDFactors::CountingPlotsGen()
 {
-  double metbins[MET_BINS+1] = {175.0,200.0,350.0,650.0};
-  double mt2bins[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
-
-  TH2D *countNormal_MC  = new TH2D("countNormal_MC","countNormal_MC",MET_BINS,metbins,MT2_BINS,mt2bins);
-  TH2D *countNormal  = new TH2D("countNormal","countNormal",MET_BINS,metbins,MT2_BINS,mt2bins);
-  TH2D *countInverted_MC  = new TH2D("countInverted_MC","countInverted_MC",MET_BINS,metbins,MT2_BINS,mt2bins);
-  TH2D *countInverted  = new TH2D("countInverted","countInverted",MET_BINS,metbins,MT2_BINS,mt2bins);
+  TH2D *countNormal_MC  = new TH2D("countNormal_MC","countNormal_MC",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+  TH2D *countNormal  = new TH2D("countNormal","countNormal",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+  TH2D *countInverted_MC  = new TH2D("countInverted_MC","countInverted_MC",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+  TH2D *countInverted  = new TH2D("countInverted","countInverted",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
       
   double nQCDNormal_MC_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_MC_all[MET_BINS][MT2_BINS] = {{0}};
 

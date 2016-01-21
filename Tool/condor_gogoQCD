@@ -14,8 +14,8 @@ notify_user = hua.wei@cern.ch
 
 ####Model Parameters Calculation from QCD MC####
 
-arguments = CalOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = CalOnly QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+#Queue
 
 ####Expectation from QCD MC####
 
@@ -46,3 +46,11 @@ Queue
 
 #arguments = QCDCombine QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
 #Queue
+
+####QCD Sys Unc: TFactors####
+
+arguments = TFactorsUnc QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
+
+
+

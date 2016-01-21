@@ -16,6 +16,7 @@
 #include "TStyle.h"
 
 #include "QCDReWeighting.h"
+#include "QCDBinFunction.h"
 
 class ClosurePlots
 {
@@ -61,7 +62,7 @@ void ClosurePlots::Initialization(std::string dir)
 
   finExp = TFile::Open("ExpQCD.root");
   listExp = finExp->GetListOfKeys();
-  finPred = TFile::Open("PredQCDData.root");
+  finPred = TFile::Open("PredQCDMC.root");
   listPred = finPred->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1
@@ -181,6 +182,8 @@ void ClosurePlots::ClosureTemplate(
   if( hist_tag == "_sb" )
   { 
     Double_t pred,exp,pred_err,exp_err;
+    double non_closure_unc[NSEARCH_BINS] ={-10};
+
     for (Int_t i = 1; i < h_pred->GetNbinsX(); i++)
     {
       pred = h_pred->GetBinContent(i);
@@ -192,28 +195,34 @@ void ClosurePlots::ClosureTemplate(
       double e = 5;
       if ( (pred > 0) && (exp > 0) ) 
       { 
-        r = pred/exp;
-        e = std::sqrt( pred_err*pred_err + exp_err*exp_err*r*r ) / exp;
+        r = exp/pred;
+        e = std::sqrt( exp_err*exp_err + pred_err*pred_err*r*r ) / pred;
+        non_closure_unc[i-1] = e;
+        //double percent = (exp-pred)/pred * 100;
         std::cout << "i: " << i << " Pred: "<< pred << " Exp: "<< exp << " Ratio: " << r-1 << " Error: " << e << std::endl;
       }
       ratio->SetBinContent(i,r-1);
       ratio->SetBinError(i,e);
     }
+    ratio->SetMinimum(-5.0);
+    ratio->SetMaximum(5.0);
   }
   else
   {
     ratio->Add(allmc, -1);
     ratio->Divide(allmc);
+    ratio->SetMinimum(-2.0);
+    ratio->SetMaximum(2.0);
   }
-  ratio->GetYaxis()->SetTitle( "(Pred - Exp)/Exp" );
+  ratio->GetYaxis()->SetTitle( "(Exp - Pred)/Pred" );
 
   TAxis* xHT = ratio->GetXaxis();
 
   xHT->SetTickLength(xHT->GetTickLength()*labelRatio);
   xHT->SetLabelSize(xHT->GetLabelSize()*labelRatio);
   xHT->SetLabelOffset(xHT->GetLabelOffset()*labelRatio);
-  ratio->SetMinimum(-2.0);
-  ratio->SetMaximum(2.0);
+  //ratio->SetMinimum(-2.0);
+  //ratio->SetMaximum(2.0);
 
   TAxis* yHT = ratio->GetYaxis();
   yHT->SetNdivisions(010);
@@ -223,7 +232,7 @@ void ClosurePlots::ClosureTemplate(
 
   ratio->SetTitleSize(0.15);
   ratio->SetStats(kFALSE);
-  ratio->SetMarkerStyle(kFullDotMedium);
+  //ratio->SetMarkerStyle(kFullDotMedium);
   //ratio->Sumw2();
   ratio->DrawCopy();
 
