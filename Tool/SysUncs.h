@@ -21,6 +21,8 @@
 #include "QCDReWeighting.h"
 #include "QCDBinFunction.h"
 
+const double QCD_TFactor_relative_err[45] = {0.43351714473,0.43351714473,0.67999995516,0.67999995516,5.9269352541,5.9269352541,3.9742860181,3.9742860181,5.9269352541,3.9742860181,3.9742860181,0.43351714473,0.43351714473,0.67999995516,0.67999995516,5.9269352541,5.9269352541,3.9742860181,3.9742860181,5.9269352541,3.9742860181,0.43351714473,0.43351714473,3.9742860181,0.43351714473,0.43351714473,0.67999995516,5.9269352541,5.9269352541,3.9742860181,5.9269352541,3.9742860181,0.43351714473,0.43351714473,0.67999995516,5.9269352541,5.9269352541,3.9742860181,5.9269352541,3.9742860181,0.43351714473,3.9742860181,0.43351714473,0.43351714473,3.9742860181};
+
 class SysUncs
 {
  public:
@@ -39,6 +41,7 @@ class SysUncs
   void Initialization(std::string type); 
   void Reset();
 
+  void GetCentralPred();
   void GetTFactorsSysUnc();
   void GetNonClosureSysUnc();
 
@@ -52,8 +55,6 @@ void SysUncs::Initialization(std::string type)
 {
   sysunc_type = type;
 
-  finPred = TFile::Open("PredQCDData.root");
-  listPred = finPred->GetListOfKeys();
   if( type == "TFactorsUnc" )
   {
     finPred = TFile::Open("PredQCDData.root");
@@ -89,8 +90,41 @@ void SysUncs::Reset()
   return ;
 }
 
+void SysUncs::GetCentralPred()
+{
+  finPred = TFile::Open("PredQCDData.root");
+  listPred = finPred->GetListOfKeys();
+
+  TH1D * h_pred;
+
+  int NPredHist;
+  NPredHist = listPred->GetSize();
+
+  for(int i  = 0 ; i < NPredHist ; i++)
+  {
+    if( TString(listPred->At(i)->GetName()).Contains( "_pred_sb" ) )
+    {
+      h_pred = (TH1D*)finPred->Get(listPred->At(i)->GetName())->Clone();
+    }
+    else 
+      continue;
+  }
+
+  for (int j = 1; j < NSEARCH_BINS+1 ; j++)
+  {
+    final_pred[j-1] = h_pred->GetBinContent(j);
+    final_pred_stat[j-1] = h_pred->GetBinError(j);
+  }
+
+  finPred->Close();
+  listPred->Clear();
+  std::cout << "Done with Cental Pred setting! Resetting the file and list object!" << std::endl;
+  return ;
+}
+
 void SysUncs::GetTFactorsSysUnc()
 { 
+  /*
   TH1D * h_pred;
   TH1D * h_sysunc;
 
@@ -116,7 +150,9 @@ void SysUncs::GetTFactorsSysUnc()
 
   for(int i  = 0 ; i < NSysUncHist ; i++)
   {
-    if( TString(listPred->At(i)->GetName()).Contains( "_TFactorsUnc_0" ) ) continue;
+    if( TString(listPred->At(i)->GetName()).Contains( "_TFactorsUnc_up_0" ) ) continue;
+    if( TString(listPred->At(i)->GetName()).Contains( "_TFactorsUnc_down_" ) ) continue;
+
     else
     {
       h_sysunc = (TH1D*)finSysUnc->Get(listSysUnc->At(i)->GetName())->Clone();
@@ -137,7 +173,7 @@ void SysUncs::GetTFactorsSysUnc()
           d = sysunc;
         else
         { 
-          d=0; 
+          d = 0; 
           //std::cout << i << "Zero Sys Unc from Tfactors" <<std::endl; 
         }
         sysunc_tfactors[j-1] += d*d;
@@ -145,11 +181,12 @@ void SysUncs::GetTFactorsSysUnc()
       h_sysunc->Reset();
     }
   }
-
+  */
   for (int i = 0; i < NSEARCH_BINS ; i++)
   { 
-    sysunc_tfactors[i] = std::sqrt( sysunc_tfactors[i] );
+    sysunc_tfactors[i] = QCD_TFactor_relative_err[i];
   }
+  
   return ;
 }
 
@@ -186,13 +223,20 @@ void SysUncs::GetNonClosureSysUnc()
     double e = 5;
     if ( (pred > 0) && (sysunc > 0) )
     {
-      double r = pred/sysunc;
-      e = std::sqrt( pred_err*pred_err + sysunc_err*sysunc_err*r*r ) / sysunc;
-      sysunc_nonclosure[j-1] = std::max( std::abs(e*sysunc) , std::abs(sysunc-pred) );
+      double r = sysunc/pred;
+      e = std::sqrt( sysunc_err*sysunc_err + pred_err*pred_err*r*r ) / pred;
+      sysunc_nonclosure[j-1] = std::max( std::abs(e) , std::abs((sysunc-pred)/pred) );
       std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< sysunc << " Error: " << e << std::endl;
     }
     else if( j!=1 && ((pred <= 0) || (sysunc <= 0)) ){ sysunc_nonclosure[j-1] = std::abs(sysunc-pred); }
     else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
+  }
+
+  std::cout << "QCD_NonClosure_relative_err = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << sysunc_nonclosure[i_cal] << " ";
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
   }
 
   return ;
@@ -202,7 +246,7 @@ void SysUncs::combineSysUncs()
 {
   for(int i=0;i<NSEARCH_BINS;i++)
   {
-    sysunc_all[i] = std::sqrt(sysunc_tfactors[i]*sysunc_tfactors[i] + sysunc_nonclosure[i]*sysunc_nonclosure[i] );
+    sysunc_all[i] = std::abs(final_pred[i]) * std::sqrt(sysunc_tfactors[i]*sysunc_tfactors[i] + sysunc_nonclosure[i]*sysunc_nonclosure[i]);
   }
   return ;
 }

@@ -34,8 +34,8 @@ notify_user = hua.wei@cern.ch
 
 ####BasicCheck QCD Inverted Delta Phi####
 
-#arguments = BasicCheckQCD QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-#Queue
+arguments = BasicCheckQCD QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+Queue
 
 ####BasicCheck LL Single Muon####
 
@@ -49,8 +49,8 @@ notify_user = hua.wei@cern.ch
 
 ####QCD Sys Unc: TFactors####
 
-arguments = TFactorsUnc QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = TFactorsUnc QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt $ENV(CMSSW_BASE)
+#Queue
 
 
 

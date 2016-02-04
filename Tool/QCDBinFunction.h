@@ -11,7 +11,7 @@ int Set_metbin_number(
                        double met
                      )
 {
-  int metbin_num;
+  int metbin_num = -1;
 
   if(met >= 175 && met < 200)
   {
@@ -56,7 +56,7 @@ int Set_mt2bin_number(
                        double mt2
                      )
 {
-  int mt2bin_num;
+  int mt2bin_num = -1;
 
   //return 0;  
 

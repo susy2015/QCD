@@ -20,6 +20,8 @@ int main()
 {
   SysUncs mySysUncs;
  
+  mySysUncs.GetCentralPred();
+
   mySysUncs.Initialization("TFactorsUnc");
   mySysUncs.GetTFactorsSysUnc();
   mySysUncs.Reset();

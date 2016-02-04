@@ -82,7 +82,8 @@ class TFactorsUncHistgram
   void BookHistgram(const char *);
   TFile *oFile;
   //closure plots on different variables and search bins
-  TH1D *h_pred_sb_TFactorsUnc[MET_BINS][MT2_BINS];
+  TH1D *h_pred_sb_TFactorsUnc_up[MET_BINS][MT2_BINS];
+  TH1D *h_pred_sb_TFactorsUnc_down[MET_BINS][MT2_BINS];
 };
 
 void TFactorsUncHistgram::BookHistgram(const char *outFileName)
@@ -94,7 +95,8 @@ void TFactorsUncHistgram::BookHistgram(const char *outFileName)
     {
       std::string met_index = std::to_string(i);
       std::string mt2_index = std::to_string(j);
-      h_pred_sb_TFactorsUnc[i][j] = new TH1D( ("h_pred_sb_TFactorsUnc_" + met_index + mt2_index).c_str(),"",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+      h_pred_sb_TFactorsUnc_up[i][j] = new TH1D( ("h_pred_sb_TFactorsUnc_up_" + met_index + mt2_index).c_str(),"",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+      h_pred_sb_TFactorsUnc_down[i][j] = new TH1D( ("h_pred_sb_TFactorsUnc_down_" + met_index + mt2_index).c_str(),"",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
     }
   }
   return ;
@@ -156,10 +158,11 @@ class BasicCheckHistgram
 
   TH1D *h_b_met_MC[BCBin], *h_b_mt2_MC[BCBin], *h_b_ntopjets_MC[BCBin], *h_b_nbjets_MC[BCBin];
   TH1D *h_b_ht_MC[BCBin], *h_b_mht_MC[BCBin], *h_b_njets30_MC[BCBin], *h_b_njets50_MC[BCBin];
+  TH1D *h_b_sb_MC[BCBin];
 
   TH1D *h_b_met_Data, *h_b_mt2_Data, *h_b_ntopjets_Data, *h_b_nbjets_Data;
   TH1D *h_b_ht_Data, *h_b_mht_Data, *h_b_njets30_Data, *h_b_njets50_Data;
-
+  TH1D *h_b_sb_Data;
   //TH1D *h_b_mt2_nbnt, *h_b_mt2_ybyt, *h_b_met_nbnt, *h_b_met_ybyt;
   //TH1D *h_b_dphi0_nbnt, *h_b_dphi0_ybyt, *h_b_dphi1_nbnt, *h_b_dphi1_ybyt, *h_b_dphi2_nbnt, *h_b_dphi2_ybyt;
   //TH1D *h_inverted_met, *h_inverted_njets, *h_inverted_mt2, *h_inverted_ht, *h_inverted_mht, *h_inverted_ntopjets, *h_inverted_nbjets;
@@ -189,6 +192,8 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",5,1,6);
     h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",5,1,6);
 
+    h_b_sb_MC[i] = new TH1D( ("h_b_sb_MC_" + smalltag).c_str(),"",50,0,50);
+
     h_b_met_MC[i]->SetFillColor(i+2);
     h_b_mt2_MC[i]->SetFillColor(i+2);
     h_b_ntopjets_MC[i]->SetFillColor(i+2);
@@ -198,6 +203,8 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     h_b_njets30_MC[i]->SetFillColor(i+2);
     h_b_njets50_MC[i]->SetFillColor(i+2);
 
+    h_b_sb_MC[i]->SetFillColor(i+2);
+
     h_b_met_MC[i]->SetLineColor(i+2);
     h_b_mt2_MC[i]->SetLineColor(i+2);
     h_b_ntopjets_MC[i]->SetLineColor(i+2);
@@ -206,6 +213,8 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     h_b_mht_MC[i]->SetLineColor(i+2);
     h_b_njets30_MC[i]->SetLineColor(i+2);
     h_b_njets50_MC[i]->SetLineColor(i+2);
+
+    h_b_sb_MC[i]->SetLineColor(i+2);
   }
 
   h_b_met_Data = new TH1D("h_b_met_Data","",20,150,550);
@@ -216,6 +225,8 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
   h_b_mht_Data = new TH1D("h_b_mht_Data","",50,0,1000);
   h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",5,1,6);
   h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",5,1,6);
+
+  h_b_sb_Data = new TH1D("h_b_sb_Data","",50,0,50);
 
   return ;
 }
@@ -234,6 +245,22 @@ class QCDFactors
   double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
   double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
 
+  //determine the tfactor value in the MC inverted dphi region in case of no inverted dphis in some search in real data
+  double MET_sum_all_exp_sb[NSEARCH_BINS] = {0}, MET_sum_weight_all_exp_sb[NSEARCH_BINS] = {0};
+  double MT2_sum_all_exp_sb[NSEARCH_BINS] = {0}, MT2_sum_weight_all_exp_sb[NSEARCH_BINS] = {0}; 
+  double MET_mean_exp_sb[NSEARCH_BINS] = {0}, MT2_mean_exp_sb[NSEARCH_BINS] = {0};
+  
+  //determine the tfactor value in the Data inverted dphi region in case of no inverted dphis in some search in real data  
+  double MET_sb_sum[NSEARCH_BINS] = {0}, MET_sb_sum_weight[NSEARCH_BINS] = {0};
+  double MET_sb_mean[NSEARCH_BINS] = {0};
+  double MT2_sb_sum[NSEARCH_BINS] = {0}, MT2_sb_sum_weight[NSEARCH_BINS] = {0};
+  double MT2_sb_mean[NSEARCH_BINS] = {0}; 
+  //variables for data card
+  double DC_sb_Data[NSEARCH_BINS] = {0}, DC_sb_hadtau[NSEARCH_BINS] = {0}, DC_sb_lostlept[NSEARCH_BINS] = {0}, DC_sb_zinvMC[NSEARCH_BINS] = {0}, DC_sb_ttzMC[NSEARCH_BINS] = {0};
+  double DC_sb_Data_err[NSEARCH_BINS] = {0}, DC_sb_hadtau_errup[NSEARCH_BINS] = {0}, DC_sb_lostlept_errup[NSEARCH_BINS] = {0}, DC_sb_hadtau_errdown[NSEARCH_BINS] = {0}, DC_sb_lostlept_errdown[NSEARCH_BINS] = {0}, DC_sb_zinvMC_err[NSEARCH_BINS] = {0}, DC_sb_ttzMC_err[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor_err[NSEARCH_BINS] = {0};
+
   double nQCDNormalData_all[MT2_BINS] = {0}, nQCDInvertedData_all[MT2_BINS] = {0};
   double nQCDNormalData_all_err[MT2_BINS] = {0}, nQCDInvertedData_all_err[MT2_BINS] = {0};
   double QCDTFactorData[MT2_BINS] = {0}, QCDTFactorData_err[MT2_BINS] = {0};
@@ -247,49 +274,40 @@ class QCDFactors
   void TFactorFit();
   void TFactorScale();
   void printQCDFactorInfo(); 
-  void printTFactorsfromDataHeader();
+  void getAndprintTFactorsfromDataHeader();
   void printTFactorsHeader();
   void printQCDClosureExp ( ClosureHistgram& myClosureHistgram );
   void printQCDClosurePred( ClosureHistgram& myClosureHistgram );
   void TFactorsPlotsGen();
   void CountingPlotsGen();
   void printSBInfo();
+  void printDataCard();
 
  private:
-  double get_stat_Error(
-                        double a,
-                        double an
-                       );
+  double get_aoverb_Error(
+                          double a,
+                          double b,
+                          double ea,
+                          double eb
+                         );
 };
 
-double QCDFactors::get_stat_Error(
-                                  double a,
-                                  double an
-                                 )
+double QCDFactors::get_aoverb_Error(
+                                    double a,
+                                    double b,
+                                    double ea,
+                                    double eb
+                                   )
 {
-  double n;
-  n = an - a;
+  double r = std::abs(a/b);
+  double e = std::abs( std::sqrt( ea*ea + eb*eb*r*r ) / b );
 
-  double err;
-  err = 1000;
-
-  double alpha;
-  alpha = 1-0.6827;
-
-  if( a>=0 && n>=0 )
-  {
-    err = std::sqrt(n/(a+n)/(a+n)*n/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,a+1,1)+a/(a+n)/(a+n)*a/(a+n)/(a+n)*ROOT::Math::gamma_quantile_c(alpha/2,n+1,1));
-    return err;
-  }
-  else
-  {
-    return -1;
-  }
+  return e;
 }
 
 void QCDFactors::NumbertoTFactor()
 {
-  //value calculation
+  //TFactors value calculation
   for(int i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {
     for(int j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
@@ -318,9 +336,24 @@ void QCDFactors::NumbertoTFactor()
       }
       nQCDNormal_all_err[i_cal][j_cal] = std::sqrt( nQCDNormal_all_err[i_cal][j_cal] );
       nQCDInverted_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_all_err[i_cal][j_cal] );
-      QCDTFactor_err[i_cal][j_cal] = QCDTFactor[i_cal][j_cal] * std::sqrt( nQCDNormal_all_err[i_cal][j_cal]*nQCDNormal_all_err[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal]/nQCDNormal_all[i_cal][j_cal] + nQCDInverted_all_err[i_cal][j_cal]*nQCDInverted_all_err[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal] );
+      QCDTFactor_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_all[i_cal][j_cal] , nQCDInverted_all[i_cal][j_cal] , nQCDNormal_all_err[i_cal][j_cal], nQCDInverted_all_err[i_cal][j_cal] );
     }
   }
+
+  //MT2 and met mean value calculation in each search bin
+  for(int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++)
+  {
+    if( MET_sum_weight_all_exp_sb[i_cal] > 0 && MT2_sum_weight_all_exp_sb[i_cal] > 0 )
+    {
+      MET_mean_exp_sb[i_cal] = MET_sum_all_exp_sb[i_cal]/MET_sum_weight_all_exp_sb[i_cal];
+      MT2_mean_exp_sb[i_cal] = MT2_sum_all_exp_sb[i_cal]/MT2_sum_weight_all_exp_sb[i_cal];
+    }
+  }
+
+  std::cout << "Last bin MET: "<< MET_sum_all_exp_sb[NSEARCH_BINS-1] << ", " << MET_sum_weight_all_exp_sb[NSEARCH_BINS-1] << std::endl;
+  std::cout << "Last bin MT2: "<< MT2_sum_all_exp_sb[NSEARCH_BINS-1] << ", " << MT2_sum_weight_all_exp_sb[NSEARCH_BINS-1] << std::endl;
+
+  return ;
 }
 
 Double_t fitf(Double_t *v, Double_t *par)
@@ -492,8 +525,20 @@ void QCDFactors::printQCDFactorInfo()
   }
 }
 
-void QCDFactors::printTFactorsfromDataHeader()
+void QCDFactors::getAndprintTFactorsfromDataHeader()
 {
+  std::cout << "TFactor in low MET region from Real Data:" << std::endl;
+  for( int i=0 ; i<MT2_BINS ; i++ )
+  {
+    nQCDNormalData_all_err[i] = std::sqrt( nQCDNormalData_all_err[i] );
+    nQCDInvertedData_all_err[i] = std::sqrt( nQCDInvertedData_all_err[i] );
+    QCDTFactorData[i] = nQCDNormalData_all[i]/nQCDInvertedData_all[i];
+    QCDTFactorData_err[i] = get_aoverb_Error( nQCDNormalData_all[i] , nQCDInvertedData_all[i] , nQCDNormalData_all_err[i], nQCDInvertedData_all_err[i] );
+
+    std::cout << "METBin0, MT2Bin" << i << " : " << nQCDNormalData_all[i] << "," << nQCDInvertedData_all[i] << std::endl;
+    std::cout << "METBin0, MT2Bin" << i << " : " << QCDTFactorData[i] << "(" << QCDTFactorData_err[i] << ")" << std::endl;
+  }
+
   std::ofstream TFactorsfromDataHeader;
   TFactorsfromDataHeader.open ( (dir_out + "TFactorsfromDataHeader.h").c_str() );
   
@@ -507,8 +552,20 @@ void QCDFactors::printTFactorsfromDataHeader()
     TFactorsfromDataHeader << QCDTFactorData[i_cal];
     
     if( i_cal != MT2_BINS-1 ) { TFactorsfromDataHeader << ","; }
+    else { TFactorsfromDataHeader << "};" << std::endl; }
+  }
+
+  TFactorsfromDataHeader << "  const double head_QCDTFactorData_err[" << MT2_BINS << "] = ";
+  for( i_cal = 0 ; i_cal < MT2_BINS ; i_cal++ )
+  {
+    if( i_cal == 0 ) { TFactorsfromDataHeader << "{"; }
+
+    TFactorsfromDataHeader << QCDTFactorData_err[i_cal];
+
+    if( i_cal != MT2_BINS-1 ) { TFactorsfromDataHeader << ","; }
     else { TFactorsfromDataHeader << "};"; }
   }
+
   return ;
 }
 
@@ -520,7 +577,7 @@ void QCDFactors::printTFactorsHeader()
   int i_cal = 0;
   int j_cal = 0;
 
-  TFactorsHeader << "  const double QCDTFactor[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  TFactorsHeader << "  const double head_QCDTFactor[" << MET_BINS << "][" << MT2_BINS << "] = ";
   for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
   {
     for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
@@ -536,7 +593,7 @@ void QCDFactors::printTFactorsHeader()
     }
   }
 
-  TFactorsHeader << "  const double QCDTFactor_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  TFactorsHeader << "  const double head_QCDTFactor_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
   for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
   {
     for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
@@ -552,7 +609,7 @@ void QCDFactors::printTFactorsHeader()
     }
   }
 
-  TFactorsHeader << "  const double QCDTFactorFit[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  TFactorsHeader << "  const double head_QCDTFactorFit[" << MET_BINS << "][" << MT2_BINS << "] = ";
   for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
   {
     for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
@@ -568,7 +625,7 @@ void QCDFactors::printTFactorsHeader()
     }
   }
 
-  TFactorsHeader << "  const double QCDTFactorFit_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  TFactorsHeader << "  const double head_QCDTFactorFit_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
   for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
   {
     for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
@@ -584,7 +641,7 @@ void QCDFactors::printTFactorsHeader()
     }
   }
 
-  TFactorsHeader << "  const double QCDTFactorScaled[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  TFactorsHeader << "  const double head_QCDTFactorScaled[" << MET_BINS << "][" << MT2_BINS << "] = ";
   for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
   {
     for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
@@ -600,7 +657,7 @@ void QCDFactors::printTFactorsHeader()
     }
   }
 
-  TFactorsHeader << "  const double QCDTFactorScaled_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
+  TFactorsHeader << "  const double head_QCDTFactorScaled_err[" << MET_BINS << "][" << MT2_BINS << "] = ";
   for( i_cal = 0 ; i_cal < MET_BINS ; i_cal++ )
   {
     for( j_cal = 0 ; j_cal < MT2_BINS ; j_cal++ )
@@ -614,6 +671,24 @@ void QCDFactors::printTFactorsHeader()
       if( i_cal != MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "},"; }
       if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
     }
+  }
+
+  TFactorsHeader << "  const double head_QCD_meanMET_exp_sb[" << NSEARCH_BINS << "] = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    if(i_cal == 0 ) { TFactorsHeader << "{"; }
+    TFactorsHeader << MET_mean_exp_sb[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) { TFactorsHeader << ","; }
+    if(i_cal == NSEARCH_BINS -1 ) { TFactorsHeader << "};" << std::endl; }
+  }
+
+  TFactorsHeader << "  const double head_QCD_meanMT2_exp_sb[" << NSEARCH_BINS << "] = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    if(i_cal == 0 ) { TFactorsHeader << "{"; }
+    TFactorsHeader << MT2_mean_exp_sb[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) { TFactorsHeader << ","; }
+    if(i_cal == NSEARCH_BINS -1 ) { TFactorsHeader << "};" << std::endl; }
   }
 
   TFactorsHeader.close();
@@ -633,6 +708,7 @@ void QCDFactors::printQCDClosurePred(ClosureHistgram& myClosureHistgram)
 {
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
+    std::cout << nQCD_pred_sb[i_cal] << "," << std::endl;
     myClosureHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_pred_sb[i_cal] );
     myClosureHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_pred_sb_err[i_cal] );
   }
@@ -839,8 +915,66 @@ void QCDFactors::printSBInfo()
   {
     std::cout << "Search Bin Id:" << i_cal << "; Exp: " << nQCD_exp_sb[i_cal] << "(" << nQCD_exp_sb_err[i_cal] << "); Pred: " << nQCD_pred_sb[i_cal] << "(" << nQCD_pred_sb_err[i_cal] << "); (exp - pred)/pred: " << (nQCD_exp_sb[i_cal] - nQCD_pred_sb[i_cal])/nQCD_pred_sb[i_cal] << std::endl;
   }
+  return ;
 }
 
+void QCDFactors::printDataCard()
+{
+  std::cout << "Printing Data Card..." << std::endl;
+
+  std::cout << "QCD_Data_CS = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << DC_sb_Data[i_cal] << " ";
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
+  }
+
+  std::cout << "QCD_Data_CS_relative_err = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    if(DC_sb_Data[i_cal] > 0) std::cout << DC_sb_Data_err[i_cal]/DC_sb_Data[i_cal] << " ";
+    else std::cout << 0 << " ";
+
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
+  }
+
+  std::cout << "QCD_otherBG_CS = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  { 
+    std::cout << DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal] << " ";
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
+  }
+  
+  std::cout << "QCD_otherBG_CS_relative_errup = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  { 
+    std::cout << std::sqrt( DC_sb_hadtau_errup[i_cal]*DC_sb_hadtau_errup[i_cal] + DC_sb_lostlept_errup[i_cal]*DC_sb_lostlept_errup[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " "; 
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
+  }
+
+  std::cout << "QCD_otherBG_CS_relative_errdown = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << std::sqrt( DC_sb_hadtau_errdown[i_cal]*DC_sb_hadtau_errdown[i_cal] + DC_sb_lostlept_errdown[i_cal]*DC_sb_lostlept_errdown[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " ";
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
+  }
+
+  std::cout << "QCD_TFactor = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << DC_sb_TFactor[i_cal] << " ";
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
+  }
+
+  std::cout << "QCD_TFactor_relative_err = ";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << DC_sb_TFactor_err[i_cal]/DC_sb_TFactor[i_cal] << " ";
+    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
+  }
+
+  return ; 
+}
 //##########functions to calculate Delta_R and Delta Phi###############
 double DeltaPhi(double phi1, double phi2) 
 {

@@ -36,7 +36,7 @@
 #include "QCD.h"
 //#include "QCDReWeighting.h"
 #include "TFactorsHeader.h"
-//#include "TFactorsfromDataHeader.h"
+#include "DataDriven.h"
 #include "TriggerEff.h"
 
 const double Scale = 1;
@@ -136,6 +136,15 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
         myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight * metEff;
         myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight * metEff;
+
+        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+        if( searchbin_id >= 0)
+        {
+          myQCDFactors.MET_sum_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_all_exp_sb[searchbin_id] + met * thisweight * metEff;
+          myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] + thisweight * metEff;
+          myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] = myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] + MT2 * thisweight * metEff;
+          myQCDFactors.MT2_sum_weight_all_exp_sb[searchbin_id] = myQCDFactors.MT2_sum_weight_all_exp_sb[searchbin_id] + thisweight * metEff;
+        }
       }
     }//end of inner loop
     i++;
@@ -260,7 +269,8 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
     {
       for(int j=0;j<MT2_BINS;j++)
       {
-        QCDTFactorPred[i][j] = QCDTFactorFit[i][j];
+        QCDTFactorPred[i][j] = head_QCDTFactorFit[i][j];
+        QCDTFactorPred_err[i][j] = head_QCDTFactorFit_err[i][j];
       }
     }
   }
@@ -272,7 +282,8 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
     {
       for(int j=0;j<MT2_BINS;j++)
       {
-        QCDTFactorPred[i][j] = QCDTFactorScaled[i][j];
+        QCDTFactorPred[i][j] = head_QCDTFactorScaled[i][j];
+        QCDTFactorPred_err[i][j] = head_QCDTFactorScaled_err[i][j];
       }
     }
   }
@@ -387,6 +398,27 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
           if( searchbin_id >= 0 )
           {
             //std::cout << predweight << std::endl;
+            if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+            { 
+              myQCDFactors.MET_sb_sum[searchbin_id] = myQCDFactors.MET_sb_sum[searchbin_id] + met * thisweight * metEff;
+              myQCDFactors.MET_sb_sum_weight[searchbin_id] = myQCDFactors.MET_sb_sum_weight[searchbin_id] + thisweight * metEff;
+              myQCDFactors.MT2_sb_sum[searchbin_id] = myQCDFactors.MT2_sb_sum[searchbin_id] + MT2 * thisweight * metEff;
+              myQCDFactors.MT2_sb_sum_weight[searchbin_id] = myQCDFactors.MT2_sb_sum_weight[searchbin_id] + thisweight * metEff;
+
+              myQCDFactors.DC_sb_Data[searchbin_id] += thisweight * metEff;
+              myQCDFactors.DC_sb_Data_err[searchbin_id] += thisweight * metEff * thisweight * metEff; 
+            }
+            if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
+            { 
+              myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff);
+              myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
+            }
+            if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos )
+            { 
+              myQCDFactors.DC_sb_ttzMC[searchbin_id] += std::abs(thisweight * metEff);
+              myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
+            }
+
             myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
             myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
           }
@@ -397,15 +429,18 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
         {
           if( metbin_number == 0 )
           {
-            if( passdPhis )
+            if( passBJets )
             {
-              myQCDFactors.nQCDNormalData_all[mt2bin_number] += thisweight * metEff;
-              myQCDFactors.nQCDNormalData_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
-            }
-            else 
-            {
-              myQCDFactors.nQCDInvertedData_all[mt2bin_number] += thisweight * metEff;
-              myQCDFactors.nQCDInvertedData_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+              if( passdPhis )
+              {
+                myQCDFactors.nQCDNormalData_all[mt2bin_number] += thisweight * metEff;
+                myQCDFactors.nQCDNormalData_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+              }
+              else 
+              {
+                myQCDFactors.nQCDInvertedData_all[mt2bin_number] += thisweight * metEff;
+                myQCDFactors.nQCDInvertedData_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+              }
             }
           }
         }
@@ -415,17 +450,47 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
 
   if( RunMode.find("PredData") != std::string::npos )
   {
-    std::cout << "TFactor in low MET region from Real Data:" << std::endl;
-    for( int i=0 ; i<MT2_BINS ; i++ )
+    //Data driven yield from other bg
+    for( int i=0 ; i<NSEARCH_BINS ; i++ )
     {
-      myQCDFactors.nQCDNormalData_all_err[i] = std::sqrt( myQCDFactors.nQCDNormalData_all_err[i] );
-      myQCDFactors.nQCDInvertedData_all_err[i] = std::sqrt( myQCDFactors.nQCDInvertedData_all_err[i] );
-      myQCDFactors.QCDTFactorData[i] = myQCDFactors.nQCDNormalData_all[i]/myQCDFactors.nQCDInvertedData_all[i]; 
-      myQCDFactors.QCDTFactorData_err[i] = myQCDFactors.QCDTFactorData[i] * std::sqrt( myQCDFactors.nQCDNormalData_all_err[i]*myQCDFactors.nQCDNormalData_all_err[i]/myQCDFactors.nQCDNormalData_all[i]/myQCDFactors.nQCDNormalData_all[i] + myQCDFactors.nQCDInvertedData_all_err[i]*myQCDFactors.nQCDInvertedData_all_err[i]/myQCDFactors.nQCDInvertedData_all[i]/myQCDFactors.nQCDInvertedData_all[i] );
+      myQCDFactors.DC_sb_Data_err[i] = std::sqrt(myQCDFactors.DC_sb_Data_err[i]);
+      myQCDFactors.DC_sb_zinvMC_err[i] = std::sqrt(myQCDFactors.DC_sb_zinvMC_err[i]);
+      myQCDFactors.DC_sb_ttzMC_err[i] = std::sqrt(myQCDFactors.DC_sb_ttzMC_err[i]);
 
-      std::cout << "METBin0, MT2Bin" << i << " : " << myQCDFactors.QCDTFactorData[i] << "(" << myQCDFactors.QCDTFactorData_err[i] << ")" << std::endl;
+      myQCDFactors.MET_sb_mean[i] = myQCDFactors.MET_sb_sum[i]/myQCDFactors.MET_sb_sum_weight[i];
+      myQCDFactors.MT2_sb_mean[i] = myQCDFactors.MT2_sb_sum[i]/myQCDFactors.MT2_sb_sum_weight[i];
+
+      int met_id = -1, mt2_id = -1;
+      met_id = Set_metbin_number( myQCDFactors.MET_sb_mean[i] );
+      mt2_id = Set_mt2bin_number( myQCDFactors.MT2_sb_mean[i] );
+      //std::cout << met_id << "," << mt2_id << std::endl;
+
+      //set up data card from Tfactors
+      if( met_id < 0 || mt2_id < 0 )
+      {
+        //reset the met and mt2 id with average value from MC
+        met_id = Set_metbin_number( head_QCD_meanMET_exp_sb[i] );
+        mt2_id = Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i] );
+      }
+        
+      myQCDFactors.DC_sb_TFactor[i] = QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.DC_sb_TFactor_err[i] = QCDTFactorPred_err[met_id][mt2_id];
+      //set up data card from data driven input
+      myQCDFactors.DC_sb_hadtau[i] = pred_sb_hadtau[i];
+      myQCDFactors.DC_sb_lostlept[i] = pred_sb_lostlept[i];
+      myQCDFactors.DC_sb_hadtau_errup[i] = std::sqrt( pred_sb_hadtau_stat[i]*pred_sb_hadtau_stat[i] + pred_sb_hadtau_sysUp[i]*pred_sb_hadtau_sysUp[i] );
+      myQCDFactors.DC_sb_hadtau_errdown[i] = std::sqrt( pred_sb_hadtau_stat[i]*pred_sb_hadtau_stat[i] + pred_sb_hadtau_sysDown[i]*pred_sb_hadtau_sysDown[i] );
+      myQCDFactors.DC_sb_lostlept_errup[i] = pred_sb_lostlept_stat[i];
+      myQCDFactors.DC_sb_lostlept_errdown[i] = pred_sb_lostlept_stat[i];
+
+      myQCDFactors.nQCD_pred_sb[i] -= pred_sb_hadtau[i] * QCDTFactorPred[met_id][mt2_id];
+      //myQCDFactors.nQCD_pred_sb_err[i] += pred_sb_hadtau_stat[i] * pred_sb_hadtau_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb[i] -= pred_sb_lostlept[i] * QCDTFactorPred[met_id][mt2_id];
+      //myQCDFactors.nQCD_pred_sb_err[i] += pred_sb_lostlept_stat[i] * pred_sb_lostlept_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
     }
-    myQCDFactors.printTFactorsfromDataHeader(); 
+    //deal with the Tfactor from data
+    myQCDFactors.getAndprintTFactorsfromDataHeader(); 
+    myQCDFactors.printDataCard();
   }
 
   for( int i=0 ; i<NSEARCH_BINS ; i++ )
@@ -442,8 +507,14 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
 void LoopQCDTFactorsUnc( QCDSampleWeight& myQCDSampleWeight, std::string RunMode )
 {
   double QCDTFactorPred[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorPred_err[MET_BINS][MT2_BINS] = {{0}};
-  double nQCD_pred_sb_TFactorUnc[MET_BINS][MT2_BINS][NSEARCH_BINS] = {{{0}}}, nQCD_pred_sb_TFactorUnc_err[MET_BINS][MT2_BINS][NSEARCH_BINS] = {{{0}}};
- 
+  double nQCD_pred_sb_TFactorUnc_up[MET_BINS][MT2_BINS][NSEARCH_BINS] = {{{0}}}, nQCD_pred_sb_TFactorUnc_up_err[MET_BINS][MT2_BINS][NSEARCH_BINS] = {{{0}}};
+  double nQCD_pred_sb_TFactorUnc_down[MET_BINS][MT2_BINS][NSEARCH_BINS] = {{{0}}}, nQCD_pred_sb_TFactorUnc_down_err[MET_BINS][MT2_BINS][NSEARCH_BINS] = {{{0}}};
+
+  double MET_sb_sum[NSEARCH_BINS] = {0}, MET_sb_sum_weight[NSEARCH_BINS] = {0};
+  double MET_sb_mean[NSEARCH_BINS] = {0};
+  double MT2_sb_sum[NSEARCH_BINS] = {0}, MT2_sb_sum_weight[NSEARCH_BINS] = {0};
+  double MT2_sb_mean[NSEARCH_BINS] = {0};
+
   TFactorsUncHistgram myTFactorsUncHistgram;
   myTFactorsUncHistgram.BookHistgram( (dir_out  + RunMode + ".root").c_str() );
 
@@ -457,8 +528,8 @@ void LoopQCDTFactorsUnc( QCDSampleWeight& myQCDSampleWeight, std::string RunMode
     {
       for(int j=0;j<MT2_BINS;j++)
       {
-        QCDTFactorPred[i][j] = QCDTFactorScaled[i][j];
-        QCDTFactorPred_err[i][j] = QCDTFactorScaled_err[i][j];
+        QCDTFactorPred[i][j] = head_QCDTFactorScaled[i][j];
+        QCDTFactorPred_err[i][j] = head_QCDTFactorScaled_err[i][j];
       }
     }
   }
@@ -556,14 +627,31 @@ void LoopQCDTFactorsUnc( QCDSampleWeight& myQCDSampleWeight, std::string RunMode
             for(int j=0;j<MT2_BINS;j++)
             { 
               double predweight = thisweight * metEff * QCDTFactorPred[metbin_number][mt2bin_number];
-              if( metbin_number == i && mt2bin_number == j ) predweight += thisweight * metEff * QCDTFactorPred_err[metbin_number][mt2bin_number];
+              double prede = 0;
+              if( metbin_number == i && mt2bin_number == j )
+              {
+                prede = thisweight * metEff * QCDTFactorPred_err[metbin_number][mt2bin_number];
+              }
+              double predweight_up = predweight + prede;
+              double predweight_down = predweight - prede;
+              if( predweight_down < 0 ) predweight_down = 0;
 
               int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
               if( searchbin_id >= 0 )
               {
                 //std::cout << predweight << std::endl;
-                nQCD_pred_sb_TFactorUnc[i][j][searchbin_id] += (predweight);
-                nQCD_pred_sb_TFactorUnc_err[i][j][searchbin_id] += (predweight * predweight);
+                if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+                {
+                  MET_sb_sum[searchbin_id] = MET_sb_sum[searchbin_id] + met * thisweight * metEff;
+                  MET_sb_sum_weight[searchbin_id] = MET_sb_sum_weight[searchbin_id] + thisweight * metEff;
+                  MT2_sb_sum[searchbin_id] = MT2_sb_sum[searchbin_id] + MT2 * thisweight * metEff;
+                  MT2_sb_sum_weight[searchbin_id] = MT2_sb_sum_weight[searchbin_id] + thisweight * metEff;
+                }
+
+                nQCD_pred_sb_TFactorUnc_up[i][j][searchbin_id] += (predweight_up);
+                nQCD_pred_sb_TFactorUnc_up_err[i][j][searchbin_id] += (predweight_up * predweight_up);
+                nQCD_pred_sb_TFactorUnc_down[i][j][searchbin_id] += (predweight_down);
+                nQCD_pred_sb_TFactorUnc_down_err[i][j][searchbin_id] += (predweight_down * predweight_down);
               }
             }
           }
@@ -578,9 +666,35 @@ void LoopQCDTFactorsUnc( QCDSampleWeight& myQCDSampleWeight, std::string RunMode
     {
       for(int k=0;k<NSEARCH_BINS;k++)
       {
-        nQCD_pred_sb_TFactorUnc_err[i][j][k] = std::sqrt( nQCD_pred_sb_TFactorUnc_err[i][j][k] );
-        (myTFactorsUncHistgram.h_pred_sb_TFactorsUnc[i][j])->SetBinContent( k+1 , nQCD_pred_sb_TFactorUnc[i][j][k] );
-        (myTFactorsUncHistgram.h_pred_sb_TFactorsUnc[i][j])->SetBinError( k+1 , nQCD_pred_sb_TFactorUnc_err[i][j][k] );
+        MET_sb_mean[k] = MET_sb_sum[k]/MET_sb_sum_weight[k];
+        MT2_sb_mean[k] = MT2_sb_sum[k]/MT2_sb_sum_weight[k];
+      
+        int met_id = -1, mt2_id = -1;
+        met_id = Set_metbin_number( MET_sb_mean[i] );
+        mt2_id = Set_mt2bin_number( MT2_sb_mean[i] );
+      
+        if( met_id >= 0 && mt2_id >= 0 )
+        { 
+          nQCD_pred_sb_TFactorUnc_up[i][j][k] -= pred_sb_hadtau[k] * QCDTFactorPred[met_id][mt2_id]; 
+          nQCD_pred_sb_TFactorUnc_down[i][j][k] -= pred_sb_hadtau[k] * QCDTFactorPred[met_id][mt2_id];
+          //nQCD_pred_sb_err[i] += pred_sb_hadtau_stat[i] * pred_sb_hadtau_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+          nQCD_pred_sb_TFactorUnc_up[i][j][k] -= pred_sb_lostlept[k] * QCDTFactorPred[met_id][mt2_id];
+          nQCD_pred_sb_TFactorUnc_down[i][j][k] -= pred_sb_lostlept[k] * QCDTFactorPred[met_id][mt2_id];
+          //myQCDFactors.nQCD_pred_sb_err[i] += pred_sb_lostlept_stat[i] * pred_sb_lostlept_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+        }
+
+        if( met_id == i && mt2_id == j ) 
+        {
+          nQCD_pred_sb_TFactorUnc_up[i][j][k] += ( pred_sb_hadtau[k] + pred_sb_lostlept[k] ) * QCDTFactorPred_err[met_id][mt2_id];
+          nQCD_pred_sb_TFactorUnc_down[i][j][k] -= ( pred_sb_hadtau[k] + pred_sb_lostlept[k] ) * QCDTFactorPred_err[met_id][mt2_id];
+        }
+        nQCD_pred_sb_TFactorUnc_up_err[i][j][k] = std::sqrt( nQCD_pred_sb_TFactorUnc_up_err[i][j][k] );
+        nQCD_pred_sb_TFactorUnc_down_err[i][j][k] = std::sqrt( nQCD_pred_sb_TFactorUnc_down_err[i][j][k] );
+
+        (myTFactorsUncHistgram.h_pred_sb_TFactorsUnc_up[i][j])->SetBinContent( k+1 , nQCD_pred_sb_TFactorUnc_up[i][j][k] );
+        (myTFactorsUncHistgram.h_pred_sb_TFactorsUnc_up[i][j])->SetBinError( k+1 , nQCD_pred_sb_TFactorUnc_up_err[i][j][k] );
+        (myTFactorsUncHistgram.h_pred_sb_TFactorsUnc_down[i][j])->SetBinContent( k+1 , nQCD_pred_sb_TFactorUnc_down[i][j][k] );
+        (myTFactorsUncHistgram.h_pred_sb_TFactorsUnc_down[i][j])->SetBinError( k+1 , nQCD_pred_sb_TFactorUnc_down_err[i][j][k] );
       }
     }
   }
@@ -640,13 +754,19 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
       bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
       bool passBaseline_dPhisInverted = false;
+      //bool passBaseline_dPhis = false;
 
-      passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+      std::vector<double> dPhiVec = tr.getVec<double>("dPhiVec"+spec);
+      bool passMydPhis = (dPhiVec.at(0) >= 0.4 && dPhiVec.at(1) >= 0.4 && dPhiVec.at(2) >= 0.3);
+      passBaseline_dPhisInverted = passBaselineQCD && (!passMydPhis);
+      //passBaseline_dPhis = passBaselineQCD && passdPhis;
       //apply trigger efficiencies
       double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
 
       if (passBaseline_dPhisInverted)
       {
+        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
@@ -676,6 +796,8 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*metEff);
+
+          (myBasicCheckHistgram.h_b_sb_Data)->Fill(searchbin_id,thisweight*metEff);
         }
         else
         {
@@ -697,6 +819,8 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*metEff);
+
+          (myBasicCheckHistgram.h_b_sb_MC)[ih]->Fill(searchbin_id,thisweight*metEff);
         }
       }
     }//end of inner loop
@@ -943,7 +1067,7 @@ void LoopQCDCombine( QCDSampleWeight& myQCDSampleWeight )
           if( !foundTrigger ) continue;
         }
 
-        double predweight = thisweight * metEff * QCDTFactorScaled[metbin_number][mt2bin_number];
+        double predweight = thisweight * metEff * head_QCDTFactorScaled[metbin_number][mt2bin_number];
         //double predweight_err = thisweight * metEff * QCDTFactor_err[metbin_number][mt2bin_number];
         (myCombineHistgram.h_zb_met)->Fill(met,predweight);
         (myCombineHistgram.h_zb_njets30)->Fill(njets30,predweight);
@@ -1002,12 +1126,12 @@ int main(int argc, char* argv[])
   //sample needed in the prediction loop
   QCDSampleWeight myDataSampleWeight;
   myDataSampleWeight.QCDSampleInfo_push_back( "HTMHT"                   ,      1,             1, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "TTJets_"                 , 831.76,      11339232, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "ST_tW_top"               ,   35.6,        995600, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "ST_tW_antitop"           ,   35.6,        988500, LUMI, 1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "TTJets_"                 , 831.76,      11339232, LUMI, 1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "ST_tW_top"               ,   35.6,        995600, LUMI, 1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "ST_tW_antitop"           ,   35.6,        988500, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!
-  myDataSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-400To600_" ,  48.91,       1745914, LUMI, 1.21, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-600ToInf_" ,  18.77,       1039152, LUMI, 1.21, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-400To600_" ,  48.91,       1745914, LUMI, 1.21, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "WJetsToLNu_HT-600ToInf_" ,  18.77,       1039152, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-400To600_",  10.73,       1018882, LUMI, 1.23, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "ZJetsToNuNu_HT-600ToInf_",  4.116,       1008333, LUMI, 1.23, inputFileList_Data.c_str() );
   //be careful! TTZ has negative weight issue!!
