@@ -9,31 +9,19 @@ def find_nth(haystack, needle, n):
   return start
 
 #d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Nov_2015_Ntp_v3X/"
-d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X/"
-sample_tag = sys.argv[1]
+#d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X/"
+d= "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
+file_name = sys.argv[1]
 
-for dirname, dirnames, filenames in os.walk(d):
-  # print path to all subdirectories first.
-  # for subdirname in dirnames:
-  #    print(os.path.join(dirname, subdirname))
-
-  #if "QCD_HT" not in dirname:
-  #if "ZJetsToNuNu_" not in dirname: 
-  if sample_tag not in dirname:
-    continue
-
-  if 'failed' in dirnames:
-    # don't go into any failed root sample directories.
-    dirnames.remove('failed')
-  if 'addJetsForZinv' in dirnames:
-    # don't go into any special Zinv root sample directories.
-    dirnames.remove('addJetsForZinv')
-
-  # print path to all filenames.
-  for filename in filenames:
-    input_tmp = os.path.join(dirname, filename)
-    cmd = './PrivateSkim ' + input_tmp
+with open(file_name) as f:
+  for line in f:
+  #print path to all filenames
+    cmd = './PrivateSkim ' + line
     print(cmd) 
+    os.system(cmd)
+    cmd = 'xrdcp *.root ' + d
+    os.system(cmd)
+    cmd = 'rm *.root'
     os.system(cmd)
 
 #for file in glob.glob("*QCD_HT_*.root"):

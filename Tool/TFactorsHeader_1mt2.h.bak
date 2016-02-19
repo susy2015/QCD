@@ -1,4 +1,0 @@
-  const double QCDTFactor[3][1] = {{0.0807881},{0.0750374},{0.0742813}};
-  const double QCDTFactor_err[3][1] = {{0.0120735},{0.00863834},{0.0290553}};
-  const double QCDTFactorFit[3][1] = {{0.0778924},{0.0768023},{0.0710843}};
-  const double QCDTFactorFit_err[3][1] = {{0},{0},{0}};

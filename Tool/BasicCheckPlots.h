@@ -71,7 +71,7 @@ void BasicCheckPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("BasicCheckQCD.root");
+  fin = TFile::Open("BasicCheckLL.root");
   list = fin->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1
@@ -174,7 +174,7 @@ void BasicCheckPlots::BasicCheckTemplate(
   h_Data->Draw("same e0");
 
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2015, 2.2 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
+#include <stdlib.h>
 
 #include "TH1D.h"
 #include "TH2D.h"
@@ -27,7 +28,9 @@
 //Scale Tfactors with the Tfactor from Real Data
 #include "TFactorsfromDataHeader.h"
 
-std::string dir_out = "/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/";
+//std::string dir_out = "/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/";
+//std::string dir_out = std::string( std::getenv("CMSSW_BASE") ) + "/QCD/Tool/AnaOut_QCD/";
+std::string dir_out = "";
 
 //############finish the definition of class AccRecoEffs######################
 //baseline cut function definition
@@ -269,6 +272,8 @@ class QCDFactors
   double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
   double nQCD_exp_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}}, nQCD_pred_sb_MC[QCD_BINS][NSEARCH_BINS] = {{0}};
   double nQCD_exp_sb_err[NSEARCH_BINS] = {0}, nQCD_pred_sb_err[NSEARCH_BINS] = {0};
+  double nQCD_pred_sb_sysuncup[NSEARCH_BINS] = {0}, nQCD_pred_sb_sysuncdown[NSEARCH_BINS] = {0};
+
 
   void NumbertoTFactor();
   void TFactorFit();
@@ -282,6 +287,7 @@ class QCDFactors
   void CountingPlotsGen();
   void printSBInfo();
   void printDataCard();
+  void printSysHeader();
 
  private:
   double get_aoverb_Error(
@@ -510,6 +516,16 @@ void QCDFactors::printQCDFactorInfo()
     for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
     {
       std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << nQCDInverted_all[i_cal][j_cal] << "(" << nQCDInverted_all_err[i_cal][j_cal] << ")"<< std::endl;
+    }
+  }
+
+
+  std::cout << "Mean MET in QCD Bin: " << std::endl;
+  for( i_cal=0 ; i_cal < MET_BINS ; i_cal++ )
+  {
+    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
+    {
+      std::cout << "METBin:" << i_cal << ",MT2Bin:" << j_cal << "; :" << MET_mean[i_cal][j_cal] << "(" << MET_mean_err[i_cal][j_cal] << ")"<< std::endl;
     }
   }
 
@@ -974,6 +990,41 @@ void QCDFactors::printDataCard()
   }
 
   return ; 
+}
+
+void QCDFactors::printSysHeader()
+{
+  std::ofstream SysHeader;
+  SysHeader.open ( (dir_out + "SysHeader.h").c_str() );
+
+  int i_cal = 0;
+  int j_cal = 0;
+
+  SysHeader << "  const double head_QCD_TFactor_relative_err[" << NSEARCH_BINS <<"] = {";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    SysHeader << DC_sb_TFactor_err[i_cal]/DC_sb_TFactor[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
+    else SysHeader << "};"<<  std::endl;
+  }
+
+  SysHeader << "  const double head_QCD_otherBG_sysup[" << NSEARCH_BINS << "] = {";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    SysHeader << nQCD_pred_sb_sysuncup[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
+    else SysHeader << "};"<<  std::endl;
+  }
+
+  SysHeader << "  const double head_QCD_otherBG_sysdown[" << NSEARCH_BINS << "] = {";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    SysHeader << nQCD_pred_sb_sysuncdown[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
+    else SysHeader << "};"<<  std::endl;
+  }
+
+  return ;
 }
 //##########functions to calculate Delta_R and Delta Phi###############
 double DeltaPhi(double phi1, double phi2) 

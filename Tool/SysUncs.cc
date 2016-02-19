@@ -24,7 +24,7 @@ int main()
 
   mySysUncs.Initialization("TFactorsUnc");
   mySysUncs.GetTFactorsSysUnc();
-  mySysUncs.Reset();
+  //mySysUncs.Reset();
 
   mySysUncs.Initialization("NonClosureUnc");
   mySysUncs.GetNonClosureSysUnc();

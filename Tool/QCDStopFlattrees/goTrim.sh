@@ -6,8 +6,11 @@ export CMS_PATH=/cvmfs/cms.cern.ch
 cd $1/src
 eval `scramv1 runtime -sh`
 
-cd $1/src/QCD/Tool/QCDStopFlattrees
+#cd $1/src/QCD/Tool/QCDStopFlattrees
+cd ${_CONDOR_SCRATCH_DIR}
+#cd .
 
-#xrdcp root://cmsxrootd-site.fnal.gov//store/user/lpcsusyhad/PHYS14_720_Mar14_2014_v2/rootlist_$1.txt .
 python NTuple_Skim.py $2
 
+#find . -name "*.root" -exec xrdcp {} "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/" \;
+#find . -name "*.root" -exec rm {} \;

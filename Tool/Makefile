@@ -73,6 +73,6 @@ SysUncs: $(ODIR)/SysUncs.o
 	$(LD) $^ $(LIBS)  -o $@
 
 clean:
-	rm -f $(ODIR)/*.o $(ODIR)/*.d $(PROGRAMS) core 
+	rm -f $(ODIR)/*.o $(ODIR)/*.d $(ODIR)/*.so $(PROGRAMS) core 
 
 -include $(ODIR)/*.d
