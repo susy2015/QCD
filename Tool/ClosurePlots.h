@@ -64,7 +64,7 @@ void ClosurePlots::Initialization(std::string dir)
 
   finExp = TFile::Open("ExpQCD.root");
   listExp = finExp->GetListOfKeys();
-  finPred = TFile::Open("PredQCDMC.root");
+  finPred = TFile::Open("PredQCDData.root");
   listPred = finPred->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1

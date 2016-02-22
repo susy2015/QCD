@@ -16,6 +16,9 @@
 #include "TFrame.h"
 #include "TGraphErrors.h"
 #include "TVirtualFitter.h"
+#include "TMatrixDSym.h"
+#include "TFitResultPtr.h"
+#include "TFitResult.h"
 
 #include "Math/QuantFuncMathCore.h"
 #include "TMath.h"
@@ -324,9 +327,11 @@ void QCDFactors::NumbertoTFactor()
          nQCDInverted_all[i_cal][j_cal] += nQCDInverted[k_cal][i_cal][j_cal];
          MET_sum_all[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal];
          MET_sum_weight_all[i_cal][j_cal] += MET_sum_weight[k_cal][i_cal][j_cal];
+         if(MET_sum_weight[k_cal][i_cal][j_cal]>0) MET_mean_err[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal];
       }
       QCDTFactor[i_cal][j_cal] = nQCDNormal_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal];
       MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];
+      MET_mean_err[i_cal][j_cal] = std::sqrt(MET_mean_err[i_cal][j_cal]);
     }
   }
 
@@ -382,10 +387,21 @@ void QCDFactors::TFactorFit()
   {
     std::string pname = "TFactorfit_MT2BIN" + std::to_string(i);
 
-    TCanvas *c = new TCanvas("c",pname.c_str(),200,10,700,500);
+    TCanvas * c = new TCanvas("c", "c", 800, 600);
+    gStyle->SetOptStat(0);
+    gPad->SetBottomMargin(0.16);
+    gPad->SetLeftMargin(0.16);
+    gPad->SetTicks();
 
-    c->SetFillColor(42);
-    c->SetGrid();
+    TH1F *frame = new TH1F("frame","frame",10,120.,690.);
+    frame->SetMinimum(0.0);
+    frame->SetMaximum(0.2);
+    frame->GetXaxis()->SetTitle("p_{T}^{miss} (GeV)");
+    frame->GetYaxis()->SetTitle("Translation Factor");
+    frame->SetTitleSize(0.045,"X");
+    frame->SetTitleSize(0.045,"Y");
+    frame->SetTitle(pname.c_str());
+    frame->Draw();
 
     const Int_t n = MET_BINS;
     Double_t x[n], y[n], ex[n], ey[n];
@@ -413,34 +429,53 @@ void QCDFactors::TFactorFit()
     func->SetParNames("Offset","Slope");
     gr->Fit("fit");
 
-    //Create a TGraphErrors to hold the confidence intervals
-    TGraphErrors *grint = new TGraphErrors(n);
-    for (int j=0;j<n; j++){ grint->SetPoint(j, gr->GetX()[j], 0); }
-    //Compute the confidence intervals at the x points of the created graph
-    (TVirtualFitter::GetFitter())->GetConfidenceIntervals(grint);
-    //Now the "grint" graph contains function values as its y-coordinates
-    //and confidence intervals as the errors on these coordinates
-    //Draw the graph, the function and the confidence intervals
-    grint->SetLineColor(2);
-    grint->SetFillColor(3);
-    grint->SetFillStyle(3010);
-    grint->SetTitle(pname.c_str());
-    grint->GetXaxis()->SetTitle("mean MET[GeV]");
-    grint->GetYaxis()->SetTitle("Translation Factor");
-    grint->Draw("ap3");
-    gr->Draw("psame");
+    TFitResultPtr fitRes = gr->Fit(func,"S");
+    TMatrixDSym covMat = fitRes->GetCorrelationMatrix();
+    covMat.Print();
+
+    double parErrp0 = fitRes->ParError(0), parErrp1 = fitRes->ParError(1);
+    printf("parErrp0 : %9.5e  parErrp1 : %9.5e\n", parErrp0, parErrp1);
+
+    double fiterr[MET_BINS];
+    double METUpperBand[MET_BINS], METLowerBand[MET_BINS];
+    for(int ip=0; ip<MET_BINS; ip++)
+    {
+      double ptMET = x[ip];
+      double perErr = sqrt( ptMET*ptMET*parErrp1*parErrp1*covMat(1, 1)*covMat(1, 1)
+                          + parErrp0*parErrp0*covMat(0, 0)*covMat(0, 0)
+                          + 2*ptMET*parErrp0*parErrp1*covMat(0, 1) );
+      double centralVal = func->Eval(ptMET);
+      fiterr[ip] = perErr;
+      METUpperBand[ip] = func->Eval(ptMET) + perErr;
+      METLowerBand[ip] = func->Eval(ptMET) - perErr;
+    }
+
+    TGraphErrors * METUpperBandGraph = new TGraphErrors(MET_BINS, x, METUpperBand, ex, ex);
+    TGraphErrors * METLowerBandGraph = new TGraphErrors(MET_BINS, x, METLowerBand, ex, ex);
+    TGraph *grshade = new TGraph(2*MET_BINS);
+    for (int ip=0;ip<MET_BINS;ip++) 
+    {
+      grshade->SetPoint(ip,x[ip],METUpperBand[ip]);
+      grshade->SetPoint(MET_BINS+ip,x[MET_BINS-ip-1],METLowerBand[MET_BINS-ip-1]);
+    }
+
+    grshade->SetFillStyle(3013);
+    grshade->SetTitle(pname.c_str());
+    grshade->Draw("f");
+    METUpperBandGraph->SetLineColor(kBlue); METUpperBandGraph->Draw("same");
+    METLowerBandGraph->SetLineColor(kBlue); METLowerBandGraph->Draw("same");
+    gr->Draw("P");
 
     c->SaveAs( (dir_out + pname + ".png").c_str() );
     c->SaveAs( (dir_out + pname + ".pdf").c_str() );
     c->SaveAs( (dir_out + pname + ".C").c_str() );
-
 
     //Get value and uncertainty for Fit TFactor
     for (int j = 0 ; j < MET_BINS ; j++)
     {
       QCDTFactorFit[j][i] = func->Eval( MET_mean[j][i] );
       //temporary solution
-      QCDTFactorFit_err[j][i] = grint->GetErrorY(j);
+      QCDTFactorFit_err[j][i] = fiterr[j];
     }
   }
   return ;
