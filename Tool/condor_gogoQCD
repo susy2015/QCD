@@ -6,7 +6,7 @@ should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
 #output_destination = srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/
 
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/Tool/QCD, $ENV(CMSSW_BASE)/src/QCD/Tool/gogoQCD.sh, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v5.txt
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/Tool/QCD, $ENV(CMSSW_BASE)/src/QCD/Tool/gogoQCD.sh, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v6.txt, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v6.txt
 
 Output = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stdout
 Error = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stderr
@@ -16,36 +16,36 @@ notify_user = hwei@fnal.gov
 
 ####Model Parameters Calculation from QCD MC####
 
-arguments = CalOnly runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v5.txt $ENV(CMSSW_BASE)
+arguments = CalOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 Queue
 
 ####Expectation from QCD MC####
 
-#arguments = ExpMCOnly runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v5.txt $ENV(CMSSW_BASE)
+#arguments = ExpMCOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 #Queue
 
 ####Prediction from QCD MC####
 
-#arguments = PredMCOnly runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v5.txt $ENV(CMSSW_BASE)
+#arguments = PredMCOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 #Queue
 
 ####Prediction from Data####
 
-#arguments = PredDataOnly runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v5.txt $ENV(CMSSW_BASE)
+#arguments = PredDataOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 #Queue
 
 ####BasicCheck QCD Inverted Delta Phi####
 
-#arguments = BasicCheckQCD runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v5.txt $ENV(CMSSW_BASE)
+#arguments = BasicCheckQCD runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 #Queue
 
 ####BasicCheck LL Single Muon####
 
-#arguments = BasicCheckLL runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v5.txt $ENV(CMSSW_BASE)
+#arguments = BasicCheckLL runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 #Queue
 
 ####QCDCombine####
 
-#arguments = QCDCombine QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v5.txt $ENV(CMSSW_BASE)
+#arguments = QCDCombine QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v6.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 #Queue
 

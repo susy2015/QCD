@@ -43,6 +43,32 @@ void mypassBaselineFunc(NTupleReader& tr)
   (*myBaselineVessel)(tr);
 }
 
+class CalHistgram
+{
+ public:
+  void BookHistgram(const char *);
+  TFile *oFile;
+  //closure plots on different variables and search bins
+  TH1D *h_cal_met_MC[MET_BINS][MT2_BINS];
+};
+
+void CalHistgram::BookHistgram(const char *outFileName)
+{
+  oFile = new TFile(outFileName, "recreate");
+  //closure plots on different variables
+  for( int i = 0 ; i < MET_BINS ; i++ )
+  {
+    for( int j = 0 ; j < MT2_BINS ; j++ )
+    {
+      std::string met_index = std::to_string(i);
+      std::string mt2_index = std::to_string(j);
+      if( i!= MET_BINS-1) h_cal_met_MC[i][j] = new TH1D( ("h_cal_met_MC_" + met_index + mt2_index).c_str(),"",20,metbins_edge[i],metbins_edge[i+1]);
+      else h_cal_met_MC[i][j] = new TH1D( ("h_cal_met_MC_" + met_index + mt2_index).c_str(),"",20,metbins_edge[i],20000);
+    }
+  }
+  return ;
+}
+
 class ClosureHistgram
 {
  public:
@@ -79,32 +105,6 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   h_exp_sb = new TH1D("h_exp_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
 
-  return ;
-}
-
-class TFactorsUncHistgram
-{
- public:
-  void BookHistgram(const char *);
-  TFile *oFile;
-  //closure plots on different variables and search bins
-  TH1D *h_pred_sb_TFactorsUnc_up[MET_BINS][MT2_BINS];
-  TH1D *h_pred_sb_TFactorsUnc_down[MET_BINS][MT2_BINS];
-};
-
-void TFactorsUncHistgram::BookHistgram(const char *outFileName)
-{
-  oFile = new TFile(outFileName, "recreate");
-  for(int i=0;i<MET_BINS;i++)
-  {
-    for(int j=0;j<MT2_BINS;j++)
-    {
-      std::string met_index = std::to_string(i);
-      std::string mt2_index = std::to_string(j);
-      h_pred_sb_TFactorsUnc_up[i][j] = new TH1D( ("h_pred_sb_TFactorsUnc_up_" + met_index + mt2_index).c_str(),"",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
-      h_pred_sb_TFactorsUnc_down[i][j] = new TH1D( ("h_pred_sb_TFactorsUnc_down_" + met_index + mt2_index).c_str(),"",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
-    }
-  }
   return ;
 }
 
@@ -393,7 +393,7 @@ void QCDFactors::TFactorFit()
     gPad->SetLeftMargin(0.16);
     gPad->SetTicks();
 
-    TH1F *frame = new TH1F("frame","frame",10,120.,690.);
+    TH1F *frame = new TH1F("frame","frame",10,150.,500.);
     frame->SetMinimum(0.0);
     frame->SetMaximum(0.2);
     frame->GetXaxis()->SetTitle("p_{T}^{miss} (GeV)");
@@ -404,13 +404,14 @@ void QCDFactors::TFactorFit()
     frame->Draw();
 
     const Int_t n = MET_BINS;
-    Double_t x[n], y[n], ex[n], ey[n];
+    Double_t x[n], y[n], ex[n], ey[n], zero[n];
     for (int j = 0 ; j < MET_BINS ; j++)
     {
       x[j] = MET_mean[j][i];
       y[j] = QCDTFactor[j][i];
       ex[j] = MET_mean_err[j][i];
       ey[j] = QCDTFactor_err[j][i];
+      zero[j] = 0;
     }
   
     TGraph *gr = new TGraphErrors(n,x,y,ex,ey);
@@ -450,8 +451,8 @@ void QCDFactors::TFactorFit()
       METLowerBand[ip] = func->Eval(ptMET) - perErr;
     }
 
-    TGraphErrors * METUpperBandGraph = new TGraphErrors(MET_BINS, x, METUpperBand, ex, ex);
-    TGraphErrors * METLowerBandGraph = new TGraphErrors(MET_BINS, x, METLowerBand, ex, ex);
+    TGraphErrors * METUpperBandGraph = new TGraphErrors(MET_BINS, x, METUpperBand, zero, zero);
+    TGraphErrors * METLowerBandGraph = new TGraphErrors(MET_BINS, x, METLowerBand, zero, zero);
     TGraph *grshade = new TGraph(2*MET_BINS);
     for (int ip=0;ip<MET_BINS;ip++) 
     {
@@ -466,9 +467,9 @@ void QCDFactors::TFactorFit()
     METLowerBandGraph->SetLineColor(kBlue); METLowerBandGraph->Draw("same");
     gr->Draw("P");
 
-    c->SaveAs( (dir_out + pname + ".png").c_str() );
-    c->SaveAs( (dir_out + pname + ".pdf").c_str() );
-    c->SaveAs( (dir_out + pname + ".C").c_str() );
+    c->SaveAs( (dir_out + "_" + pname + ".png").c_str() );
+    c->SaveAs( (dir_out + "_" + pname + ".pdf").c_str() );
+    c->SaveAs( (dir_out + "_" + pname + ".C").c_str() );
 
     //Get value and uncertainty for Fit TFactor
     for (int j = 0 ; j < MET_BINS ; j++)
@@ -483,25 +484,25 @@ void QCDFactors::TFactorFit()
 
 void QCDFactors::TFactorScale()
 {
-  double TFactorsdiff[MT2_BINS] = {0};
+  double TFactorsDataMCUnc[MT2_BINS] = {0};
 
   for(int i=0;i<MT2_BINS;i++)
   {
-    TFactorsdiff[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
+    TFactorsDataMCUnc[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
   }
 
   for(int i=0;i<MET_BINS;i++)
   {
     for(int j=0;j<MT2_BINS;j++)
     {
-      QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsdiff[j];
+      QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsDataMCUnc[j];
       if( QCDTFactorScaled[i][j] < 0 )
       { 
         std::cout << "METBIN,MT2BIN,TFactorScaled: " << i << "," << j << "," << QCDTFactorScaled[i][j] << std::endl;
         QCDTFactorScaled[i][j] = 0.000000000001;
       }
       //uncertainty of scaled tfactor have 3 parts: statistical, fit, and data MC difference
-      QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j] + QCDTFactorFit_err[i][j]*QCDTFactorFit_err[i][j] + TFactorsdiff[j]*TFactorsdiff[j] );
+      QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j] + QCDTFactorFit_err[i][j]*QCDTFactorFit_err[i][j] + TFactorsDataMCUnc[j]*TFactorsDataMCUnc[j] );
     }
   }
 
@@ -778,6 +779,7 @@ void QCDFactors::TFactorsPlotsGen()
   c_prefit->cd();
 
   TH2D *tfactors2dPreFit = new TH2D("tfactors_prefit","TFactors PreFit",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+  tfactors2dPreFit->SetMarkerSize(1.6);
 
   int i_cal;
   int j_cal;
@@ -814,7 +816,8 @@ void QCDFactors::TFactorsPlotsGen()
   c_postfit->cd();
 
   TH2D *tfactors2dPostFit = new TH2D("tfactors_postfit","TFactors PostFit",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-  
+  tfactors2dPostFit->SetMarkerSize(1.6);
+
   for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   { 
     for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
@@ -845,6 +848,7 @@ void QCDFactors::TFactorsPlotsGen()
   c_scaled->cd();
 
   TH2D *tfactors2dScaled = new TH2D("tfactors_scaled","TFactors Scaled",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+  tfactors2dScaled->SetMarkerSize(1.6);
 
   for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
   {

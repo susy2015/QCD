@@ -44,6 +44,8 @@ const double Scale = 1;
 
 void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
+  CalHistgram myCalHistgram;
+  myCalHistgram.BookHistgram( (dir_out + "CalQCD.root").c_str() );
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
@@ -100,6 +102,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       bool passTagger = tr.getVar<bool>("passTagger"+spec);
       bool passBJets = tr.getVar<bool>("passBJets"+spec);
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
+      bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
       
       //normal baseline without dPhis cut
@@ -109,6 +112,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
                           && passMT2
                           && passTagger
                           //&& passBJets
+                          && passQCDHighMETFilter
                           && passNoiseEventFilter;
  
       //apply the met efficiencies
@@ -132,14 +136,38 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
           passBaseline_dPhisInverted
          )
       {
+        //study crazy met events
+        if( met > 1000 )
+        { 
+          double lumi = tr.getVar<double>("lumi");
+          std::cout << "bad Guys appear!" << "Lumi: " << lumi << ",MET: " << met << std::endl;
+
+          std::vector<TLorentzVector> jetsLVec = tr.getVec<TLorentzVector>("jetsLVec");
+          std::vector<double> recoJetsmuonEnergyFraction = tr.getVec<double>("recoJetsmuonEnergyFraction");
+          double metphi = tr.getVar<double>("metphi");
+
+          int nJetsLoop = recoJetsmuonEnergyFraction.size();
+          //std::vector<double> dPhisVec = AnaFunctions::calcDPhi( jetsLVec, metphi, nJetsLoop, AnaConsts::dphiArr);
+
+          for(int i=0; i<nJetsLoop ; i++)
+          {
+            double thisrecoJetsmuonenergy = recoJetsmuonEnergyFraction.at(i)*(jetsLVec.at(i)).Pt();
+            double thisDeltaPhi = std::abs(DeltaPhi( metphi, (jetsLVec.at(i)).Phi() ));
+            std::cout << "RecoEnergyfromMuFraction: " << recoJetsmuonEnergyFraction.at(i) << ",RecoEnergyfromMu: " << thisrecoJetsmuonenergy << ",dPhis: " << std::abs(thisDeltaPhi-3.14) << std::endl;
+          }
+        }
+       
         myQCDFactors.nQCDInverted_MC[i][metbin_number][mt2bin_number]++;
         myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
         myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight * metEff;
         myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight * metEff;
 
+        (myCalHistgram.h_cal_met_MC[metbin_number][mt2bin_number])->Fill(met,thisweight*metEff);
+
         int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0)
         {
+
           myQCDFactors.MET_sum_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_all_exp_sb[searchbin_id] + met * thisweight * metEff;
           myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] + thisweight * metEff;
           myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] = myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] + MT2 * thisweight * metEff;
@@ -158,6 +186,9 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
   
   myQCDFactors.TFactorsPlotsGen();
   myQCDFactors.CountingPlotsGen();
+
+  (myCalHistgram.oFile)->Write();
+  (myCalHistgram.oFile)->Close();
   return ;
 }
 
@@ -216,8 +247,10 @@ void LoopQCDExp( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 
       //normal baseline
       bool passBaselineQCD = tr.getVar<bool>("passBaseline"+spec);
+      bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
       passBaselineQCD = passBaselineQCD
+                     && passQCDHighMETFilter
                      && passdPhis;
       //apply the met efficiencies
       double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
@@ -341,6 +374,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
       bool passMT2 = tr.getVar<bool>("passMT2"+spec);
       bool passTagger = tr.getVar<bool>("passTagger"+spec);
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
+      bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
       bool passBJets = tr.getVar<bool>("passBJets"+spec);
       bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
 
@@ -352,6 +386,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
                      && passMT2
                      && passTagger
                      //&& passBJets
+                     //&& passQCDHighMETFilter
                      && passNoiseEventFilter;
 
       //apply trigger efficiencies
@@ -359,6 +394,11 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
       
       if ( passBaselineQCD )
       {
+        if( RunMode.find("PredMC") != std::string::npos )
+        {
+          if( !passQCDHighMETFilter ) continue;
+        }
+
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");

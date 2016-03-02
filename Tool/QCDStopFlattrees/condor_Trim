@@ -5,7 +5,7 @@ executable = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/goTrim.sh
 should_transfer_files = YES
 #when_to_transfer_output = ON_EXIT
 
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/PrivateSkim, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/NTuple_Skim.py, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/goTrim.sh, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/Spring15_74X_Jan_2016_Ntp_v5p0_HTMHT-Run2015C-25ns-05Oct2015.txt, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/Spring15_74X_Jan_2016_Ntp_v5p0_HTMHT-Run2015D-05Oct2015.txt, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/Spring15_74X_Jan_2016_Ntp_v5p0_reTry_HTMHT-Run2015D-PromptReco.txt, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/TTJets_temp.txt
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/PrivateSkim, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/NTuple_Skim.py, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/goTrim.sh, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_HTMHT-Run2015C-25ns-05Oct2015.txt, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_HTMHT-Run2015D-05Oct2015.txt, $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_HTMHT-Run2015D-PromptReco.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt,$ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/WJetsToLNu_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 
 Output = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stdout
 Error = $ENV(CMSSW_BASE)/src/QCD/Tool/QCDStopFlattrees/res/Trim_$(Process).stderr
@@ -14,30 +14,21 @@ notify_user = hua.wei@cern.ch
 
 ####TEMP####
 
-arguments = $ENV(CMSSW_BASE) TTJets_temp.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) TTJets_temp.txt
+#Queue
 
 ####Data####
-#arguments = $ENV(CMSSW_BASE) Spring15_74X_Jan_2016_Ntp_v5p0_HTMHT-Run2015C-25ns-05Oct2015.txt
+#arguments = $ENV(CMSSW_BASE) Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_HTMHT-Run2015C-25ns-05Oct2015.txt
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) Spring15_74X_Jan_2016_Ntp_v5p0_HTMHT-Run2015D-05Oct2015.txt
+#arguments = $ENV(CMSSW_BASE) Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_HTMHT-Run2015D-05Oct2015.txt
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) Spring15_74X_Jan_2016_Ntp_v5p0_reTry_HTMHT-Run2015D-PromptReco.txt
-#Queue
-
-#arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015C-25ns
-#Queue
-
-#arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-05O
-#Queue
-
-#arguments = $ENV(CMSSW_BASE) _SingleMuon-Run2015D-PromptReco
+#arguments = $ENV(CMSSW_BASE) Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_HTMHT-Run2015D-PromptReco.txt
 #Queue
 
 ####TTJets####
-#arguments = $ENV(CMSSW_BASE) root://cmseos.fnal.gov//store/store/group/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#arguments = $ENV(CMSSW_BASE) 
 #Queue 
 
 #arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
@@ -46,7 +37,7 @@ Queue
 #arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) root://cmseos.fnal.gov//store/store/group/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#arguments = $ENV(CMSSW_BASE) 
 #Queue 
 
 ####TTW####
@@ -94,8 +85,18 @@ Queue
 #Queue
 
 ####WJets####
-#arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT
-#Queue
+
+arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
 
 ####Drell Yan####
 #arguments = $ENV(CMSSW_BASE) DYJetsToLL_
@@ -106,7 +107,28 @@ Queue
 #Queue
 
 ####Damn QCD####
-#arguments = $ENV(CMSSW_BASE) QCD_HT
+#arguments = $ENV(CMSSW_BASE) QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 #Queue
 
 #arguments = $ENV(CMSSW_BASE) QCD_Pt
