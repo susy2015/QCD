@@ -484,18 +484,24 @@ void QCDFactors::TFactorFit()
 
 void QCDFactors::TFactorScale()
 {
-  double TFactorsDataMCUnc[MT2_BINS] = {0};
+  double TFactorsDataMCDiff[MT2_BINS] = {0}, TFactorsDataMCUnc[MT2_BINS] = {0};
 
   for(int i=0;i<MT2_BINS;i++)
   {
-    TFactorsDataMCUnc[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
+    TFactorsDataMCDiff[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
+    //double r = head_QCDTFactorData[i]/QCDTFactorFit[0][i];
+    TFactorsDataMCUnc[i] = head_QCDTFactorData_err[i];
+    //r = exp/pred;
+    //e = std::sqrt( exp_err*exp_err + pred_err*pred_err*r*r ) / pred;
+    //std::sqrt( exp_err*exp_err + pred_err*pred_err*r*r ) * r
+    
   }
 
   for(int i=0;i<MET_BINS;i++)
   {
     for(int j=0;j<MT2_BINS;j++)
     {
-      QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsDataMCUnc[j];
+      QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsDataMCDiff[j];
       if( QCDTFactorScaled[i][j] < 0 )
       { 
         std::cout << "METBIN,MT2BIN,TFactorScaled: " << i << "," << j << "," << QCDTFactorScaled[i][j] << std::endl;

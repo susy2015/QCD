@@ -447,20 +447,23 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
 
               myQCDFactors.DC_sb_Data[searchbin_id] += thisweight * metEff;
               myQCDFactors.DC_sb_Data_err[searchbin_id] += thisweight * metEff * thisweight * metEff; 
+  
+              myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
             }
+
+            myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
+            //myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
+            
             if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
-            { 
+            {
               myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff);
               myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
             }
             if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos )
-            { 
+            {
               myQCDFactors.DC_sb_ttzMC[searchbin_id] += std::abs(thisweight * metEff);
               myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
             }
-
-            myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
-            myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
           }
         }
 
@@ -527,15 +530,26 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
 
       //deal with had tau
       myQCDFactors.nQCD_pred_sb[i] -= pred_sb_hadtau[i] * QCDTFactorPred[met_id][mt2_id];
-      myQCDFactors.nQCD_pred_sb_err[i] += pred_sb_hadtau_stat[i] * pred_sb_hadtau_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
-      myQCDFactors.nQCD_pred_sb_sysuncup[i] += pred_sb_hadtau_sysUp[i] * pred_sb_hadtau_sysUp[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
-      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += pred_sb_hadtau_sysDown[i] * pred_sb_hadtau_sysDown[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      //myQCDFactors.nQCD_pred_sb_err[i] += pred_sb_hadtau_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncup[i] += pred_sb_hadtau_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += pred_sb_hadtau_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncup[i] += pred_sb_hadtau_sysUp[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += pred_sb_hadtau_sysDown[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
 
       //deal with ll
       myQCDFactors.nQCD_pred_sb[i] -= pred_sb_lostlept[i] * QCDTFactorPred[met_id][mt2_id];
-      myQCDFactors.nQCD_pred_sb_err[i] += pred_sb_lostlept_stat[i] * pred_sb_lostlept_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
-      myQCDFactors.nQCD_pred_sb_sysuncup[i] += pred_sb_lostlept_sysUp[i] * pred_sb_hadtau_sysUp[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
-      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += pred_sb_lostlept_sysDown[i] * pred_sb_hadtau_sysDown[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      //myQCDFactors.nQCD_pred_sb_err[i] += pred_sb_lostlept_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncup[i] += pred_sb_lostlept_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += pred_sb_lostlept_stat[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncup[i] += pred_sb_lostlept_sysUp[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += pred_sb_lostlept_sysDown[i] * QCDTFactorPred[met_id][mt2_id] * QCDTFactorPred[met_id][mt2_id];
+
+      //deal with zinv
+      myQCDFactors.nQCD_pred_sb_sysuncup[i] += myQCDFactors.DC_sb_zinvMC_err[i] * myQCDFactors.DC_sb_zinvMC_err[i];
+      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += myQCDFactors.DC_sb_zinvMC_err[i] * myQCDFactors.DC_sb_zinvMC_err[i];
+      //deal with ttz
+      myQCDFactors.nQCD_pred_sb_sysuncup[i] += myQCDFactors.DC_sb_ttzMC_err[i] * myQCDFactors.DC_sb_ttzMC_err[i];
+      myQCDFactors.nQCD_pred_sb_sysuncdown[i] += myQCDFactors.DC_sb_ttzMC_err[i] * myQCDFactors.DC_sb_ttzMC_err[i];
     }
 
     for( int i=0 ; i<NSEARCH_BINS ; i++ )

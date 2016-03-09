@@ -16,8 +16,8 @@ notify_user = hwei@fnal.gov
 
 ####Model Parameters Calculation from QCD MC####
 
-arguments = CalOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = CalOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
+#Queue
 
 ####Expectation from QCD MC####
 
@@ -31,8 +31,8 @@ Queue
 
 ####Prediction from Data####
 
-#arguments = PredDataOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
-#Queue
+arguments = PredDataOnly runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
+Queue
 
 ####BasicCheck QCD Inverted Delta Phi####
 
