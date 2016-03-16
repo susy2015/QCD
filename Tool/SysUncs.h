@@ -297,10 +297,21 @@ void SysUncs::printFinalPred()
 
   TH1D *h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
 
+  h_pred_sb->SetMarkerStyle(20);
+  h_pred_sb->SetMarkerColor(kBlue);
+  h_pred_sb->SetLineColor(h_pred_sb->GetMarkerColor());
+  h_pred_sb->SetMarkerSize(0.9);
+  h_pred_sb->GetYaxis()->SetTitleOffset(0.6);
+  h_pred_sb->GetYaxis()->SetTitleFont(42);
+  h_pred_sb->GetYaxis()->SetTitleSize(0.065);
+  h_pred_sb->GetYaxis()->SetLabelSize(0.04);
+  h_pred_sb->GetYaxis()->SetLabelFont(42);
+  h_pred_sb->GetYaxis()->SetTitle("Events");
+
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     double e = std::sqrt(sysunc_all_down[i_cal]*sysunc_all_down[i_cal] + final_pred_stat[i_cal]*final_pred_stat[i_cal]);
-    h_pred_sb->SetBinContent( i_cal+1 , final_pred[i_cal] );
+    final_pred[i_cal] > 0 ? h_pred_sb->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb->SetBinContent( i_cal+1 , 0 ) ;
     h_pred_sb->SetBinError( i_cal+1 , e );
   }
   h_pred_sb->GetXaxis()->SetTitle("Search Bins");

@@ -8,9 +8,9 @@ eval `scramv1 runtime -sh`
 
 cd ${_CONDOR_SCRATCH_DIR}
 
-find . -name "*.root" -exec rm {} \;
-find . -name "*.h" -exec rm {} \;
-find . -name "_*.*" -exec rm {} \;
+#find . -name "*.root" -exec rm {} \;
+#find . -name "*.h" -exec rm {} \;
+#find . -name "_*.*" -exec rm {} \;
 
 #xrdcp root://cmsxrootd-site.fnal.gov//store/user/lpcsusyhad/PHYS14_720_Mar14_2014_v2/rootlist_$1.txt .
 ./QCD $1 $2 $3

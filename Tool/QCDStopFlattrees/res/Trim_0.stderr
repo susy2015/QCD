@@ -1,0 +1,21 @@
+Info in <TCanvas::Print>: png file _TFactorfit_MT2BIN0.png has been created
+Info in <TCanvas::Print>: pdf file _TFactorfit_MT2BIN0.pdf has been created
+Info in <TCanvas::SaveSource>: C++ Macro file: _TFactorfit_MT2BIN0.C has been generated
+Warning in <TCanvas::Constructor>: Deleting canvas with same name: c
+Warning in <TFile::Append>: Replacing existing TH1: frame (Potential memory leak).
+Info in <TCanvas::Print>: png file _TFactorfit_MT2BIN1.png has been created
+Info in <TCanvas::Print>: pdf file _TFactorfit_MT2BIN1.pdf has been created
+Info in <TCanvas::SaveSource>: C++ Macro file: _TFactorfit_MT2BIN1.C has been generated
+Info in <TCanvas::Print>: png file _tfactors2dPreFit.png has been created
+Info in <TCanvas::Print>: pdf file _tfactors2dPreFit.pdf has been created
+Info in <TCanvas::SaveSource>: C++ Macro file: _tfactors2dPreFit.C has been generated
+Info in <TCanvas::Print>: png file _tfactors2dPostFit.png has been created
+Info in <TCanvas::Print>: pdf file _tfactors2dPostFit.pdf has been created
+Info in <TCanvas::SaveSource>: C++ Macro file: _tfactors2dPostFit.C has been generated
+Info in <TCanvas::Print>: png file _tfactors2dScaled.png has been created
+Info in <TCanvas::Print>: pdf file _tfactors2dScaled.pdf has been created
+Info in <TCanvas::SaveSource>: C++ Macro file: _tfactors2dScaled.C has been generated
+Warning in <TCanvas::Constructor>: Deleting canvas with same name: c
+Info in <TCanvas::Print>: png file _Allcount2d.png has been created
+Info in <TCanvas::Print>: pdf file _Allcount2d.pdf has been created
+Info in <TCanvas::SaveSource>: C++ Macro file: _Allcount2d.C has been generated

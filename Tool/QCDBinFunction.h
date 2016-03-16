@@ -2,7 +2,7 @@
 //#define NBJETS_BINS 2
 #define MT2_BINS 2
 #define QCD_BINS 5
-#define NSEARCH_BINS 45
+#define NSEARCH_BINS 37
 
 const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,650.0};
 const double mt2bins_edge[MT2_BINS+1] = {200.0,300,500.0};

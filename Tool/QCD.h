@@ -383,24 +383,29 @@ Double_t fitf(Double_t *v, Double_t *par)
 
 void QCDFactors::TFactorFit()
 {
+  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
+  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  title->SetNDC();
+  title->SetTextSize(0.045);
+
   for(int i = 0; i < MT2_BINS; i++)
   {
     std::string pname = "TFactorfit_MT2BIN" + std::to_string(i);
 
-    TCanvas * c = new TCanvas("c", "c", 800, 600);
+    TCanvas * c = new TCanvas("c", "", 800, 600);
     gStyle->SetOptStat(0);
     gPad->SetBottomMargin(0.16);
     gPad->SetLeftMargin(0.16);
     gPad->SetTicks();
 
-    TH1F *frame = new TH1F("frame","frame",10,150.,500.);
+    TH1F *frame = new TH1F("frame","",10,150.,500.);
     frame->SetMinimum(0.0);
     frame->SetMaximum(0.2);
     frame->GetXaxis()->SetTitle("p_{T}^{miss} (GeV)");
     frame->GetYaxis()->SetTitle("Translation Factor");
     frame->SetTitleSize(0.045,"X");
     frame->SetTitleSize(0.045,"Y");
-    frame->SetTitle(pname.c_str());
+    //frame->SetTitle(pname.c_str());
     frame->Draw();
 
     const Int_t n = MET_BINS;
@@ -420,7 +425,7 @@ void QCDFactors::TFactorFit()
     gr->SetLineWidth(4);
     gr->SetMarkerColor(4);
     gr->SetMarkerStyle(21);
-    gr->SetTitle(pname.c_str());
+    //gr->SetTitle(pname.c_str());
     gr->GetXaxis()->SetTitle("mean MET[GeV]");
     gr->GetYaxis()->SetTitle("Translation Factor");
 
@@ -461,11 +466,33 @@ void QCDFactors::TFactorFit()
     }
 
     grshade->SetFillStyle(3013);
-    grshade->SetTitle(pname.c_str());
+    //grshade->SetTitle(pname.c_str());
     grshade->Draw("f");
     METUpperBandGraph->SetLineColor(kBlue); METUpperBandGraph->Draw("same");
     METLowerBandGraph->SetLineColor(kBlue); METLowerBandGraph->Draw("same");
     gr->Draw("P");
+
+    title->Draw("same");
+
+    /*
+    TLatex mark;
+    mark.SetNDC(true);
+    double fontScale = 1.0;
+    char lumistamp[128];
+    sprintf(lumistamp, "%.1f fb^{-1} (13 TeV)", 2262/ 1000.0);
+    //Draw CMS mark
+    mark.SetTextAlign(11);
+    mark.SetTextSize(0.042 * fontScale * 1.25);
+    mark.SetTextFont(61);
+    mark.DrawLatex(gPad->GetLeftMargin(), 1 - (gPad->GetTopMargin() - 0.017), "CMS"); // #scale[0.8]{#it{Preliminary}}");        
+    mark.SetTextSize(0.042 * fontScale);
+    mark.SetTextFont(52);
+    mark.DrawLatex(gPad->GetLeftMargin() + 0.09, 1 - (gPad->GetTopMargin() - 0.017), "Simulation");
+    //Draw lumistamp                                                                                                                         
+    mark.SetTextFont(42);
+    mark.SetTextAlign(31);
+    mark.DrawLatex(1 - gPad->GetRightMargin(), 1 - (gPad->GetTopMargin() - 0.017), lumistamp);
+    */
 
     c->SaveAs( (dir_out + "_" + pname + ".png").c_str() );
     c->SaveAs( (dir_out + "_" + pname + ".pdf").c_str() );
@@ -932,10 +959,11 @@ void QCDFactors::CountingPlotsGen()
   countInverted->SetYTitle("MT2 [GeV]");
   countInverted->SetStats(0);
 
-  std::ostringstream strs;
-  strs << (LUMI/1000);
-  std::string lumi_str = strs.str();
-  const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
+  //std::ostringstream strs;
+  //strs << (LUMI/1000);
+  //std::string lumi_str = strs.str();
+  //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2015, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -1019,6 +1047,16 @@ void QCDFactors::printDataCard()
     std::cout << std::sqrt( DC_sb_hadtau_errdown[i_cal]*DC_sb_hadtau_errdown[i_cal] + DC_sb_lostlept_errdown[i_cal]*DC_sb_lostlept_errdown[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " ";
     if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
   }
+
+  /*
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << "HadTau: " << DC_sb_hadtau[i_cal] << "(" << DC_sb_hadtau_errup[i_cal] << ")" << std::endl;
+    std::cout << "LostLept: " << DC_sb_lostlept[i_cal] << "(" << DC_sb_lostlept_errup[i_cal] << ")" << std::endl;
+    std::cout << "Zinv: " << DC_sb_zinvMC[i_cal] << "(" << DC_sb_zinvMC_err[i_cal] << ")" << std::endl;
+    std::cout << "TTZ: " << DC_sb_ttzMC[i_cal] << "(" << DC_sb_ttzMC_err[i_cal] << ")" << std::endl;
+  }
+  */
 
   std::cout << "QCD_TFactor = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
