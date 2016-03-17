@@ -118,7 +118,7 @@ void ClosurePlots::ClosureTemplate(
       continue;
   }
 
-  TCanvas *c = new TCanvas("c","A Simple Graph Example",200,10,700,500); 
+  TCanvas *c = new TCanvas("c","A Simple Graph Example",50,50,800,600); 
   gStyle->SetOptStat(0);
 
   TPad *pad = (TPad*) c->GetPad(0); 

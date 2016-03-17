@@ -31,6 +31,9 @@
 //Scale Tfactors with the Tfactor from Real Data
 #include "TFactorsfromDataHeader.h"
 
+#include "CMSStylePlot/CMS_lumi.h"
+//#include "CMSStylePlot/tdrstyle.h"
+
 //std::string dir_out = "/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/";
 //std::string dir_out = std::string( std::getenv("CMSSW_BASE") ) + "/QCD/Tool/AnaOut_QCD/";
 std::string dir_out = "";
@@ -383,16 +386,16 @@ Double_t fitf(Double_t *v, Double_t *par)
 
 void QCDFactors::TFactorFit()
 {
-  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
-  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
-  title->SetNDC();
-  title->SetTextSize(0.045);
+  //const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
+  //TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  //title->SetNDC();
+  //title->SetTextSize(0.045);
 
   for(int i = 0; i < MT2_BINS; i++)
   {
     std::string pname = "TFactorfit_MT2BIN" + std::to_string(i);
 
-    TCanvas * c = new TCanvas("c", "", 800, 600);
+    TCanvas * c = new TCanvas("c", "", 50, 50, 1000, 600);
     gStyle->SetOptStat(0);
     gPad->SetBottomMargin(0.16);
     gPad->SetLeftMargin(0.16);
@@ -401,7 +404,7 @@ void QCDFactors::TFactorFit()
     TH1F *frame = new TH1F("frame","",10,150.,500.);
     frame->SetMinimum(0.0);
     frame->SetMaximum(0.2);
-    frame->GetXaxis()->SetTitle("p_{T}^{miss} (GeV)");
+    frame->GetXaxis()->SetTitle("#slash{E}_{T} [GeV]");
     frame->GetYaxis()->SetTitle("Translation Factor");
     frame->SetTitleSize(0.045,"X");
     frame->SetTitleSize(0.045,"Y");
@@ -425,8 +428,7 @@ void QCDFactors::TFactorFit()
     gr->SetLineWidth(4);
     gr->SetMarkerColor(4);
     gr->SetMarkerStyle(21);
-    //gr->SetTitle(pname.c_str());
-    gr->GetXaxis()->SetTitle("mean MET[GeV]");
+    gr->GetXaxis()->SetTitle("#slash{E}_{T} [GeV]");
     gr->GetYaxis()->SetTitle("Translation Factor");
 
     //create a function with 2 parameters in the range [0,1000]
@@ -466,33 +468,12 @@ void QCDFactors::TFactorFit()
     }
 
     grshade->SetFillStyle(3013);
-    //grshade->SetTitle(pname.c_str());
     grshade->Draw("f");
     METUpperBandGraph->SetLineColor(kBlue); METUpperBandGraph->Draw("same");
     METLowerBandGraph->SetLineColor(kBlue); METLowerBandGraph->Draw("same");
     gr->Draw("P");
 
-    title->Draw("same");
-
-    /*
-    TLatex mark;
-    mark.SetNDC(true);
-    double fontScale = 1.0;
-    char lumistamp[128];
-    sprintf(lumistamp, "%.1f fb^{-1} (13 TeV)", 2262/ 1000.0);
-    //Draw CMS mark
-    mark.SetTextAlign(11);
-    mark.SetTextSize(0.042 * fontScale * 1.25);
-    mark.SetTextFont(61);
-    mark.DrawLatex(gPad->GetLeftMargin(), 1 - (gPad->GetTopMargin() - 0.017), "CMS"); // #scale[0.8]{#it{Preliminary}}");        
-    mark.SetTextSize(0.042 * fontScale);
-    mark.SetTextFont(52);
-    mark.DrawLatex(gPad->GetLeftMargin() + 0.09, 1 - (gPad->GetTopMargin() - 0.017), "Simulation");
-    //Draw lumistamp                                                                                                                         
-    mark.SetTextFont(42);
-    mark.SetTextAlign(31);
-    mark.DrawLatex(1 - gPad->GetRightMargin(), 1 - (gPad->GetTopMargin() - 0.017), lumistamp);
-    */
+    CMSStylePlot::CMS_lumi( c, 0, 0 );
 
     c->SaveAs( (dir_out + "_" + pname + ".png").c_str() );
     c->SaveAs( (dir_out + "_" + pname + ".pdf").c_str() );
@@ -802,12 +783,7 @@ void QCDFactors::printQCDClosurePred(ClosureHistgram& myClosureHistgram)
 
 void QCDFactors::TFactorsPlotsGen()
 {
-  const std::string titre="CMS Simulation 2015, #sqrt{s} = 13 TeV";
-  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
-  title->SetNDC();
-  title->SetTextSize(0.045);
-
-  TCanvas *c_prefit = new TCanvas("c_prefit", "",0,51,1920,1004);
+  TCanvas *c_prefit = new TCanvas("c_prefit", "",50,50,1200,600);
   c_prefit->SetFillColor(0);
   c_prefit->cd();
 
@@ -827,24 +803,27 @@ void QCDFactors::TFactorsPlotsGen()
   }
 
   tfactors2dPreFit->SetTitle("");
-  tfactors2dPreFit->SetXTitle("MET [GeV]");
-  tfactors2dPreFit->SetYTitle("MT2 [GeV]");
-  //tfactors2dPreFit->SetYTitle("NbJets");
+  tfactors2dPreFit->SetXTitle("#slash{E}_{T} [GeV]");
+  tfactors2dPreFit->GetXaxis()->SetLabelSize(0.045);
+  tfactors2dPreFit->GetXaxis()->SetTitleSize(0.045);
+  tfactors2dPreFit->SetYTitle("M_{T2} [GeV]");
+  tfactors2dPreFit->GetYaxis()->SetLabelSize(0.045);
+  tfactors2dPreFit->GetYaxis()->SetTitleSize(0.045);
+  tfactors2dPreFit->GetZaxis()->SetLabelSize(0.045);
+  tfactors2dPreFit->GetZaxis()->SetTitleSize(0.045);
   tfactors2dPreFit->SetStats(0);
 
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dPreFit->Draw("colztexte");
-
-  title->Draw("same");
+  CMSStylePlot::CMS_lumi( c_prefit, 0, 0 );
 
   c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.png").c_str() );
   c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.pdf").c_str() );
   c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.C").c_str() );
   c_prefit->Close();
 
-
   //Post fit Tfactor plot
-  TCanvas *c_postfit = new TCanvas("c_postfit", "",0,51,1920,1004);
+  TCanvas *c_postfit = new TCanvas("c_postfit", "",50,50,1200,600);
   c_postfit->SetFillColor(0);
   c_postfit->cd();
 
@@ -861,14 +840,19 @@ void QCDFactors::TFactorsPlotsGen()
   }
 
   tfactors2dPostFit->SetTitle("");
-  tfactors2dPostFit->SetXTitle("MET [GeV]");
-  tfactors2dPostFit->SetYTitle("MT2 [GeV]");
+  tfactors2dPostFit->SetXTitle("#slash{E}_{T} [GeV]");
+  tfactors2dPostFit->GetXaxis()->SetLabelSize(0.045);
+  tfactors2dPostFit->GetXaxis()->SetTitleSize(0.045);
+  tfactors2dPostFit->SetYTitle("M_{T2} [GeV]");
+  tfactors2dPostFit->GetYaxis()->SetLabelSize(0.045);
+  tfactors2dPostFit->GetYaxis()->SetTitleSize(0.045);
+  tfactors2dPostFit->GetZaxis()->SetLabelSize(0.045);
+  tfactors2dPostFit->GetZaxis()->SetTitleSize(0.045);
   tfactors2dPostFit->SetStats(0);
 
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dPostFit->Draw("colztexte");
-
-  title->Draw("same");
+  CMSStylePlot::CMS_lumi( c_postfit, 0, 0 );
 
   c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.png").c_str() );
   c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.pdf").c_str() );
@@ -876,7 +860,7 @@ void QCDFactors::TFactorsPlotsGen()
   c_postfit->Close();
 
   //Scaled Tfactor plot
-  TCanvas *c_scaled = new TCanvas("c_scaled", "",0,51,1920,1004);
+  TCanvas *c_scaled = new TCanvas("c_scaled", "",50,50,1200,600);
   c_scaled->SetFillColor(0);
   c_scaled->cd();
 
@@ -893,14 +877,19 @@ void QCDFactors::TFactorsPlotsGen()
   }
 
   tfactors2dScaled->SetTitle("");
-  tfactors2dScaled->SetXTitle("MET [GeV]");
-  tfactors2dScaled->SetYTitle("MT2 [GeV]");
+  tfactors2dScaled->SetXTitle("#slash{E}_{T} [GeV]");
+  tfactors2dScaled->GetXaxis()->SetLabelSize(0.045);
+  tfactors2dScaled->GetXaxis()->SetTitleSize(0.045);
+  tfactors2dScaled->SetYTitle("M_{T2} [GeV]");
+  tfactors2dScaled->GetYaxis()->SetLabelSize(0.045);
+  tfactors2dScaled->GetYaxis()->SetTitleSize(0.045);
+  tfactors2dScaled->GetZaxis()->SetLabelSize(0.045);
+  tfactors2dScaled->GetZaxis()->SetTitleSize(0.045);
   tfactors2dScaled->SetStats(0);
 
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dScaled->Draw("colztexte");
-
-  title->Draw("same");
+  CMSStylePlot::CMS_lumi( c_scaled, 4, 0 );
 
   c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.png").c_str() );
   c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.pdf").c_str() );
@@ -943,20 +932,20 @@ void QCDFactors::CountingPlotsGen()
   }
 
   countNormal_MC->SetTitle("QCD Signal MC");
-  countNormal_MC->SetXTitle("MET [GeV]");
-  countNormal_MC->SetYTitle("MT2 [GeV]");
+  countNormal_MC->SetXTitle("#slash{E}_{T} [GeV]");
+  countNormal_MC->SetYTitle("M_{T2} [GeV]");
   countNormal_MC->SetStats(0);
   countNormal->SetTitle("QCD Signal Normalized");
-  countNormal->SetXTitle("MET [GeV]");
-  countNormal->SetYTitle("MT2 [GeV]");
+  countNormal->SetXTitle("#slash{E}_{T} [GeV]");
+  countNormal->SetYTitle("M_{T2} [GeV]");
   countNormal->SetStats(0);
   countInverted_MC->SetTitle("QCD Inverted DeltaPhi MC");
-  countInverted_MC->SetXTitle("MET [GeV]");
-  countInverted_MC->SetYTitle("MT2 [GeV]");
+  countInverted_MC->SetXTitle("#slash{E}_{T} [GeV]");
+  countInverted_MC->SetYTitle("M_{T2} [GeV]");
   countInverted_MC->SetStats(0);
   countInverted->SetTitle("QCD Inverted DeltaPhi Normalized");
-  countInverted->SetXTitle("MET [GeV]");
-  countInverted->SetYTitle("MT2 [GeV]");
+  countInverted->SetXTitle("#slash{E}_{T} [GeV]");
+  countInverted->SetYTitle("M_{T2} [GeV]");
   countInverted->SetStats(0);
 
   //std::ostringstream strs;

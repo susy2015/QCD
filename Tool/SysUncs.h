@@ -22,6 +22,9 @@
 #include "QCDBinFunction.h"
 #include "SysHeader.h"
 
+#include "CMSStylePlot/CMS_lumi.h"
+//#include "CMSStylePlot/tdrstyle.h"
+
 class SysUncs
 {
  public:
@@ -291,7 +294,7 @@ void SysUncs::printLatexTable()
 
 void SysUncs::printFinalPred()
 {
-  TCanvas *c = new TCanvas("c","",200,10,700,500);
+  TCanvas *c = new TCanvas("c","",50,50,800,600);
 
   gStyle->SetOptStat(0);
 
@@ -301,12 +304,19 @@ void SysUncs::printFinalPred()
   h_pred_sb->SetMarkerColor(kBlue);
   h_pred_sb->SetLineColor(h_pred_sb->GetMarkerColor());
   h_pred_sb->SetMarkerSize(0.9);
-  h_pred_sb->GetYaxis()->SetTitleOffset(0.6);
+
+  h_pred_sb->GetYaxis()->SetTitleOffset(0.9);
   h_pred_sb->GetYaxis()->SetTitleFont(42);
-  h_pred_sb->GetYaxis()->SetTitleSize(0.065);
+  h_pred_sb->GetYaxis()->SetTitleSize(0.045);
   h_pred_sb->GetYaxis()->SetLabelSize(0.04);
   h_pred_sb->GetYaxis()->SetLabelFont(42);
   h_pred_sb->GetYaxis()->SetTitle("Events");
+  h_pred_sb->GetXaxis()->SetTitleOffset(0.9);
+  h_pred_sb->GetXaxis()->SetTitleFont(42);
+  h_pred_sb->GetXaxis()->SetTitleSize(0.045);
+  h_pred_sb->GetXaxis()->SetLabelSize(0.04);
+  h_pred_sb->GetXaxis()->SetLabelFont(42);
+  h_pred_sb->GetXaxis()->SetTitle("Search region bin number");
 
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
@@ -314,18 +324,12 @@ void SysUncs::printFinalPred()
     final_pred[i_cal] > 0 ? h_pred_sb->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb->SetBinContent( i_cal+1 , 0 ) ;
     h_pred_sb->SetBinError( i_cal+1 , e );
   }
-  h_pred_sb->GetXaxis()->SetTitle("Search Bins");
+  
   h_pred_sb->Draw("e0");
 
-  drawSBregionDef(-2.0, 16.0, false);
+  drawSBregionDef(-4.0, 18.0, false);
+  CMSStylePlot::CMS_lumi( c, 4, 0 );
 
-  const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
-
-  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
-  title->SetNDC();
-  title->SetTextSize(0.045);
-  title->Draw("same");
- 
   c->SaveAs( "_sb_Data.png" );
   c->SaveAs( "_sb_Data.pdf" );
   c->SaveAs( "_sb_Data.C" );
