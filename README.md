@@ -25,13 +25,13 @@ scram b -j 9
 
 3.Go to QCD directory and then compile the code
 
-cd QCD/Tool
+cd QCD/TFactorMethod
 
 make
 
 PS: We have Error like "cannot find libtbb.so.2", to solve this problem, we want to build a soft link to this lib for temporary solution. To do this:
 
-Go to QCD/Tool
+Go to QCD/TFactorMethod
 
 and then do:
 
@@ -59,7 +59,7 @@ For Data/MC comparison in CS, reading BasicCheckQCD.root:
 
 6.Some useful tools:
 
-cd QCD/Tool/QCDStopFlattrees
+cd QCD/TFactorMethod/QCDStopFlattrees
 
 g++ stopNTuple_skim.cc \`root-config --libs --cflags\` -o PrivateSkim
 

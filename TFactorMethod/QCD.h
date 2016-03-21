@@ -34,8 +34,6 @@
 #include "CMSStylePlot/CMS_lumi.h"
 //#include "CMSStylePlot/tdrstyle.h"
 
-//std::string dir_out = "/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/";
-//std::string dir_out = std::string( std::getenv("CMSSW_BASE") ) + "/QCD/Tool/AnaOut_QCD/";
 std::string dir_out = "";
 
 //############finish the definition of class AccRecoEffs######################
