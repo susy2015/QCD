@@ -17,12 +17,13 @@
 #include "TStyle.h"
 
 #include "SusyAnaTools/Tools/searchBins.h"
+#include "SusyAnaTools/Tools/CMS_lumi.h"
 
 #include "QCDReWeighting.h"
 #include "QCDBinFunction.h"
 #include "SysHeader.h"
 
-#include "CMSStylePlot/CMS_lumi.h"
+//#include "CMSStylePlot/CMS_lumi.h"
 //#include "CMSStylePlot/tdrstyle.h"
 
 class SysUncs
@@ -318,6 +319,8 @@ void SysUncs::printFinalPred()
   h_pred_sb->GetXaxis()->SetLabelFont(42);
   h_pred_sb->GetXaxis()->SetTitle("Search region bin number");
 
+  h_pred_sb->GetYaxis()->SetRangeUser(0,18);
+
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     double e = std::sqrt(sysunc_all_down[i_cal]*sysunc_all_down[i_cal] + final_pred_stat[i_cal]*final_pred_stat[i_cal]);
@@ -327,7 +330,7 @@ void SysUncs::printFinalPred()
   
   h_pred_sb->Draw("e0");
 
-  drawSBregionDef(-4.0, 18.0, false);
+  drawSBregionDef(0.0, 18.0, false);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );
