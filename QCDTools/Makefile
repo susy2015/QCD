@@ -25,7 +25,7 @@ LIBS     = $(shell root-config --glibs)
 MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 
-PROGRAMS = tupleTest QCD ClosurePlots BasicCheckPlots SysUncs
+PROGRAMS = tupleTest DeepTrim
 
 all: mkobj sampPyWrap $(PROGRAMS)
 
@@ -60,17 +60,8 @@ $(ODIR)/%.o : $(IDIR)/%.cc
 tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/PDFUncertainty.o $(ODIR)/tupleReadTest.o
 	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
-QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o
+DeepTrim: $(ODIR)/DeepTrim.o $(ODIR)/NTupleReader.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
-
-ClosurePlots: $(ODIR)/ClosurePlots.o
-	$(LD) $^ $(LIBS)  -o $@
-
-BasicCheckPlots: $(ODIR)/BasicCheckPlots.o
-	$(LD) $^ $(LIBS)  -o $@
-
-SysUncs: $(ODIR)/SysUncs.o
-	$(LD) $^ $(LIBS)  -o $@
 
 clean:
 	rm -f $(ODIR)/*.o $(ODIR)/*.d $(ODIR)/*.so $(PROGRAMS) core 

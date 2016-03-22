@@ -49,8 +49,9 @@ int main(int argc, char* argv[])
   //here is a little bit tricky when dealing with the slash... need to improve
   //for all the MC samples
   //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
+  std::string tag = input_str.substr(find_Nth(input_str,9,"/") + 1,find_Nth(input_str,10,"/")-find_Nth(input_str,9,"/")-1);
   //for all the data samples
-  std::string tag = input_str.substr(find_Nth(input_str,8,"/") + 1,find_Nth(input_str,9,"/")-find_Nth(input_str,8,"/")-1);
+  //std::string tag = input_str.substr(find_Nth(input_str,8,"/") + 1,find_Nth(input_str,9,"/")-find_Nth(input_str,8,"/")-1);
   //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
@@ -58,8 +59,10 @@ int main(int argc, char* argv[])
   //cut every tree with MET 200 and HT 500 except QCD tree
   //if( input_str.find("QCD_") != std::string::npos || input_str.find("_HTMHT") != std::string::npos )
   //{
-    trim = "met>175";
-    output_str = "Skimmed_MET175_" + tag + fileid;
+    //trim = "met>175";
+    //output_str = "Skimmed_MET175_" + tag + fileid;
+    trim = "met>30";
+    output_str = "Skimmed_MET30_" + tag + fileid;
     std::cout << "Output File Name: " << output_str << std::endl;
   //}
   //else

@@ -23,7 +23,9 @@ git clone https://github.com/susy2015/QCD.git
 
 scram b -j 9
 
-3.Go to QCD directory and then compile the code
+# QCD Translation Method
+
+1.Go to QCD directory and then compile the code
 
 cd QCD/TFactorMethod
 
@@ -41,13 +43,13 @@ This will generate a soft link : libtbb.so.2
 
 And it will be involved into make command automatically and we do not have error report anymore
 
-4.Run the QCD code:
+2.Run the QCD code:
 
 ./QCD RunMode QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v3.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v4.txt
 
 The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheckQCD BasicCheckLL QCDCombine
 
-5.Making plots:
+3.Making plots:
 
 For closure and MCExp vs DataPred, reading PredQCD.root and ExpQCD.root:
 
@@ -57,9 +59,23 @@ For Data/MC comparison in CS, reading BasicCheckQCD.root:
 
 ./BasicCheckPlots BasicCheckQCD20151209
 
-6.Some useful tools:
+# QCD Rebalance and Smear Method
 
-cd QCD/TFactorMethod/QCDStopFlattrees
+Under construction
+
+1.Jet Response function
+
+2.Event Rebalance
+
+3.Jet Smear
+
+4.Final Prediction
+
+# QCD Translation Method
+
+1.Some useful tools:
+
+cd QCD/QCDTools/QCDStopFlattrees
 
 g++ stopNTuple_skim.cc \`root-config --libs --cflags\` -o PrivateSkim
 
