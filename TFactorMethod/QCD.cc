@@ -452,7 +452,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
             }
 
             myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
-            //myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
+            myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
             
             if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             {

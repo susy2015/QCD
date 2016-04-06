@@ -2,6 +2,11 @@
 #include <iostream>
 #include <vector>
 
+#include "TH1D.h"
+#include "TH2D.h"
+
+#include "QCDReWeighting.h"
+
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
 #include "SusyAnaTools/Tools/samples.h"
@@ -64,3 +69,34 @@ void mypassBaselineFunc(NTupleReader& tr)
 {
   (*myBaselineVessel)(tr);
 }
+
+class JetResponseHistgram
+{
+ public:
+  void BookHistgram(const char *);
+  TFile *oFile;
+  
+  TH2D *h_QCDMC_MET_MT2_Corr;
+  //TH1D *h_cal_met_MC[JETPT_BINS][JETETA_BINS];
+};
+
+void JetResponseHistgram::BookHistgram(const char *outFileName)
+{
+  oFile = new TFile(outFileName, "recreate");
+
+  h_QCDMC_MET_MT2_Corr = new TH2D("h_QCDMC_MET_MT2_Corr","",500,0,1000,50,0,1000);
+  /*
+  for( int i = 0 ; i < JETPT_BINS ; i++ )
+  {
+    for( int j = 0 ; j < JETETA_BINS ; j++ )
+    {
+      std::string met_index = std::to_string(i);
+      std::string mt2_index = std::to_string(j);
+      if( i!= MET_BINS-1) h_cal_met_MC[i][j] = new TH1D( ("h_cal_met_MC_" + met_index + mt2_index).c_str(),"",20,metbins_edge[i],metbins_edge[i+1]);
+      else h_cal_met_MC[i][j] = new TH1D( ("h_cal_met_MC_" + met_index + mt2_index).c_str(),"",20,metbins_edge[i],20000);
+    }
+  }
+  */
+  return ;
+}
+

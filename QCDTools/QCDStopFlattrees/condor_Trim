@@ -118,8 +118,8 @@ notify_user = hua.wei@cern.ch
 #arguments = $ENV(CMSSW_BASE) QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-#Queue
+arguments = $ENV(CMSSW_BASE) QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
 
 arguments = $ENV(CMSSW_BASE) QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 Queue
@@ -127,14 +127,14 @@ Queue
 arguments = $ENV(CMSSW_BASE) QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-#Queue
+arguments = $ENV(CMSSW_BASE) QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-#Queue
+arguments = $ENV(CMSSW_BASE) QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-#Queue
+arguments = $ENV(CMSSW_BASE) QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+Queue
 
 #arguments = $ENV(CMSSW_BASE) QCD_Pt
 #Queue

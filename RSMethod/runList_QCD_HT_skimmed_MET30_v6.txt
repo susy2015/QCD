@@ -1,0 +1,6 @@
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/MC_v6/Skimmed_MET30_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_QCD_HT300to500stopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/MC_v6/Skimmed_MET30_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_QCD_HT500to700stopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/MC_v6/Skimmed_MET30_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_QCD_HT700to1000stopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/MC_v6/Skimmed_MET30_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_QCD_HT1000to1500stopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/MC_v6/Skimmed_MET30_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_QCD_HT1500to2000stopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/MC_v6/Skimmed_MET30_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_QCD_HT2000toInfstopFlatNtuples.root

@@ -1,0 +1,128 @@
+The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData, BasicCheckQCD, BasicCheckLL QCDCombine TFactorsUnc
+The run mode we have right now is: PredMCOnly
+TreeUtilities : FillChain QCD_HT500to700_
+No. of Entries in this tree : 5307
+TreeUtilities : FillChain QCD_HT700to1000_
+No. of Entries in this tree : 28969
+TreeUtilities : FillChain QCD_HT1000to1500_
+No. of Entries in this tree : 38819
+TreeUtilities : FillChain QCD_HT1500to2000_
+No. of Entries in this tree : 95575
+TreeUtilities : FillChain QCD_HT2000toInf_
+No. of Entries in this tree : 115228
+TreeUtilities : FillChain HTMHT
+No. of Entries in this tree : 371278
+TreeUtilities : FillChain ZJetsToNuNu_HT-400To600_
+No. of Entries in this tree : 292933
+TreeUtilities : FillChain ZJetsToNuNu_HT-600ToInf_
+No. of Entries in this tree : 367422
+TreeUtilities : FillChain TTZToLLNuNu_
+No. of Entries in this tree : 85132
+TreeUtilities : FillChain TTZToQQ_
+No. of Entries in this tree : 41234
+TreeUtilities : FillChain HTMHT
+No. of Entries in this tree : 371278
+TreeUtilities : FillChain TTJets_
+No. of Entries in this tree : 258283
+TreeUtilities : FillChain ST_tW_top
+No. of Entries in this tree : 20791
+TreeUtilities : FillChain ST_tW_antitop
+No. of Entries in this tree : 20701
+TreeUtilities : FillChain WJetsToLNu_HT-400To600_
+No. of Entries in this tree : 227000
+TreeUtilities : FillChain WJetsToLNu_HT-600ToInf_
+No. of Entries in this tree : 189063
+TreeUtilities : FillChain ZJetsToNuNu_HT-400To600_
+No. of Entries in this tree : 292933
+TreeUtilities : FillChain ZJetsToNuNu_HT-600ToInf_
+No. of Entries in this tree : 367422
+TreeUtilities : FillChain TTZToLLNuNu_
+No. of Entries in this tree : 85132
+TreeUtilities : FillChain TTZToQQ_
+No. of Entries in this tree : 41234
+TreeUtilities : FillChain QCD_HT500to700_
+No. of Entries in this tree : 5307
+TreeUtilities : FillChain QCD_HT700to1000_
+No. of Entries in this tree : 28969
+TreeUtilities : FillChain QCD_HT1000to1500_
+No. of Entries in this tree : 38819
+TreeUtilities : FillChain QCD_HT1500to2000_
+No. of Entries in this tree : 95575
+TreeUtilities : FillChain QCD_HT2000toInf_
+No. of Entries in this tree : 115228
+Prediction: 
+Sample Type: QCD_HT500to700_; Weight: 3.37989
+----------------------------------------------------------------------
+ M_T2 : a variable for measuring masses when missing energy is expected.
+ If you use MT2 or this library, please cite:
+ 	(o) C.G.Lester, D.J.Summers 
+ 	    Phys.Lett.B.463:99-103 (1999) hep-ph/9906349
+ 	(o) A.J.Barr, C.G.Lester, P.Stephens 
+ 	    J.Phys.G 29:2343-2363  (2003) hep-ph/0304226
+ If you use MTGEN please also cite:
+ 	(o) C.G.Lester, A.J.Barr (2007) arXiv:0708.1028 (hep-ph)
+ 	    JHEP 12(2007)102
+ If you use the ChengHanBisection MT2 calculator, please also cite:
+ 	(o) H.Cheng, Z.Han,  arXiv:0810.5178
+----------------------------------------------------------------------
+Sample Type: QCD_HT700to1000_; Weight: 0.96138506144
+20000	13.41
+Sample Type: QCD_HT1000to1500_; Weight: 0.48505750907
+20000	26.22
+Sample Type: QCD_HT1500to2000_; Weight: 0.07106643592
+WARNING ... cannot fake b jet?! (hint: check NaN of CSV value)
+20000	44.6
+40000	54.54
+60000	64.41
+80000	74.28
+Sample Type: QCD_HT2000toInf_; Weight: 0.0341724071
+20000	93.09
+40000	104.35
+60000	115.53
+80000	126.68
+100000	137.85
+8.9561642197,
+1.9709778073,
+0.25438271131,
+0.13016974681,
+2.2971333129,
+0.50023652721,
+0.26763560058,
+0.11152882756,
+0.96528913561,
+0.30024282452,
+0.29918172315,
+2.8522178936,
+0.53637153076,
+0.047727119591,
+0.019571859517,
+0.45449501818,
+0.11007624782,
+0.045308191049,
+0.022779828045,
+0.26847215728,
+0.10589000771,
+0.44977741451,
+0.076929455369,
+0.03677722309,
+2.1222956371,
+0.62118270972,
+0.13753566101,
+0.6383606035,
+0.10764207522,
+0.11952235862,
+0.46213267937,
+0.32939850338,
+0.66231982036,
+0.13797781172,
+0.032922624967,
+0.24044505995,
+0.023889782803,
+0.0056388198531,
+0.10374166391,
+0.089438509102,
+0.099481583521,
+0.013997586995,
+0.11630277821,
+0.026038221914,
+0.011445997591,

@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
                                  "_sb",
                                  "Search Bins",
                                  0,
-                                 50
+                                 NSEARCH_BINS
                                 );  
   
   return 0;
