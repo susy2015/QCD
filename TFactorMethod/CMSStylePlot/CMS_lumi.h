@@ -21,7 +21,7 @@ namespace CMSStylePlot
   float cmsTextOffset    = 0.1;  // only used in outOfFrame version
 
   float relPosX    = 0.045;
-  float relPosY    = 0.045;
+  float relPosY    = 0.025;
   float relExtraDY = 1.2;
 
   // ratio of "CMS" and extra text size

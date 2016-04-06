@@ -185,7 +185,8 @@ void ClosurePlots::ClosureTemplate(
 
   //Create LUMI stamp
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
+  //const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Supplementary                                                             2.3 fb^{-1}(13 TeV)";
 
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
@@ -221,7 +222,7 @@ void ClosurePlots::ClosureTemplate(
   pad->cd(1); 
   TPad *pad1 = (TPad*) pad->GetPad(1);
   pad1->SetPad("", "", 0, divRatio, 1.0, 1.0, kWhite);
-  pad1->SetBottomMargin(0.005);
+  pad1->SetBottomMargin(0);
   pad1->SetBorderMode(0);
   
 	TExec *setex = new TExec("setex", "gStyle->SetErrorX(0.0)");
@@ -262,7 +263,8 @@ void ClosurePlots::ClosureTemplate(
 	h_pred->Draw("E2 same");
 
   if( hist_tag == "_sb" ){ drawSBregionDef(0.0, 18.0, true); }
-  title->Draw("same");
+  //CMSStylePlot::CMS_lumi( c, 4, 0 );
+	title->Draw("same");
   leg->Draw("same");
 
   c->Update(); 
@@ -290,7 +292,6 @@ void ClosurePlots::ClosureTemplate(
   
   h_ratio->Draw("PE1");
   tl_one->DrawLine(min,1.,max,1.);
-  //h_ratio->Draw("PE1same");
 
   c->SaveAs( target_DIR + TString("/") + hist_tag + TString(".png") );
   c->SaveAs( target_DIR + TString("/") + hist_tag + TString(".pdf") );
