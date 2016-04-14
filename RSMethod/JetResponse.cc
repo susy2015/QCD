@@ -68,21 +68,27 @@ int main(int argc, char* argv[])
       double met = tr.getVar<double>("met");
 
       (myJetResponseHistgram.h_QCDMC_MET_MT2_Corr)->Fill(met,MT2,thisweight);
-      /*
-      //reco Jet
+      
+			//reco Jet
       std::vector<TLorentzVector> jetsLVec = tr.getVec<TLorentzVector>("jetsLVec");
       //Gen Jet information
-      std::vector<TLorentzVector> GenjetsLVec = tr.getVec<TLorentzVector>("GenjetsLVec");
+      std::vector<TLorentzVector> genjetsLVec = tr.getVec<TLorentzVector>("genjetsLVec");
 
-      for(int i=0;i<GenjetsLVec.size();i++)
+      for(int i=0;i<jetsLVec.size();i++)
       {
-        double Genjetpt = GenjetsLVec.at(i).Pt();
-        double Genjeteta = GenjetsLVec.at(i).Eta();
+				/*
+        double genjetpt = genjetsLVec.at(i).Pt();
+        double genjeteta = genjetsLVec.at(i).Eta();
 
-        int jetptbin_number = JetResponseConstant::Set_jetptbin_number( Genjetpt );
-        int jetetabin_number = JetResponseConstant::Set_jetetabin_number( Genjeteta );
+        int jetptbin_number = JetResponseConstant::Set_jetptbin_number( genjetpt );
+        int jetetabin_number = JetResponseConstant::Set_jetetabin_number( genjeteta );
+        */
+        double jetpt = jetsLVec.at(i).Pt();
+        double jeteta = jetsLVec.at(i).Eta();
+
+        int jetptbin_number = JetResponseConstant::Set_jetptbin_number( jetpt );
+        int jetetabin_number = JetResponseConstant::Set_jetetabin_number( jeteta );
       }
-      */
     }
   }
 
