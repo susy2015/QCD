@@ -92,7 +92,7 @@ void JetResponseHistgram::BookHistgram(const char *outFileName)
     {
       std::string jetpt_index = std::to_string(i);
       std::string jeteta_index = std::to_string(j);
-			h_QCDMC_JetResponseFunction[i][j] = new TH1D( ("h_QCDMC_JetResponseFunction_" + jetpt_index + "_" + jeteta_index).c_str(),"",20, 0, 5);
+			h_QCDMC_JetResponseFunction[i][j] = new TH1D( ("h_QCDMC_JRF_" + jetpt_index + "_" + jeteta_index).c_str(),"",20, 0, 5);
  			//if( i!= MET_BINS-1) h_cal_met_MC[i][j] = new TH1D( ("h_cal_met_MC_" + met_index + mt2_index).c_str(),"",20, metbins_edge[i], metbins_edge[i+1]);
       //else h_cal_met_MC[i][j] = new TH1D( ("h_cal_met_MC_" + met_index + mt2_index).c_str(),"",20, metbins_edge[i],20000);
     }

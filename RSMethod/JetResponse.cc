@@ -69,26 +69,26 @@ int main(int argc, char* argv[])
 
       (myJetResponseHistgram.h_QCDMC_MET_MT2_Corr)->Fill(met,MT2,thisweight);
       
-			//reco Jet
+			//Reco Jet
       std::vector<TLorentzVector> jetsLVec = tr.getVec<TLorentzVector>("jetsLVec");
       //Gen Jet information
       std::vector<TLorentzVector> genjetsLVec = tr.getVec<TLorentzVector>("genjetsLVec");
 
-      for(int i=0;i<jetsLVec.size();i++)
-      {
-				/*
-        double genjetpt = genjetsLVec.at(i).Pt();
-        double genjeteta = genjetsLVec.at(i).Eta();
-
-        int jetptbin_number = JetResponseConstant::Set_jetptbin_number( genjetpt );
-        int jetetabin_number = JetResponseConstant::Set_jetetabin_number( genjeteta );
-        */
-        double jetpt = jetsLVec.at(i).Pt();
-        double jeteta = jetsLVec.at(i).Eta();
-
-        int jetptbin_number = JetResponseConstant::Set_jetptbin_number( jetpt );
-        int jetetabin_number = JetResponseConstant::Set_jetetabin_number( jeteta );
-      }
+        
+		  for(int i=0;i<genjetsLVec.size();i++)
+	    {
+				double genjetpt = genjetsLVec.at(i).Pt();
+				double genjeteta = genjetsLVec.at(i).Eta();
+				//match gen and reco jet
+				if(1) continue;
+				else
+				{
+          int jetptbin_number = JetResponseConstant::Set_jetptbin_number( genjetpt );
+          int jetetabin_number = JetResponseConstant::Set_jetetabin_number( genjeteta );
+					if( jetptbin_number<0 || jetetabin_number<0 ){ std::cout << "Weird Jet! Jet_Pt: " << genjetpt << ", Jet_Eta: " << genjeteta << std::endl; }
+					else { (myJetResponseHistgram.h_QCDMC_JetResponseFunction[jetptbin_number][jetetabin_number])->Fill(jetpt/genjetpt,thisweight); }
+				}
+			}
     }
   }
 
