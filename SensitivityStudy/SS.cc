@@ -85,6 +85,11 @@ void LoopSS( SSSampleWeight& mySSSampleWeight )
 
       if (passBaselineLL)
       {
+        if(ntopjets>=ntopbins_edge[NTOPJETS_BINS]) ntopjets = ntopbins_edge[NTOPJETS_BINS-1];
+        if(nbotjets>=nbotbins_edge[NBOTJETS_BINS]) nbotjets = nbotbins_edge[NBOTJETS_BINS-1];
+        if(met>=metbins_edge[MET_BINS]) met = (metbins_edge[MET_BINS-1]+metbins_edge[MET_BINS])/2;
+        if(mt2>=mt2bins_edge[MT2_BINS]) mt2 = (mt2bins_edge[MT2_BINS-1]+mt2bins_edge[MT2_BINS])/2;
+
 				//int searchbin_id = find_Binning_Index( nbotjets, ntopjets, mt2, met );
         //Get electron and muon for LL study
         int nElectrons = tr.getVar<int>("nElectrons_CUT"+spec);
@@ -98,8 +103,16 @@ void LoopSS( SSSampleWeight& mySSSampleWeight )
           {
             (mySSHistgram.h_ss_ntopnbot_MC_TTJets)->Fill(ntopjets,nbotjets,thisweight);
             (mySSHistgram.h_ss_metmt2_MC_TTJets[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+            /*
+            if( ntopjets >= 3 && nbotjets>=3 )
+            {
+              std::cout << "NT ,NB :" << ntopjets << "," << nbotjets << std::endl;
+              std::cout << "MET,MT2:" << met << "," << mt2 << std::endl;
+            }
+            */
           }
 				}
+
         if(passLeptVeto)
         {
           if( ((*iter_SSSampleInfos).Tag).find("T1tttt_mGluino-1200_mLSP-800") != std::string::npos )

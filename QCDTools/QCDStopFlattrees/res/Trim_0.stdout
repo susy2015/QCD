@@ -1,0 +1,41 @@
+The valid run modes are: SS
+The run mode we have right now is: SS
+TreeUtilities : FillChain TTJets
+No. of Entries in this tree : 18386
+TreeUtilities : FillChain SMS-T1tttt_mGluino-1200_mLSP-800
+No. of Entries in this tree : 42682
+TreeUtilities : FillChain SMS-T1tttt_mGluino-1500_mLSP-100
+No. of Entries in this tree : 78338
+TreeUtilities : FillChain SMS-T2tt_mStop-500_mLSP-325
+No. of Entries in this tree : 18803
+TreeUtilities : FillChain SMS-T2tt_mStop-850_mLSP-100
+No. of Entries in this tree : 100581
+Let's do sensitivity study: 
+Sample Type: TTJets; Weight: 0.586819
+----------------------------------------------------------------------
+ M_T2 : a variable for measuring masses when missing energy is expected.
+ If you use MT2 or this library, please cite:
+ 	(o) C.G.Lester, D.J.Summers 
+ 	    Phys.Lett.B.463:99-103 (1999) hep-ph/9906349
+ 	(o) A.J.Barr, C.G.Lester, P.Stephens 
+ 	    J.Phys.G 29:2343-2363  (2003) hep-ph/0304226
+ If you use MTGEN please also cite:
+ 	(o) C.G.Lester, A.J.Barr (2007) arXiv:0708.1028 (hep-ph)
+ 	    JHEP 12(2007)102
+ If you use the ChengHanBisection MT2 calculator, please also cite:
+ 	(o) H.Cheng, Z.Han,  arXiv:0810.5178
+----------------------------------------------------------------------
+Sample Type: SMS-T1tttt_mGluino-1200_mLSP-800; Weight: 0.0046546353792
+20000	76.84
+40000	132.78
+Sample Type: SMS-T1tttt_mGluino-1500_mLSP-100; Weight: 0.0011006631763
+20000	200.45
+40000	259.65
+60000	318.81
+Sample Type: SMS-T2tt_mStop-500_mLSP-325; Weight: 0.010684608984
+Sample Type: SMS-T2tt_mStop-850_mLSP-100; Weight: 0.00063024118661
+20000	419.97
+40000	441.51
+60000	462.84
+80000	484.23
+100000	505.89
