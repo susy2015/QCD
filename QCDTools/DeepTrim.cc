@@ -78,11 +78,11 @@ int main(int argc, char* argv[])
     bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
 
     bool passDeepTrim = false;
-    passDeepTrim = ( met > 175)
+    passDeepTrim = ( met > 200)
                 && passnJets
                 && passHT
                 && passMT2
-                && passTagger
+                //&& passTagger
                 && passBJets
                 && passNoiseEventFilter;
    

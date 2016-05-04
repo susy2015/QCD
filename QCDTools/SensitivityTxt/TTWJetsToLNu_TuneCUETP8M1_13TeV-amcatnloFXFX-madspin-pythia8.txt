@@ -1,0 +1,7 @@
+root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X//TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Spring15_74X_Dec_2015_Ntp_v4p0_TTWJetsToLNu/160105_044205/0000/stopFlatNtuples_1.root
+root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X//TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Spring15_74X_Dec_2015_Ntp_v4p0_TTWJetsToLNu/160105_044205/0000/stopFlatNtuples_2.root
+root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X//TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Spring15_74X_Dec_2015_Ntp_v4p0_TTWJetsToLNu/160105_044205/0000/stopFlatNtuples_3.root
+root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X//TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Spring15_74X_Dec_2015_Ntp_v4p0_TTWJetsToLNu/160105_044205/0000/stopFlatNtuples_4.root
+root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X//TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Spring15_74X_Dec_2015_Ntp_v4p0_TTWJetsToLNu/160105_044205/0000/stopFlatNtuples_5.root
+root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X//TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Spring15_74X_Dec_2015_Ntp_v4p0_TTWJetsToLNu/160105_044205/0000/stopFlatNtuples_6.root
+root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X//TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Spring15_74X_Dec_2015_Ntp_v4p0_TTWJetsToLNu/160105_044205/0000/stopFlatNtuples_7.root

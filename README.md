@@ -94,3 +94,8 @@ python NTuple_DeepTrim.py QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
 3.Basic Slim:
 
 Under construction
+
+# Sensitivity Study
+
+./SS SS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt
+
