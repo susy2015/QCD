@@ -39,7 +39,49 @@ void mypassBaselineFunc(NTupleReader& tr)
   (*myBaselineVessel)(tr);
 }
 
-//#define BCBin 6
+class SSCSHistgram
+{
+ public:
+  void BookHistgram(const char *);
+
+  TFile *oFile;
+  //NTop, NBot plots
+  TH2D *h_ss_ntopnbot_MC_MuCS, *h_ss_ntopnbot_MC_ElCS;
+  //MET MT2 plots after top bot
+  TH2D *h_ss_metmt2_MC_MuCS[NTOPJETS_BINS][NBOTJETS_BINS], *h_ss_metmt2_MC_ElCS[NTOPJETS_BINS][NBOTJETS_BINS];
+};
+
+void SSCSHistgram::BookHistgram(const char *outFileName)
+{
+  oFile = new TFile(outFileName, "recreate");
+  h_ss_ntopnbot_MC_MuCS = new TH2D("h_ss_ntopnbot_MC_MuCS","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
+  h_ss_ntopnbot_MC_ElCS = new TH2D("h_ss_ntopnbot_MC_ElCS","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
+
+  for(int i=0;i<NTOPJETS_BINS;i++)
+  {
+    for(int j=0;j<NBOTJETS_BINS;j++)
+    { 
+      std::string ntnbtag = "NT"+std::to_string(i+1)+"NB"+std::to_string(j+1);
+
+      if(i==NTOPJETS_BINS-1)
+      {
+        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      }
+      else if(i!=NTOPJETS_BINS-1 && j==NBOTJETS_BINS-1)
+      {
+        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      }
+      else
+      {
+        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+      }
+    }
+  }
+  return ;
+}
 
 class SSHistgram
 {
@@ -48,11 +90,11 @@ class SSHistgram
 
   TFile *oFile;
   //NTop, NBot plots
-  TH2D *h_ss_ntopnbot_MC_TTJets;
+  TH2D *h_ss_ntopnbot_MC_AllBG;
   TH2D *h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800, *h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100;
   TH2D *h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325, *h_ss_ntopnbot_MC_T2tt_mStop850_mLSP100; 
   //MET MT2 plots after top bot
-  TH2D *h_ss_metmt2_MC_TTJets[NTOPJETS_BINS][NBOTJETS_BINS];
+  TH2D *h_ss_metmt2_MC_AllBG[NTOPJETS_BINS][NBOTJETS_BINS];
   TH2D *h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[NTOPJETS_BINS][NBOTJETS_BINS], *h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[NTOPJETS_BINS][NBOTJETS_BINS];
   TH2D *h_ss_metmt2_MC_T2tt_mStop500_mLSP325[NTOPJETS_BINS][NBOTJETS_BINS], *h_ss_metmt2_MC_T2tt_mStop850_mLSP100[NTOPJETS_BINS][NBOTJETS_BINS];
 };
@@ -60,8 +102,7 @@ class SSHistgram
 void SSHistgram::BookHistgram(const char *outFileName)
 {
   oFile = new TFile(outFileName, "recreate");
-
-  h_ss_ntopnbot_MC_TTJets = new TH2D("h_ss_ntopnbot_MC_TTJets","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
+  h_ss_ntopnbot_MC_AllBG = new TH2D("h_ss_ntopnbot_MC_AllBG","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
   h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800 = new TH2D("h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
   h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100 = new TH2D("h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
   h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325 = new TH2D("h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
@@ -75,7 +116,7 @@ void SSHistgram::BookHistgram(const char *outFileName)
 			
       if(i==NTOPJETS_BINS-1)
       {
-        h_ss_metmt2_MC_TTJets[i][j] = new TH2D(("h_ss_metmt2_MC_TTJets"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
@@ -83,7 +124,7 @@ void SSHistgram::BookHistgram(const char *outFileName)
       }
       else if(i!=NTOPJETS_BINS-1 && j==NBOTJETS_BINS-1)
       {
-        h_ss_metmt2_MC_TTJets[i][j] = new TH2D(("h_ss_metmt2_MC_TTJets"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
@@ -91,7 +132,7 @@ void SSHistgram::BookHistgram(const char *outFileName)
       }
       else
       {
-        h_ss_metmt2_MC_TTJets[i][j] = new TH2D(("h_ss_metmt2_MC_TTJets"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
         h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
         h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
         h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);

@@ -44,7 +44,8 @@ void SSPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("SS.root");
+  fin = TFile::Open("SSAllMC.root");
+  fin = TFile::Open("SSMuCS.root");
   list = fin->GetListOfKeys();
   //convert lumi from double pb-1 to string, fb-1
   std::ostringstream strs;

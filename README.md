@@ -96,7 +96,14 @@ python NTuple_DeepTrim.py QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
 Under construction
 
 # Sensitivity Study
+1.To study Signal/MC in designed search bin:
 
-./SS SS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt
+./SS SSAllMC runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
+
+2.To study the CS in designed search bin:
+
+./SS SSMuCS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
+
+3.To make 2D plots in designed search bin:
 
 ./SSPlots SSPlots20160504
