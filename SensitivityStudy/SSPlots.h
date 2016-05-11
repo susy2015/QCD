@@ -44,7 +44,7 @@ void SSPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("SSAllMC.root");
+  //fin = TFile::Open("SSAllMC.root");
   fin = TFile::Open("SSMuCS.root");
   list = fin->GetListOfKeys();
   //convert lumi from double pb-1 to string, fb-1
@@ -71,7 +71,42 @@ void SSPlots::SSPlotsLoop()
 	//Get plots from root file
   for(int i  = 0 ; i < NHist ; i++)
   {
+    std::string nametag;
     h = (TH2D*)fin->Get(list->At(i)->GetName())->Clone();
+
+    if( TString(list->At(i)->GetName()).Contains( "AllBG" ) )
+    {
+      nametag = "AllBG";
+    }
+    else if( TString(list->At(i)->GetName()).Contains( "T1tttt_mGluino1200_mLSP800" ) )
+    {
+      nametag = "T1tttt_mGluino1200_mLSP800";
+    }
+    else if( TString(list->At(i)->GetName()).Contains( "T1tttt_mGluino1500_mLSP100" ) )
+    { 
+      nametag = "T1tttt_mGluino1500_mLSP100";
+    }
+    else if( TString(list->At(i)->GetName()).Contains( "T2tt_mStop500_mLSP325" ) )
+    { 
+      nametag = "T2tt_mStop500_mLSP325";
+    }
+    else if( TString(list->At(i)->GetName()).Contains( "T2tt_mStop850_mLSP100" ) )
+    { 
+      nametag = "T2tt_mStop850_mLSP100";
+    }
+    else if( TString(list->At(i)->GetName()).Contains( "MuCS" ) )
+    { 
+      nametag = "MuCS";
+    }
+    else if( TString(list->At(i)->GetName()).Contains( "ElCS" ) )
+    { 
+      nametag = "ElCS";
+    }
+    else
+    {
+      nametag = "Unknown";
+    }
+
 
     if( TString(list->At(i)->GetName()).Contains( "_metmt2_MC_" ) )
     {
@@ -89,12 +124,13 @@ void SSPlots::SSPlotsLoop()
     }
 
     //Create LUMI stamp
-    const std::string titre="CMS Preliminary 2016, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
+    const std::string titre= nametag + "  CMS 2016, " + lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
 
     TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
     title->SetNDC();
     title->SetTextSize(0.045);
 
+    h->SetMarkerSize(2);
 	  //Draw plots on Canvas
     TCanvas *c = new TCanvas("c","",50,50,800,600); 
 	  //HistStyle::init();

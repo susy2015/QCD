@@ -129,7 +129,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
   size_t t0 = clock();
   std::vector<SSSampleInfo>::iterator iter_SSSampleInfos;
   //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
-  const std::string spec = "";
+  const std::string spec = "lostlept";
   myBaselineVessel = new BaselineVessel(spec);
 
   std::cout << "Let's do sensitivity study: " << std::endl;
@@ -165,10 +165,13 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
       int metbin_number = Set_metbin_number(met);
       int mt2bin_number = Set_mt2bin_number(mt2);
 
-      bool passBaseline = tr.getVar<bool>("passBaseline"+spec);
+      bool passBaselineLL = tr.getVar<bool>("passBaseline"+spec);
 
-      if (passBaseline)
+      if (passBaselineLL)
       {
+        bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
+        if(!passLeptVeto) continue;
+
         if(ntopjets>=ntopbins_edge[NTOPJETS_BINS]) ntopjets = ntopbins_edge[NTOPJETS_BINS-1];
         if(nbotjets>=nbotbins_edge[NBOTJETS_BINS]) nbotjets = nbotbins_edge[NBOTJETS_BINS-1];
         if(met>=metbins_edge[MET_BINS]) met = (metbins_edge[MET_BINS-1]+metbins_edge[MET_BINS])/2;
