@@ -37,10 +37,10 @@
 
 //const double Scale = 591.5/2153.736;
 
-void LoopSSMuCS( SSSampleWeight& mySSSampleWeight )
+void LoopSSCS( SSSampleWeight& mySSSampleWeight )
 {
   SSCSHistgram mySSCSHistgram;
-  mySSCSHistgram.BookHistgram( (dir_out + "SSMuCS.root").c_str() );
+  mySSCSHistgram.BookHistgram( (dir_out + "SSCS.root").c_str() );
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<SSSampleInfo>::iterator iter_SSSampleInfos;
@@ -125,6 +125,10 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
 {
   SSHistgram mySSHistgram;
   mySSHistgram.BookHistgram( (dir_out + "SSAllMC.root").c_str() );
+  
+  SSAUX1DHistgram mySSAUX1DHistgram;
+  mySSAUX1DHistgram.BookHistgram( (dir_out + "SSAUX1DAllMC.root").c_str() );
+
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<SSSampleInfo>::iterator iter_SSSampleInfos;
@@ -132,6 +136,8 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
   const std::string spec = "lostlept";
   myBaselineVessel = new BaselineVessel(spec);
 
+  SSDataCard mySSDataCard;
+  
   std::cout << "Let's do sensitivity study: " << std::endl;
   
   for(iter_SSSampleInfos = mySSSampleWeight.SSSampleInfos.begin(); iter_SSSampleInfos != mySSSampleWeight.SSSampleInfos.end(); iter_SSSampleInfos++)
@@ -172,44 +178,147 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
         if(!passLeptVeto) continue;
 
-        if(ntopjets>=ntopbins_edge[NTOPJETS_BINS]) ntopjets = ntopbins_edge[NTOPJETS_BINS-1];
-        if(nbotjets>=nbotbins_edge[NBOTJETS_BINS]) nbotjets = nbotbins_edge[NBOTJETS_BINS-1];
-        if(met>=metbins_edge[MET_BINS]) met = (metbins_edge[MET_BINS-1]+metbins_edge[MET_BINS])/2;
-        if(mt2>=mt2bins_edge[MT2_BINS]) mt2 = (mt2bins_edge[MT2_BINS-1]+mt2bins_edge[MT2_BINS])/2;
+        double ntopjets_fold = -1, nbotjets_fold = -1, met_fold = -1, mt2_fold = -1;
+        if(ntopjets>=ntopbins_edge[NTOPJETS_BINS]) ntopjets_fold = ntopbins_edge[NTOPJETS_BINS-1]; else ntopjets_fold = ntopjets;
+        if(nbotjets>=nbotbins_edge[NBOTJETS_BINS]) nbotjets_fold = nbotbins_edge[NBOTJETS_BINS-1]; else nbotjets_fold = nbotjets;
+        if(met>=metbins_edge[MET_BINS]) met_fold = (metbins_edge[MET_BINS-1]+metbins_edge[MET_BINS])/2; else met_fold = met;
+        if(mt2>=mt2bins_edge[MT2_BINS]) mt2_fold = (mt2bins_edge[MT2_BINS-1]+mt2bins_edge[MT2_BINS])/2; else mt2_fold = mt2;
 
-				//int searchbin_id = find_Binning_Index( nbotjets, ntopjets, mt2, met );
-        //Get electron and muon for LL study
+				int searchbin_id = Set_SearchBinID( ntopjetsbin_number, nbotjetsbin_number, mt2bin_number, metbin_number ); //find_Binning_Index( nbotjets, ntopjets, mt2, met );
+        if(searchbin_id<0) { std::cout << "Search bin id problem! Please check!!" << std::endl; continue; }
+
+        mySSDataCard.DC_sb_MC_Data[searchbin_id] += thisweight;
+        //To separate the LL and Hadtau
+        bool isLL = false;
+        //merge electron, muon generation level information
+        std::vector<int> W_emuVec = tr.getVec<int>("W_emuVec");
+        std::vector<int> W_tau_emuVec = tr.getVec<int>("W_tau_emuVec");
+        std::vector<int> emuVec_merge;
+        emuVec_merge.reserve( W_emuVec.size() + W_tau_emuVec.size() ); 
+        emuVec_merge.insert( emuVec_merge.end(), W_emuVec.begin(), W_emuVec.end() );
+        emuVec_merge.insert( emuVec_merge.end(), W_tau_emuVec.begin(), W_tau_emuVec.end() );
+        int gen_emus_count = emuVec_merge.size();
+        gen_emus_count > 0 ? isLL = true : isLL =false;
+        //int cntGenemu = (int)emuVec_merge.size(), cnttauprongs = (int)W_tau_prongsVec.size();
+        //if( cntGenemu !=0 ) h1_searchBinYields_LostLepVec.back()->Fill(searchBinIdx, evtWeight * scaleMC);
+        //if( cnttauprongs != 0 ) h1_searchBinYields_HadTauVec.back()->Fill(searchBinIdx, evtWeight * scaleMC);
+        //if( cntGenemu !=0 && cnttauprongs != 0 ) h1_searchBinYields_OverlapVec.back()->Fill(searchBinIdx, evtWeight * scaleMC);
+
+        if( ((*iter_SSSampleInfos).Tag).find("TTJets") != std::string::npos )
+        { 
+          if(isLL) 
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(mt2,thisweight);
+            mySSDataCard.DC_sb_MC_LL[searchbin_id] += thisweight; 
+          }
+          else 
+          { 
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight);
+            mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight;
+            //std::cout << "NTop: " << ntopjets << ",NBoT: " << nbotjets << ",MT2: " << mt2 << ",MET: " << met << std::endl;
+          }
+        }
+        if( ((*iter_SSSampleInfos).Tag).find("ST_tW") != std::string::npos )
+        { 
+          if(isLL)
+          { 
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(mt2,thisweight);
+            mySSDataCard.DC_sb_MC_LL[searchbin_id] += thisweight;
+          }
+          else 
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight);
+            mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight;
+            //std::cout << "NTop: " << ntopjets << ",NBoT: " << nbotjets << ",MT2: " << mt2 << ",MET: " << met << std::endl;
+          }
+        }
+        if( ((*iter_SSSampleInfos).Tag).find("WJetsToLNu_HT") != std::string::npos )
+        {
+          if(isLL)
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(mt2,thisweight);
+            mySSDataCard.DC_sb_MC_LL[searchbin_id] += thisweight;
+          }
+          else 
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight);  
+            mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight; 
+            //std::cout << "NTop: " << ntopjets << ",NBoT: " << nbotjets << ",MT2: " << mt2 << ",MET: " << met << std::endl;
+          }
+        }
+        if( ((*iter_SSSampleInfos).Tag).find("ZJetsToNuNu_HT") != std::string::npos )
+        { 
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(mt2,thisweight);
+          mySSDataCard.DC_sb_MC_Zinv[searchbin_id] += thisweight; 
+        }
+        if( ((*iter_SSSampleInfos).Tag).find("QCD_HT") != std::string::npos )
+        { 
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][3])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][3])->Fill(mt2,thisweight);
+          mySSDataCard.DC_sb_MC_QCD[searchbin_id] += thisweight; 
+        }
+        if( ((*iter_SSSampleInfos).Tag).find("TTZTo") != std::string::npos )
+        { 
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
+          mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight; 
+        }
+        if( ((*iter_SSSampleInfos).Tag).find("TTWJetsTo") != std::string::npos )
+        { 
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
+          mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight; 
+        }
+
         if( ((*iter_SSSampleInfos).Tag).find("T1tttt_mGluino-1200_mLSP-800") != std::string::npos )
         {
-          (mySSHistgram.h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800)->Fill(ntopjets,nbotjets,thisweight);
-          (mySSHistgram.h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800[ntopjetsbin_number][nbotjetsbin_number])->Fill(mt2,thisweight);
+          (mySSHistgram.h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800)->Fill(ntopjets_fold,nbotjets_fold,thisweight);
+          (mySSHistgram.h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight);
         }
 				else if( ((*iter_SSSampleInfos).Tag).find("T1tttt_mGluino-1500_mLSP-100") != std::string::npos )
         {
-          (mySSHistgram.h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100)->Fill(ntopjets,nbotjets,thisweight);
-          (mySSHistgram.h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(mt2,thisweight);
+          (mySSHistgram.h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100)->Fill(ntopjets_fold,nbotjets_fold,thisweight);
+          (mySSHistgram.h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight);
         }
 				else if( ((*iter_SSSampleInfos).Tag).find("T2tt_mStop-500_mLSP-325") != std::string::npos )
         {
-          (mySSHistgram.h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325)->Fill(ntopjets,nbotjets,thisweight);
-          (mySSHistgram.h_ss_metmt2_MC_T2tt_mStop500_mLSP325[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_T2tt_mStop500_mLSP325[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325[ntopjetsbin_number][nbotjetsbin_number])->Fill(mt2,thisweight);
+          (mySSHistgram.h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325)->Fill(ntopjets_fold,nbotjets_fold,thisweight);
+          (mySSHistgram.h_ss_metmt2_MC_T2tt_mStop500_mLSP325[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight);
         }
 				else if( ((*iter_SSSampleInfos).Tag).find("T2tt_mStop-850_mLSP-100") != std::string::npos )
         {
-          (mySSHistgram.h_ss_ntopnbot_MC_T2tt_mStop850_mLSP100)->Fill(ntopjets,nbotjets,thisweight);
-          (mySSHistgram.h_ss_metmt2_MC_T2tt_mStop850_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_T2tt_mStop850_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(mt2,thisweight);
+          (mySSHistgram.h_ss_ntopnbot_MC_T2tt_mStop850_mLSP100)->Fill(ntopjets_fold,nbotjets_fold,thisweight);
+          (mySSHistgram.h_ss_metmt2_MC_T2tt_mStop850_mLSP100[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight);
         }
         else
         {
-          (mySSHistgram.h_ss_ntopnbot_MC_AllBG)->Fill(ntopjets,nbotjets,thisweight);
-          (mySSHistgram.h_ss_metmt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+          (mySSHistgram.h_ss_ntopnbot_MC_AllBG)->Fill(ntopjets_fold,nbotjets_fold,thisweight);
+          (mySSHistgram.h_ss_metmt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight);
         } 
       }
     }//end of inner loop
   }//end of Samples loop
 
+  mySSDataCard.printDC_AllFiles();
   (mySSHistgram.oFile)->Write();
   (mySSHistgram.oFile)->Close();
+  (mySSAUX1DHistgram.oFile)->Write();
+  (mySSAUX1DHistgram.oFile)->Close();
   return ;
 }
 
@@ -217,7 +326,7 @@ int main(int argc, char* argv[])
 {
   if (argc < 4)
   {
-    std::cerr <<"Please give at least 3 arguments " << "RunMode " << " " << "runListMCBG " << " " << "runListMCSG" << "" << "runListMCMuCS" << std::endl;
+    std::cerr <<"Please give at least 3 arguments " << "RunMode " << " " << "runListMCBG " << " " << "runListMCSG" << "" << "runListMCCS" << std::endl;
     std::cerr <<" Valid configurations are " << std::endl;
     std::cerr <<" ./QCD RunMode runlist_QCDMC.txt runlist_Data.txt" << std::endl;
     return -1;
@@ -226,7 +335,7 @@ int main(int argc, char* argv[])
   std::string RunMode = argv[1];
   std::string inputFileList_MC_BG = argv[2];
   std::string inputFileList_MC_SG = argv[3];
-  std::string inputFileList_MuCS = argv[4];
+  std::string inputFileList_CS = argv[4];
 
   std::cout << "The valid run modes are: SS" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
@@ -261,13 +370,13 @@ int main(int argc, char* argv[])
 
   double TTbar_SingleLept_BR = 0.43930872; // 2*W_Lept_BR*(1-W_Lept_BR)
   double TTbar_DiLept_BR = 0.10614564; // W_Lept_BR^2
-  SSSampleWeight mySSSampleWeightMuCS;
-  mySSSampleWeightMuCS.SSSampleInfo_push_back( "TTJets_SingleLept", 831.76*0.5*TTbar_SingleLept_BR, 59816364+60144642, LUMI, 1, inputFileList_MuCS.c_str() );
-  mySSSampleWeightMuCS.SSSampleInfo_push_back( "TTJets_DiLept"    , 831.76*TTbar_DiLept_BR        , 30498962         , LUMI, 1, inputFileList_MuCS.c_str() );
+  SSSampleWeight mySSSampleWeightCS;
+  mySSSampleWeightCS.SSSampleInfo_push_back( "TTJets_SingleLept", 831.76*0.5*TTbar_SingleLept_BR, 59816364+60144642, LUMI, 1, inputFileList_CS.c_str() );
+  mySSSampleWeightCS.SSSampleInfo_push_back( "TTJets_DiLept"    , 831.76*TTbar_DiLept_BR        , 30498962         , LUMI, 1, inputFileList_CS.c_str() );
 
-  if( RunMode == "SSMuCS" )
+  if( RunMode == "SSCS" )
   {
-    LoopSSMuCS( mySSSampleWeightMuCS );
+    LoopSSCS( mySSSampleWeightCS );
     return 0;
   }
   else if( RunMode == "SSAllMC" )

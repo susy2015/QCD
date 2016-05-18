@@ -16,8 +16,8 @@ notify_user = hwei@fnal.gov
 
 ####Sensitivity Study on Signal Sample####
 
-#arguments = SSAllMC runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
-#Queue
-
-arguments = SSMuCS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
+arguments = SSAllMC runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
 Queue
+
+#arguments = SSCS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
+#Queue

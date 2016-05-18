@@ -39,6 +39,179 @@ void mypassBaselineFunc(NTupleReader& tr)
   (*myBaselineVessel)(tr);
 }
 
+class SSDataCard
+{
+ public:
+  double DC_sb_MC_Data[NSEARCH_BINS] = {0};
+  double DC_sb_MC_Data_statunc[NSEARCH_BINS] = {0};
+  double DC_sb_MC_LL[NSEARCH_BINS] = {0}, DC_sb_MC_HadTau[NSEARCH_BINS] = {0}, DC_sb_MC_Zinv[NSEARCH_BINS] = {0}, DC_sb_MC_QCD[NSEARCH_BINS] = {0}, DC_sb_MC_TTZ[NSEARCH_BINS] = {0}, DC_sb_MC_Rare[NSEARCH_BINS] = {0}; 
+  double DC_sb_MC_LL_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_HadTau_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_Zinv_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_QCD_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_TTZ_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_Rare_sysunc[NSEARCH_BINS] = {0};
+  void printDC_AllFiles();
+ private:
+  void fake_uncs();
+};
+void SSDataCard::fake_uncs()
+{
+  std::cout << "Faking syst uncs in Data card!" << std::endl;
+  for(int i=0;i<NSEARCH_BINS;i++)
+  {
+    //LL and hadTau: 40 % of prediction
+    DC_sb_MC_LL_sysunc[i] = 0.4;
+    DC_sb_MC_HadTau_sysunc[i] = 0.4;
+    //Zinv
+		DC_sb_MC_Zinv_sysunc[i] = std::sqrt(DC_sb_MC_Zinv[i])/DC_sb_MC_Zinv[i];
+    if(DC_sb_MC_Zinv[i]<0.000000000001) DC_sb_MC_Zinv_sysunc[i] = 0;
+    if(DC_sb_MC_Zinv_sysunc[i]>1) DC_sb_MC_Zinv_sysunc[i] = 1;
+    //QCD, 150% of prediction
+    DC_sb_MC_QCD_sysunc[i] = 1.5;
+  }
+  return ;
+}
+
+void SSDataCard::printDC_AllFiles()
+{
+  fake_uncs();
+
+  std::ofstream Datafile ("_Data.txt");
+  if (Datafile.is_open())
+  {
+    Datafile << "luminosity = " << LUMI << "\n";
+    Datafile << "channels = " << NSEARCH_BINS << "\n";
+    Datafile << "sample = signal \n";
+
+    Datafile << "rate = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      Datafile << DC_sb_MC_Data[i] << " ";
+    }
+    Datafile << "\n";
+    //std::cout << "stat_unc_all = ";
+    //for(int i=0;i<NSEARCH_BINS;i++)
+    //{
+    //  Datafile << DC_sb_MC_Data_statunc[i] << " ";
+    //}
+    //Datafile << "\n";
+    Datafile.close();
+  }
+  else std::cout << "Unable to open Datafile";
+
+  std::ofstream LLfile ("_LL.txt");
+  if (LLfile.is_open())
+  {
+    LLfile << "rate = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      LLfile << DC_sb_MC_LL[i] << " ";
+    }
+    LLfile << "\n";
+    LLfile << "syst_unc_all = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      LLfile << DC_sb_MC_LL_sysunc[i] << " ";
+    }
+    LLfile << "\n";
+    LLfile.close();
+  }
+  else std::cout << "Unable to open LLfile";
+
+  std::ofstream HadTaufile ("_HadTau.txt");
+  if (HadTaufile.is_open())
+  {
+    HadTaufile << "rate = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      HadTaufile << DC_sb_MC_HadTau[i] << " ";
+    }
+    HadTaufile << "\n";
+    HadTaufile << "syst_unc_all = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      HadTaufile << DC_sb_MC_HadTau_sysunc[i] << " ";
+    }
+    HadTaufile << "\n";
+    HadTaufile.close();
+  }
+  else std::cout << "Unable to open HadTaufile";
+
+  std::ofstream Zinvfile ("_Zinv.txt");
+  if (Zinvfile.is_open())
+  {
+    Zinvfile << "rate = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      Zinvfile << DC_sb_MC_Zinv[i] << " ";
+    }
+    Zinvfile << "\n";
+    Zinvfile << "syst_unc_all = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      Zinvfile << DC_sb_MC_Zinv_sysunc[i] << " ";
+    }
+    Zinvfile << "\n";
+    Zinvfile.close();
+  }
+  else std::cout << "Unable to open Zinvfile";
+
+  std::ofstream QCDfile ("_QCD.txt");
+  if (QCDfile.is_open())
+  {
+    QCDfile << "rate = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      QCDfile << DC_sb_MC_QCD[i] << " ";
+    }
+    QCDfile << "\n";
+    QCDfile << "syst_unc_all = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      QCDfile << DC_sb_MC_QCD_sysunc[i] << " ";
+    }
+    QCDfile << "\n";
+    QCDfile.close();
+  }
+  else std::cout << "Unable to open QCDfile";
+
+  std::ofstream TTZfile ("_TTZ.txt");
+  if (TTZfile.is_open())
+  {
+    TTZfile << "rate = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      TTZfile << DC_sb_MC_TTZ[i] << " ";
+    }
+    TTZfile << "\n";
+    TTZfile << "syst_unc_all = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      TTZfile << DC_sb_MC_TTZ_sysunc[i] << " ";
+    }
+    TTZfile << "\n";
+    TTZfile.close();
+  }
+  else std::cout << "Unable to open TTZfile";
+ 
+  std::ofstream Rarefile ("_Rare.txt");
+  if (Rarefile.is_open())
+  {
+    Rarefile << "rate = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      Rarefile << DC_sb_MC_Rare[i] << " ";
+    }
+    Rarefile << "\n";
+    Rarefile << "syst_unc_all = ";
+    for(int i=0;i<NSEARCH_BINS;i++)
+    {
+      Rarefile << DC_sb_MC_Rare_sysunc[i] << " ";
+    }
+    Rarefile << "\n";
+    Rarefile.close();
+  }
+  else std::cout << "Unable to open Rarefile";
+
+  return ;
+}
+
 class SSCSHistgram
 {
  public:
@@ -62,13 +235,24 @@ void SSCSHistgram::BookHistgram(const char *outFileName)
     for(int j=0;j<NBOTJETS_BINS;j++)
     { 
       std::string ntnbtag = "NT"+std::to_string(i+1)+"NB"+std::to_string(j+1);
-
+      /*
       if(i==NTOPJETS_BINS-1)
       {
         h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
       }
       else if(i!=NTOPJETS_BINS-1 && j==NBOTJETS_BINS-1)
+      {
+        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      }
+      else
+      {
+        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+      }
+      */
+      if(i==NTOPJETS_BINS-1 || j==NBOTJETS_BINS-1)
       {
         h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
         h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
@@ -113,7 +297,7 @@ void SSHistgram::BookHistgram(const char *outFileName)
     for(int j=0;j<NBOTJETS_BINS;j++)
     {  
       std::string ntnbtag = "NT"+std::to_string(i+1)+"NB"+std::to_string(j+1);
-			
+      /*
       if(i==NTOPJETS_BINS-1)
       {
         h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",1,metbins_edge[0],metbins_edge[MET_BINS],1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
@@ -138,218 +322,87 @@ void SSHistgram::BookHistgram(const char *outFileName)
         h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
         h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
       }
-    }
-  }
-  return ;
-}
-
-
-/*
-void QCDFactors::TFactorsPlotsGen()
-{
-  TCanvas *c_prefit = new TCanvas("c_prefit", "",50,50,1200,600);
-  c_prefit->SetFillColor(0);
-  c_prefit->cd();
-
-  TH2D *tfactors2dPreFit = new TH2D("tfactors_prefit","TFactors PreFit",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-  tfactors2dPreFit->SetMarkerSize(1.6);
-
-  int i_cal;
-  int j_cal;
-
-  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
-  {
-    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
-    {
-      tfactors2dPreFit->SetBinContent( i_cal+1 , j_cal+1, QCDTFactor[i_cal][j_cal] );
-      tfactors2dPreFit->SetBinError( i_cal+1 , j_cal+1, QCDTFactor_err[i_cal][j_cal] );
-    }
-  }
-
-  tfactors2dPreFit->SetTitle("");
-  tfactors2dPreFit->SetXTitle("#slash{E}_{T} [GeV]");
-  tfactors2dPreFit->GetXaxis()->SetLabelSize(0.045);
-  tfactors2dPreFit->GetXaxis()->SetTitleSize(0.045);
-  tfactors2dPreFit->SetYTitle("M_{T2} [GeV]");
-  tfactors2dPreFit->GetYaxis()->SetLabelSize(0.045);
-  tfactors2dPreFit->GetYaxis()->SetTitleSize(0.045);
-  tfactors2dPreFit->GetZaxis()->SetLabelSize(0.045);
-  tfactors2dPreFit->GetZaxis()->SetTitleSize(0.045);
-  tfactors2dPreFit->SetStats(0);
-
-  gStyle->SetPaintTextFormat("1.2f");
-  tfactors2dPreFit->Draw("colztexte");
-  CMSStylePlot::CMS_lumi( c_prefit, 0, 0 );
-
-  c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.png").c_str() );
-  c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.pdf").c_str() );
-  c_prefit->SaveAs( (dir_out + "_tfactors2dPreFit.C").c_str() );
-  c_prefit->Close();
-
-  //Post fit Tfactor plot
-  TCanvas *c_postfit = new TCanvas("c_postfit", "",50,50,1200,600);
-  c_postfit->SetFillColor(0);
-  c_postfit->cd();
-
-  TH2D *tfactors2dPostFit = new TH2D("tfactors_postfit","TFactors PostFit",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-  tfactors2dPostFit->SetMarkerSize(1.6);
-
-  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
-  { 
-    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
-    { 
-      tfactors2dPostFit->SetBinContent( i_cal+1 , j_cal+1, QCDTFactorFit[i_cal][j_cal] );
-      tfactors2dPostFit->SetBinError( i_cal+1 , j_cal+1, QCDTFactorFit_err[i_cal][j_cal] );
-    }
-  }
-
-  tfactors2dPostFit->SetTitle("");
-  tfactors2dPostFit->SetXTitle("#slash{E}_{T} [GeV]");
-  tfactors2dPostFit->GetXaxis()->SetLabelSize(0.045);
-  tfactors2dPostFit->GetXaxis()->SetTitleSize(0.045);
-  tfactors2dPostFit->SetYTitle("M_{T2} [GeV]");
-  tfactors2dPostFit->GetYaxis()->SetLabelSize(0.045);
-  tfactors2dPostFit->GetYaxis()->SetTitleSize(0.045);
-  tfactors2dPostFit->GetZaxis()->SetLabelSize(0.045);
-  tfactors2dPostFit->GetZaxis()->SetTitleSize(0.045);
-  tfactors2dPostFit->SetStats(0);
-
-  gStyle->SetPaintTextFormat("1.2f");
-  tfactors2dPostFit->Draw("colztexte");
-  CMSStylePlot::CMS_lumi( c_postfit, 0, 0 );
-
-  c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.png").c_str() );
-  c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.pdf").c_str() );
-  c_postfit->SaveAs( (dir_out + "_tfactors2dPostFit.C").c_str() );
-  c_postfit->Close();
-
-  //Scaled Tfactor plot
-  TCanvas *c_scaled = new TCanvas("c_scaled", "",50,50,1200,600);
-  c_scaled->SetFillColor(0);
-  c_scaled->cd();
-
-  TH2D *tfactors2dScaled = new TH2D("tfactors_scaled","TFactors Scaled",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-  tfactors2dScaled->SetMarkerSize(1.6);
-
-  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
-  {
-    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
-    {
-      tfactors2dScaled->SetBinContent( i_cal+1 , j_cal+1, QCDTFactorScaled[i_cal][j_cal] );
-      tfactors2dScaled->SetBinError( i_cal+1 , j_cal+1, QCDTFactorScaled_err[i_cal][j_cal] );
-    }
-  }
-
-  tfactors2dScaled->SetTitle("");
-  tfactors2dScaled->SetXTitle("#slash{E}_{T} [GeV]");
-  tfactors2dScaled->GetXaxis()->SetLabelSize(0.045);
-  tfactors2dScaled->GetXaxis()->SetTitleSize(0.045);
-  tfactors2dScaled->SetYTitle("M_{T2} [GeV]");
-  tfactors2dScaled->GetYaxis()->SetLabelSize(0.045);
-  tfactors2dScaled->GetYaxis()->SetTitleSize(0.045);
-  tfactors2dScaled->GetZaxis()->SetLabelSize(0.045);
-  tfactors2dScaled->GetZaxis()->SetTitleSize(0.045);
-  tfactors2dScaled->SetStats(0);
-
-  gStyle->SetPaintTextFormat("1.2f");
-  tfactors2dScaled->Draw("colztexte");
-  CMSStylePlot::CMS_lumi( c_scaled, 4, 0 );
-
-  c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.png").c_str() );
-  c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.pdf").c_str() );
-  c_scaled->SaveAs( (dir_out + "_tfactors2dScaled.C").c_str() );
-  c_scaled->Close();
-
-  return ;
-}
-
-void QCDFactors::CountingPlotsGen()
-{
-  TH2D *countNormal_MC  = new TH2D("countNormal_MC","countNormal_MC",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-  TH2D *countNormal  = new TH2D("countNormal","countNormal",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-  TH2D *countInverted_MC  = new TH2D("countInverted_MC","countInverted_MC",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-  TH2D *countInverted  = new TH2D("countInverted","countInverted",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-      
-  double nQCDNormal_MC_all[MET_BINS][MT2_BINS] = {{0}}, nQCDInverted_MC_all[MET_BINS][MT2_BINS] = {{0}};
-
-  int i_cal;
-  int j_cal;
-
-  for(i_cal = 0 ; i_cal < MET_BINS ; i_cal++)
-  {
-    for(j_cal = 0 ; j_cal < MT2_BINS ; j_cal++)
-    {
-      for(int tmp = 0 ; tmp < QCD_BINS ; tmp++)
+      */
+      if(i==NTOPJETS_BINS-1 || j==NBOTJETS_BINS-1)
       {
-        nQCDNormal_MC_all[i_cal][j_cal] +=nQCDNormal_MC[tmp][i_cal][j_cal];
-        nQCDInverted_MC_all[i_cal][j_cal] +=nQCDInverted_MC[tmp][i_cal][j_cal];
+        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+        h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      }
+      else
+      {
+        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+        h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+        h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+        h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+        h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
+      } 
+    }
+  }
+  return ;
+}
+
+#define SSAUXBGBin 5
+
+class SSAUX1DHistgram
+{
+ public:
+  void BookHistgram(const char *);
+  
+  TFile *oFile;
+  //MET MT2 plots after top bot
+  TH1D *h_ss_aux_met_MC_AllBG[NTOPJETS_BINS][NBOTJETS_BINS][SSAUXBGBin];
+  TH1D *h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800[NTOPJETS_BINS][NBOTJETS_BINS], *h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100[NTOPJETS_BINS][NBOTJETS_BINS];
+  TH1D *h_ss_aux_met_MC_T2tt_mStop500_mLSP325[NTOPJETS_BINS][NBOTJETS_BINS], *h_ss_aux_met_MC_T2tt_mStop850_mLSP100[NTOPJETS_BINS][NBOTJETS_BINS];
+
+  TH1D *h_ss_aux_mt2_MC_AllBG[NTOPJETS_BINS][NBOTJETS_BINS][SSAUXBGBin];
+  TH1D *h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800[NTOPJETS_BINS][NBOTJETS_BINS], *h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100[NTOPJETS_BINS][NBOTJETS_BINS];
+  TH1D *h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325[NTOPJETS_BINS][NBOTJETS_BINS], *h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100[NTOPJETS_BINS][NBOTJETS_BINS];
+};
+
+void SSAUX1DHistgram::BookHistgram(const char *outFileName)
+{
+  oFile = new TFile(outFileName, "recreate");
+
+  for(int i=0;i<NTOPJETS_BINS;i++)
+  {
+    for(int j=0;j<NBOTJETS_BINS;j++)
+    {
+      std::string ntnbtag = "NT"+std::to_string(i+1)+"NB"+std::to_string(j+1);
+      for(int k=0;k<SSAUXBGBin;k++)
+      { 
+        std::string smalltag;
+
+        if (k == 0) smalltag = "LL";
+        else if (k == 1) smalltag = "HadTau";
+        else if (k == 2) smalltag = "Zinv";
+        else if (k == 3) smalltag = "QCD";
+        else smalltag = "TTZ";
+        
+				h_ss_aux_met_MC_AllBG[i][j][k] = new TH1D(("h_ss_aux_met_MC_AllBG"+ntnbtag+"_"+smalltag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
+        h_ss_aux_mt2_MC_AllBG[i][j][k] = new TH1D(("h_ss_aux_mt2_MC_AllBG"+ntnbtag+"_"+smalltag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
+
+        h_ss_aux_met_MC_AllBG[i][j][k]->SetFillColor(k+2);
+        h_ss_aux_mt2_MC_AllBG[i][j][k]->SetFillColor(k+2);
+        h_ss_aux_met_MC_AllBG[i][j][k]->SetLineColor(k+2);
+        h_ss_aux_mt2_MC_AllBG[i][j][k]->SetLineColor(k+2);
       }
 
-      countNormal_MC->SetBinContent( i_cal+1 , j_cal+1, nQCDNormal_MC_all[i_cal][j_cal] );
-      countNormal->SetBinContent( i_cal+1 , j_cal+1, nQCDNormal_all[i_cal][j_cal] );
-      countNormal->SetBinError( i_cal+1 , j_cal+1, nQCDNormal_all_err[i_cal][j_cal] );
+      h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH1D(("h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
+      h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH1D(("h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
+      h_ss_aux_met_MC_T2tt_mStop500_mLSP325[i][j] = new TH1D(("h_ss_aux_met_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
+      h_ss_aux_met_MC_T2tt_mStop850_mLSP100[i][j] = new TH1D(("h_ss_aux_met_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
 
-      countInverted_MC->SetBinContent( i_cal+1 , j_cal+1, nQCDInverted_MC_all[i_cal][j_cal] );
-      countInverted->SetBinContent( i_cal+1 , j_cal+1, nQCDInverted_all[i_cal][j_cal] );
-      countInverted->SetBinError( i_cal+1 , j_cal+1, nQCDInverted_all_err[i_cal][j_cal] );
+      h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH1D(("h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
+      h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH1D(("h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
+      h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH1D(("h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
+      h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH1D(("h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
     }
   }
-
-  countNormal_MC->SetTitle("QCD Signal MC");
-  countNormal_MC->SetXTitle("#slash{E}_{T} [GeV]");
-  countNormal_MC->SetYTitle("M_{T2} [GeV]");
-  countNormal_MC->SetStats(0);
-  countNormal->SetTitle("QCD Signal Normalized");
-  countNormal->SetXTitle("#slash{E}_{T} [GeV]");
-  countNormal->SetYTitle("M_{T2} [GeV]");
-  countNormal->SetStats(0);
-  countInverted_MC->SetTitle("QCD Inverted DeltaPhi MC");
-  countInverted_MC->SetXTitle("#slash{E}_{T} [GeV]");
-  countInverted_MC->SetYTitle("M_{T2} [GeV]");
-  countInverted_MC->SetStats(0);
-  countInverted->SetTitle("QCD Inverted DeltaPhi Normalized");
-  countInverted->SetXTitle("#slash{E}_{T} [GeV]");
-  countInverted->SetYTitle("M_{T2} [GeV]");
-  countInverted->SetStats(0);
-
-  //std::ostringstream strs;
-  //strs << (LUMI/1000);
-  //std::string lumi_str = strs.str();
-  //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2015, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
-  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
-  title->SetNDC();
-  title->SetTextSize(0.045);
-
-  TCanvas *c = new TCanvas("c", "c",0,51,1920,1004);
-  c->Divide(2,2);
-  c->SetFillColor(0);
-  gStyle->SetPaintTextFormat("1.2f");
-  
-  c->cd(1);
-  countNormal_MC->Draw("colztexte");
-  title->Draw("same");
-
-  c->cd(2);
-  countNormal->Draw("colztexte");
-  title->Draw("same");
-
-  c->cd(3);
-  countInverted_MC->Draw("colztexte");
-  title->Draw("same");
-
-  c->cd(4);
-  countInverted->Draw("colztexte");
-  title->Draw("same");
-
-  c->SaveAs( (dir_out + "_Allcount2d.png").c_str() );
-  c->SaveAs( (dir_out + "_Allcount2d.pdf").c_str() );
-  c->SaveAs( (dir_out + "_Allcount2d.C").c_str() );
-  c->Close();
-
-  return ;
 }
-*/
+
 //##########functions to calculate Delta_R and Delta Phi###############
 double DeltaPhi(double phi1, double phi2) 
 {

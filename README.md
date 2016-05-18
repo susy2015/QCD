@@ -102,8 +102,10 @@ Under construction
 
 2.To study the CS in designed search bin:
 
-./SS SSMuCS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
+./SS SSCS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
 
 3.To make 2D plots in designed search bin:
 
 ./SSPlots SSPlots20160504
+
+./SSAUX1DPlots SSAUX1DPlots20160517

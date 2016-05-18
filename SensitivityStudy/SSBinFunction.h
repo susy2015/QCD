@@ -1,14 +1,14 @@
 #define NTOPJETS_BINS 3
 #define NBOTJETS_BINS 3
-#define MET_BINS 4
+#define MET_BINS 5
 #define MT2_BINS 3
-//4 NTOP NBOT bins with all MET MT2 bins, 2 with only MET, 3 no MET and MT2: 4*12+2*4+3 
-#define NSEARCH_BINS 59
+//4 NTOP NBOT bins with all MET MT2 bins, 5 with only MET: 4*15+5*5 
+#define NSEARCH_BINS 85
 
 const double ntopbins_edge[NTOPJETS_BINS+1] = {1,2,3,4};
 const double nbotbins_edge[NBOTJETS_BINS+1] = {1,2,3,4};
 //const double metbins_edge[MET_BINS+1] = {200.0,300.0,400.0,500.0,600.0};
-const double metbins_edge[MET_BINS+1] = {200.0,250.0,350.0,450.0,600.0};
+const double metbins_edge[MET_BINS+1] = {200.0,250.0,325.0,400.0,500.0,600.0};
 const double mt2bins_edge[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
 
 int Set_ntopjetsbin_number(
@@ -91,3 +91,18 @@ int Set_mt2bin_number(
   return mt2bin_num;
 }
 
+int Set_SearchBinID( int topbinid, int botbinid, int mt2binid, int metbinid )
+{
+  int searchbin_num = -1;
+  bool GoodInputID = (topbinid>=0 && topbinid<NTOPJETS_BINS) && (botbinid>=0 && botbinid<NBOTJETS_BINS) && (mt2binid>=0 && mt2binid<MT2_BINS) && (metbinid>=0 && metbinid<MET_BINS);
+  if( !GoodInputID ) { std::cout << "Bad input ID! What the fuck is going on!!?? Please check SSBinFunction.h!" << std::endl; return -1;}
+
+  int topbotbinid = topbinid*NBOTJETS_BINS + botbinid;//0,1,2,3,4,5,6,7,8
+
+  if     ( topbotbinid == 0 || topbotbinid == 1 ) searchbin_num = topbotbinid*MT2_BINS*MET_BINS + mt2binid*MET_BINS + metbinid;
+  else if( topbotbinid == 2 )                     searchbin_num = 2*MT2_BINS*MET_BINS + metbinid;//no MT2 bin structure
+  else if( topbotbinid == 3 || topbotbinid == 4 ) searchbin_num = 2*MT2_BINS*MET_BINS + MET_BINS + (topbotbinid-3)*MT2_BINS*MET_BINS + mt2binid*MET_BINS + metbinid;
+  else searchbin_num = 4*MT2_BINS*MET_BINS + MET_BINS + (topbotbinid-5)*MET_BINS + metbinid;//no MT2 bin structure
+
+  return searchbin_num;
+}
