@@ -1,15 +1,17 @@
 #define NTOPJETS_BINS 3
 #define NBOTJETS_BINS 3
-#define MET_BINS 5
-#define MT2_BINS 3
-//4 NTOP NBOT bins with all MET MT2 bins, 5 with only MET: 4*15+5*5 
-#define NSEARCH_BINS 85
+#define MET_BINS 6
+//#define MT2_BINS 3
+#define MT2_BINS 2
+//4 NTOP NBOT bins with all MET MT2 bins, 5 with only MET: 4*6*3+5*6, 4*6*2+5*6
+//#define NSEARCH_BINS 90
+#define NSEARCH_BINS 78
 
 const double ntopbins_edge[NTOPJETS_BINS+1] = {1,2,3,4};
 const double nbotbins_edge[NBOTJETS_BINS+1] = {1,2,3,4};
-//const double metbins_edge[MET_BINS+1] = {200.0,300.0,400.0,500.0,600.0};
-const double metbins_edge[MET_BINS+1] = {200.0,250.0,325.0,400.0,500.0,600.0};
-const double mt2bins_edge[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
+const double metbins_edge[MET_BINS+1] = {200.0,250.0,350.0,450.0,550.0,700.0,1000.0};
+const double mt2bins_edge[MT2_BINS+1] = {200.0,300.0,500.0};
+//const double mt2bins_edge[MT2_BINS+1] = {200.0,300.0,400.0,500.0};
 
 int Set_ntopjetsbin_number(
 		                       int ntopjets

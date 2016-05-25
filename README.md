@@ -109,3 +109,9 @@ Under construction
 ./SSPlots SSPlots20160504
 
 ./SSAUX1DPlots SSAUX1DPlots20160517
+
+4.To test the SBGeometry.h
+
+g++ -std=c++11 SSBinIDTest.cc
+
+./a.out

@@ -89,16 +89,6 @@ void SSAUX1DPlots::SSAUX1DPlotsLoop(
     nametag = hist_tag;
     if( TString(list->At(i)->GetName()).Contains( ntnb_tag ) && TString(list->At(i)->GetName()).Contains( var_tag ) )
     {
-      if     ( TString(list->At(i)->GetName()).Contains( "NT1NB1" ) ) nametag += " : 1 Top, 1 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT1NB2" ) ) nametag += " : 1 Top, 2 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT1NB3" ) ) nametag += " : 1 Top, >=3 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT2NB1" ) ) nametag += " : 2 Top, 1 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT2NB2" ) ) nametag += " : 2 Top, 2 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT2NB3" ) ) nametag += " : 2 Top, >=3 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT3NB1" ) ) nametag += " : >= 3 Top, 1 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT3NB2" ) ) nametag += " : >= 3 Top, 2 Bot";
-      else if( TString(list->At(i)->GetName()).Contains( "NT3NB3" ) ) nametag += " : >= 3 Top, >=3 Bot";
-
       //choose one signal point
       if( TString(list->At(i)->GetName()).Contains( hist_tag ) )
       { 
