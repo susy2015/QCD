@@ -1,6 +1,10 @@
 #include <iostream>
 #include <vector>
 
+#define NSB 101
+#define NTOPJETS_BINS 3
+#define NBOTJETS_BINS 3
+
 class SBGeometry
 {
  public:
@@ -11,7 +15,7 @@ class SBGeometry
                                            2,2,1};//top >=3
   const int NMETBINS[NTOPBINS*NBOTBINS] = {6,6,4,//top 1
                                            6,6,4,//top 2
-                                           3,3,3};//top >=3
+                                           3,3,1};//top >=3
   const double ntopbins_edge[NTOPBINS+1] = {1,2,3,4};
   const double nbotbins_edge[NBOTBINS+1] = {1,2,3,4};
   const std::vector< std::vector<double> > mt2bins_edge = {
@@ -34,15 +38,16 @@ class SBGeometry
                                                            {200.0,250.0,350.0,450.0,600.0},//top 1 bot >=3
                                                            {200.0,250.0,400.0,600.0},//top >=3 bot 1
                                                            {200.0,250.0,400.0,600.0},//top >=3 bot 2
-                                                           {200.0,250.0,400.0,600.0} //top >=3 bot>=3
+                                                           {200.0,600.0} //top >=3 bot>=3
                                                           };
-  bool SBSelfTest();
-  int GetSBID(int ntop, int nbot, double mt2, double met);//from 0 to last
- private:
   int GetTopID(int ntop);
   int GetBotID(int nbot);
   int GetMT2ID(int topbotid, double mt2);
   int GetMETID(int topbotid, double met);
+
+  bool SBSelfTest();
+  int GetNSB();
+  int GetSBID(int ntop, int nbot, double mt2, double met);//from 0 to last
 };
 
 int SBGeometry::GetTopID(int ntop)
@@ -121,10 +126,6 @@ int SBGeometry::GetMETID(int topbotid, double met)
 
 bool SBGeometry::SBSelfTest()
 {
-  int nsb=0;
-  for(int i=0;i<NTOPBINS*NBOTBINS;i++){ nsb+=NMETBINS[i]*NMT2BINS[i]; }
-  std::cout << "Total number of search bin: " << nsb << std::endl;
-
   bool isgoodSB=true;
   for(int i=0;i<NTOPBINS*NBOTBINS;i++)
   {
@@ -132,6 +133,15 @@ bool SBGeometry::SBSelfTest()
     if(NMETBINS[i]!=(metbins_edge.at(i)).size()-1) {isgoodSB = false; std::cout << "Bad SB Def on MET:" << i << std::endl; return isgoodSB;}
   }
   return isgoodSB;
+}
+
+int SBGeometry::GetNSB()
+{
+  int nsb=0;
+  for(int i=0;i<NTOPBINS*NBOTBINS;i++){ nsb+=NMETBINS[i]*NMT2BINS[i]; }
+  //std::cout << "Total number of search bin: " << nsb << std::endl;
+
+  return nsb;
 }
 
 int SBGeometry::GetSBID(int ntop, int nbot, double mt2, double met)

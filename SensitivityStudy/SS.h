@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 #include <stdlib.h>
 
 #include "TH1D.h"
@@ -26,9 +27,9 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
 
-#include "SSBinFunction.h"
+#include "SBGeometry.h"
+//#include "SSBinFunction.h"
 #include "SSReWeighting.h"
-
 std::string dir_out = "";
 
 //############finish the definition of class AccRecoEffs######################
@@ -39,13 +40,15 @@ void mypassBaselineFunc(NTupleReader& tr)
   (*myBaselineVessel)(tr);
 }
 
+SBGeometry mySBGeometry;
+
 class SSDataCard
 {
  public:
-  double DC_sb_MC_Data[NSEARCH_BINS] = {0};
-  double DC_sb_MC_Data_statunc[NSEARCH_BINS] = {0};
-  double DC_sb_MC_LL[NSEARCH_BINS] = {0}, DC_sb_MC_HadTau[NSEARCH_BINS] = {0}, DC_sb_MC_Zinv[NSEARCH_BINS] = {0}, DC_sb_MC_QCD[NSEARCH_BINS] = {0}, DC_sb_MC_TTZ[NSEARCH_BINS] = {0}, DC_sb_MC_Rare[NSEARCH_BINS] = {0}; 
-  double DC_sb_MC_LL_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_HadTau_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_Zinv_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_QCD_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_TTZ_sysunc[NSEARCH_BINS] = {0}, DC_sb_MC_Rare_sysunc[NSEARCH_BINS] = {0};
+  double DC_sb_MC_Data[NSB] = {0};
+  double DC_sb_MC_Data_statunc[NSB] = {0};
+  double DC_sb_MC_LL[NSB] = {0}, DC_sb_MC_HadTau[NSB] = {0}, DC_sb_MC_Zinv[NSB] = {0}, DC_sb_MC_QCD[NSB] = {0}, DC_sb_MC_TTZ[NSB] = {0}, DC_sb_MC_Rare[NSB] = {0}; 
+  double DC_sb_MC_LL_sysunc[NSB] = {0}, DC_sb_MC_HadTau_sysunc[NSB] = {0}, DC_sb_MC_Zinv_sysunc[NSB] = {0}, DC_sb_MC_QCD_sysunc[NSB] = {0}, DC_sb_MC_TTZ_sysunc[NSB] = {0}, DC_sb_MC_Rare_sysunc[NSB] = {0};
   void printDC_AllFiles();
  private:
   void fake_uncs();
@@ -53,7 +56,7 @@ class SSDataCard
 void SSDataCard::fake_uncs()
 {
   std::cout << "Faking syst uncs in Data card!" << std::endl;
-  for(int i=0;i<NSEARCH_BINS;i++)
+  for(int i=0;i<NSB;i++)
   {
     //LL and hadTau: 40 % of prediction
     DC_sb_MC_LL_sysunc[i] = 0.4;
@@ -76,17 +79,17 @@ void SSDataCard::printDC_AllFiles()
   if (Datafile.is_open())
   {
     Datafile << "luminosity = " << LUMI << "\n";
-    Datafile << "channels = " << NSEARCH_BINS << "\n";
+    Datafile << "channels = " << NSB << "\n";
     Datafile << "sample = signal \n";
 
     Datafile << "rate = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       Datafile << DC_sb_MC_Data[i] << " ";
     }
     Datafile << "\n";
     //std::cout << "stat_unc_all = ";
-    //for(int i=0;i<NSEARCH_BINS;i++)
+    //for(int i=0;i<NSB;i++)
     //{
     //  Datafile << DC_sb_MC_Data_statunc[i] << " ";
     //}
@@ -99,13 +102,13 @@ void SSDataCard::printDC_AllFiles()
   if (LLfile.is_open())
   {
     LLfile << "rate = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       LLfile << DC_sb_MC_LL[i] << " ";
     }
     LLfile << "\n";
     LLfile << "syst_unc_all = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       LLfile << DC_sb_MC_LL_sysunc[i] << " ";
     }
@@ -118,13 +121,13 @@ void SSDataCard::printDC_AllFiles()
   if (HadTaufile.is_open())
   {
     HadTaufile << "rate = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       HadTaufile << DC_sb_MC_HadTau[i] << " ";
     }
     HadTaufile << "\n";
     HadTaufile << "syst_unc_all = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       HadTaufile << DC_sb_MC_HadTau_sysunc[i] << " ";
     }
@@ -137,13 +140,13 @@ void SSDataCard::printDC_AllFiles()
   if (Zinvfile.is_open())
   {
     Zinvfile << "rate = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       Zinvfile << DC_sb_MC_Zinv[i] << " ";
     }
     Zinvfile << "\n";
     Zinvfile << "syst_unc_all = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       Zinvfile << DC_sb_MC_Zinv_sysunc[i] << " ";
     }
@@ -156,13 +159,13 @@ void SSDataCard::printDC_AllFiles()
   if (QCDfile.is_open())
   {
     QCDfile << "rate = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       QCDfile << DC_sb_MC_QCD[i] << " ";
     }
     QCDfile << "\n";
     QCDfile << "syst_unc_all = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       QCDfile << DC_sb_MC_QCD_sysunc[i] << " ";
     }
@@ -175,13 +178,13 @@ void SSDataCard::printDC_AllFiles()
   if (TTZfile.is_open())
   {
     TTZfile << "rate = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       TTZfile << DC_sb_MC_TTZ[i] << " ";
     }
     TTZfile << "\n";
     TTZfile << "syst_unc_all = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       TTZfile << DC_sb_MC_TTZ_sysunc[i] << " ";
     }
@@ -194,13 +197,13 @@ void SSDataCard::printDC_AllFiles()
   if (Rarefile.is_open())
   {
     Rarefile << "rate = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       Rarefile << DC_sb_MC_Rare[i] << " ";
     }
     Rarefile << "\n";
     Rarefile << "syst_unc_all = ";
-    for(int i=0;i<NSEARCH_BINS;i++)
+    for(int i=0;i<NSB;i++)
     {
       Rarefile << DC_sb_MC_Rare_sysunc[i] << " ";
     }
@@ -227,8 +230,8 @@ class SSCSHistgram
 void SSCSHistgram::BookHistgram(const char *outFileName)
 {
   oFile = new TFile(outFileName, "recreate");
-  h_ss_ntopnbot_MC_MuCS = new TH2D("h_ss_ntopnbot_MC_MuCS","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
-  h_ss_ntopnbot_MC_ElCS = new TH2D("h_ss_ntopnbot_MC_ElCS","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
+  h_ss_ntopnbot_MC_MuCS = new TH2D("h_ss_ntopnbot_MC_MuCS","",NTOPJETS_BINS,mySBGeometry.ntopbins_edge,NBOTJETS_BINS,mySBGeometry.nbotbins_edge);
+  h_ss_ntopnbot_MC_ElCS = new TH2D("h_ss_ntopnbot_MC_ElCS","",NTOPJETS_BINS,mySBGeometry.ntopbins_edge,NBOTJETS_BINS,mySBGeometry.nbotbins_edge);
 
   for(int i=0;i<NTOPJETS_BINS;i++)
   {
@@ -252,16 +255,22 @@ void SSCSHistgram::BookHistgram(const char *outFileName)
         h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
       }
       */
-      if(i==NTOPJETS_BINS-1 || j==NBOTJETS_BINS-1)
-      {
-        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
-        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
-      }
-      else
-      {
-        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-      }
+      int ij=i*NBOTJETS_BINS+j;
+      int metsize = mySBGeometry.NMETBINS[ij], mt2size = mySBGeometry.NMT2BINS[ij];
+      double metbins_edge[mySBGeometry.metbins_edge.at(ij).size()], mt2bins_edge[mySBGeometry.mt2bins_edge.at(ij).size()];
+      std::copy ( mySBGeometry.metbins_edge.at(ij).begin(), mySBGeometry.metbins_edge.at(ij).end(), metbins_edge );
+      std::copy ( mySBGeometry.mt2bins_edge.at(ij).begin(), mySBGeometry.mt2bins_edge.at(ij).end(), mt2bins_edge );
+      
+      //if(i==NTOPJETS_BINS-1 || j==NBOTJETS_BINS-1)
+      //{
+      //  h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      //  h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      //}
+      //else
+      //{
+        h_ss_metmt2_MC_MuCS[i][j] = new TH2D(("h_ss_metmt2_MC_MuCS"+ntnbtag).c_str(),"",metsize,metbins_edge,mt2size,mt2bins_edge);
+        h_ss_metmt2_MC_ElCS[i][j] = new TH2D(("h_ss_metmt2_MC_ElCS"+ntnbtag).c_str(),"",metsize,metbins_edge,mt2size,mt2bins_edge);
+      //}
     }
   }
   return ;
@@ -286,11 +295,11 @@ class SSHistgram
 void SSHistgram::BookHistgram(const char *outFileName)
 {
   oFile = new TFile(outFileName, "recreate");
-  h_ss_ntopnbot_MC_AllBG = new TH2D("h_ss_ntopnbot_MC_AllBG","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
-  h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800 = new TH2D("h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
-  h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100 = new TH2D("h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
-  h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325 = new TH2D("h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
-  h_ss_ntopnbot_MC_T2tt_mStop850_mLSP100 = new TH2D("h_ss_ntopnbot_MC_T2tt_mStop850_mLSP100","",NTOPJETS_BINS,ntopbins_edge,NBOTJETS_BINS,nbotbins_edge);
+  h_ss_ntopnbot_MC_AllBG = new TH2D("h_ss_ntopnbot_MC_AllBG","",NTOPJETS_BINS,mySBGeometry.ntopbins_edge,NBOTJETS_BINS,mySBGeometry.nbotbins_edge);
+  h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800 = new TH2D("h_ss_ntopnbot_MC_T1tttt_mGluino1200_mLSP800","",NTOPJETS_BINS,mySBGeometry.ntopbins_edge,NBOTJETS_BINS,mySBGeometry.nbotbins_edge);
+  h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100 = new TH2D("h_ss_ntopnbot_MC_T1tttt_mGluino1500_mLSP100","",NTOPJETS_BINS,mySBGeometry.ntopbins_edge,NBOTJETS_BINS,mySBGeometry.nbotbins_edge);
+  h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325 = new TH2D("h_ss_ntopnbot_MC_T2tt_mStop500_mLSP325","",NTOPJETS_BINS,mySBGeometry.ntopbins_edge,NBOTJETS_BINS,mySBGeometry.nbotbins_edge);
+  h_ss_ntopnbot_MC_T2tt_mStop850_mLSP100 = new TH2D("h_ss_ntopnbot_MC_T2tt_mStop850_mLSP100","",NTOPJETS_BINS,mySBGeometry.ntopbins_edge,NBOTJETS_BINS,mySBGeometry.nbotbins_edge);
 
   for(int i=0;i<NTOPJETS_BINS;i++)
   {
@@ -323,22 +332,28 @@ void SSHistgram::BookHistgram(const char *outFileName)
         h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
       }
       */
-      if(i==NTOPJETS_BINS-1 /*|| j==NBOTJETS_BINS-1*/)
-      {
-        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
-        h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
-        h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
-        h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
-        h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
-      }
-      else
-      {
-        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-        h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-        h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-        h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-        h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,MT2_BINS,mt2bins_edge);
-      } 
+      int ij=i*NBOTJETS_BINS+j;
+      int metsize = mySBGeometry.NMETBINS[ij], mt2size = mySBGeometry.NMT2BINS[ij];
+      double metbins_edge[mySBGeometry.metbins_edge.at(ij).size()], mt2bins_edge[mySBGeometry.mt2bins_edge.at(ij).size()];
+      std::copy ( mySBGeometry.metbins_edge.at(ij).begin(), mySBGeometry.metbins_edge.at(ij).end(), metbins_edge );
+      std::copy ( mySBGeometry.mt2bins_edge.at(ij).begin(), mySBGeometry.mt2bins_edge.at(ij).end(), mt2bins_edge );
+
+      //if(i==NTOPJETS_BINS-1 /*|| j==NBOTJETS_BINS-1*/)
+      //{
+      //  h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      //  h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      //  h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      //  h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      //  h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",MET_BINS,metbins_edge,1,mt2bins_edge[0],mt2bins_edge[MT2_BINS]);
+      //}
+      //else
+      //{
+        h_ss_metmt2_MC_AllBG[i][j] = new TH2D(("h_ss_metmt2_MC_AllBG"+ntnbtag).c_str(),"",metsize,metbins_edge,mt2size,mt2bins_edge);
+        h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",metsize,metbins_edge,mt2size,mt2bins_edge);
+        h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",metsize,metbins_edge,mt2size,mt2bins_edge);
+        h_ss_metmt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",metsize,metbins_edge,mt2size,mt2bins_edge);
+        h_ss_metmt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH2D(("h_ss_metmt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",metsize,metbins_edge,mt2size,mt2bins_edge);
+      //} 
     }
   }
   return ;
@@ -371,6 +386,13 @@ void SSAUX1DHistgram::BookHistgram(const char *outFileName)
     for(int j=0;j<NBOTJETS_BINS;j++)
     {
       std::string ntnbtag = "NT"+std::to_string(i+1)+"NB"+std::to_string(j+1);
+      
+      int ij=i*NBOTJETS_BINS+j;
+      int metsize = mySBGeometry.NMETBINS[ij], mt2size = mySBGeometry.NMT2BINS[ij];
+      double metbins_edge[mySBGeometry.metbins_edge.at(ij).size()], mt2bins_edge[mySBGeometry.mt2bins_edge.at(ij).size()];
+      std::copy ( mySBGeometry.metbins_edge.at(ij).begin(), mySBGeometry.metbins_edge.at(ij).end(), metbins_edge );
+      std::copy ( mySBGeometry.mt2bins_edge.at(ij).begin(), mySBGeometry.mt2bins_edge.at(ij).end(), mt2bins_edge );
+     
       for(int k=0;k<SSAUXBGBin;k++)
       { 
         std::string smalltag;
@@ -381,8 +403,8 @@ void SSAUX1DHistgram::BookHistgram(const char *outFileName)
         else if (k == 3) smalltag = "QCD";
         else smalltag = "TTZ";
         
-				h_ss_aux_met_MC_AllBG[i][j][k] = new TH1D(("h_ss_aux_met_MC_AllBG"+ntnbtag+"_"+smalltag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
-        h_ss_aux_mt2_MC_AllBG[i][j][k] = new TH1D(("h_ss_aux_mt2_MC_AllBG"+ntnbtag+"_"+smalltag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
+				h_ss_aux_met_MC_AllBG[i][j][k] = new TH1D(("h_ss_aux_met_MC_AllBG"+ntnbtag+"_"+smalltag).c_str(),"",(metbins_edge[metsize]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[metsize]+500);
+        h_ss_aux_mt2_MC_AllBG[i][j][k] = new TH1D(("h_ss_aux_mt2_MC_AllBG"+ntnbtag+"_"+smalltag).c_str(),"",(mt2bins_edge[mt2size]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[mt2size]+500);
 
         h_ss_aux_met_MC_AllBG[i][j][k]->SetFillColor(k+2);
         h_ss_aux_mt2_MC_AllBG[i][j][k]->SetFillColor(k+2);
@@ -390,15 +412,15 @@ void SSAUX1DHistgram::BookHistgram(const char *outFileName)
         h_ss_aux_mt2_MC_AllBG[i][j][k]->SetLineColor(k+2);
       }
 
-      h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH1D(("h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
-      h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH1D(("h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
-      h_ss_aux_met_MC_T2tt_mStop500_mLSP325[i][j] = new TH1D(("h_ss_aux_met_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
-      h_ss_aux_met_MC_T2tt_mStop850_mLSP100[i][j] = new TH1D(("h_ss_aux_met_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",(metbins_edge[MET_BINS]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[MET_BINS]+500);
+      h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH1D(("h_ss_aux_met_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",(metbins_edge[metsize]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[metsize]+500);
+      h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH1D(("h_ss_aux_met_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",(metbins_edge[metsize]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[metsize]+500);
+      h_ss_aux_met_MC_T2tt_mStop500_mLSP325[i][j] = new TH1D(("h_ss_aux_met_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",(metbins_edge[metsize]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[metsize]+500);
+      h_ss_aux_met_MC_T2tt_mStop850_mLSP100[i][j] = new TH1D(("h_ss_aux_met_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",(metbins_edge[metsize]+500-metbins_edge[0])/50,metbins_edge[0],metbins_edge[metsize]+500);
 
-      h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH1D(("h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
-      h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH1D(("h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
-      h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH1D(("h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
-      h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH1D(("h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",(mt2bins_edge[MT2_BINS]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[MT2_BINS]+500);
+      h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800[i][j] = new TH1D(("h_ss_aux_mt2_MC_T1tttt_mGluino1200_mLSP800"+ntnbtag).c_str(),"",(mt2bins_edge[mt2size]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[mt2size]+500);
+      h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100[i][j] = new TH1D(("h_ss_aux_mt2_MC_T1tttt_mGluino1500_mLSP100"+ntnbtag).c_str(),"",(mt2bins_edge[mt2size]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[mt2size]+500);
+      h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325[i][j] = new TH1D(("h_ss_aux_mt2_MC_T2tt_mStop500_mLSP325"+ntnbtag).c_str(),"",(mt2bins_edge[mt2size]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[mt2size]+500);
+      h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100[i][j] = new TH1D(("h_ss_aux_mt2_MC_T2tt_mStop850_mLSP100"+ntnbtag).c_str(),"",(mt2bins_edge[mt2size]+500-mt2bins_edge[0])/50,mt2bins_edge[0],mt2bins_edge[mt2size]+500);
     }
   }
 }

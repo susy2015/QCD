@@ -6,9 +6,8 @@ int main()
 {
   std::cout << "Testing Search bin ID algorithm..." << std::endl;
   SBGeometry mySBGeometry;
-  if(mySBGeometry.SBSelfTest()){ std::cout << "Good SB Def! Continue testing..." << std::endl; }
+  if(mySBGeometry.SBSelfTest()){ std::cout << "Good SB Def! NSB: " << mySBGeometry.GetNSB() << "; Continue testing..." << std::endl; mySBGeometry.GetNSB(); }
   else return -1;
-  
   for(int i=0;i<5;i++)
   {
     for(int j=0;j<5;j++)

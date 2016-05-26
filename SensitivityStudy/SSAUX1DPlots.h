@@ -20,7 +20,6 @@
 #include "SusyAnaTools/Tools/searchBins.h"
 
 #include "SSReWeighting.h"
-#include "SSBinFunction.h"
 
 class SSAUX1DPlots
 {

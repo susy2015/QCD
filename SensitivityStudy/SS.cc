@@ -72,19 +72,25 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
       double mt2 = tr.getVar<double>("best_had_brJet_MT2"+spec);
       double met = tr.getVar<double>("met");
 
-			int ntopjetsbin_number = Set_ntopjetsbin_number(ntopjets);
-      int nbotjetsbin_number = Set_nbotjetsbin_number(nbotjets);
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
+			int ntopjetsbin_number = mySBGeometry.GetTopID(ntopjets);
+      int nbotjetsbin_number = mySBGeometry.GetBotID(nbotjets);
+      //int metbin_number = Set_metbin_number(met);
+      //int mt2bin_number = Set_mt2bin_number(mt2);
 
       bool passBaselineLL = tr.getVar<bool>("passBaseline"+spec);
 
       if (passBaselineLL)
       {
-        if(ntopjets>=ntopbins_edge[NTOPJETS_BINS]) ntopjets = ntopbins_edge[NTOPJETS_BINS-1];
-        if(nbotjets>=nbotbins_edge[NBOTJETS_BINS]) nbotjets = nbotbins_edge[NBOTJETS_BINS-1];
-        if(met>=metbins_edge[MET_BINS]) met = (metbins_edge[MET_BINS-1]+metbins_edge[MET_BINS])/2;
-        if(mt2>=mt2bins_edge[MT2_BINS]) mt2 = (mt2bins_edge[MT2_BINS-1]+mt2bins_edge[MT2_BINS])/2;
+        int ij=ntopjetsbin_number*NBOTJETS_BINS+nbotjetsbin_number;
+        int metsize = mySBGeometry.NMETBINS[ij], mt2size = mySBGeometry.NMT2BINS[ij];
+        double metbins_edge[mySBGeometry.metbins_edge.at(ij).size()], mt2bins_edge[mySBGeometry.mt2bins_edge.at(ij).size()];
+        std::copy ( mySBGeometry.metbins_edge.at(ij).begin(), mySBGeometry.metbins_edge.at(ij).end(), metbins_edge );
+        std::copy ( mySBGeometry.mt2bins_edge.at(ij).begin(), mySBGeometry.mt2bins_edge.at(ij).end(), mt2bins_edge );
+
+        if(ntopjets>=mySBGeometry.ntopbins_edge[NTOPJETS_BINS]) ntopjets = mySBGeometry.ntopbins_edge[NTOPJETS_BINS-1];
+        if(nbotjets>=mySBGeometry.nbotbins_edge[NBOTJETS_BINS]) nbotjets = mySBGeometry.nbotbins_edge[NBOTJETS_BINS-1];
+        if(met>=metbins_edge[metsize]) met = (metbins_edge[metsize-1]+metbins_edge[metsize])/2;
+        if(mt2>=mt2bins_edge[mt2size]) mt2 = (mt2bins_edge[mt2size-1]+mt2bins_edge[mt2size])/2;
 
 				//int searchbin_id = find_Binning_Index( nbotjets, ntopjets, mt2, met );
         //Get electron and muon for LL study
@@ -166,10 +172,10 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
       //int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       //double ht = tr.getVar<double>("HT"+spec);
 
-			int ntopjetsbin_number = Set_ntopjetsbin_number(ntopjets);
-      int nbotjetsbin_number = Set_nbotjetsbin_number(nbotjets);
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
+			int ntopjetsbin_number = mySBGeometry.GetTopID(ntopjets);
+      int nbotjetsbin_number = mySBGeometry.GetBotID(nbotjets);
+      //int metbin_number = Set_metbin_number(met);
+      //int mt2bin_number = Set_mt2bin_number(mt2);
 
       bool passBaselineLL = tr.getVar<bool>("passBaseline"+spec);
 
@@ -178,13 +184,20 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
         if(!passLeptVeto) continue;
 
-        double ntopjets_fold = -1, nbotjets_fold = -1, met_fold = -1, mt2_fold = -1;
-        if(ntopjets>=ntopbins_edge[NTOPJETS_BINS]) ntopjets_fold = ntopbins_edge[NTOPJETS_BINS-1]; else ntopjets_fold = ntopjets;
-        if(nbotjets>=nbotbins_edge[NBOTJETS_BINS]) nbotjets_fold = nbotbins_edge[NBOTJETS_BINS-1]; else nbotjets_fold = nbotjets;
-        if(met>=metbins_edge[MET_BINS]) met_fold = (metbins_edge[MET_BINS-1]+metbins_edge[MET_BINS])/2; else met_fold = met;
-        if(mt2>=mt2bins_edge[MT2_BINS]) mt2_fold = (mt2bins_edge[MT2_BINS-1]+mt2bins_edge[MT2_BINS])/2; else mt2_fold = mt2;
+        int ij=ntopjetsbin_number*NBOTJETS_BINS+nbotjetsbin_number;
+        int metsize = mySBGeometry.NMETBINS[ij], mt2size = mySBGeometry.NMT2BINS[ij];
+        double metbins_edge[mySBGeometry.metbins_edge.at(ij).size()], mt2bins_edge[mySBGeometry.mt2bins_edge.at(ij).size()];
+        std::copy ( mySBGeometry.metbins_edge.at(ij).begin(), mySBGeometry.metbins_edge.at(ij).end(), metbins_edge );
+        std::copy ( mySBGeometry.mt2bins_edge.at(ij).begin(), mySBGeometry.mt2bins_edge.at(ij).end(), mt2bins_edge );
 
-				int searchbin_id = Set_SearchBinID( ntopjetsbin_number, nbotjetsbin_number, mt2bin_number, metbin_number ); //find_Binning_Index( nbotjets, ntopjets, mt2, met );
+        double ntopjets_fold = -1, nbotjets_fold = -1, met_fold = -1, mt2_fold = -1;
+        if(ntopjets>=mySBGeometry.ntopbins_edge[NTOPJETS_BINS]) ntopjets_fold = mySBGeometry.ntopbins_edge[NTOPJETS_BINS-1]; else ntopjets_fold = ntopjets;
+        if(nbotjets>=mySBGeometry.nbotbins_edge[NBOTJETS_BINS]) nbotjets_fold = mySBGeometry.nbotbins_edge[NBOTJETS_BINS-1]; else nbotjets_fold = nbotjets;
+        if(met>=metbins_edge[metsize]) met_fold = (metbins_edge[metsize-1]+metbins_edge[metsize])/2; else met_fold = met;
+        if(mt2>=mt2bins_edge[mt2size]) mt2_fold = (mt2bins_edge[mt2size-1]+mt2bins_edge[mt2size])/2; else mt2_fold = mt2;
+
+        int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+				//int searchbin_id = Set_SearchBinID( ntopjetsbin_number, nbotjetsbin_number, mt2bin_number, metbin_number ); //find_Binning_Index( nbotjets, ntopjets, mt2, met );
         if(searchbin_id<0) { std::cout << "Search bin id problem! Please check!!" << std::endl; continue; }
 
         mySSDataCard.DC_sb_MC_Data[searchbin_id] += thisweight;
