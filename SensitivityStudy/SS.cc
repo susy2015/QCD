@@ -48,6 +48,7 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
   const std::string spec = "lostlept";
   myBaselineVessel = new BaselineVessel(spec);
 
+  double mucs[NSB] = {0}, elcs[NSB]={0};
   std::cout << "Let's do sensitivity study: " << std::endl;
   
   for(iter_SSSampleInfos = mySSSampleWeight.SSSampleInfos.begin(); iter_SSSampleInfos != mySSSampleWeight.SSSampleInfos.end(); iter_SSSampleInfos++)
@@ -87,23 +88,26 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
         std::copy ( mySBGeometry.metbins_edge.at(ij).begin(), mySBGeometry.metbins_edge.at(ij).end(), metbins_edge );
         std::copy ( mySBGeometry.mt2bins_edge.at(ij).begin(), mySBGeometry.mt2bins_edge.at(ij).end(), mt2bins_edge );
 
-        if(ntopjets>=mySBGeometry.ntopbins_edge[NTOPJETS_BINS]) ntopjets = mySBGeometry.ntopbins_edge[NTOPJETS_BINS-1];
-        if(nbotjets>=mySBGeometry.nbotbins_edge[NBOTJETS_BINS]) nbotjets = mySBGeometry.nbotbins_edge[NBOTJETS_BINS-1];
-        if(met>=metbins_edge[metsize]) met = (metbins_edge[metsize-1]+metbins_edge[metsize])/2;
-        if(mt2>=mt2bins_edge[mt2size]) mt2 = (mt2bins_edge[mt2size-1]+mt2bins_edge[mt2size])/2;
+        double ntopjets_fold = -1, nbotjets_fold = -1, met_fold = -1, mt2_fold = -1;
+        if(ntopjets>=mySBGeometry.ntopbins_edge[NTOPJETS_BINS]) ntopjets_fold = mySBGeometry.ntopbins_edge[NTOPJETS_BINS-1]; else ntopjets_fold = ntopjets;
+        if(nbotjets>=mySBGeometry.nbotbins_edge[NBOTJETS_BINS]) nbotjets_fold = mySBGeometry.nbotbins_edge[NBOTJETS_BINS-1]; else nbotjets_fold = nbotjets;
+        if(met>=metbins_edge[metsize]) met_fold = (metbins_edge[metsize-1]+metbins_edge[metsize])/2; else met_fold = met;
+        if(mt2>=mt2bins_edge[mt2size]) mt2_fold = (mt2bins_edge[mt2size-1]+mt2bins_edge[mt2size])/2; else mt2_fold = mt2;
 
-				//int searchbin_id = find_Binning_Index( nbotjets, ntopjets, mt2, met );
         //Get electron and muon for LL study
         int nElectrons = tr.getVar<int>("nElectrons_CUT"+spec);
         int nMuons = tr.getVar<int>("nMuons_CUT"+spec);
- 				
+        int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+				
         if( ((*iter_SSSampleInfos).Tag).find("TTJets") != std::string::npos )
 			  {
+          double TTJetsSF = 0.8;
           //Counting the muon control sample
 					if (nElectrons == 0 && nMuons == 1)
           {
-            (mySSCSHistgram.h_ss_ntopnbot_MC_MuCS)->Fill(ntopjets,nbotjets,thisweight);
-            (mySSCSHistgram.h_ss_metmt2_MC_MuCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+            (mySSCSHistgram.h_ss_ntopnbot_MC_MuCS)->Fill(ntopjets_fold,nbotjets_fold,thisweight*TTJetsSF);
+            (mySSCSHistgram.h_ss_metmt2_MC_MuCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight*TTJetsSF);
+            if(searchbin_id>=0) mucs[searchbin_id]+=(thisweight*TTJetsSF);
             /*
             if( ntopjets >= 3 && nbotjets>=3 )
             {
@@ -114,13 +118,26 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
           }
           if (nElectrons == 1 && nMuons == 0)
           {
-            (mySSCSHistgram.h_ss_ntopnbot_MC_ElCS)->Fill(ntopjets,nbotjets,thisweight);
-            (mySSCSHistgram.h_ss_metmt2_MC_ElCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met,mt2,thisweight);
+            (mySSCSHistgram.h_ss_ntopnbot_MC_ElCS)->Fill(ntopjets_fold,nbotjets_fold,thisweight*TTJetsSF);
+            (mySSCSHistgram.h_ss_metmt2_MC_ElCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight*TTJetsSF);
+            if(searchbin_id>=0) elcs[searchbin_id]+=(thisweight*TTJetsSF);
           }
 				}
       }
     }//end of inner loop
   }//end of Samples loop
+
+  std::ofstream DC_sb_LL_Header;
+  DC_sb_LL_Header.open ( "DC_sb_LL_Header.h" );
+  DC_sb_LL_Header << "  const double head_DC_sb_MC_LL_cs[" << NSB << "] = ";
+  for( int i_cal = 0 ; i_cal < NSB ; i_cal++ )
+  {
+    if( i_cal == 0 ) { DC_sb_LL_Header << "{"; }
+    DC_sb_LL_Header << mucs[i_cal];
+    if( i_cal != NSB-1 ) { DC_sb_LL_Header << ","; }
+    else{ DC_sb_LL_Header << "};"; }
+  }
+  DC_sb_LL_Header.close();
 
   (mySSCSHistgram.oFile)->Write();
   (mySSCSHistgram.oFile)->Close();
@@ -200,7 +217,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
 				//int searchbin_id = Set_SearchBinID( ntopjetsbin_number, nbotjetsbin_number, mt2bin_number, metbin_number ); //find_Binning_Index( nbotjets, ntopjets, mt2, met );
         if(searchbin_id<0) { std::cout << "Search bin id problem! Please check!!" << std::endl; continue; }
 
-        mySSDataCard.DC_sb_MC_Data[searchbin_id] += thisweight;
+        //mySSDataCard.DC_sb_MC_Data[searchbin_id] += thisweight;
         //To separate the LL and Hadtau
         bool isLL = false;
         //merge electron, muon generation level information
@@ -219,17 +236,18 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
 
         if( ((*iter_SSSampleInfos).Tag).find("TTJets") != std::string::npos )
         { 
+          double TTJetsSF = 0.8;
           if(isLL) 
           {
-            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(met,thisweight);
-            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(mt2,thisweight);
-            mySSDataCard.DC_sb_MC_LL[searchbin_id] += thisweight; 
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(met,thisweight*TTJetsSF);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(mt2,thisweight*TTJetsSF);
+            mySSDataCard.DC_sb_MC_LL[searchbin_id] += thisweight*TTJetsSF; 
           }
           else 
           { 
-            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight);
-            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight);
-            mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight;
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight*TTJetsSF);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight*TTJetsSF);
+            mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight*TTJetsSF;
             //std::cout << "NTop: " << ntopjets << ",NBoT: " << nbotjets << ",MT2: " << mt2 << ",MET: " << met << std::endl;
           }
         }
@@ -270,6 +288,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
           (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(met,thisweight);
           (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(mt2,thisweight);
           mySSDataCard.DC_sb_MC_Zinv[searchbin_id] += thisweight; 
+          mySSDataCard.DC_sb_MC_Zinv_cs[searchbin_id]++;
         }
         if( ((*iter_SSSampleInfos).Tag).find("QCD_HT") != std::string::npos )
         { 
@@ -281,13 +300,15 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         { 
           (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
           (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
-          mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight; 
+          mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
+          mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
         }
         if( ((*iter_SSSampleInfos).Tag).find("TTWJetsTo") != std::string::npos )
         { 
           (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
           (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
-          mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight; 
+          mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
+          mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
         }
 
         if( ((*iter_SSSampleInfos).Tag).find("T1tttt_mGluino-1200_mLSP-800") != std::string::npos )
