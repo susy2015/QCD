@@ -73,7 +73,7 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
       double mt2 = tr.getVar<double>("best_had_brJet_MT2"+spec);
       double met = tr.getVar<double>("met");
 
-			int ntopjetsbin_number = mySBGeometry.GetTopID(ntopjets);
+      int ntopjetsbin_number = mySBGeometry.GetTopID(ntopjets);
       int nbotjetsbin_number = mySBGeometry.GetBotID(nbotjets);
       //int metbin_number = Set_metbin_number(met);
       //int mt2bin_number = Set_mt2bin_number(mt2);
@@ -97,8 +97,9 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
         //Get electron and muon for LL study
         int nElectrons = tr.getVar<int>("nElectrons_CUT"+spec);
         int nMuons = tr.getVar<int>("nMuons_CUT"+spec);
-        int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
-				
+        //int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+				int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
+
         if( ((*iter_SSSampleInfos).Tag).find("TTJets") != std::string::npos )
 			  {
           double TTJetsSF = 0.8;
@@ -189,7 +190,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
       //int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       //double ht = tr.getVar<double>("HT"+spec);
 
-			int ntopjetsbin_number = mySBGeometry.GetTopID(ntopjets);
+      int ntopjetsbin_number = mySBGeometry.GetTopID(ntopjets);
       int nbotjetsbin_number = mySBGeometry.GetBotID(nbotjets);
       //int metbin_number = Set_metbin_number(met);
       //int mt2bin_number = Set_mt2bin_number(mt2);
@@ -213,7 +214,8 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         if(met>=metbins_edge[metsize]) met_fold = (metbins_edge[metsize-1]+metbins_edge[metsize])/2; else met_fold = met;
         if(mt2>=mt2bins_edge[mt2size]) mt2_fold = (mt2bins_edge[mt2size-1]+mt2bins_edge[mt2size])/2; else mt2_fold = mt2;
 
-        int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+        //int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+        int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
 				//int searchbin_id = Set_SearchBinID( ntopjetsbin_number, nbotjetsbin_number, mt2bin_number, metbin_number ); //find_Binning_Index( nbotjets, ntopjets, mt2, met );
         if(searchbin_id<0) { std::cout << "Search bin id problem! Please check!!" << std::endl; continue; }
 
@@ -348,7 +350,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
     }//end of inner loop
   }//end of Samples loop
 
-  mySSDataCard.printDC_AllFiles();
+  mySSDataCard.printDC_AllFiles("_45BinsRef");
   (mySSHistgram.oFile)->Write();
   (mySSHistgram.oFile)->Close();
   (mySSAUX1DHistgram.oFile)->Write();
@@ -383,8 +385,8 @@ int main(int argc, char* argv[])
   mySSSampleWeightAllMC.SSSampleInfo_push_back( "WJetsToLNu_HT-400To600"  ,  48.91,       1745914, LUMI, 1.21, inputFileList_MC_BG.c_str() );
   mySSSampleWeightAllMC.SSSampleInfo_push_back( "WJetsToLNu_HT-600ToInf"  ,  18.77,       1039152, LUMI, 1.21, inputFileList_MC_BG.c_str() );
   
-	mySSSampleWeightAllMC.SSSampleInfo_push_back( "ZJetsToNuNu_HT-400To600" ,  10.73,       1018882, LUMI, 1.23, inputFileList_MC_BG.c_str() );
-  mySSSampleWeightAllMC.SSSampleInfo_push_back( "ZJetsToNuNu_HT-600ToInf" ,  4.116,       1008333, LUMI, 1.23, inputFileList_MC_BG.c_str() );
+  mySSSampleWeightAllMC.SSSampleInfo_push_back( "ZJetsToNuNu_HT-400To600" ,  10.73,       9591098, LUMI, 1.23, inputFileList_MC_BG.c_str() );
+  mySSSampleWeightAllMC.SSSampleInfo_push_back( "ZJetsToNuNu_HT-600ToInf" ,  4.116,      10202299, LUMI, 1.23, inputFileList_MC_BG.c_str() );
   //Be careful! TTZ has negative weight issue!!
   mySSSampleWeightAllMC.SSSampleInfo_push_back( "TTZToLLNuNu"             , 0.2529, 291495-106505, LUMI, 1, inputFileList_MC_BG.c_str() );
   mySSSampleWeightAllMC.SSSampleInfo_push_back( "TTZToQQ"                 , 0.5297, 550599-199201, LUMI, 1, inputFileList_MC_BG.c_str() );  
@@ -400,7 +402,7 @@ int main(int argc, char* argv[])
   mySSSampleWeightAllMC.SSSampleInfo_push_back( "SMS-T1tttt_mGluino-1200_mLSP-800",  0.0856418,  147194, LUMI, 1, inputFileList_MC_SG.c_str() );
   mySSSampleWeightAllMC.SSSampleInfo_push_back( "SMS-T1tttt_mGluino-1500_mLSP-100",  0.0141903,  103140, LUMI, 1, inputFileList_MC_SG.c_str() );
   mySSSampleWeightAllMC.SSSampleInfo_push_back( "SMS-T2tt_mStop-500_mLSP-325"     ,  0.51848  ,  388207, LUMI, 1, inputFileList_MC_SG.c_str() );
-	mySSSampleWeightAllMC.SSSampleInfo_push_back( "SMS-T2tt_mStop-850_mLSP-100"     ,  0.0189612,  240685, LUMI, 1, inputFileList_MC_SG.c_str() );
+  mySSSampleWeightAllMC.SSSampleInfo_push_back( "SMS-T2tt_mStop-850_mLSP-100"     ,  0.0189612,  240685, LUMI, 1, inputFileList_MC_SG.c_str() );
 
   double TTbar_SingleLept_BR = 0.43930872; // 2*W_Lept_BR*(1-W_Lept_BR)
   double TTbar_DiLept_BR = 0.10614564; // W_Lept_BR^2

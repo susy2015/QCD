@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 
-#define NSB 101
+#define NSB 45
+//#define NSB 37
+//#define NSB 101
 #define NTOPJETS_BINS 3
 #define NBOTJETS_BINS 3
 

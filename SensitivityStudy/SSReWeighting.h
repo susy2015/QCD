@@ -17,9 +17,9 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 //define lumi in pb-1
 //2015 data 13TeV
-//#define LUMI 2262.946
+#define LUMI 2262.946
 //2016 ICHEP Exp
-#define LUMI 8000
+//#define LUMI 8000
 //2016 End of year Exp
 //#define LUMI 25000
 
