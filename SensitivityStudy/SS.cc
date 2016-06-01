@@ -222,6 +222,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
           (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight*TTJetsSF);
           (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight*TTJetsSF);
           mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight*TTJetsSF;
+          mySSDataCard.DC_sb_MC_HadTau_NMCforsystunc[searchbin_id]++;
           //std::cout << "NTop: " << ntopjets << ",NBoT: " << nbotjets << ",MT2: " << mt2 << ",MET: " << met << std::endl;
         }
       }
@@ -239,6 +240,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
           (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight);
           (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight);
           mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight;
+          mySSDataCard.DC_sb_MC_HadTau_NMCforsystunc[searchbin_id]++;
           //std::cout << "NTop: " << ntopjets << ",NBoT: " << nbotjets << ",MT2: " << mt2 << ",MET: " << met << std::endl;
         }
       }
@@ -255,7 +257,8 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         {
           (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(met,thisweight);
           (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][1])->Fill(mt2,thisweight);  
-          mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight; 
+          mySSDataCard.DC_sb_MC_HadTau[searchbin_id] += thisweight;
+          mySSDataCard.DC_sb_MC_HadTau_NMCforsystunc[searchbin_id]++;
           //std::cout << "NTop: " << ntopjets << ",NBoT: " << nbotjets << ",MT2: " << mt2 << ",MET: " << met << std::endl;
         }
       }
@@ -326,7 +329,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
     }//end of inner loop
   }//end of Samples loop
 
-  mySSDataCard.printDC_AllFiles("_45BinsRef");
+  mySSDataCard.printDC_AllFiles("_45BinsRefLUMI2015");
   (mySSHistgram.oFile)->Write();
   (mySSHistgram.oFile)->Close();
   (mySSAUX1DHistgram.oFile)->Write();

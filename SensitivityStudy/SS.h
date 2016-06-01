@@ -55,8 +55,8 @@ class SSDataCard
   double DC_sb_MC_LL_avgweight[NSB] = {0}, DC_sb_MC_HadTau_avgweight[NSB] = {0}, DC_sb_MC_Zinv_avgweight[NSB] = {0}, DC_sb_MC_QCD_avgweight[NSB] = {0}, DC_sb_MC_TTZ_avgweight[NSB] = {0}, DC_sb_MC_Rare_avgweight[NSB] = {0};
   double DC_sb_MC_LL_statunc[NSB] = {0}, DC_sb_MC_HadTau_statunc[NSB] = {0}, DC_sb_MC_Zinv_statunc[NSB] = {0}, DC_sb_MC_QCD_statunc[NSB] = {0}, DC_sb_MC_TTZ_statunc[NSB] = {0}, DC_sb_MC_Rare_statunc[NSB] = {0};
   double DC_sb_MC_LL_systunc[NSB] = {0}, DC_sb_MC_HadTau_systunc[NSB] = {0}, DC_sb_MC_Zinv_systunc[NSB] = {0}, DC_sb_MC_QCD_systunc[NSB] = {0}, DC_sb_MC_TTZ_systunc[NSB] = {0}, DC_sb_MC_Rare_systunc[NSB] = {0};
-  //special hadtau syst mistag
-  double DC_sb_MC_HadTau_systunc_mistag[NSB] = {0};
+  //special hadtau syst mistag, and MC N for non closure syst unc
+  double DC_sb_MC_HadTau_systunc_mistag[NSB] = {0}, DC_sb_MC_HadTau_NMCforsystunc[NSB] = {0};
 
   void printDC_AllFiles(std::string sbtag);
  private:
@@ -213,7 +213,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     //special piece for HadTau data card
     HadTaufile << "\n#For Hongxuan, Input for estimate hadtau syst unc\n";
     HadTaufile << "# exp_yield              = "; for(int i=0;i<NSB;i++){ HadTaufile << DC_sb_MC_HadTau[i] << " "; } HadTaufile << "\n";
-    HadTaufile << "# exp_yield_rel_stat_unc = "; for(int i=0;i<NSB;i++){ HadTaufile << DC_sb_MC_HadTau_statunc[i] << " "; } HadTaufile << "\n";
+    HadTaufile << "# exp_yield_rel_stat_unc = "; for(int i=0;i<NSB;i++){ HadTaufile << 1/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]) << " "; } HadTaufile << "\n";
 
     HadTaufile.close();
   }
