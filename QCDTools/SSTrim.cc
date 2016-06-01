@@ -62,9 +62,15 @@ int main(int argc, char* argv[])
   selectedTree->Branch("passLeptVeto",&passLeptVeto,"passLeptVeto/O");
   //AUX variables maybe useful for research
   Int_t njets30,njets50; Double_t ht;
-  selectedTree->Branch("nJets30",&njets30,"nJets30/I"    );
+  selectedTree->Branch("nJets30",&njets30,"nJets30/I");
   selectedTree->Branch("nJets50",&njets50,"nJets50/I");
   selectedTree->Branch("ht",&ht,"ht/D");
+  //LL information for TTJets Wjets and singleTop
+  Bool_t isLL;
+  selectedTree->Branch("isLL",&isLL,"isLL/O");
+  //negative weight information for TTZ
+  Bool_t isNegativeWeight;
+  selectedTree->Branch("isNegativeWeight",&isNegativeWeight,"isNegativeWeight/O");
 
   const std::string spec = "lostlept";
   myBaselineVessel = new BaselineVessel(spec);
@@ -117,6 +123,22 @@ int main(int argc, char* argv[])
       njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       ht = tr.getVar<double>("HT"+spec);
       //double mht = tr.getVar<double>("mht"); 
+      
+      //determine if LL or HadTau. be careful! we need to set passLeptVeto first
+      std::vector<int> W_emuVec = tr.getVec<int>("W_emuVec");
+      std::vector<int> W_tau_emuVec = tr.getVec<int>("W_tau_emuVec");
+      std::vector<int> emuVec_merge;
+      emuVec_merge.reserve( W_emuVec.size() + W_tau_emuVec.size() );   
+      emuVec_merge.insert( emuVec_merge.end(), W_emuVec.begin(), W_emuVec.end() );
+      emuVec_merge.insert( emuVec_merge.end(), W_tau_emuVec.begin(), W_tau_emuVec.end() );
+      int gen_emus_count = emuVec_merge.size();
+      (gen_emus_count>0 && passLeptVeto) ? isLL = true : isLL =false;
+      //if(isLL){ std::cout << "Test isLL!" << std::endl; }
+
+      //negative weight      
+      double evtWeight = tr.getVar<double>("evtWeight");
+      evtWeight<0 ? isNegativeWeight = true : isNegativeWeight = false;
+
       selectedTree->Fill();
     }
     else continue;

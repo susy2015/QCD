@@ -6,7 +6,9 @@ should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
 #output_destination = srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=/eos/uscms/store/group/lpcsusyhad/hua/AnaOut_QCD/
 
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/SS, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/gogoSS.sh, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
+#transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/SS, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/gogoSS.sh, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
+
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/SS, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/gogoSS.sh, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_SSSkimmed_v6_BG.txt, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_SSSkimmed_v6_SG.txt, $ENV(CMSSW_BASE)/src/QCD/SensitivityStudy/runList_Sensitivity_MC_SSSkimmed_v6_MuCS.txt
 
 Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stdout
 Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr
@@ -16,8 +18,15 @@ notify_user = hwei@fnal.gov
 
 ####Sensitivity Study on Signal Sample####
 
-arguments = SSAllMC runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
-Queue
+#arguments = SSAllMC runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
+#Queue
 
 #arguments = SSCS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
 #Queue
+
+arguments = SSAllMC runList_Sensitivity_MC_SSSkimmed_v6_BG.txt runList_Sensitivity_MC_SSSkimmed_v6_SG.txt runList_Sensitivity_MC_SSSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
+Queue
+
+#arguments = SSCS runList_Sensitivity_MC_SSSkimmed_v6_BG.txt runList_Sensitivity_MC_SSSkimmed_v6_SG.txt runList_Sensitivity_MC_SSSkimmed_v6_MuCS.txt $ENV(CMSSW_BASE)
+#Queue
+

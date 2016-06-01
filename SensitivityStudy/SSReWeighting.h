@@ -79,8 +79,8 @@ void SSSampleWeight::SSSampleInfo_push_back( std::string tag, double xsec, doubl
   //negative weight for the sample other than QCD and HTMHT
   //if( !(tag.find("QCD") != std::string::npos) ) oneInfo.weight = -xsec*lumi/nevents;
   //if( tag.find("HTMHT") != std::string::npos ) oneInfo.weight = 1;
-
-  oneInfo.chain= new TChain("stopTreeMaker/AUX");
+  oneInfo.chain= new TChain("stopTreeMaker/SSTree");
+  //oneInfo.chain= new TChain("stopTreeMaker/AUX");
   if(!FillChain(oneInfo.chain, inputFileList, oneInfo.Tag))
   {
     std::cerr << "Cannot get the tree " << std::endl;
