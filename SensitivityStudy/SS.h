@@ -55,9 +55,11 @@ class SSDataCard
   double DC_sb_MC_LL_avgweight[NSB] = {0}, DC_sb_MC_HadTau_avgweight[NSB] = {0}, DC_sb_MC_Zinv_avgweight[NSB] = {0}, DC_sb_MC_QCD_avgweight[NSB] = {0}, DC_sb_MC_TTZ_avgweight[NSB] = {0}, DC_sb_MC_Rare_avgweight[NSB] = {0};
   double DC_sb_MC_LL_statunc[NSB] = {0}, DC_sb_MC_HadTau_statunc[NSB] = {0}, DC_sb_MC_Zinv_statunc[NSB] = {0}, DC_sb_MC_QCD_statunc[NSB] = {0}, DC_sb_MC_TTZ_statunc[NSB] = {0}, DC_sb_MC_Rare_statunc[NSB] = {0};
   double DC_sb_MC_LL_systunc[NSB] = {0}, DC_sb_MC_HadTau_systunc[NSB] = {0}, DC_sb_MC_Zinv_systunc[NSB] = {0}, DC_sb_MC_QCD_systunc[NSB] = {0}, DC_sb_MC_TTZ_systunc[NSB] = {0}, DC_sb_MC_Rare_systunc[NSB] = {0};
-  //special hadtau syst mistag, and MC N for non closure syst unc
+ 
+  //special hadtau syst mistag, and MC N for LL non closure syst unc, and up dn cs for zinv
+  double DC_sb_MC_LL_NMCforsystunc[NSB] = {0};
   double DC_sb_MC_HadTau_systunc_mistag[NSB] = {0}, DC_sb_MC_HadTau_NMCforsystunc[NSB] = {0};
-
+  double DC_sb_MC_Zinv_cs_up[NSB]={0}, DC_sb_MC_Zinv_cs_dn[NSB] = {0};
   void printDC_AllFiles(std::string sbtag);
  private:
   void fake_avg_uncs();
@@ -70,7 +72,9 @@ void SSDataCard::fake_avg_uncs()
   {
     //set LL CS numbers from header file
     DC_sb_MC_LL_cs[i] = head_DC_sb_MC_LL_cs[i];
-    
+    //set zinv numbers from up dn variables 
+    DC_sb_MC_Zinv_cs[i] = DC_sb_MC_Zinv_cs_up[i]*DC_sb_MC_Zinv_cs_up[i]/DC_sb_MC_Zinv_cs_dn[i];
+
     //set avgweight from cs and rate, need for LL Zinv and TTZ, no need for qcd and hadtau
     DC_sb_MC_LL_cs[i]>0 ? DC_sb_MC_LL_avgweight[i] = DC_sb_MC_LL[i]/DC_sb_MC_LL_cs[i] : DC_sb_MC_LL_avgweight[i] = 0;
     DC_sb_MC_Zinv_cs[i]>0 ? DC_sb_MC_Zinv_avgweight[i] = DC_sb_MC_Zinv[i]/DC_sb_MC_Zinv_cs[i] : DC_sb_MC_Zinv_avgweight[i] = 0;
@@ -94,6 +98,7 @@ void SSDataCard::fake_avg_uncs()
     //if(DC_sb_MC_Zinv_systunc[i]>1) DC_sb_MC_Zinv_systunc[i] = 1;
     //QCD, 150% of prediction
     DC_sb_MC_QCD_systunc[i] = 1.5;
+    DC_sb_MC_TTZ_systunc[i] = 0.3;
   }
   return ;
 }
@@ -127,8 +132,8 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     LLfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ LLfile << /*DC_sb_MC_LL_statunc[i]*/"No Need!!" << " "; break; } LLfile << "\n";
 
     LLfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
-    LLfile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
-    LLfile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
+    LLfile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ LLfile << 1/std::sqrt(DC_sb_MC_LL_NMCforsystunc[i]) << " "; } LLfile << "\n";
+    LLfile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ LLfile << 1/std::sqrt(DC_sb_MC_LL_NMCforsystunc[i]) << " "; } LLfile << "\n";
     LLfile << "syst_unc_dimuon_up = " ; for(int i=0;i<NSB;i++){ LLfile << 0.003 << " "; } LLfile << "\n";
     LLfile << "syst_unc_dimuon_dn = " ; for(int i=0;i<NSB;i++){ LLfile << 0.003 << " "; } LLfile << "\n";
     LLfile << "syst_unc_diele_up = "  ; for(int i=0;i<NSB;i++){ LLfile << 0.012 << " "; } LLfile << "\n";
@@ -214,6 +219,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     HadTaufile << "\n#For Hongxuan, Input for estimate hadtau syst unc\n";
     HadTaufile << "# exp_yield              = "; for(int i=0;i<NSB;i++){ HadTaufile << DC_sb_MC_HadTau[i] << " "; } HadTaufile << "\n";
     HadTaufile << "# exp_yield_rel_stat_unc = "; for(int i=0;i<NSB;i++){ HadTaufile << 1/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]) << " "; } HadTaufile << "\n";
+    HadTaufile << "# 1.12 alpha             = "; for(int i=0;i<NSB;i++){ HadTaufile << 1.12/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]) << " "; } HadTaufile << "\n";
 
     HadTaufile.close();
   }

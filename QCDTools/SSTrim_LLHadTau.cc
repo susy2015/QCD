@@ -68,9 +68,6 @@ int main(int argc, char* argv[])
   //LL information for TTJets Wjets and singleTop
   Bool_t isLL;
   selectedTree->Branch("isLL",&isLL,"isLL/O");
-  //negative weight information for TTZ
-  Bool_t isNegativeWeight;
-  selectedTree->Branch("isNegativeWeight",&isNegativeWeight,"isNegativeWeight/O");
 
   const std::string spec = "lostlept";
   myBaselineVessel = new BaselineVessel(spec);
@@ -134,10 +131,6 @@ int main(int argc, char* argv[])
       int gen_emus_count = emuVec_merge.size();
       (gen_emus_count>0 && passLeptVeto) ? isLL = true : isLL =false;
       //if(isLL){ std::cout << "Test isLL!" << std::endl; }
-
-      //negative weight      
-      double evtWeight = tr.getVar<double>("evtWeight");
-      evtWeight<0 ? isNegativeWeight = true : isNegativeWeight = false;
 
       selectedTree->Fill();
     }

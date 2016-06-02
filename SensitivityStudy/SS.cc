@@ -147,17 +147,6 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
 
   SSDataCard mySSDataCard;
   std::cout << "Let's do sensitivity study: " << std::endl;
-  //set effN for zinv and ttz
-  double effN_zinv=1, up_zinv=0, dn_zinv=0;
-  double effN_ttz=1, up_ttz=0, dn_ttz=0;
-  for(iter_SSSampleInfos = mySSSampleWeight.SSSampleInfos.begin(); iter_SSSampleInfos != mySSSampleWeight.SSSampleInfos.end(); iter_SSSampleInfos++)
-  {
-    if( ((*iter_SSSampleInfos).Tag).find("ZJetsToNuNu_HT") != std::string::npos ){ up_zinv+=(*iter_SSSampleInfos).weight; dn_zinv+=(*iter_SSSampleInfos).weight * (*iter_SSSampleInfos).weight; }
-    if( (((*iter_SSSampleInfos).Tag).find("TTZTo") != std::string::npos) || (((*iter_SSSampleInfos).Tag).find("TTWJetsTo") != std::string::npos) ){ up_ttz+=(*iter_SSSampleInfos).weight; dn_ttz+=(*iter_SSSampleInfos).weight * (*iter_SSSampleInfos).weight; }
-  }
-  dn_zinv>0 ? effN_zinv = up_zinv*up_zinv/dn_zinv : effN_zinv = 1; dn_ttz>0 ? effN_ttz = up_ttz*up_ttz/dn_ttz : effN_ttz = 1;
-  std::cout << "Zinv MC CS effective Number: " << effN_zinv << std::endl;
-  std::cout << "TTZ MC CS effective Number: " << effN_ttz << std::endl;
 
   //begin to loop over all events
   for(iter_SSSampleInfos = mySSSampleWeight.SSSampleInfos.begin(); iter_SSSampleInfos != mySSSampleWeight.SSSampleInfos.end(); iter_SSSampleInfos++)
@@ -216,6 +205,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
           (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(met,thisweight*TTJetsSF);
           (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][0])->Fill(mt2,thisweight*TTJetsSF);
           mySSDataCard.DC_sb_MC_LL[searchbin_id] += thisweight*TTJetsSF; 
+          mySSDataCard.DC_sb_MC_LL_NMCforsystunc[searchbin_id]++;
         }
         else 
         { 
@@ -268,7 +258,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(mt2,thisweight);
         mySSDataCard.DC_sb_MC_Zinv[searchbin_id] += thisweight; 
         //effective number of event from Joe, we just have 2 type of weight, ZJetsToNuNu_HT-400To600 and ZJetsToNuNu_HT-600ToInf
-        mySSDataCard.DC_sb_MC_Zinv_cs[searchbin_id]+=effN_zinv;
+        mySSDataCard.DC_sb_MC_Zinv_cs_up[searchbin_id]+=thisweight; mySSDataCard.DC_sb_MC_Zinv_cs_dn[searchbin_id]+=thisweight*thisweight;
       }
       if( ((*iter_SSSampleInfos).Tag).find("QCD_HT") != std::string::npos )
       { 
@@ -276,21 +266,38 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][3])->Fill(mt2,thisweight);
         mySSDataCard.DC_sb_MC_QCD[searchbin_id] += thisweight; 
       }
+      //TTZ, becareful to the negative prediction
       if( ((*iter_SSSampleInfos).Tag).find("TTZTo") != std::string::npos )
       { 
-        bool isNegativeWeight = false; isNegativeWeight = tr.getVar<bool>("isNegativeWeight"); if(isNegativeWeight) thisweight = -thisweight;
-        (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
-        (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
-        mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
-        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-=effN_ttz : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]+=effN_ttz;
+        bool isNegativeWeight = false; isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
+        if(isNegativeWeight)
+        {
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,-thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,-thisweight);
+        }
+        else
+        {
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
+        }
+        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ[searchbin_id] -= thisweight : mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
+        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-- : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
       }
       if( ((*iter_SSSampleInfos).Tag).find("TTWJetsTo") != std::string::npos )
       { 
-        bool isNegativeWeight = false; isNegativeWeight = tr.getVar<bool>("isNegativeWeight"); if(isNegativeWeight) thisweight = -thisweight;
-        (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
-        (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
-        mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
-        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-=effN_ttz : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]+=effN_ttz;
+        bool isNegativeWeight = false; isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
+        if(isNegativeWeight)
+        {
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,-thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,-thisweight);
+        }
+        else
+        {
+          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
+          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
+        }
+        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ[searchbin_id] -= thisweight : mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
+        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-- : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
       }
 
       if( ((*iter_SSSampleInfos).Tag).find("T1tttt_mGluino-1200_mLSP-800") != std::string::npos )

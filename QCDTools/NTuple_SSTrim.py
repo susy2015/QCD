@@ -12,13 +12,15 @@ def find_nth(haystack, needle, n):
 #d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Dec_2015_Ntp_v4X/"
 #d= "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
 
-file_name = sys.argv[1]
+#the valid run type is LLHadTau, ZinvQCD and TTZ
+run_type = sys.argv[1]
+file_name = sys.argv[2]
 #rootfile_tag = file_name[:-4]
 #print(rootfile_tag) 
 
 with open(file_name) as f:
   for line in f:
-    cmd = './SSTrim ' + line
+    cmd = './SSTrim_' + run_type + ' ' + line
     print(cmd) 
     os.system(cmd)
     #cmd = 'xrdcp *'+ rootfile_tag +'*.root ' + d
