@@ -35,6 +35,8 @@
 #include "SS.h"
 
 //const double Scale = 591.5/2153.736;
+//                            NJets =      1        2       3        4        5        6       7      >=8
+const double NJetRweightingFactor[8] = {0.926542,1.03995,0.919711,0.723581,0.869969,0.95682,0.584418,0.874059};
 
 void LoopSSCS( SSSampleWeight& mySSSampleWeight )
 {
@@ -253,12 +255,14 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
         }
       }
       if( ((*iter_SSSampleInfos).Tag).find("ZJetsToNuNu_HT") != std::string::npos )
-      { 
-        (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(met,thisweight);
-        (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(mt2,thisweight);
-        mySSDataCard.DC_sb_MC_Zinv[searchbin_id] += thisweight; 
+      {  
+        int nJets30 = tr.getVar<int>("nJets30"); double njetRWF = 1;
+        nJets30<8 ? njetRWF = NJetRweightingFactor[nJets30-1] : njetRWF = NJetRweightingFactor[7];    
+        (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(met,thisweight*njetRWF);
+        (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][2])->Fill(mt2,thisweight*njetRWF);
+        mySSDataCard.DC_sb_MC_Zinv[searchbin_id] += thisweight*njetRWF; 
         //effective number of event from Joe, we just have 2 type of weight, ZJetsToNuNu_HT-400To600 and ZJetsToNuNu_HT-600ToInf
-        mySSDataCard.DC_sb_MC_Zinv_cs_up[searchbin_id]+=thisweight; mySSDataCard.DC_sb_MC_Zinv_cs_dn[searchbin_id]+=thisweight*thisweight;
+        mySSDataCard.DC_sb_MC_Zinv_cs_up[searchbin_id]+=thisweight*njetRWF; mySSDataCard.DC_sb_MC_Zinv_cs_dn[searchbin_id]+=thisweight*njetRWF*thisweight*njetRWF;
       }
       if( ((*iter_SSSampleInfos).Tag).find("QCD_HT") != std::string::npos )
       { 
