@@ -86,7 +86,7 @@ void SSDataCard::fake_avg_uncs()
 
     //syst unc setting, need for all BGs, need to be fixed!
     //LL just set for closure unc, relation proved by Florent's plot
-    DC_sb_MC_LL_systunc[i] = 1/std::sqrt(DC_sb_MC_LL_cs[i]);
+    DC_sb_MC_LL_systunc[i] = 0.4/std::sqrt(DC_sb_MC_LL_cs[i]);
     //Had Tau
     DC_sb_MC_HadTau_systunc[i] = 0.4;
     searchBinDef outBinDef; find_BinBoundaries( i, outBinDef );
