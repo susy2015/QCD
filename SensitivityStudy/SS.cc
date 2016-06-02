@@ -270,34 +270,44 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
       if( ((*iter_SSSampleInfos).Tag).find("TTZTo") != std::string::npos )
       { 
         bool isNegativeWeight = false; isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
-        if(isNegativeWeight)
+        bool isGenZLep = false; isGenZLep = tr.getVar<bool>("isGenZLep");
+        bool isGenWLep = false; isGenWLep = tr.getVar<bool>("isGenWLep");
+        if((!isGenZLep) && (!isGenWLep))
         {
-          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,-thisweight);
-          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,-thisweight);
+          if(isNegativeWeight)
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,-thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,-thisweight);
+          }
+          else
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
+          }
+          isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ[searchbin_id] -= thisweight : mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
+          isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-- : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
         }
-        else
-        {
-          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
-          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
-        }
-        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ[searchbin_id] -= thisweight : mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
-        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-- : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
       }
       if( ((*iter_SSSampleInfos).Tag).find("TTWJetsTo") != std::string::npos )
       { 
         bool isNegativeWeight = false; isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
-        if(isNegativeWeight)
+        bool isGenZLep = false; isGenZLep = tr.getVar<bool>("isGenZLep");
+        bool isGenWLep = false; isGenWLep = tr.getVar<bool>("isGenWLep");
+        if((!isGenZLep) && (!isGenWLep))
         {
-          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,-thisweight);
-          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,-thisweight);
+          if(isNegativeWeight)
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,-thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,-thisweight);
+          }
+          else
+          {
+            (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
+            (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
+          }
+          isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ[searchbin_id] -= thisweight : mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
+          isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-- : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
         }
-        else
-        {
-          (mySSAUX1DHistgram.h_ss_aux_met_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(met,thisweight);
-          (mySSAUX1DHistgram.h_ss_aux_mt2_MC_AllBG[ntopjetsbin_number][nbotjetsbin_number][4])->Fill(mt2,thisweight);
-        }
-        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ[searchbin_id] -= thisweight : mySSDataCard.DC_sb_MC_TTZ[searchbin_id] += thisweight;
-        isNegativeWeight ? mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]-- : mySSDataCard.DC_sb_MC_TTZ_cs[searchbin_id]++;
       }
 
       if( ((*iter_SSSampleInfos).Tag).find("T1tttt_mGluino-1200_mLSP-800") != std::string::npos )

@@ -98,11 +98,11 @@ Under construction
 # Sensitivity Study
 1.To study Signal/MC in designed search bin:
 
-./SS SSAllMC runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
+./SS SSAllMC runList_Sensitivity_MC_SSSkimmed_v6_BG.txt runList_Sensitivity_MC_SSSkimmed_v6_SG.txt runList_Sensitivity_MC_SSSkimmed_v6_MuCS.txt
 
 2.To study the CS in designed search bin:
 
-./SS SSCS runList_Sensitivity_MC_DeepSkimmed_v4_BG.txt runList_Sensitivity_MC_DeepSkimmed_v4_SG.txt runList_Sensitivity_MC_DeepSkimmed_v6_MuCS.txt
+./SS SSCS runList_Sensitivity_MC_SSSkimmed_v6_BG.txt runList_Sensitivity_MC_SSSkimmed_v6_SG.txt runList_Sensitivity_MC_SSSkimmed_v6_MuCS.txt
 
 3.To make 2D plots in designed search bin:
 
