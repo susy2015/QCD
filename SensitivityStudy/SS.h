@@ -88,7 +88,7 @@ void SSDataCard::fake_avg_uncs()
     //LL just set for closure unc, relation proved by Florent's plot
     DC_sb_MC_LL_systunc[i] = 2.69/std::sqrt(DC_sb_NMC_LL_cs[i]);
     //Had Tau
-    DC_sb_MC_HadTau_systunc[i] = 2/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]);
+    DC_sb_MC_HadTau_systunc[i] = 1.66/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]);
     searchBinDef outBinDef; find_BinBoundaries( i, outBinDef );
     outBinDef.bJet_lo>=3 ? DC_sb_MC_HadTau_systunc_mistag[i] = 0.1 : DC_sb_MC_HadTau_systunc_mistag[i] = 0.05; 
     //Zinv
@@ -220,6 +220,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     HadTaufile << "# exp_yield              = "; for(int i=0;i<NSB;i++){ HadTaufile << DC_sb_MC_HadTau[i] << " "; } HadTaufile << "\n";
     HadTaufile << "# exp_yield_rel_stat_unc = "; for(int i=0;i<NSB;i++){ HadTaufile << 1/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]) << " "; } HadTaufile << "\n";
     HadTaufile << "# 1.12 alpha             = "; for(int i=0;i<NSB;i++){ HadTaufile << 1.12/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]) << " "; } HadTaufile << "\n";
+    HadTaufile << "# NMC                    = "; for(int i=0;i<NSB;i++){ HadTaufile << DC_sb_MC_HadTau_NMCforsystunc[i] << " "; } HadTaufile << "\n";
 
     HadTaufile.close();
   }
