@@ -330,7 +330,7 @@ void SysUncs::printFinalPred()
   
   h_pred_sb->Draw("e0");
 
-  drawSBregionDef(0.0, 18.0, false);
+  drawSBregionDef(0.0, 18.0);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );

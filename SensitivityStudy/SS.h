@@ -57,7 +57,7 @@ class SSDataCard
   double DC_sb_MC_LL_systunc[NSB] = {0}, DC_sb_MC_HadTau_systunc[NSB] = {0}, DC_sb_MC_Zinv_systunc[NSB] = {0}, DC_sb_MC_QCD_systunc[NSB] = {0}, DC_sb_MC_TTZ_systunc[NSB] = {0}, DC_sb_MC_Rare_systunc[NSB] = {0};
  
   //special hadtau syst mistag, and MC N for LL non closure syst unc, and up dn cs for zinv
-  double DC_sb_MC_LL_NMCforsystunc[NSB] = {0};
+  double DC_sb_NMC_LL_cs[NSB] = {0};
   double DC_sb_MC_HadTau_systunc_mistag[NSB] = {0}, DC_sb_MC_HadTau_NMCforsystunc[NSB] = {0};
   double DC_sb_MC_Zinv_cs_up[NSB]={0}, DC_sb_MC_Zinv_cs_dn[NSB] = {0};
   void printDC_AllFiles(std::string sbtag);
@@ -71,7 +71,7 @@ void SSDataCard::fake_avg_uncs()
   for(int i=0;i<NSB;i++)
   {
     //set LL CS numbers from header file
-    DC_sb_MC_LL_cs[i] = head_DC_sb_MC_LL_cs[i];
+    DC_sb_MC_LL_cs[i] = head_DC_sb_MC_LL_cs[i]; DC_sb_NMC_LL_cs[i] = head_DC_sb_NMC_LL_cs[i];
     //set zinv numbers from up dn variables 
     DC_sb_MC_Zinv_cs[i] = DC_sb_MC_Zinv_cs_up[i]*DC_sb_MC_Zinv_cs_up[i]/DC_sb_MC_Zinv_cs_dn[i];
 
@@ -86,9 +86,9 @@ void SSDataCard::fake_avg_uncs()
 
     //syst unc setting, need for all BGs, need to be fixed!
     //LL just set for closure unc, relation proved by Florent's plot
-    DC_sb_MC_LL_systunc[i] = 0.4/std::sqrt(DC_sb_MC_LL_cs[i]);
+    DC_sb_MC_LL_systunc[i] = 2.69/std::sqrt(DC_sb_NMC_LL_cs[i]);
     //Had Tau
-    DC_sb_MC_HadTau_systunc[i] = 0.4;
+    DC_sb_MC_HadTau_systunc[i] = 2/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]);
     searchBinDef outBinDef; find_BinBoundaries( i, outBinDef );
     outBinDef.bJet_lo>=3 ? DC_sb_MC_HadTau_systunc_mistag[i] = 0.1 : DC_sb_MC_HadTau_systunc_mistag[i] = 0.05; 
     //Zinv
@@ -132,8 +132,8 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     LLfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ LLfile << /*DC_sb_MC_LL_statunc[i]*/"No Need!!" << " "; break; } LLfile << "\n";
 
     LLfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
-    LLfile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ LLfile << 1/std::sqrt(DC_sb_MC_LL_NMCforsystunc[i]) << " "; } LLfile << "\n";
-    LLfile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ LLfile << 1/std::sqrt(DC_sb_MC_LL_NMCforsystunc[i]) << " "; } LLfile << "\n";
+    LLfile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
+    LLfile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
     LLfile << "syst_unc_dimuon_up = " ; for(int i=0;i<NSB;i++){ LLfile << 0.003 << " "; } LLfile << "\n";
     LLfile << "syst_unc_dimuon_dn = " ; for(int i=0;i<NSB;i++){ LLfile << 0.003 << " "; } LLfile << "\n";
     LLfile << "syst_unc_diele_up = "  ; for(int i=0;i<NSB;i++){ LLfile << 0.012 << " "; } LLfile << "\n";

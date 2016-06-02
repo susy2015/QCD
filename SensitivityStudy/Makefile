@@ -25,7 +25,7 @@ LIBS     = $(shell root-config --glibs)
 MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 
-PROGRAMS = tupleTest SS SSPlots SSAUX1DPlots
+PROGRAMS = tupleTest SS SSPlots SSAUX1DPlots SSDataCardCompare
 
 all: mkobj sampPyWrap $(PROGRAMS)
 
@@ -67,6 +67,9 @@ SSPlots: $(ODIR)/SSPlots.o
 	$(LD) $^ $(LIBS)  -o $@
 
 SSAUX1DPlots: $(ODIR)/SSAUX1DPlots.o
+	$(LD) $^ $(LIBS)  -o $@
+
+SSDataCardCompare: $(ODIR)/SSDataCardCompare.o
 	$(LD) $^ $(LIBS)  -o $@
 
 clean:
