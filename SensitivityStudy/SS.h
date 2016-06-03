@@ -82,6 +82,9 @@ void SSDataCard::fake_avg_uncs()
 
     //set stat unc. stat unc need for QCD and hadtau, no need for LL,Zinv and TTZ
     DC_sb_MC_HadTau[i]>0 ? DC_sb_MC_HadTau_statunc[i] = 0.5*std::sqrt(DC_sb_MC_HadTau[i])/DC_sb_MC_HadTau[i] : DC_sb_MC_HadTau_statunc[i] = 0;
+    if(DC_sb_MC_HadTau_statunc[i]>1) DC_sb_MC_HadTau_statunc[i] = 0.998;
+    //seems we still need LL stat unc added in herer
+    DC_sb_MC_LL_cs[i]>1 ? DC_sb_MC_LL_statunc[i] = 1/std::sqrt(DC_sb_MC_LL_cs[i]) : DC_sb_MC_LL_statunc[i] = 0.998;
     DC_sb_MC_QCD[i]>0 ? DC_sb_MC_QCD_statunc[i] = std::sqrt(DC_sb_MC_QCD[i])/DC_sb_MC_QCD[i] : DC_sb_MC_QCD_statunc[i] = 0;
 
     //syst unc setting, need for all BGs, need to be fixed!
@@ -92,10 +95,8 @@ void SSDataCard::fake_avg_uncs()
     searchBinDef outBinDef; find_BinBoundaries( i, outBinDef );
     outBinDef.bJet_lo>=3 ? DC_sb_MC_HadTau_systunc_mistag[i] = 0.1 : DC_sb_MC_HadTau_systunc_mistag[i] = 0.05; 
     //Zinv
-    DC_sb_MC_Zinv_systunc[i] = 0.3;
-		//DC_sb_MC_Zinv_systunc[i] = std::sqrt(DC_sb_MC_Zinv[i])/DC_sb_MC_Zinv[i];
-    //if(DC_sb_MC_Zinv[i]<0.000000000001) DC_sb_MC_Zinv_systunc[i] = 0;
-    //if(DC_sb_MC_Zinv_systunc[i]>1) DC_sb_MC_Zinv_systunc[i] = 1;
+		DC_sb_MC_Zinv_systunc[i] = 10*std::sqrt(DC_sb_MC_Zinv_cs[i])/DC_sb_MC_Zinv_cs[i]; 
+    if( DC_sb_MC_Zinv_systunc[i]>1 ) DC_sb_MC_Zinv_systunc[i]=0.998;
     //QCD, 150% of prediction
     DC_sb_MC_QCD_systunc[i] = 1.5;
     DC_sb_MC_TTZ_systunc[i] = 0.3;
@@ -128,8 +129,8 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     LLfile << "avg_weight = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_avgweight[i] << " "; } LLfile << "\n";
 
     LLfile << "\n# All the uncertainties in absolute numbers for both stat and syst uncertainties. Needed from QCD and hadronic tau; No need from lost lepton, Zinv and ttZ (will be ignored). For symmetric uncertainties, put the up and dn to be the same.\n";
-    LLfile << "stat_unc_up = "; for(int i=0;i<NSB;i++){ LLfile << /*DC_sb_MC_LL_statunc[i]*/"No Need!!" << " "; break; } LLfile << "\n";
-    LLfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ LLfile << /*DC_sb_MC_LL_statunc[i]*/"No Need!!" << " "; break; } LLfile << "\n";
+    LLfile << "stat_unc_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_statunc[i]/*"No Need!!"*/ << " "; break; } LLfile << "\n";
+    LLfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_statunc[i]/*"No Need!!"*/ << " "; break; } LLfile << "\n";
 
     LLfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
     LLfile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
@@ -250,12 +251,12 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     Zinvfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ Zinvfile << /*DC_sb_MC_Zinv_statunc[i]*/"No Need!!" << " "; break; } Zinvfile << "\n";
     
     Zinvfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
-    Zinvfile << "syst_unc_norm_up = "         ; for(int i=0;i<NSB;i++){ Zinvfile << DC_sb_MC_Zinv_systunc[i] << " "; } Zinvfile << "\n";
-    Zinvfile << "syst_unc_norm_dn = "         ; for(int i=0;i<NSB;i++){ Zinvfile << DC_sb_MC_Zinv_systunc[i] << " "; } Zinvfile << "\n";
+    Zinvfile << "syst_unc_norm_up = "         ; for(int i=0;i<NSB;i++){ Zinvfile << 0.3 << " "; } Zinvfile << "\n";
+    Zinvfile << "syst_unc_norm_dn = "         ; for(int i=0;i<NSB;i++){ Zinvfile << 0.3 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_shape_central_up = "; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_shape_central_dn = "; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
-    Zinvfile << "syst_unc_shape_stat_up = "   ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
-    Zinvfile << "syst_unc_shape_stat_dn = "   ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
+    Zinvfile << "syst_unc_shape_stat_up = "   ; for(int i=0;i<NSB;i++){ Zinvfile << DC_sb_MC_Zinv_systunc[i] << " "; } Zinvfile << "\n";
+    Zinvfile << "syst_unc_shape_stat_dn = "   ; for(int i=0;i<NSB;i++){ Zinvfile << DC_sb_MC_Zinv_systunc[i] << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_jeu_up = "          ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_jeu_dn = "          ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_meu_up = "          ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
@@ -322,17 +323,17 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     TTZfile << "\n# Average weight for lost lepton, Zinv and ttZ: avg_weight x cs_event = rate. Will be ignored for had. tau and QCD.\n";
     TTZfile << "avg_weight = "; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_avgweight[i] << " "; } TTZfile << "\n";
 
-    TTZfile << "\n# All the uncertainties in absolute numbers for both stat and syst uncertainties. Needed from QCD and hadronic tau; No need from lost lepton, Zinv and ttZ (will be ignored). For symmetric uncertainties, put the up and dn to be the same.\n";
+    TTZfile << "\n# All the uncertainties in absolute numbers for both stat and syst uncertainties. Needed from QCD and hadronic tau; No need from lost lepton, Zinv and ttZ (will be ignored). For symmetric uncertainties, put the up and down to be the same.\n";
     TTZfile << "stat_unc_up = "; for(int i=0;i<NSB;i++){ TTZfile << /*DC_sb_MC_TTZ_statunc[i]*/"No Need!!" << " "; break; } TTZfile << "\n";
-    TTZfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ TTZfile << /*DC_sb_MC_TTZ_statunc[i]*/"No Need!!" << " "; break; } TTZfile << "\n";
+    TTZfile << "stat_unc_down = "; for(int i=0;i<NSB;i++){ TTZfile << /*DC_sb_MC_TTZ_statunc[i]*/"No Need!!" << " "; break; } TTZfile << "\n";
 
     TTZfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
-    TTZfile << "syst_unc_pdf_up = "  ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_pdf_dn = "  ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_scale_up = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_scale_dn = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_rate_up = " ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_rate_dn = " ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_pdf_up   = "  ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_pdf_down = "  ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_scale_up   = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_scale_down = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_rate_up   = " ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_rate_down = " ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
     TTZfile.close();
   }
   else std::cout << "Unable to open TTZfile";

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <fstream>
+#include <algorithm>
 
 #include "TFile.h"
 #include "TList.h"
@@ -19,6 +20,7 @@
 #include "TLine.h"
 
 #include "SBGeometry.h"
+#include "SusyAnaTools/Tools/searchBins.h"
 
 class DCComparePlots
 {
@@ -95,6 +97,7 @@ void DCComparePlots::DCComparePlotsLoop(
     h_fake->SetBinContent(i,fakevalue[i]);
     h_real->SetBinContent(i,realvalue[i]);
   }
+
   //Set Style for h_real and h_fake
   h_fake->SetMarkerStyle(21);
   h_fake->SetMarkerColor(kBlue);
@@ -151,6 +154,20 @@ void DCComparePlots::DCComparePlotsLoop(
   title->SetNDC();
   title->SetTextSize(0.045);
 
+   //Create Legend
+	TLegend* leg = new TLegend(0.55,0.75,0.90,0.90);
+  leg->SetBorderSize(1);
+  leg->SetLineColor(1);
+  leg->SetLineWidth(2);
+  leg->SetFillColor(0);
+  //leg->SetFillStyle();
+  leg->SetTextFont(42);
+  leg->SetTextSize(0.04);
+  leg->SetHeader("Data Card Comparison");
+  leg->AddEntry(h_real,"2015 Moriond Data Card","P");
+  leg->AddEntry(h_fake,"Fake Data Card","P");
+
+
 	//Draw plots on Canvas
   TCanvas *c = new TCanvas("c","",50,50,800,600); 
 	gStyle->SetOptStat(0);
@@ -173,7 +190,10 @@ void DCComparePlots::DCComparePlotsLoop(
 	h_fake->SetFillColor(kBlue-4);
 	h_fake->SetFillStyle(3001);
 	h_fake->Draw("P same");
+  double maxdrawsb = 1.0; maxdrawsb = *std::max_element(realvalue,realvalue+NSB);
+  drawSBregionDef(0.0, maxdrawsb);
   title->Draw("same");
+  leg->Draw("same");
   c->Update(); 
   
 	pad->cd(2);

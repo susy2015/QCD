@@ -14,14 +14,14 @@ cs_event = 166 63 29 3 47 78 47 32 4 59 92 141 55 38 15 67 82 51 16 40 68 41 28 
 # Average weight for lost lepton, Zinv and ttZ: avg_weight x cs_event = rate. Will be ignored for had. tau and QCD.
 avg_weight = 0.0030975 0.00310888 0.00309368 0.00324926 0.00306286 0.00308769 0.00309368 0.00309368 0.00309368 0.00309368 0.00309368 0.00308463 0.00309368 0.00310596 0.00309368 0.00309368 0.00309368 0.00309368 0.00309368 0.00310534 0.00310054 0.00310142 0.00309368 0.00309368 0.0030377 0.00311096 0.00309368 0.00307544 0.00310596 0.00307572 0.00309368 0.00310172 0.00308866 0.00309368 0.00309368 0.00309368 0.00309368 0.00309368 0.00309368 0.00309368 0.00312436 0.00312285 0.00304832 0.00298727 0.00309368 
 
-# All the uncertainties in absolute numbers for both stat and syst uncertainties. Needed from QCD and hadronic tau; No need from lost lepton, Zinv and ttZ (will be ignored). For symmetric uncertainties, put the up and dn to be the same.
+# All the uncertainties in absolute numbers for both stat and syst uncertainties. Needed from QCD and hadronic tau; No need from lost lepton, Zinv and ttZ (will be ignored). For symmetric uncertainties, put the up and down to be the same.
 stat_unc_up = No Need!! 
-stat_unc_dn = No Need!! 
+stat_unc_down = No Need!! 
 
 # List of all the systematical uncertainties. Do not need combine them. The "pdf", "blackhole", "darkmatter", "susy" are keywords to label the different systematic sources (use meaningful names or make comments).
-syst_unc_pdf_up = 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 
-syst_unc_pdf_dn = 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 
-syst_unc_scale_up = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-syst_unc_scale_dn = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-syst_unc_rate_up = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-syst_unc_rate_dn = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+syst_unc_pdf_up   = 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 
+syst_unc_pdf_down = 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.3 
+syst_unc_scale_up   = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+syst_unc_scale_down = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+syst_unc_rate_up   = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+syst_unc_rate_down = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
