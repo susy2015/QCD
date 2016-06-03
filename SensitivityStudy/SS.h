@@ -49,6 +49,7 @@ class SSDataCard
  public:
   //fake variables for all background, LL, HadTau, Zinv, QCD, TTZ, Rare for rate, stat unc, and syst unc
   //rate and cs: basic input from MCs
+  double DC_sb_MC_Data[NSB] = {0};
   double DC_sb_MC_LL[NSB] = {0}, DC_sb_MC_HadTau[NSB] = {0}, DC_sb_MC_Zinv[NSB] = {0}, DC_sb_MC_QCD[NSB] = {0}, DC_sb_MC_TTZ[NSB] = {0}, DC_sb_MC_Rare[NSB] = {0}; 
   double DC_sb_MC_LL_cs[NSB] = {0}, DC_sb_MC_HadTau_cs[NSB] = {0}, DC_sb_MC_Zinv_cs[NSB] = {0}, DC_sb_MC_QCD_cs[NSB] = {0}, DC_sb_MC_TTZ_cs[NSB] = {0}, DC_sb_MC_Rare_cs[NSB] = {0};
   //avgweight and stat unc can be easily faked from rate and cs, but systunc is tricky
@@ -70,6 +71,7 @@ void SSDataCard::fake_avg_uncs()
   std::cout << "Faking syst uncs in Data card!" << std::endl;
   for(int i=0;i<NSB;i++)
   {
+    DC_sb_MC_Data[i] = DC_sb_MC_LL[i] + DC_sb_MC_HadTau[i] + DC_sb_MC_Zinv[i] + /*DC_sb_MC_QCD[i] +*/ DC_sb_MC_TTZ[i] /*+ DC_sb_MC_Rare[i]*/; 
     //set LL CS numbers from header file
     DC_sb_MC_LL_cs[i] = head_DC_sb_MC_LL_cs[i]; DC_sb_NMC_LL_cs[i] = head_DC_sb_NMC_LL_cs[i];
     //set zinv numbers from up dn variables 
@@ -108,6 +110,21 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
 {
   fake_avg_uncs();
   
+  std::ofstream Datafile (("_Data"+sbtag+".txt").c_str());
+  if (Datafile.is_open())
+  { 
+    Datafile << "luminosity = " << LUMI << "     # in pb-1 (FIXED)\n";
+    Datafile << "channels = " << NSB << "     # total number of channels -> following our search bin definition (FIXED)\n";
+    Datafile << "sample = signal";
+    Datafile << "channel = "; for(int i=0;i<NSB;i++){ Datafile << "bin" << i+1 << " "; } Datafile << "\n";
+    
+    Datafile << "\n# Predicted central numbers (need from all backgrounds)\n";
+    Datafile << "rate = "; for(int i=0;i<NSB;i++){ Datafile << round(DC_sb_MC_Data[i]) << " "; } Datafile << "\n";
+    
+    Datafile.close();
+  }
+  else std::cout << "Unable to open Datafile";
+
   std::ofstream LLfile (("_LL"+sbtag+".txt").c_str());
   if (LLfile.is_open())
   {
@@ -129,8 +146,8 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     LLfile << "avg_weight = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_avgweight[i] << " "; } LLfile << "\n";
 
     LLfile << "\n# All the uncertainties in absolute numbers for both stat and syst uncertainties. Needed from QCD and hadronic tau; No need from lost lepton, Zinv and ttZ (will be ignored). For symmetric uncertainties, put the up and dn to be the same.\n";
-    LLfile << "stat_unc_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_statunc[i]/*"No Need!!"*/ << " "; break; } LLfile << "\n";
-    LLfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_statunc[i]/*"No Need!!"*/ << " "; break; } LLfile << "\n";
+    LLfile << "stat_unc_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_statunc[i]/*"No Need!!"*/ << " "; /*break;*/ } LLfile << "\n";
+    LLfile << "stat_unc_dn = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_statunc[i]/*"No Need!!"*/ << " "; /*break;*/ } LLfile << "\n";
 
     LLfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
     LLfile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
