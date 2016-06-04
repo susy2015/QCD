@@ -101,7 +101,7 @@ void SSDataCard::fake_avg_uncs()
     if( DC_sb_MC_Zinv_systunc[i]>1 ) DC_sb_MC_Zinv_systunc[i]=0.998;
     //QCD, 150% of prediction
     DC_sb_MC_QCD_systunc[i] = 1.5;
-    DC_sb_MC_TTZ_systunc[i] = 0.3;
+    DC_sb_MC_TTZ_systunc[i] = 0.3*DC_sb_MC_TTZ[i];
   }
   return ;
 }
@@ -345,12 +345,12 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     TTZfile << "stat_unc_down = "; for(int i=0;i<NSB;i++){ TTZfile << /*DC_sb_MC_TTZ_statunc[i]*/"No Need!!" << " "; break; } TTZfile << "\n";
 
     TTZfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
-    TTZfile << "syst_unc_pdf_up   = "  ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_pdf_down = "  ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_pdf_up   = "  ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_pdf_down = "  ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
     TTZfile << "syst_unc_scale_up   = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
     TTZfile << "syst_unc_scale_down = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_rate_up   = " ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_rate_down = " ; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_rate_up   = " ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_rate_down = " ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
     TTZfile.close();
   }
   else std::cout << "Unable to open TTZfile";

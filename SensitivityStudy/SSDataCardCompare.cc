@@ -22,6 +22,7 @@ int main(int argc, char* argv[])
     //TTZ
     { "TTZ","rate" },
     { "TTZ","cs_event" },
+    { "TTZ","syst_unc_rate_up"}
   };
 
   DCComparePlots myDCComparePlots;

@@ -360,6 +360,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
     }//end of inner loop
   }//end of Samples loop
 
+  //mySSDataCard.printDC_AllFiles("_45BinsRefLUMI2015");
   mySSDataCard.printDC_AllFiles("_45BinsRefLUMI2015");
   (mySSHistgram.oFile)->Write();
   (mySSHistgram.oFile)->Close();

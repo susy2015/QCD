@@ -19,8 +19,8 @@
 #include "TStyle.h"
 #include "TLine.h"
 
-#include "SBGeometry.h"
 #include "SusyAnaTools/Tools/searchBins.h"
+#include "SBGeometry.h"
 
 class DCComparePlots
 {
