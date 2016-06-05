@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "SusyAnaTools/Tools/samples.h"
+#include "SusyAnaTools/Tools/xSec.h"
 
 #include "TStopwatch.h"
 #include "TString.h"
@@ -369,6 +370,85 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
   return ;
 }
 
+void LoopSignalCard( std::string RunMode )
+{
+  TChain *chain= new TChain("stopTreeMaker/SSTree");
+  if(RunMode.find("T1tttt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_SMS-T1tttt_mGluino.root"); }
+  else if(RunMode.find("T2tt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_SMS-T2tt_mStop.root"); }
+  else { std::cout << "bad RunMode for signal card!" << std::endl; return ; }
+
+  //clock to monitor the run time
+  size_t t0 = clock();
+
+  std::cout << "Let's generate signal Data Card!" << std::endl;
+  //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
+  NTupleReader tr(chain);
+  double lumi = LUMI, nevents = chain->GetEntries();
+  std::vector<SignalDataCard> mySignalDataCardVec;
+  std::vector<SignalDataCard>::iterator iter_mySignalDataCardVec;
+  std::cout << RunMode << "; NEvent: " << nevents << std::endl;
+  while(tr.getNextEvent())
+  {
+    if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+
+    //searchbin variables
+    int ntopjets = tr.getVar<int>("nTop");
+    int nbotjets = tr.getVar<int>("nBot");
+    double mt2 = tr.getVar<double>("mt2");
+    double met = tr.getVar<double>("met");
+    int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
+    if(searchbin_id<0) continue;
+
+    double SusyMotherMass = tr.getVar<double>("SusyMotherMass");
+    double SusyLSPMass    = tr.getVar<double>("SusyLSPMass");
+
+    double xsec = 0, xsec_err = 0;
+    if(RunMode.find("T1tttt") != std::string::npos)
+    {
+      if( xSecMap_glgl.find((int)SusyMotherMass) != xSecMap_glgl.end() )
+      {
+         xsec = xSecMap_glgl.find((int)SusyMotherMass)->second;
+         xsec_err = xSecErrMap_glgl.find((int)SusyMotherMass)->second * xsec;
+      }
+    }
+    else if(RunMode.find("T2tt") != std::string::npos)
+    {
+      if( xSecMap.find((int)SusyMotherMass) != xSecMap.end() )
+      {
+         xsec = xSecMap.find((int)SusyMotherMass)->second;
+         xsec_err = xSecErrMap.find((int)SusyMotherMass)->second * xsec;
+      }
+    }
+    if(!(xsec>0)){ std::cout << "mass point not in the xSec Map, strange!" << std::endl; continue; }
+    double thisweight = xsec*lumi/nevents;
+
+    bool thisMassPoint = false;
+    for(iter_mySignalDataCardVec = mySignalDataCardVec.begin(); iter_mySignalDataCardVec != mySignalDataCardVec.end(); iter_mySignalDataCardVec++)
+    {
+      thisMassPoint = ((*iter_mySignalDataCardVec).MMass == (int) SusyMotherMass) && ((*iter_mySignalDataCardVec).DMass == (int) SusyLSPMass);
+      if(thisMassPoint)
+      {
+        (*iter_mySignalDataCardVec).DC_sb_MC_Signal[searchbin_id]+=thisweight;
+        (*iter_mySignalDataCardVec).DC_sb_MC_Signal_cs[searchbin_id]++;
+        break;
+      }
+    }
+    if(!thisMassPoint)
+    {
+      SignalDataCard oneSignalDataCard;
+      oneSignalDataCard.MMass = (int)SusyMotherMass; oneSignalDataCard.DMass = (int)SusyLSPMass;
+      oneSignalDataCard.DC_sb_MC_Signal[searchbin_id]+=thisweight;
+      oneSignalDataCard.DC_sb_MC_Signal_cs[searchbin_id]++;
+      mySignalDataCardVec.push_back(oneSignalDataCard);
+    }
+  }
+  
+  for(iter_mySignalDataCardVec = mySignalDataCardVec.begin(); iter_mySignalDataCardVec != mySignalDataCardVec.end(); iter_mySignalDataCardVec++)
+  {
+    (*iter_mySignalDataCardVec).print_thisSignalDC();
+  }
+}
+
 int main(int argc, char* argv[])
 {
   if (argc < 4)
@@ -384,7 +464,7 @@ int main(int argc, char* argv[])
   std::string inputFileList_MC_SG = argv[3];
   std::string inputFileList_CS = argv[4];
 
-  std::cout << "The valid run modes are: SS" << std::endl;
+  std::cout << "The valid run modes are: SSCS SSAllMC SignalCardT1tttt ignalCardT2tt" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
 
   if( RunMode == "SSCS" )
@@ -435,6 +515,10 @@ int main(int argc, char* argv[])
 
     LoopSSAllMC( mySSSampleWeightAllMC );
     return 0;
+  }
+  else if( RunMode == "SignalCardT2tt" || RunMode == "SignalCardT1tttt" )
+  {
+    LoopSignalCard( RunMode );
   }
   else
   {
