@@ -361,8 +361,8 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
     }//end of inner loop
   }//end of Samples loop
 
-  //mySSDataCard.printDC_AllFiles("_45BinsRefLUMI2015");
-  mySSDataCard.printDC_AllFiles("_45BinsRefLUMI2015");
+  //mySSDataCard.printDC_AllFiles("_45BinsLUMI2016Moriond");
+  mySSDataCard.printDC_AllFiles("_45BinsLUMI2016ICHEP");
   (mySSHistgram.oFile)->Write();
   (mySSHistgram.oFile)->Close();
   (mySSAUX1DHistgram.oFile)->Write();
@@ -373,9 +373,14 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
 void LoopSignalCard( std::string RunMode )
 {
   TChain *chain= new TChain("stopTreeMaker/SSTree");
-  if(RunMode.find("T1tttt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_SMS-T1tttt_mGluino.root"); }
+  if(RunMode.find("T1tttt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_Spring15_74X_Jan_2016_Ntp_v5p0_SMS-T1tttt.root"); }
   else if(RunMode.find("T2tt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_SMS-T2tt_mStop.root"); }
   else { std::cout << "bad RunMode for signal card!" << std::endl; return ; }
+
+  TFile *pre_trim_file = 0;
+  if(RunMode.find("T1tttt") != std::string::npos) pre_trim_file = new TFile("SignalScanBeforeBaseline/signalScan_SMS-T1tttt_forHua.root");
+  else if(RunMode.find("T2tt") != std::string::npos) pre_trim_file = new TFile("SignalScanBeforeBaseline/signalScan_SMS-T2tt_forHua.root");
+  else { std::cout<<"pre_trim file NOT provided for RunMode : "<<RunMode.c_str()<<std::endl; return; }
 
   //clock to monitor the run time
   size_t t0 = clock();
@@ -391,6 +396,9 @@ void LoopSignalCard( std::string RunMode )
   {
     if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
 
+    bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
+    if(!passLeptVeto) continue;
+
     //searchbin variables
     int ntopjets = tr.getVar<int>("nTop");
     int nbotjets = tr.getVar<int>("nBot");
@@ -401,7 +409,7 @@ void LoopSignalCard( std::string RunMode )
 
     double SusyMotherMass = tr.getVar<double>("SusyMotherMass");
     double SusyLSPMass    = tr.getVar<double>("SusyLSPMass");
-
+/*
     double xsec = 0, xsec_err = 0;
     if(RunMode.find("T1tttt") != std::string::npos)
     {
@@ -420,15 +428,24 @@ void LoopSignalCard( std::string RunMode )
       }
     }
     if(!(xsec>0)){ std::cout << "mass point not in the xSec Map, strange!" << std::endl; continue; }
-    double thisweight = xsec*lumi/nevents;
 
+    char tmpStr[100];
+    sprintf(tmpStr, "totEntries_%d_%d", (int)SusyMotherMass, (int)SusyLSPMass);
+    TH1D * h1_thisSig_totEntries = (TH1D*) pre_trim_file->Get(tmpStr);
+
+    double thisSig_totEntries = h1_thisSig_totEntries->GetBinContent(1);
+
+    double thisweight = xsec*lumi/thisSig_totEntries;
+
+    if( h1_thisSig_totEntries ) delete h1_thisSig_totEntries;
+*/
     bool thisMassPoint = false;
     for(iter_mySignalDataCardVec = mySignalDataCardVec.begin(); iter_mySignalDataCardVec != mySignalDataCardVec.end(); iter_mySignalDataCardVec++)
     {
       thisMassPoint = ((*iter_mySignalDataCardVec).MMass == (int) SusyMotherMass) && ((*iter_mySignalDataCardVec).DMass == (int) SusyLSPMass);
       if(thisMassPoint)
       {
-        (*iter_mySignalDataCardVec).DC_sb_MC_Signal[searchbin_id]+=thisweight;
+//        (*iter_mySignalDataCardVec).DC_sb_MC_Signal[searchbin_id]+=thisweight;
         (*iter_mySignalDataCardVec).DC_sb_MC_Signal_cs[searchbin_id]++;
         break;
       }
@@ -437,7 +454,7 @@ void LoopSignalCard( std::string RunMode )
     {
       SignalDataCard oneSignalDataCard;
       oneSignalDataCard.MMass = (int)SusyMotherMass; oneSignalDataCard.DMass = (int)SusyLSPMass;
-      oneSignalDataCard.DC_sb_MC_Signal[searchbin_id]+=thisweight;
+//      oneSignalDataCard.DC_sb_MC_Signal[searchbin_id]+=thisweight;
       oneSignalDataCard.DC_sb_MC_Signal_cs[searchbin_id]++;
       mySignalDataCardVec.push_back(oneSignalDataCard);
     }
@@ -445,6 +462,46 @@ void LoopSignalCard( std::string RunMode )
   
   for(iter_mySignalDataCardVec = mySignalDataCardVec.begin(); iter_mySignalDataCardVec != mySignalDataCardVec.end(); iter_mySignalDataCardVec++)
   {
+    int SusyMotherMass = (*iter_mySignalDataCardVec).MMass;
+    int SusyLSPMass = (*iter_mySignalDataCardVec).DMass;
+
+    double xsec = 0, xsec_err = 0;
+    if(RunMode.find("T1tttt") != std::string::npos)
+    {
+      (*iter_mySignalDataCardVec).DC_SignalType = "T1tttt";
+      if( xSecMap_glgl.find(SusyMotherMass) != xSecMap_glgl.end() )
+      {
+         xsec = xSecMap_glgl.find(SusyMotherMass)->second;
+         xsec_err = xSecErrMap_glgl.find(SusyMotherMass)->second * xsec;
+      }
+    }
+    else if(RunMode.find("T2tt") != std::string::npos)
+    {
+      (*iter_mySignalDataCardVec).DC_SignalType = "T2tt";
+      if( xSecMap.find(SusyMotherMass) != xSecMap.end() )
+      {
+         xsec = xSecMap.find(SusyMotherMass)->second;
+         xsec_err = xSecErrMap.find(SusyMotherMass)->second * xsec;
+      }
+    }
+    if(!(xsec>0)){ std::cout << "mass point not in the xSec Map, strange!" << std::endl; continue; }
+
+    char tmpStr[100];
+    sprintf(tmpStr, "totEntries_%d_%d", SusyMotherMass, SusyLSPMass);
+    TH1D * h1_thisSig_totEntries = (TH1D*) pre_trim_file->Get(tmpStr);
+
+    double thisSig_totEntries = h1_thisSig_totEntries->GetBinContent(1);
+    double thisweight = xsec*lumi/thisSig_totEntries;
+    (*iter_mySignalDataCardVec).DC_all_MC_Signal_avgweight = thisweight;
+    
+    for(int i=0; i<NSB; i++)
+    {
+      (*iter_mySignalDataCardVec).DC_sb_MC_Signal_avgweight[i] = thisweight;
+      (*iter_mySignalDataCardVec).DC_sb_MC_Signal[i] = (*iter_mySignalDataCardVec).DC_sb_MC_Signal_cs[i] * thisweight;    
+    }
+
+    if( h1_thisSig_totEntries ) delete h1_thisSig_totEntries;
+
     (*iter_mySignalDataCardVec).print_thisSignalDC();
   }
 }

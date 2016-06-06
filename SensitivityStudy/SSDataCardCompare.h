@@ -75,10 +75,10 @@ void DCComparePlots::DCComparePlotsLoop(
                                        )
 {
   std::string realDCname, fakeDCname;
-  if(sample_type=="LL"){ realDCname = "DataCard_real_45Ref/lostle.txt"; fakeDCname = "DataCard_fake/_LL_45BinsRefLUMI2015.txt"; }
-  else if(sample_type=="HadTau"){ realDCname = "DataCard_real_45Ref/hadtau.txt"; fakeDCname = "DataCard_fake/_HadTau_45BinsRefLUMI2015.txt"; }
-  else if(sample_type=="Zinv"){ realDCname = "DataCard_real_45Ref/zinv.txt"; fakeDCname = "DataCard_fake/_Zinv_45BinsRefLUMI2015.txt"; }
-  else if(sample_type=="TTZ"){ realDCname = "DataCard_real_45Ref/ttz.txt"; fakeDCname = "DataCard_fake/_TTZ_45BinsRefLUMI2015.txt"; }
+  if(sample_type=="LL"){ realDCname = "DataCard_real_45Ref/lostle.txt"; fakeDCname = "DataCard_fake/_LL_45BinsLUMI2015Moriond.txt"; }
+  else if(sample_type=="HadTau"){ realDCname = "DataCard_real_45Ref/hadtau.txt"; fakeDCname = "DataCard_fake/_HadTau_45BinsLUMI2015Moriond.txt"; }
+  else if(sample_type=="Zinv"){ realDCname = "DataCard_real_45Ref/zinv.txt"; fakeDCname = "DataCard_fake/_Zinv_45BinsLUMI2015Moriond.txt"; }
+  else if(sample_type=="TTZ"){ realDCname = "DataCard_real_45Ref/ttz.txt"; fakeDCname = "DataCard_fake/_TTZ_45BinsLUMI2015Moriond.txt"; }
   else { std::cout << "Bad sample type!" << std::endl; return; }
 
   std::ifstream realDC(realDCname.c_str());

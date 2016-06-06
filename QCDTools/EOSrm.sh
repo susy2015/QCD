@@ -5,7 +5,7 @@ export CMS_PATH=/cvmfs/cms.cern.ch
 #cd $1/src
 eval `scramv1 runtime -sh`
 
-for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'SSTrimmed_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_TTZToLLNuNustopFlatNtuples_.*root'` 
+for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'SSTrimmed_.*root'` 
 do 
   eos root://cmseos.fnal.gov/ rm $i .
 done

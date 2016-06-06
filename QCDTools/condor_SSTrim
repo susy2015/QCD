@@ -184,41 +184,41 @@ notify_user = hua.wei@cern.ch
 #Queue
 
 ####Signal point####
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1025to1200_mLSP-0to850_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1025to1200_mLSP-0to850_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1025to1200_mLSP-700to975_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1025to1200_mLSP-700to975_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1225to1400_mLSP-0to1050_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1225to1400_mLSP-0to1050_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1225to1400_mLSP-900to1175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1225to1400_mLSP-900to1175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1425to1600_mLSP-0to1250_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1425to1600_mLSP-0to1250_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1425to1600_mLSP-1100to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1425to1600_mLSP-1100to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1650to1750_mLSP-1350to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1650to1750_mLSP-1350to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1650to2000_mLSP-0to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-1650to2000_mLSP-0to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-600to800_mLSP-0to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-600to800_mLSP-0to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-600to800_mLSP-275to575_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-600to800_mLSP-275to575_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-825to1000_mLSP-0to650_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-825to1000_mLSP-0to650_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-825to1000_mLSP-500to775_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T1ttbb_mGl-825to1000_mLSP-500to775_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
 arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1000_mLSP-1to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 Queue
@@ -311,17 +311,17 @@ arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1600to1650_mLSP-1to1350_T
 Queue
 
 arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1650to1700_mLSP-1to1400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-
 Queue
+
 arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1700to1750_mLSP-1to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-
 Queue
+
 arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1750_mLSP-50to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-
 Queue
+
 arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1800to1850_mLSP-1to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-
 Queue
+
 arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1850to1900_mLSP-1to1450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 Queue
 
@@ -385,182 +385,182 @@ Queue
 arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-975_mLSP-600to750_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-200to325_0to150_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-200to325_0to150_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-200to625_50to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-200to625_50to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-350to400_0to225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-350to400_0to225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-425to600_0to425_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-425to600_0to425_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-625to850_0to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-625to850_0to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-875to1125_0to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tb_mStop-875to1125_0to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-100-125_mLSP-1to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-100-125_mLSP-1to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-150-175_mLSP-1to100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-150-175_mLSP-1to100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-200_mLSP-1to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-200_mLSP-1to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-225_mLSP-25to150_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-225_mLSP-25to150_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-250_mLSP-1to175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-250_mLSP-1to175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-275_mLSP-75to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-275_mLSP-75to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-300to375_mLSP-1to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-300to375_mLSP-1to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-400to475_mLSP-1to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-400to475_mLSP-1to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-500-525-550_mLSP-1to425-325to450-1to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-500-525-550_mLSP-1to425-325to450-1to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-500_mLSP-325_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-500_mLSP-325_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-600-950_mLSP-1to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-600-950_mLSP-1to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-850_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T2tt_mStop-850_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1025to1200_mLSP-0to1025_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1025to1200_mLSP-0to1025_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1025to1200_mLSP-875to1075_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1025to1200_mLSP-875to1075_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1225to1400_mLSP-0to1225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1225to1400_mLSP-0to1225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1225to1400_mLSP-1075to1225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1225to1400_mLSP-1075to1225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1425to1525_mLSP-1275to1375_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1425to1525_mLSP-1275to1375_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1425to1600_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1425to1600_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1650to1700_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-1650to1700_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-600to800_mLSP-0to625_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-600to800_mLSP-0to625_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-600to800_mLSP-450to675_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-600to800_mLSP-450to675_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-825to1000_mLSP-0to825_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-825to1000_mLSP-0to825_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-825to1000_mLSP-675to875_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttcc_mGl-825to1000_mLSP-675to875_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1025to1200_mLSP-0to850_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1025to1200_mLSP-0to850_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1025to1200_mLSP-700to925_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1025to1200_mLSP-700to925_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1225to1400_mLSP-0to1050_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1225to1400_mLSP-0to1050_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1225to1400_mLSP-900to1125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1225to1400_mLSP-900to1125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1425to1600_mLSP-0to1250_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1425to1600_mLSP-0to1250_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1425to1625_mLSP-1100to1300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1425to1625_mLSP-1100to1300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1625to1700_mLSP-0to1300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-1625to1700_mLSP-0to1300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-600to800_mLSP-0to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-600to800_mLSP-0to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-600to800_mLSP-275to525_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-600to800_mLSP-275to525_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-825to1000_mLSP-0to650_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-825to1000_mLSP-0to650_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-825to1000_mLSP-500to725_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5ttttDM175_mGl-825to1000_mLSP-500to725_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1025to1200_mLSP-0to1025_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1025to1200_mLSP-0to1025_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1025to1200_mLSP-875to1075_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1025to1200_mLSP-875to1075_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1225to1400_mLSP-0to1225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1225to1400_mLSP-0to1225_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1225to1400_mLSP-1075to1275_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1225to1400_mLSP-1075to1275_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1425to1600_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1425to1600_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1425to1600_mLSP-1275to1375_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1425to1600_mLSP-1275to1375_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1650to1700_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-1650to1700_mLSP-0to1350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-600to800_mLSP-0to625_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-600to800_mLSP-0to625_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-600to800_mLSP-450to675_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-600to800_mLSP-450to675_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-825to1000_mLSP-0to825_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-825to1000_mLSP-0to825_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-825to1000_mLSP-675to875_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T5tttt_degen_mGl-825to1000_mLSP-675to875_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-300to600_mChargino-150to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-300to600_mChargino-150to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-300to600_mChargino-225to575_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-300to600_mChargino-225to575_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-300to600_mChargino-75to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-300to600_mChargino-75to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-350to600_mChargino-150to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-350to600_mChargino-150to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-625to950_mChargino-500to850_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-625to950_mChargino-500to850_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-625to950_mChargino-550to875_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-625to950_mChargino-550to875_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-625to950_mChargino-75to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-625to950_mChargino-75to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-650to950_mChargino-150to750_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) Signal SMS-T6ttWW_mLSP50_mSbottom-650to950_mChargino-150to750_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#Queue
 
 #arguments = $ENV(CMSSW_BASE) Signal SMS-T1tttt_mGluino-1200_mLSP-800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 #Queue
