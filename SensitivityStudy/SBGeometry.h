@@ -2,10 +2,18 @@
 #include <vector>
 
 //#define NSB 45
-#define NSB 37
-//#define NSB 101
+//#define NSB 37
+//#define NSB 126
+#define NSB 69
+
 #define NTOPJETS_BINS 3
 #define NBOTJETS_BINS 3
+
+struct SBBoundaries
+{
+  double ntop_lo, nbot_lo, mt2_lo, met_lo;
+  double ntop_hi, nbot_hi, mt2_hi, met_hi;
+};
 
 class SBGeometry
 {
@@ -14,33 +22,33 @@ class SBGeometry
   const static int NBOTBINS = 3;
   const int NMT2BINS[NTOPBINS*NBOTBINS] = {3,3,2,//top 1
                                            3,3,2,//top 2
-                                           2,2,1};//top >=3
-  const int NMETBINS[NTOPBINS*NBOTBINS] = {6,6,4,//top 1
-                                           6,6,4,//top 2
-                                           3,3,1};//top >=3
+                                           1,1,1};//top >=3
+  const int NMETBINS[NTOPBINS*NBOTBINS] = {4,4,3,//top 1
+                                           4,4,3,//top 2
+                                           3,3,3};//top >=3
   const double ntopbins_edge[NTOPBINS+1] = {1,2,3,4};
   const double nbotbins_edge[NBOTBINS+1] = {1,2,3,4};
   const std::vector< std::vector<double> > mt2bins_edge = {
-                                                           {200.0,300.0,400.0,500.0},//top 1 bot 1
-                                                           {200.0,300.0,400.0,500.0},//top 1 bot 2
-                                                           {200.0,300.0,500.0},//top 1 bot >=3
-                                                           {200.0,300.0,400.0,500.0},//top 2 bot 1
-                                                           {200.0,300.0,400.0,500.0},//top 2 bot 2
-                                                           {200.0,300.0,500.0},//top 2 bot >=3
-                                                           {200.0,300.0,500.0},//top >=3 bot 1
-                                                           {200.0,300.0,500.0},//top >=3 bot 2
-                                                           {200.0,600.0} //top >=3 bot>=3
+                                                           {200.0,350.0,450.0,600},//top 1 bot 1
+                                                           {200.0,350.0,450.0,600},//top 1 bot 2
+                                                           {200.0,350.0,500.0},//top 1 bot >=3
+                                                           {200.0,350.0,450.0,600},//top 2 bot 1
+                                                           {200.0,350.0,450.0,600},//top 2 bot 2
+                                                           {200.0,350.0,500.0},//top 2 bot >=3
+                                                           {200.0,500.0},//top >=3 bot 1
+                                                           {200.0,500.0},//top >=3 bot 2
+                                                           {200.0,500.0} //top >=3 bot>=3
                                                           };  
   const std::vector< std::vector<double> > metbins_edge = {
-                                                           {200.0,250.0,350.0,450.0,550.0,700.0,1000.0},//top 1 bot 1
-                                                           {200.0,250.0,350.0,450.0,550.0,700.0,1000.0},//top 1 bot 2
-                                                           {200.0,250.0,350.0,450.0,600.0},//top 1 bot >=3
-                                                           {200.0,250.0,350.0,450.0,550.0,700.0,1000.0},//top 2 bot 1
-																													 {200.0,250.0,350.0,450.0,550.0,700.0,1000.0},//top 2 bot 2
-                                                           {200.0,250.0,350.0,450.0,600.0},//top 1 bot >=3
-                                                           {200.0,250.0,400.0,600.0},//top >=3 bot 1
-                                                           {200.0,250.0,400.0,600.0},//top >=3 bot 2
-                                                           {200.0,600.0} //top >=3 bot>=3
+                                                           {200.0,350.0,500.0,650.0,1000.0},//top 1 bot 1
+                                                           {200.0,350.0,500.0,650.0,1000.0},//top 1 bot 2
+                                                           {200.0,350.0,500.0,800.0},//top 1 bot >=3
+                                                           {200.0,350.0,500.0,650.0,1000.0},//top 2 bot 1
+                                                           {200.0,350.0,500.0,650.0,1000.0},//top 2 bot 2
+                                                           {200.0,350.0,500.0,800.0},//top 1 bot >=3
+                                                           {200.0,350.0,500.0,800.0},//top >=3 bot 1
+                                                           {200.0,350.0,500.0,800.0},//top >=3 bot 2
+                                                           {200.0,350.0,500.0,800.0} //top >=3 bot>=3
                                                           };
   int GetTopID(int ntop);
   int GetBotID(int nbot);
@@ -50,6 +58,7 @@ class SBGeometry
   bool SBSelfTest();
   int GetNSB();
   int GetSBID(int ntop, int nbot, double mt2, double met);//from 0 to last
+  void SBIDToBinBoundaries(int inputIdx, SBBoundaries & outBinDef);
 };
 
 int SBGeometry::GetTopID(int ntop)
@@ -167,6 +176,50 @@ int SBGeometry::GetSBID(int ntop, int nbot, double mt2, double met)
   if(mt2id<0 || metid<0) return -1;
   sbid = sbbase + mt2id*NMETBINS[topbotid] + metid;
 
-  std::cout << topid << "," << botid <<"," << mt2id << ","<< metid << ",SBBase:" << sbbase << std::endl;
+  //std::cout << topid << "," << botid <<"," << mt2id << ","<< metid << ",SBBase:" << sbbase << std::endl;
   return sbid;
 }
+
+void SBGeometry::SBIDToBinBoundaries(int inputIdx, SBBoundaries & outBinDef)
+{
+  if(inputIdx<0){ std::cout << "bad search bin id!" << std::endl; return ; }
+
+  outBinDef.ntop_lo = -1; outBinDef.ntop_hi = -1;
+  outBinDef.nbot_lo = -1; outBinDef.nbot_hi = -1;
+  outBinDef.mt2_lo = -1; outBinDef.mt2_hi = -1;
+  outBinDef.met_lo = -1; outBinDef.met_hi = -1;
+ 
+  double IDntopnbotedge[NTOPBINS*NBOTBINS+1] = {0};
+  for(int i=0;i<NTOPBINS*NBOTBINS+1;i++)
+  {
+    for(int j=0;j<i;j++)
+    {
+      IDntopnbotedge[i]+=NMT2BINS[j]*NMETBINS[j];
+    }
+    //if(i!=0) IDntopnbotedge[i]--;
+
+    if(IDntopnbotedge[i]>inputIdx)
+    {
+      int topid = (int)(i-1)/NBOTBINS;
+      int botid = (i-1)%NBOTBINS;
+      outBinDef.ntop_lo = ntopbins_edge[topid];
+      outBinDef.nbot_lo = nbotbins_edge[botid];
+      topid<NTOPBINS-1 ? outBinDef.ntop_hi = ntopbins_edge[topid+1] : outBinDef.ntop_hi = -1;
+      botid<NBOTBINS-1 ? outBinDef.nbot_hi = nbotbins_edge[botid+1] : outBinDef.nbot_hi = -1;
+
+      int mt2metid = inputIdx-IDntopnbotedge[i-1];
+      int topbotid = topid*NBOTBINS+botid;
+      int mt2id = (int)mt2metid/NMETBINS[topbotid];
+      int metid = mt2metid%NMETBINS[topbotid];
+      outBinDef.mt2_lo = mt2bins_edge.at(topbotid).at(mt2id);
+      outBinDef.met_lo = metbins_edge.at(topbotid).at(metid);
+
+      mt2id<NMT2BINS[topbotid]-1 ? outBinDef.mt2_hi = mt2bins_edge.at(topbotid).at(mt2id+1) : outBinDef.mt2_hi = -1;
+      metid<NMETBINS[topbotid]-1 ? outBinDef.met_hi = metbins_edge.at(topbotid).at(metid+1) : outBinDef.met_hi = -1;
+
+      break;
+    }
+  }
+  return ;
+}
+

@@ -17,7 +17,7 @@
 #include "TStyle.h"
 #include "TExec.h"
 
-#include "SusyAnaTools/Tools/searchBins.h"
+//#include "SusyAnaTools/Tools/searchBins.h"
 
 #include "SSReWeighting.h"
 
@@ -43,8 +43,8 @@ void SSPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("SSAllMC.root");
-  //fin = TFile::Open("SSCS.root");
+  //fin = TFile::Open("SSAllMC.root");
+  fin = TFile::Open("SSCS.root");
   list = fin->GetListOfKeys();
   //convert lumi from double pb-1 to string, fb-1
   std::ostringstream strs;

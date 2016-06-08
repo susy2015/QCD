@@ -88,8 +88,9 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
       //Get electron and muon for LL study
       int nElectrons = tr.getVar<int>("nElectrons");
       int nMuons = tr.getVar<int>("nMuons");
-      //int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
-      int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
+      int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+      //int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
+      if(searchbin_id<0) continue;
 
       if( ((*iter_SSSampleInfos).Tag).find("TTJets") != std::string::npos )
 			{
@@ -97,8 +98,8 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
         //Counting the muon control sample
         if (nElectrons == 0 && nMuons == 1)
         {
-          (mySSCSHistgram.h_ss_ntopnbot_MC_MuCS)->Fill(ntopjets_fold,nbotjets_fold,thisweight*TTJetsSF);
-          (mySSCSHistgram.h_ss_metmt2_MC_MuCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight*TTJetsSF);
+          (mySSCSHistgram.h_ss_ntopnbot_MC_MuCS)->Fill(ntopjets_fold,nbotjets_fold,1);
+          (mySSCSHistgram.h_ss_metmt2_MC_MuCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,1);
           if(searchbin_id>=0){ mucs[searchbin_id]+=(thisweight*TTJetsSF); mucs_NMC[searchbin_id]++; }
           /*
           if( ntopjets >= 3 && nbotjets>=3 )
@@ -110,13 +111,23 @@ void LoopSSCS( SSSampleWeight& mySSSampleWeight )
         }
         if (nElectrons == 1 && nMuons == 0)
         {
-          (mySSCSHistgram.h_ss_ntopnbot_MC_ElCS)->Fill(ntopjets_fold,nbotjets_fold,thisweight*TTJetsSF);
-          (mySSCSHistgram.h_ss_metmt2_MC_ElCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,thisweight*TTJetsSF);
+          (mySSCSHistgram.h_ss_ntopnbot_MC_ElCS)->Fill(ntopjets_fold,nbotjets_fold,1);
+          (mySSCSHistgram.h_ss_metmt2_MC_ElCS[ntopjetsbin_number][nbotjetsbin_number])->Fill(met_fold,mt2_fold,1);
           if(searchbin_id>=0){ elcs[searchbin_id]+=(thisweight*TTJetsSF); elcs_NMC[searchbin_id]++; }
         }
       }
     }//end of inner loop
   }//end of Samples loop
+
+  for( int i_cal = 0 ; i_cal < NSB ; i_cal++ )
+  {
+    if( mucs_NMC[i_cal]<2 )
+    {
+      SBBoundaries outBinDef; mySBGeometry.SBIDToBinBoundaries( i_cal, outBinDef );
+      std::cout << "bad Mu CS SBID:" << i_cal << ": Ntop(" << outBinDef.ntop_lo << "," << outBinDef.ntop_hi << "); Nbot(" << outBinDef.nbot_lo << "," << outBinDef.nbot_hi << "); MT2(" << outBinDef.mt2_lo << "," << outBinDef.mt2_hi << "); MET(" << outBinDef.met_lo << "," << outBinDef.met_hi << ");"<< std::endl;
+    }
+  }
+
 
   std::ofstream DC_sb_LL_Header;
   DC_sb_LL_Header.open ( "DC_sb_LL_Header.h" );
@@ -204,8 +215,8 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
       if(met>=metbins_edge[metsize]) met_fold = (metbins_edge[metsize-1]+metbins_edge[metsize])/2; else met_fold = met;
       if(mt2>=mt2bins_edge[mt2size]) mt2_fold = (mt2bins_edge[mt2size-1]+mt2bins_edge[mt2size])/2; else mt2_fold = mt2;
 
-      //int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
-      int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
+      int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+      //int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
       if(searchbin_id<0) { std::cout << "Search bin id problem! Please check!!" << std::endl; continue; }
       //To separate the LL and Hadtau
 
@@ -362,7 +373,12 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
   }//end of Samples loop
 
   //mySSDataCard.printDC_AllFiles("_45BinsLUMI2016Moriond");
-  mySSDataCard.printDC_AllFiles("_45BinsLUMI2016ICHEP");
+  //mySSDataCard.printDC_AllFiles("_45BinsLUMI2016ICHEP");
+  //mySSDataCard.printDC_AllFiles("_37BinsLUMI2016Moriond");
+  //mySSDataCard.printDC_AllFiles("_37BinsLUMI2016ICHEP");
+  //mySSDataCard.printDC_AllFiles("_126BinsLUMI2016ICHEP");
+  mySSDataCard.printDC_AllFiles("_69BinsLUMI2016ICHEP");
+
   (mySSHistgram.oFile)->Write();
   (mySSHistgram.oFile)->Close();
   (mySSAUX1DHistgram.oFile)->Write();
@@ -373,7 +389,7 @@ void LoopSSAllMC( SSSampleWeight& mySSSampleWeight )
 void LoopSignalCard( std::string RunMode )
 {
   TChain *chain= new TChain("stopTreeMaker/SSTree");
-  if(RunMode.find("T1tttt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_Spring15_74X_Jan_2016_Ntp_v5p0_SMS-T1tttt.root"); }
+  if(RunMode.find("T1tttt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_SMS-T1tttt_mGluino.root"); }
   else if(RunMode.find("T2tt") != std::string::npos){ chain->Add("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6/SSTrimmed_SMS-T2tt_mStop.root"); }
   else { std::cout << "bad RunMode for signal card!" << std::endl; return ; }
 
@@ -404,7 +420,8 @@ void LoopSignalCard( std::string RunMode )
     int nbotjets = tr.getVar<int>("nBot");
     double mt2 = tr.getVar<double>("mt2");
     double met = tr.getVar<double>("met");
-    int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
+    int searchbin_id = mySBGeometry.GetSBID(ntopjets,nbotjets,mt2,met);
+    //int searchbin_id = find_Binning_Index( nbotjets , ntopjets , mt2, met );
     if(searchbin_id<0) continue;
 
     double SusyMotherMass = tr.getVar<double>("SusyMotherMass");
@@ -521,7 +538,7 @@ int main(int argc, char* argv[])
   std::string inputFileList_MC_SG = argv[3];
   std::string inputFileList_CS = argv[4];
 
-  std::cout << "The valid run modes are: SSCS SSAllMC SignalCardT1tttt ignalCardT2tt" << std::endl;
+  std::cout << "The valid run modes are: SSCS SSAllMC SignalCardT1tttt SignalCardT2tt" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
 
   if( RunMode == "SSCS" )

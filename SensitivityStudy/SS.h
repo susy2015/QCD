@@ -27,7 +27,7 @@
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
-#include "SusyAnaTools/Tools/searchBins.h"
+//#include "SusyAnaTools/Tools/searchBins.h"
 
 #include "SBGeometry.h"
 #include "SSReWeighting.h"
@@ -70,39 +70,49 @@ class SSDataCard
 void SSDataCard::fake_avg_uncs()
 {
   std::cout << "Faking syst uncs in Data card!" << std::endl;
+  SBGeometry mySBGeometry;
   for(int i=0;i<NSB;i++)
   {
     DC_sb_MC_Data[i] = DC_sb_MC_LL[i] + DC_sb_MC_HadTau[i] + DC_sb_MC_Zinv[i] + /*DC_sb_MC_QCD[i] +*/ DC_sb_MC_TTZ[i] /*+ DC_sb_MC_Rare[i]*/; 
     //set LL CS numbers from header file
     DC_sb_MC_LL_cs[i] = head_DC_sb_MC_LL_cs[i]; DC_sb_NMC_LL_cs[i] = head_DC_sb_NMC_LL_cs[i];
     //set zinv numbers from up dn variables 
-    DC_sb_MC_Zinv_cs[i] = DC_sb_MC_Zinv_cs_up[i]*DC_sb_MC_Zinv_cs_up[i]/DC_sb_MC_Zinv_cs_dn[i];
+    DC_sb_MC_Zinv_cs_dn[i]>0 ? DC_sb_MC_Zinv_cs[i] = DC_sb_MC_Zinv_cs_up[i]*DC_sb_MC_Zinv_cs_up[i]/DC_sb_MC_Zinv_cs_dn[i] : DC_sb_MC_Zinv_cs[i] = 0;
 
     //set avgweight from cs and rate, need for LL Zinv and TTZ, no need for qcd and hadtau
-    DC_sb_MC_LL_cs[i]>0 ? DC_sb_MC_LL_avgweight[i] = DC_sb_MC_LL[i]/DC_sb_MC_LL_cs[i] : DC_sb_MC_LL_avgweight[i] = 0;
-    DC_sb_MC_Zinv_cs[i]>0 ? DC_sb_MC_Zinv_avgweight[i] = DC_sb_MC_Zinv[i]/DC_sb_MC_Zinv_cs[i] : DC_sb_MC_Zinv_avgweight[i] = 0;
-    DC_sb_MC_TTZ_cs[i]>0 ? DC_sb_MC_TTZ_avgweight[i] = DC_sb_MC_TTZ[i]/DC_sb_MC_TTZ_cs[i] : DC_sb_MC_TTZ_avgweight[i] = 0;
+    DC_sb_MC_LL_cs[i]>0 ? DC_sb_MC_LL_avgweight[i] = DC_sb_MC_LL[i]/DC_sb_MC_LL_cs[i] : DC_sb_MC_LL_avgweight[i] = DC_sb_MC_LL_avgweight[i-1];
+    DC_sb_MC_Zinv_cs[i]>0 ? DC_sb_MC_Zinv_avgweight[i] = DC_sb_MC_Zinv[i]/DC_sb_MC_Zinv_cs[i] : DC_sb_MC_Zinv_avgweight[i] = DC_sb_MC_Zinv_avgweight[i-1];
+    DC_sb_MC_TTZ_cs[i]>0 ? DC_sb_MC_TTZ_avgweight[i] = DC_sb_MC_TTZ[i]/DC_sb_MC_TTZ_cs[i] : DC_sb_MC_TTZ_avgweight[i] = DC_sb_MC_TTZ_avgweight[i-1];
+    if(DC_sb_MC_LL_avgweight[i]<=0) DC_sb_MC_LL_avgweight[i] = DC_sb_MC_LL_avgweight[i-1];
+    if(DC_sb_MC_Zinv_avgweight[i]<=0) DC_sb_MC_Zinv_avgweight[i] = DC_sb_MC_Zinv_avgweight[i-1];
+    if(DC_sb_MC_TTZ_avgweight[i]<=0) DC_sb_MC_TTZ_avgweight[i] = DC_sb_MC_TTZ_avgweight[i-1];    
 
     //set stat unc. stat unc need for QCD and hadtau, no need for LL,Zinv and TTZ
     DC_sb_MC_HadTau[i]>0 ? DC_sb_MC_HadTau_statunc[i] = 0.5*std::sqrt(DC_sb_MC_HadTau[i])/DC_sb_MC_HadTau[i] : DC_sb_MC_HadTau_statunc[i] = 0;
     if(DC_sb_MC_HadTau_statunc[i]>1) DC_sb_MC_HadTau_statunc[i] = 0.998;
     //seems we still need LL stat unc added in herer
-    DC_sb_MC_LL_cs[i]>1 ? DC_sb_MC_LL_statunc[i] = 1/std::sqrt(DC_sb_MC_LL_cs[i]) : DC_sb_MC_LL_statunc[i] = 0.998;
+    round(DC_sb_MC_LL_cs[i])>0 ? DC_sb_MC_LL_statunc[i] = 1/std::sqrt(round(DC_sb_MC_LL_cs[i])) : DC_sb_MC_LL_statunc[i] = 0;
     DC_sb_MC_QCD[i]>0 ? DC_sb_MC_QCD_statunc[i] = std::sqrt(DC_sb_MC_QCD[i])/DC_sb_MC_QCD[i] : DC_sb_MC_QCD_statunc[i] = 0;
 
     //syst unc setting, need for all BGs, need to be fixed!
     //LL just set for closure unc, relation proved by Florent's plot
-    DC_sb_MC_LL_systunc[i] = 2.69/std::sqrt(DC_sb_NMC_LL_cs[i]);
+    DC_sb_NMC_LL_cs[i]>0 ? DC_sb_MC_LL_systunc[i] = 2.69/std::sqrt(DC_sb_NMC_LL_cs[i]) : DC_sb_MC_LL_systunc[i] = DC_sb_MC_LL_systunc[i-1];
+    //if(DC_sb_MC_LL_systunc[i]>1) DC_sb_MC_LL_systunc[i]=0.998;
     //Had Tau
-    DC_sb_MC_HadTau_systunc[i] = 1.66/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]);
-    searchBinDef outBinDef; find_BinBoundaries( i, outBinDef );
-    outBinDef.bJet_lo>=3 ? DC_sb_MC_HadTau_systunc_mistag[i] = 0.1 : DC_sb_MC_HadTau_systunc_mistag[i] = 0.05; 
+    DC_sb_MC_HadTau_NMCforsystunc[i]>0 ? DC_sb_MC_HadTau_systunc[i] = 1.66/std::sqrt(DC_sb_MC_HadTau_NMCforsystunc[i]) : DC_sb_MC_HadTau_systunc[i] = DC_sb_MC_HadTau_systunc[i-1];
+    //if(DC_sb_MC_HadTau_systunc[i]>1) DC_sb_MC_HadTau_systunc[i]=0.998;
+    //searchBinDef outBinDef; find_BinBoundaries( i, outBinDef );
+    //outBinDef.bJet_lo>=3 ? DC_sb_MC_HadTau_systunc_mistag[i] = 0.1 : DC_sb_MC_HadTau_systunc_mistag[i] = 0.05; 
+    SBBoundaries outBinDef; mySBGeometry.SBIDToBinBoundaries( i, outBinDef );
+    outBinDef.nbot_lo>=3 ? DC_sb_MC_HadTau_systunc_mistag[i] = 0.1 : DC_sb_MC_HadTau_systunc_mistag[i] = 0.05; 
+
     //Zinv
-		DC_sb_MC_Zinv_systunc[i] = 10*std::sqrt(DC_sb_MC_Zinv_cs[i])/DC_sb_MC_Zinv_cs[i]; 
-    if( DC_sb_MC_Zinv_systunc[i]>1 ) DC_sb_MC_Zinv_systunc[i]=0.998;
+		DC_sb_MC_Zinv_cs[i]>0 ? DC_sb_MC_Zinv_systunc[i] = 10*std::sqrt(DC_sb_MC_Zinv_cs[i])/DC_sb_MC_Zinv_cs[i] : DC_sb_MC_Zinv_systunc[i] = 2.0;
+    if(DC_sb_MC_Zinv_systunc[i]>2.0) DC_sb_MC_Zinv_systunc[i]=2.0; 
+    //if( DC_sb_MC_Zinv_systunc[i]>1 ) DC_sb_MC_Zinv_systunc[i]=0.998;
     //QCD, 150% of prediction
     DC_sb_MC_QCD_systunc[i] = 1.5;
-    DC_sb_MC_TTZ_systunc[i] = 0.3*DC_sb_MC_TTZ[i];
+    DC_sb_MC_TTZ_systunc[i] = 0.3*std::abs(DC_sb_MC_TTZ[i]);
   }
   return ;
 }
@@ -116,7 +126,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
   { 
     Datafile << "luminosity = " << LUMI << "     # in pb-1 (FIXED)\n";
     Datafile << "channels = " << NSB << "     # total number of channels -> following our search bin definition (FIXED)\n";
-    Datafile << "sample = signal";
+    Datafile << "sample = signal\n";
     Datafile << "channel = "; for(int i=0;i<NSB;i++){ Datafile << "bin" << i+1 << " "; } Datafile << "\n";
     
     Datafile << "\n# Predicted central numbers (need from all backgrounds)\n";
@@ -152,7 +162,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
 
     LLfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
     LLfile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
-    LLfile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
+    LLfile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ if(DC_sb_MC_LL_systunc[i]>0.999) LLfile << "0.998 "; else LLfile << DC_sb_MC_LL_systunc[i] << " "; } LLfile << "\n";
     LLfile << "syst_unc_dimuon_up = " ; for(int i=0;i<NSB;i++){ LLfile << 0.003 << " "; } LLfile << "\n";
     LLfile << "syst_unc_dimuon_dn = " ; for(int i=0;i<NSB;i++){ LLfile << 0.003 << " "; } LLfile << "\n";
     LLfile << "syst_unc_diele_up = "  ; for(int i=0;i<NSB;i++){ LLfile << 0.012 << " "; } LLfile << "\n";
@@ -227,7 +237,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     HadTaufile << "syst_unc_temp_dn = "   ; for(int i=0;i<NSB;i++){ HadTaufile << 0.02 << " "; } HadTaufile << "\n";
     HadTaufile << "\n#Closure\n";
     HadTaufile << "syst_unc_closure_up = "; for(int i=0;i<NSB;i++){ HadTaufile << DC_sb_MC_HadTau_systunc[i] << " "; } HadTaufile << "\n";
-    HadTaufile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ HadTaufile << DC_sb_MC_HadTau_systunc[i] << " "; } HadTaufile << "\n";
+    HadTaufile << "syst_unc_closure_dn = "; for(int i=0;i<NSB;i++){ if(DC_sb_MC_HadTau_systunc[i]>0.999) HadTaufile << "0.998 "; else HadTaufile << DC_sb_MC_HadTau_systunc[i] << " "; } HadTaufile << "\n";
     HadTaufile << "\n#lostlepton overlap\n";
     HadTaufile << "syst_unc_llovr_up = "  ; for(int i=0;i<NSB;i++){ HadTaufile << 0.024 << " "; } HadTaufile << "\n";
     HadTaufile << "syst_unc_llovr_dn = "  ; for(int i=0;i<NSB;i++){ HadTaufile << 0.024 << " "; } HadTaufile << "\n";
@@ -274,7 +284,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     Zinvfile << "syst_unc_shape_central_up = "; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_shape_central_dn = "; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_shape_stat_up = "   ; for(int i=0;i<NSB;i++){ Zinvfile << DC_sb_MC_Zinv_systunc[i] << " "; } Zinvfile << "\n";
-    Zinvfile << "syst_unc_shape_stat_dn = "   ; for(int i=0;i<NSB;i++){ Zinvfile << DC_sb_MC_Zinv_systunc[i] << " "; } Zinvfile << "\n";
+    Zinvfile << "syst_unc_shape_stat_dn = "   ; for(int i=0;i<NSB;i++){ if(DC_sb_MC_Zinv_systunc[i]>0.999) Zinvfile << "0.998 "; else Zinvfile << DC_sb_MC_Zinv_systunc[i] << " ";} Zinvfile << "\n";
     Zinvfile << "syst_unc_jeu_up = "          ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_jeu_dn = "          ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
     Zinvfile << "syst_unc_meu_up = "          ; for(int i=0;i<NSB;i++){ Zinvfile << 0 << " "; } Zinvfile << "\n";
@@ -317,7 +327,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
 
     QCDfile << "\n# List of all the systematical uncertainties. Do not need combine them. The \"pdf\", \"blackhole\", \"darkmatter\", \"susy\" are keywords to label the different systematic sources (use meaningful names or make comments).\n";
     QCDfile << "syst_unc_all_up = "; for(int i=0;i<NSB;i++) { QCDfile << DC_sb_MC_QCD_systunc[i] << " "; } QCDfile << "\n";
-    QCDfile << "syst_unc_all_dn = "; for(int i=0;i<NSB;i++) { QCDfile << DC_sb_MC_QCD_systunc[i] << " "; } QCDfile << "\n";
+    QCDfile << "syst_unc_all_dn = "; for(int i=0;i<NSB;i++) { if(DC_sb_MC_QCD_systunc[i]>0.999) QCDfile << "0.998 "; else QCDfile << DC_sb_MC_QCD_systunc[i] << " "; } QCDfile << "\n";
     QCDfile.close();
   }
   else std::cout << "Unable to open QCDfile";
@@ -332,11 +342,12 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     TTZfile << "channel = "; for(int i=0;i<NSB;i++){ TTZfile << "bin" << i+1 << " "; } TTZfile << "\n";
 
     TTZfile << "\n# Predicted central numbers (need from all backgrounds)\n";
-    TTZfile << "rate = "; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ[i] << " "; } TTZfile << "\n";
+    TTZfile << "# rate = "; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ[i] << " "; } TTZfile << "\n";
+    TTZfile << "rate = "; for(int i=0;i<NSB;i++){ if(DC_sb_MC_TTZ[i]>0) TTZfile << DC_sb_MC_TTZ[i] << " "; else TTZfile << "0 "; } TTZfile << "\n";
 
     TTZfile << "\n# Control sample events for lost lepton; Raw MC yields for Zinv and ttZ; No need from had. tau and QCD (will be ignored).\n";
     TTZfile << "#cs_event = "; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_cs[i] << " "; } TTZfile << "\n";
-    TTZfile << "cs_event = "; for(int i=0;i<NSB;i++){ TTZfile << round(DC_sb_MC_TTZ_cs[i]) << " "; } TTZfile << "\n";
+    TTZfile << "cs_event = "; for(int i=0;i<NSB;i++){ if(DC_sb_MC_TTZ_cs[i]>0) TTZfile << round(DC_sb_MC_TTZ_cs[i]) << " "; else TTZfile << "0 ";} TTZfile << "\n";
 
     TTZfile << "\n# Average weight for lost lepton, Zinv and ttZ: avg_weight x cs_event = rate. Will be ignored for had. tau and QCD.\n";
     TTZfile << "avg_weight = "; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_avgweight[i] << " "; } TTZfile << "\n";
@@ -351,7 +362,7 @@ void SSDataCard::printDC_AllFiles(std::string sbtag)
     TTZfile << "syst_unc_scale_up   = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
     TTZfile << "syst_unc_scale_down = "; for(int i=0;i<NSB;i++){ TTZfile << 0 << " "; } TTZfile << "\n";
     TTZfile << "syst_unc_rate_up   = " ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
-    TTZfile << "syst_unc_rate_down = " ; for(int i=0;i<NSB;i++){ TTZfile << DC_sb_MC_TTZ_systunc[i] << " "; } TTZfile << "\n";
+    TTZfile << "syst_unc_rate_down = " ; for(int i=0;i<NSB;i++){ if(DC_sb_MC_TTZ_systunc[i]>0.999) TTZfile << "0.998 "; else TTZfile << DC_sb_MC_TTZ_systunc[i] << " ";} TTZfile << "\n";
     TTZfile.close();
   }
   else std::cout << "Unable to open TTZfile";
