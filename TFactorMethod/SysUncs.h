@@ -26,6 +26,8 @@
 #include "CMSStylePlot/CMS_lumi.h"
 //#include "CMSStylePlot/tdrstyle.h"
 
+SearchBins mySearchBins("SB_69_2016");
+
 class SysUncs
 {
  public:
@@ -273,8 +275,9 @@ void SysUncs::printSysUncs()
 void SysUncs::printLatexTable()
 {
   std::vector<std::vector<std::vector<double> > > out_MT2_met_Binning;
-  build_MT2_met_Binning(out_MT2_met_Binning);
-  print_searchBins_headerstr("& QCD Prediction\\\\");
+  mySearchBins.build_MT2_met_Binning(out_MT2_met_Binning);
+  mySearchBins.print_searchBins_headerstr("& QCD Prediction\\\\");
+  int nTotBins = mySearchBins.nSearchBins();
   for(int ib=0; ib<nTotBins; ib++)
   {
     double tmp_pred = final_pred[ib];
@@ -285,7 +288,7 @@ void SysUncs::printLatexTable()
 
     std::string addstr ="& " + (std::to_string(tmp_pred)).substr(0,5) + " $\\pm$ " + (std::to_string(tmp_stat)).substr(0,5) + " $^{+" + (std::to_string(tmp_sys_up)).substr(0,5) + "}_{-" + (std::to_string(tmp_sys_down)).substr(0,5) + "}$ " + " \\\\";
 
-    std::string outstr = get_searchBins_defstr(ib,addstr);
+    std::string outstr = mySearchBins.get_searchBins_defstr(ib,addstr);
     //printf("%s", outstr.c_str());
     std::cout<<outstr; 
   }
@@ -330,7 +333,7 @@ void SysUncs::printFinalPred()
   
   h_pred_sb->Draw("e0");
 
-  drawSBregionDef(0.0, 18.0);
+  mySearchBins.drawSBregionDef(0.0, 18.0);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );

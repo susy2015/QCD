@@ -41,6 +41,7 @@
 
 const double Scale = 1;
 //const double Scale = 591.5/2153.736;
+SearchBins mySearchBins("SB_69_2016");
 
 void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
@@ -164,7 +165,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 
         (myCalHistgram.h_cal_met_MC[metbin_number][mt2bin_number])->Fill(met,thisweight*metEff);
 
-        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+        int searchbin_id = mySearchBins.find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0)
         {
 
@@ -267,7 +268,7 @@ void LoopQCDExp( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         (myClosureHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight*metEff);
         (myClosureHistgram.h_exp_nbjets)->Fill(nbottomjets,thisweight*metEff);
           
-        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+        int searchbin_id = mySearchBins.find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0 )
         {
           myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
@@ -434,7 +435,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
 
           //if( ht < 500) std::cout << ht << " small ht, what the fuck!!" << std::endl;
 
-          int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+          int searchbin_id = mySearchBins.find_Binning_Index( nbottomjets , ntopjets , MT2, met );
           if( searchbin_id >= 0 )
           {
             //std::cout << predweight << std::endl;
@@ -646,7 +647,7 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
 
       if (passBaseline_dPhisInverted)
       {
-        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+        int searchbin_id = mySearchBins.find_Binning_Index( nbottomjets , ntopjets , MT2, met );
 
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
@@ -958,7 +959,7 @@ void LoopQCDCombine( QCDSampleWeight& myQCDSampleWeight )
         (myCombineHistgram.h_zb_ntopjets)->Fill(ntopjets,predweight);
         (myCombineHistgram.h_zb_nbjets)->Fill(nbottomjets,predweight);
 
-        int searchbin_id = find_Binning_Index( nbottomjets , ntopjets , MT2, met );
+        int searchbin_id = mySearchBins.find_Binning_Index( nbottomjets , ntopjets , MT2, met );
         if( searchbin_id >= 0 )
         {
           //std::cout << predweight << std::endl;

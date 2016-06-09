@@ -23,6 +23,8 @@
 
 #include "CMSStylePlot/CMS_lumi.h"
 
+SearchBins mySearchBins("SB_69_2016");
+
 class ClosurePlots
 {
  public:
@@ -186,7 +188,7 @@ void ClosurePlots::ClosureTemplate(
   //Create LUMI stamp
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   //const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Supplementary                                                             2.3 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Supplementary                                                             8.0 fb^{-1}(13 TeV)";
 
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
@@ -262,7 +264,7 @@ void ClosurePlots::ClosureTemplate(
 	h_pred->SetFillStyle(3001);
 	h_pred->Draw("E2 same");
 
-  if( hist_tag == "_sb" ){ drawSBregionDef(0.0, 18.0); }
+  if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 18.0); }
   //CMSStylePlot::CMS_lumi( c, 4, 0 );
 	title->Draw("same");
   leg->Draw("same");
