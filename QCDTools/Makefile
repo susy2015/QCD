@@ -25,7 +25,7 @@ LIBS     = $(shell root-config --glibs)
 MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 
-PROGRAMS = tupleTest DeepTrim SSTrim_LLHadTau SSTrim_ZinvQCD SSTrim_TTZ SSTrim_Signal
+PROGRAMS = tupleTest DeepTrim
 
 all: mkobj sampPyWrap $(PROGRAMS)
 
@@ -63,17 +63,6 @@ tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/PDFUncertainty.o $(ODIR)/tupleReadTest
 DeepTrim: $(ODIR)/DeepTrim.o $(ODIR)/NTupleReader.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-SSTrim_LLHadTau: $(ODIR)/SSTrim_LLHadTau.o $(ODIR)/NTupleReader.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
-
-SSTrim_ZinvQCD: $(ODIR)/SSTrim_ZinvQCD.o $(ODIR)/NTupleReader.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
-
-SSTrim_TTZ: $(ODIR)/SSTrim_TTZ.o $(ODIR)/NTupleReader.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
-
-SSTrim_Signal: $(ODIR)/SSTrim_Signal.o $(ODIR)/NTupleReader.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 clean:
 	rm -f $(ODIR)/*.o $(ODIR)/*.d $(ODIR)/*.so $(PROGRAMS) core 
 
