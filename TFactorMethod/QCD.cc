@@ -995,11 +995,16 @@ int main(int argc, char* argv[])
 
   //Sample needed in the calculation and expectation loop
   QCDSampleWeight myQCDSampleWeight;
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19664159, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15356448, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3868886, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1683349, LUMI, 1, inputFileList_QCDMC.c_str() );
+  //addSample("QCD_HT500to700",  29370, lumi, 62819508, 1.0,  kBlue);
+  //addSample("QCD_HT700to1000", 6524, lumi, 45410383, 1.0,  kBlue);
+  //addSample("QCD_HT1000to1500", 1064, lumi, 15217446, 1.0,  kBlue);
+  //addSample("QCD_HT1500to2000", 121.5, lumi, 11705926, 1.0,  kBlue);
+  //addSample("QCD_HT2000toInf",  25.42, lumi, 6040004, 1.0,  kBlue);
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 19664159, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 15356448, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    ,  4963895, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000", 121.5   ,  3868886, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf" , 25.42   ,  1683349, LUMI, 1, inputFileList_QCDMC.c_str() );
   if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
   {
     std::cout << "QCD_BINS in QCDBinFunction.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
@@ -1036,11 +1041,11 @@ int main(int argc, char* argv[])
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "TTZToLLNuNu_"            , 0.2529, 291495-106505, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "TTZToQQ_"                , 0.5297, 550599-199201, LUMI, 1, inputFileList_Data.c_str() );  
 
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT500to700_"  , 29370   , 19664159, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT700to1000_" , 6524    , 15356448, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT1000to1500_", 1064    ,  4963895, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT1500to2000_", 121.5   ,  3868886, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "QCD_HT2000toInf_" , 25.42   ,  1683349, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 19664159, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 15356448, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    ,  4963895, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000", 121.5   ,  3868886, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf" , 25.42   ,  1683349, LUMI, 1, inputFileList_QCDMC.c_str() );
 
 
   if( RunMode == "CalOnly" )

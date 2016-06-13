@@ -78,14 +78,14 @@ int main(int argc, char* argv[])
     bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
 
     bool passDeepTrim = false;
-    passDeepTrim = ( met > 200)
+    passDeepTrim = ( met > 175)
                 && passnJets
                 && passHT
                 && passMT2
-                //&& passTagger
+                && passTagger
                 && passBJets
                 && passNoiseEventFilter;
-   
+
     if(passDeepTrim) selectedTree->Fill();
     else continue;
   }

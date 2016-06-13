@@ -2,7 +2,8 @@ import glob, os, sys
 
 #d= "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6"
+#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/Sensitivity_MC_v6"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5"
 MGM = "root://cmseos.fnal.gov/"
 #example of sample tag: SSTrimmed_SMS-T2tt_mStop-850_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8stopFlatNtuples_, always end with "_"
 sample_tag = sys.argv[1]

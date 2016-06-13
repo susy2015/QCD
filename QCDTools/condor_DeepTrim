@@ -9,10 +9,10 @@ should_transfer_files = YES
 transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/SMS-T1tttt_mGluino-1200_mLSP-800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/SMS-T1tttt_mGluino-1500_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/SMS-T2tt_mStop-500_mLSP-325_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/SMS-T2tt_mStop-850_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
 
 ##transfer file list for senstivity study, BG
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTWJetsToQQ_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-100To200_13TeV-madgraph.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraph.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraph.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-600ToInf_13TeV-madgraph.txt
+#transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/WJetsToLNu_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/TTWJetsToQQ_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-100To200_13TeV-madgraph.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraph.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraph.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/SensitivityTxt/ZJetsToNuNu_HT-600ToInf_13TeV-madgraph.txt
 
 ##transfer file list for ttbar-leptonic samples
-#transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept.txt.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept.txt.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept.txt.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am,$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ao, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ST_tW_antitop_5f_inclusiveDecays.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ST_tW_top_5f_inclusiveDecays.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-100To200.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-1200To2500.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-1200To2500_ext1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-200To400.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-200To400_ext1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-2500ToInf.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-400To600.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-400To600_ext1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-600To800.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-800To1200.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-800To1200_ext1.txt
 
 Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stdout
 Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr
@@ -21,130 +21,176 @@ notify_user = hua.wei@cern.ch
 
 ####TTJets####
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
-#Queue 
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept.txt.aa
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept.txt.ab
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept.txt.ac
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.aa
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ab
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ac
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ad
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.ae
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_TTJets_DiLept_ext1.txt.af
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+Queue 
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-#Queue 
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af
+Queue
 
-#arguments = $ENV(CMSSW_BASE) TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-#Queue
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ao
+Queue
 
 ####SingleTop####
-#arguments = $ENV(CMSSW_BASE) ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.txt
-#Queue
 
-#arguments = $ENV(CMSSW_BASE) ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1.txt
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_ST_tW_antitop_5f_inclusiveDecays.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_ST_tW_top_5f_inclusiveDecays.txt
+Queue
 
 ####WJets####
 
-#arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-100To200.txt
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-200To400.txt
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+#arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-200To400_ext1.txt
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) WJetsToLNu_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-#Queue
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-400To600.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-400To600_ext1.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-600To800.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-800To1200.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-800To1200_ext1.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-1200To2500.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-1200To2500_ext1.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) Spring16_80X_Jun_2016_Ntp_v5p0_WJetsToLNu_HT-2500ToInf.txt
+Queue
 
 ####Zinv####
 
-arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-100To200_13TeV-madgraph.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-100To200_13TeV-madgraph.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-200To400_13TeV-madgraph.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-200To400_13TeV-madgraph.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-400To600_13TeV-madgraph.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-400To600_13TeV-madgraph.txt
+#Queue
 
-arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-600ToInf_13TeV-madgraph.txt
-Queue
+#arguments = $ENV(CMSSW_BASE) ZJetsToNuNu_HT-600ToInf_13TeV-madgraph.txt
+#Queue
 
 ####Damn QCD####
 #arguments = $ENV(CMSSW_BASE) QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt

@@ -1,6 +1,7 @@
 import glob, os
 # Skimmed QCD samples location
-d = "/eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/TTJets_Nominal_MET200HT500_v3"
+# d = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/TTJets_Nominal_MET200HT500_v3"
+d = "/uscms_data/d3/hwei/stop/CMSSW_7_4_15/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt"
 # Full QCD samples location
 # d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/"
 for dirname, dirnames, filenames in os.walk(d):
