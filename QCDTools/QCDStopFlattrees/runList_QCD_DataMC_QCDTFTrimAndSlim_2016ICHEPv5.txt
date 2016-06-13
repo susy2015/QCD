@@ -18,9 +18,7 @@ root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_
 root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5/QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-800To1200stopFlatNtuples.root
 root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5/QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-1200To2500stopFlatNtuples.root
 root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5/QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-2500ToInfstopFlatNtuples.root
-
-
-
-
-root://cmseos.fnal.gov//store/user/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_v3/Skimmed_MET175_TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8stopFlatNtuples.root
-root://cmseos.fnal.gov//store/user/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_v3/Skimmed_MET175_TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8stopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5/QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v5p0_TTWJetsToLNustopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5/QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v5p0_TTWJetsToQQstopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5/QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v5p0_TTZToLLNuNustopFlatNtuples.root
+root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv5/QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v5p0_TTZToQQstopFlatNtuples.root

@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
 
-  output_str = "QCDTFTrimAndSlimmed_" + tag + fileid;
+  output_str = "QCDTFTrimAndSlim_" + tag + fileid;
   std::cout << "Output File Name: " << output_str << std::endl;
 
   TChain *originalTree = new TChain("stopTreeMaker/AUX");
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
   TFile* output = new TFile((output_str).c_str(), "RECREATE");
   TDirectory *mydict = output->mkdir("stopTreeMaker");
   mydict->cd();
-  TTree* selectedTree = new TTree("SSTree","SSTree");
+  TTree* selectedTree = new TTree("QCDTFTree","QCDTFTree");
   //TTree* selectedTree = originalTree->CloneTree(0);
   //search bin variables
   Double_t met,mt2; Int_t ntopjets, nbotjets;
@@ -80,16 +80,17 @@ int main(int argc, char* argv[])
   selectedTree->Branch("mt2",&mt2,"mt2/D");
   selectedTree->Branch("nTop",&ntopjets,"nTop/I");
   selectedTree->Branch("nBot",&nbotjets,"nBot/I");
-  //muon and electron variables, and bool of passLeptVeto
-  Int_t nmus,nels; Bool_t passLeptVeto;
-  selectedTree->Branch("nMuons"    ,&nmus,"nMuons/I"    );
-  selectedTree->Branch("nElectrons",&nels,"nElectrons/I");
-  selectedTree->Branch("passLeptVeto",&passLeptVeto,"passLeptVeto/O");
   //AUX variables maybe useful for research
   Int_t njets30,njets50; Double_t ht;
   selectedTree->Branch("nJets30",&njets30,"nJets30/I");
   selectedTree->Branch("nJets50",&njets50,"nJets50/I");
   selectedTree->Branch("ht",&ht,"ht/D");
+  //Boolean related to the baseline
+  Bool_t passTagger,passBJets,passQCDHighMETFilter,passdPhis;
+  selectedTree->Branch("passTagger"          ,&passTagger          ,"passTagger/O");
+  selectedTree->Branch("passBJets"           ,&passBJets           ,"passBJets/O");
+  selectedTree->Branch("passQCDHighMETFilter",&passQCDHighMETFilter,"passQCDHighMETFilter/O");
+  selectedTree->Branch("passdPhis"           ,&passdPhis           ,"passdPhis/O");  
   //negative weight information for TTZ
   Bool_t isNegativeWeight;
   selectedTree->Branch("isNegativeWeight",&isNegativeWeight,"isNegativeWeight/O");
@@ -109,45 +110,43 @@ int main(int argc, char* argv[])
 
   while(tr.getNextEvent())
   {
-    /*
+    met = tr.getVar<double>("met");
     bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
     bool passnJets = tr.getVar<bool>("passnJets"+spec);
-    bool passMET = tr.getVar<bool>("passMET"+spec);
     bool passHT = tr.getVar<bool>("passHT"+spec);
     bool passMT2 = tr.getVar<bool>("passMT2"+spec);
-    bool passTagger = tr.getVar<bool>("passTagger"+spec);
-    bool passBJets = tr.getVar<bool>("passBJets"+spec);
+    //bool passTagger = tr.getVar<bool>("passTagger"+spec);
+    //bool passBJets = tr.getVar<bool>("passBJets"+spec);
     bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
-    bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
-    bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
-    */
-    bool passQCDTFTrimAndSlim = tr.getVar<bool>("passBaseline"+spec);
-    /*
-    passQCDTFTrimAndSlim = ( met > 200)
-                && passnJets
-                && passHT
-                && passMT2
-                //&& passTagger
-                && passBJets
-                && passNoiseEventFilter;
-    */
+    //bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
+    //bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+
+    bool passQCDTFTrimAndSlim = ( met > 175)
+                             && passLeptVeto
+                             && passnJets
+                             && passHT
+                             && passMT2
+                             //&& passTagger
+                             //&& passBJets
+                             && passNoiseEventFilter;
+
     if(passQCDTFTrimAndSlim)
     {
       //searchbin variables
-      met = tr.getVar<double>("met");
-      mt2 = tr.getVar<double>("best_had_brJet_MT2"+spec);       
+      //met = tr.getVar<double>("met");
+      mt2 = tr.getVar<double>("best_had_brJet_MT2"+spec);
       ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
       nbotjets = tr.getVar<int>("cntCSVS"+spec);
-      //Muon and Electron variables
-      nmus = tr.getVar<int>("nMuons_CUT"+spec);
-      nels = tr.getVar<int>("nElectrons_CUT"+spec);
-      passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
-
       //AUX variables
       njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       ht = tr.getVar<double>("HT"+spec);
-      
+      //double mht = tr.getVar<double>("mht"); 
+      passTagger = tr.getVar<bool>("passTagger"+spec);
+      passBJets = tr.getVar<bool>("passBJets"+spec);
+      passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
+      passdPhis = tr.getVar<bool>("passdPhis"+spec);
+
       //negative weight      
       double evtWeight = tr.getVar<double>("evtWeight");
       evtWeight<0 ? isNegativeWeight = true : isNegativeWeight = false;
