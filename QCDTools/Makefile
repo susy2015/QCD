@@ -25,7 +25,7 @@ LIBS     = $(shell root-config --glibs)
 MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 
-PROGRAMS = tupleTest DeepTrim QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_ZinvQCD QCDTFTrimAndSlim_TTZ QCDTFTrimAndSlim_Data
+PROGRAMS = tupleTest DeepTrim QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_Zinv QCDTFTrimAndSlim_QCD QCDTFTrimAndSlim_TTZ QCDTFTrimAndSlim_Data
 
 all: mkobj sampPyWrap $(PROGRAMS)
 
@@ -66,7 +66,10 @@ DeepTrim: $(ODIR)/DeepTrim.o $(ODIR)/NTupleReader.o
 QCDTFTrimAndSlim_LLHadTau: $(ODIR)/QCDTFTrimAndSlim_LLHadTau.o $(ODIR)/NTupleReader.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-QCDTFTrimAndSlim_ZinvQCD: $(ODIR)/QCDTFTrimAndSlim_ZinvQCD.o $(ODIR)/NTupleReader.o
+QCDTFTrimAndSlim_Zinv: $(ODIR)/QCDTFTrimAndSlim_Zinv.o $(ODIR)/NTupleReader.o
+	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+
+QCDTFTrimAndSlim_QCD: $(ODIR)/QCDTFTrimAndSlim_QCD.o $(ODIR)/NTupleReader.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 QCDTFTrimAndSlim_TTZ: $(ODIR)/QCDTFTrimAndSlim_TTZ.o $(ODIR)/NTupleReader.o

@@ -23,12 +23,14 @@ int main(int argc, char* argv[])
   {
     std::cerr <<"Please give 1 argument " << "inputFileName " << std::endl;
     std::cerr <<"Valid configurations are: " << std::endl;
-    std::cerr <<"./QCDTFTrimAndSlim_ZinvQCD root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring15_74X_Feb_2016_Ntp_v6X_forMoriond/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_TTJets_SingleLeptFromT/160213_195624/0000/stopFlatNtuples_2.root" << std::endl;
+    std::cerr <<"./QCDTFTrimAndSlim_QCD root://cmseos.fnal.gov//store/user/lpcsusyhad/Spring16_80X_Jun_2016_Ntp_v5X/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf_ext1/160609_112453/0000/stopFlatNtuples_105.root" << std::endl;
     return -1;
   }
   std::string input_str(argv[1]);
   std::string trim;
   //std::string outputpath = "/eos/uscms/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/";
+  
+  //gSystem->Load("libPhysics.so");
 
   std::string output_str;
   //here is a little bit tricky when dealing with the slash... need to improve
@@ -56,16 +58,24 @@ int main(int argc, char* argv[])
   selectedTree->Branch("nTop",&ntopjets,"nTop/I");
   selectedTree->Branch("nBot",&nbotjets,"nBot/I");
   //AUX variables maybe useful for research
-  Int_t njets30,njets50; Double_t ht;
+  Int_t njets30,njets50; Double_t ht,mht;
   selectedTree->Branch("nJets30",&njets30,"nJets30/I");
   selectedTree->Branch("nJets50",&njets50,"nJets50/I");
   selectedTree->Branch("ht",&ht,"ht/D");
+  selectedTree->Branch("mht",&mht,"mht/D");
+  Double_t metphi, mhtphi;
+  selectedTree->Branch("metphi",&metphi,"metphi/D");
+  selectedTree->Branch("mhtphi",&mhtphi,"mhtphi/D");
+  std::vector<TLorentzVector> jetsLVec;
+  //selectedTree->SetBranchAddress("jetsLVec",&jetsLVec);
+  selectedTree->Branch("jetsLVec","std::vector<TLorentzVector>",&jetsLVec);
   //Boolean related to the baseline
-  Bool_t passTagger,passBJets,passQCDHighMETFilter,passdPhis;
+  Bool_t passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
   selectedTree->Branch("passTagger"          ,&passTagger          ,"passTagger/O");
   selectedTree->Branch("passBJets"           ,&passBJets           ,"passBJets/O");
   selectedTree->Branch("passQCDHighMETFilter",&passQCDHighMETFilter,"passQCDHighMETFilter/O");
   selectedTree->Branch("passdPhis"           ,&passdPhis           ,"passdPhis/O");
+  selectedTree->Branch("passNoiseEventFilter",&passNoiseEventFilter,"passNoiseEventFilter/O");
 
   const std::string spec = "QCD";
   myBaselineVessel = new BaselineVessel(spec);
@@ -86,7 +96,7 @@ int main(int argc, char* argv[])
     bool passMT2 = tr.getVar<bool>("passMT2"+spec);
     //bool passTagger = tr.getVar<bool>("passTagger"+spec);
     //bool passBJets = tr.getVar<bool>("passBJets"+spec);
-    bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
+    //bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
     //bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
     //bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
  
@@ -94,10 +104,10 @@ int main(int argc, char* argv[])
                              && passLeptVeto
                              && passnJets
                              && passHT
-                             && passMT2
+                             && passMT2;
                              //&& passTagger
                              //&& passBJets
-                             && passNoiseEventFilter;
+                             //&& passNoiseEventFilter;
     
     if(passQCDTFTrimAndSlim)
     {
@@ -110,11 +120,17 @@ int main(int argc, char* argv[])
       njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       ht = tr.getVar<double>("HT"+spec);
-      //double mht = tr.getVar<double>("mht"); 
+      TLorentzVector mht_TLV = AnaFunctions::calcMHT(tr.getVec<TLorentzVector>("jetsLVec"), AnaConsts::pt30Eta24Arr);
+      mht = mht_TLV.Pt(); 
+      metphi = tr.getVar<double>("metphi");
+      mhtphi = mht_TLV.Phi();
+      jetsLVec.clear();
+      jetsLVec = tr.getVec<TLorentzVector>("jetsLVec");
       passTagger = tr.getVar<bool>("passTagger"+spec);
       passBJets = tr.getVar<bool>("passBJets"+spec);
       passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
       passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
 
       selectedTree->Fill();
     }
