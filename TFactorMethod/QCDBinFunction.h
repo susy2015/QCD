@@ -1,11 +1,11 @@
-#define MET_BINS 3
+#define MET_BINS 4
 //#define NBJETS_BINS 2
-#define MT2_BINS 2
+#define MT2_BINS 3
 #define QCD_BINS 5
 #define NSEARCH_BINS 69
 
-const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,650.0};
-const double mt2bins_edge[MT2_BINS+1] = {200.0,300,500.0};
+const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,500.0,650.0};
+const double mt2bins_edge[MT2_BINS+1] = {200.0,350,450.0,600.0};
 
 int Set_metbin_number(
                        double met
