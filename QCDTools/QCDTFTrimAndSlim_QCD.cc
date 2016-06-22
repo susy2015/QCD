@@ -76,6 +76,10 @@ int main(int argc, char* argv[])
   selectedTree->Branch("passQCDHighMETFilter",&passQCDHighMETFilter,"passQCDHighMETFilter/O");
   selectedTree->Branch("passdPhis"           ,&passdPhis           ,"passdPhis/O");
   selectedTree->Branch("passNoiseEventFilter",&passNoiseEventFilter,"passNoiseEventFilter/O");
+  //calo MET and calo MET phi to get rid of trash in QCD
+  Double_t calomet, calometphi;
+  selectedTree->Branch("calomet"   ,&calomet   ,"calomet/D");
+  selectedTree->Branch("calometphi",&calometphi,"calometphi/D");
 
   const std::string spec = "QCD";
   myBaselineVessel = new BaselineVessel(spec);
@@ -108,7 +112,7 @@ int main(int argc, char* argv[])
                              //&& passTagger
                              //&& passBJets
                              //&& passNoiseEventFilter;
-    
+    jetsLVec.clear();
     if(passQCDTFTrimAndSlim)
     {
       //searchbin variables
@@ -124,13 +128,14 @@ int main(int argc, char* argv[])
       mht = mht_TLV.Pt(); 
       metphi = tr.getVar<double>("metphi");
       mhtphi = mht_TLV.Phi();
-      jetsLVec.clear();
       jetsLVec = tr.getVec<TLorentzVector>("jetsLVec");
       passTagger = tr.getVar<bool>("passTagger"+spec);
       passBJets = tr.getVar<bool>("passBJets"+spec);
       passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
       passdPhis = tr.getVar<bool>("passdPhis"+spec);
       passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
+      calomet = tr.getVar<double>("calomet");
+      calometphi = tr.getVar<double>("calometphi");
 
       selectedTree->Fill();
     }

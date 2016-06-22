@@ -1,12 +1,14 @@
 universe = vanilla
-request_disk   = 50 GB
-request_memory = 1.5 GB
+#request_disk   = 50 GB
+#request_memory = 1.5 GB
 executable = $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh
 should_transfer_files = YES
 #when_to_transfer_output = ON_EXIT
 
 ##transfer file list for QCD background
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT100to200.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT200to300.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT200to300_ext1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT300to500.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT300to500_ext1.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000_extSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000_extSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000_extSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf_ext1Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf_ext1Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf_ext1Split.ac
+#transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ap, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ao, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailQCDList.txt.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailQCDList.txt.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailQCDList.txt.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailQCDList.txt.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailQCDList.txt.ae
 
 ##transfer file list for Zinv 
 #transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-200To400.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-400To600.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-600To800.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-800To1200.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-1200To2500.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/Spring16_80X_Jun_2016_Ntp_v5p0_ZJetsToNuNu_HT-2500ToInf.txt
@@ -203,124 +205,139 @@ notify_user = hua.wei@cern.ch
 
 ####Damn QCD####
 
-#arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT100to200.txt
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT200to300.txt
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT200to300_ext1.txt
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT300to500.txt
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
 #Queue
 
-#arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT300to500_ext1.txt
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
 #Queue
 
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.aa
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ap
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aq
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ao
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.an
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.am
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.al
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ak
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
+#Queue
+
+#arguments = $ENV(CMSSW_BASE) QCD QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+#Queue
+
+arguments = $ENV(CMSSW_BASE) QCD FailQCDList.txt.aa
 Queue
 
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.ab
+arguments = $ENV(CMSSW_BASE) QCD FailQCDList.txt.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.ac
+arguments = $ENV(CMSSW_BASE) QCD FailQCDList.txt.ac
 Queue
 
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700Split.ad
+arguments = $ENV(CMSSW_BASE) QCD FailQCDList.txt.ad
 Queue
 
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.aa
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ac
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ad
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ae
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.af
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ag
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT500to700_ext1Split.ah
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000Split.aa
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000Split.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000Split.ac
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.aa
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ac
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ad
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.ae
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT700to1000_ext1Split.af
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500Split.aa
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500Split.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.aa
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.ac
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1000to1500_ext1Split.ad
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000.txt
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000_extSplit.aa
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000_extSplit.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT1500to2000_extSplit.ac
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf.txt
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf_ext1Split.aa
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf_ext1Split.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) QCD Spring16_80X_Jun_2016_Ntp_v5p0_QCD_HT2000toInf_ext1Split.ac
+arguments = $ENV(CMSSW_BASE) QCD FailQCDList.txt.ae
 Queue
 
 ####TTZ and TTW####

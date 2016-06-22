@@ -1,7 +1,8 @@
+import sys
 import glob, os
 # Skimmed QCD samples location
 # d = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/TTJets_Nominal_MET200HT500_v3"
-d = "/uscms_data/d3/hwei/stop/CMSSW_7_4_15/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt"
+d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_10/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt"
 # Full QCD samples location
 # d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/"
 for dirname, dirnames, filenames in os.walk(d):
@@ -25,7 +26,16 @@ for dirname, dirnames, filenames in os.walk(d):
 
   # print path to all filenames.
   for filename in filenames:
-    print(os.path.join(dirname, filename))
+    #if ( ('TTJets' in filename) or ('WJetsToLNu_HT' in filename) ): 
+    if ( ('QCD' in filename) ): 
+      sys.stdout.write('$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/' + filename + ', ')
+      #print ("$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/" + filename + ", ")
+      #print ("arguments = $ENV(CMSSW_BASE) QCD " + filename)
+      #print ("Queue")
+      #print ""
+      #print(os.path.join(dirname, filename))
+    else:
+      continue
 
 #for file in glob.glob("*QCD_HT_*.root"):
 #    print( d + file )

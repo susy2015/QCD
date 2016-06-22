@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
   std::vector<Plotting_Parameter> myPlotting_Paramete = 
   { 
     //QCD closure plots
-    {"_met"     , "MET [GeV]"             ,150 , 800  },
+    {"_met"     , "MET [GeV]"             ,150 , 1000  },
     {"_njets30" , "Number of 30 GeV jets" ,2   , 17   }, 
     {"_njets50" , "Number of 50 GeV jets" ,2   , 17   },  
     {"_mt2"     , "MT2 [GeV]"             ,200 , 600  },                                               

@@ -89,7 +89,7 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   h_pred_njets30 = new TH1D("h_pred_njets30","",20,0,20);
   h_pred_njets50 = new TH1D("h_pred_njets50","",20,0,20);
   h_pred_mt2 = new TH1D("h_pred_mt2","",50,0,1000);
-  h_pred_ht = new TH1D("h_pred_ht","",150,0,3000);
+  h_pred_ht = new TH1D("h_pred_ht","",60,0,3000);
   h_pred_mht = new TH1D("h_pred_mht","",50,0,1000);
   h_pred_ntopjets = new TH1D("h_pred_ntopjets","",20,0,20);
   h_pred_nbjets = new TH1D("h_pred_nbjets","",20,0,20);
@@ -98,7 +98,7 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   h_exp_njets30 = new TH1D("h_exp_njets30","",20,0,20);
   h_exp_njets50 = new TH1D("h_exp_njets50","",20,0,20);
   h_exp_mt2 = new TH1D("h_exp_mt2","",50,0,1000);
-  h_exp_ht = new TH1D("h_exp_ht","",150,0,3000);
+  h_exp_ht = new TH1D("h_exp_ht","",60,0,3000);
   h_exp_mht = new TH1D("h_exp_mht","",50,0,1000);
   h_exp_ntopjets = new TH1D("h_exp_ntopjets","",20,0,20);
   h_exp_nbjets = new TH1D("h_exp_nbjets","",20,0,20);
@@ -252,6 +252,9 @@ class QCDFactors
   double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
   double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
 
+  double nQCDNormal_NJF_MC_all[NJETS_BINS] = {0}, nQCDInverted_NJF_MC_all[NJETS_BINS] = {0};
+  double QCDTNJF[NJETS_BINS] = {0}, QCDTNJF_err[NJETS_BINS] = {0};//Tfactors calculated from QCD MC
+
   //determine the tfactor value in the MC inverted dphi region in case of no inverted dphis in some search in real data
   double MET_sum_all_exp_sb[NSEARCH_BINS] = {0}, MET_sum_weight_all_exp_sb[NSEARCH_BINS] = {0};
   double MT2_sum_all_exp_sb[NSEARCH_BINS] = {0}, MT2_sum_weight_all_exp_sb[NSEARCH_BINS] = {0}; 
@@ -351,12 +354,25 @@ void QCDFactors::NumbertoTFactor()
       QCDTFactor_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_all[i_cal][j_cal] , nQCDInverted_all[i_cal][j_cal] , nQCDNormal_all_err[i_cal][j_cal], nQCDInverted_all_err[i_cal][j_cal] );
     }
   }
-
+ 
+  double tmp_QCDTNJF[NJETS_BINS] = {0};
+  for(int i_cal = 0 ; i_cal < NJETS_BINS ; i_cal++)
+  {
+    tmp_QCDTNJF[i_cal] = nQCDNormal_NJF_MC_all[i_cal]/nQCDInverted_NJF_MC_all[i_cal];
+  }
+  for(int i_cal = 0 ; i_cal < NJETS_BINS ; i_cal++)
+  {
+    //normalized to first bin
+    QCDTNJF[i_cal] = tmp_QCDTNJF[i_cal]/tmp_QCDTNJF[0];
+    std::cout << "NJet 30 correction factor, Bin " << i_cal << ": " << QCDTNJF[i_cal] << std::endl;
+  }
   //MT2 and met mean value calculation in each search bin
   for(int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++)
   {
     if( MET_sum_weight_all_exp_sb[i_cal] > 0 && MT2_sum_weight_all_exp_sb[i_cal] > 0 )
     {
+      std::cout << "Bin" << i_cal << ", MET: "<< MET_sum_all_exp_sb[i_cal] << ", " << MET_sum_weight_all_exp_sb[i_cal] << std::endl;
+      std::cout << "Bin" << i_cal << ", MT2: "<< MT2_sum_all_exp_sb[i_cal] << ", " << MT2_sum_weight_all_exp_sb[i_cal] << std::endl;
       MET_mean_exp_sb[i_cal] = MET_sum_all_exp_sb[i_cal]/MET_sum_weight_all_exp_sb[i_cal];
       MT2_mean_exp_sb[i_cal] = MT2_sum_all_exp_sb[i_cal]/MT2_sum_weight_all_exp_sb[i_cal];
     }
@@ -399,7 +415,7 @@ void QCDFactors::TFactorFit()
     gPad->SetLeftMargin(0.16);
     gPad->SetTicks();
 
-    TH1F *frame = new TH1F("frame","",10,150.,500.);
+    TH1F *frame = new TH1F("frame","",10,170.,720.);
     frame->SetMinimum(0.0);
     frame->SetMaximum(0.2);
     frame->GetXaxis()->SetTitle("#slash{E}_{T} [GeV]");
@@ -736,6 +752,25 @@ void QCDFactors::printTFactorsHeader()
       if( i_cal == MET_BINS-1 && j_cal == MT2_BINS-1 ) { TFactorsHeader << "}};" << std::endl; }
     }
   }
+
+  TFactorsHeader << "  const double head_QCDTNJF[" << NJETS_BINS << "] = ";
+  for(int i_cal = 0 ; i_cal < NJETS_BINS ; i_cal++)
+  {
+    if(i_cal == 0 ) { TFactorsHeader << "{"; }
+    TFactorsHeader << QCDTNJF[i_cal];
+    if(i_cal != NJETS_BINS -1 ) { TFactorsHeader << ","; }
+    if(i_cal == NJETS_BINS -1 ) { TFactorsHeader << "};" << std::endl; }
+  }
+
+  TFactorsHeader << "  const double head_QCDTNJF_err[" << NJETS_BINS << "] = ";
+  for(int i_cal = 0 ; i_cal < NJETS_BINS ; i_cal++)
+  {
+    if(i_cal == 0 ) { TFactorsHeader << "{"; }
+    TFactorsHeader << QCDTNJF_err[i_cal];
+    if(i_cal != NJETS_BINS -1 ) { TFactorsHeader << ","; }
+    if(i_cal == NJETS_BINS -1 ) { TFactorsHeader << "};" << std::endl; }
+  }
+
 
   TFactorsHeader << "  const double head_QCD_meanMET_exp_sb[" << NSEARCH_BINS << "] = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
