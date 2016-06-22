@@ -85,7 +85,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 
       int metbin_number = Set_metbin_number(met);
       int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(nbotjets);
+      int njetsbin_number = Set_njetsbin_number(njets30);
 
       bool passTagger = tr.getVar<bool>("passTagger");
       bool passBJets = tr.getVar<bool>("passBJets");
@@ -208,7 +208,7 @@ void LoopQCDExp( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 
       int metbin_number = Set_metbin_number(met);
       int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(nbotjets);
+      int njetsbin_number = Set_njetsbin_number(njets30);
 
       bool passTagger = tr.getVar<bool>("passTagger");
       bool passBJets = tr.getVar<bool>("passBJets");
@@ -345,7 +345,7 @@ void LoopQCDPred( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight, 
 
       int metbin_number = Set_metbin_number(met);
       int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(nbotjets);
+      int njetsbin_number = Set_njetsbin_number(njets30);
 
       bool passTagger = tr.getVar<bool>("passTagger");
       bool passBJets = tr.getVar<bool>("passBJets");

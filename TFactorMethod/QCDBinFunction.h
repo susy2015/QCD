@@ -35,15 +35,18 @@ int Set_njetsbin_number(
 {
   int njetsbin_num;
 
-  if( njets == 1 )
+  //if( njets == 1 )
+  if( njets >= 4 && njets <= 6 )
   {
     njetsbin_num = 0;
   }
-  else if( njets == 2 )
+  //else if( njets == 2 )
+  else if( njets >= 7 && njets <= 8 )
   {
     njetsbin_num = 1;
   }
-  else if( njets >= 3 )
+  //else if( njets >= 3 )
+  else if( njets >= 9 )
   {
     njetsbin_num = 2;
   }
