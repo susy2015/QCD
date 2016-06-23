@@ -1,0 +1,31 @@
+universe = vanilla
+#request_disk   = 50 GB
+#request_memory = 1.5 GB
+executable = $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh
+should_transfer_files = YES
+#when_to_transfer_output = ON_EXIT
+
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailList.txt.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailList.txt.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailList.txt.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailList.txt.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailList.txt.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TheHellOfCondorFail/FailList.txt.af
+
+Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr
+Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).log
+notify_user = hua.wei@cern.ch
+
+##Fail jobs##
+arguments = $ENV(CMSSW_BASE) LLHadTau FailList.txt.aa
+Queue
+
+arguments = $ENV(CMSSW_BASE) LLHadTau FailList.txt.ab
+Queue
+
+arguments = $ENV(CMSSW_BASE) LLHadTau FailList.txt.ac
+Queue
+
+arguments = $ENV(CMSSW_BASE) LLHadTau FailList.txt.ad
+Queue
+
+arguments = $ENV(CMSSW_BASE) LLHadTau FailList.txt.ae
+Queue
+
+arguments = $ENV(CMSSW_BASE) LLHadTau FailList.txt.af
+Queue
