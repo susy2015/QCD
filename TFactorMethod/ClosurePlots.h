@@ -23,7 +23,7 @@
 
 #include "CMSStylePlot/CMS_lumi.h"
 
-SearchBins mySearchBins("SB_69_2016");
+SearchBins mySearchBins("SB_59_2016");
 
 class ClosurePlots
 {
@@ -264,7 +264,7 @@ void ClosurePlots::ClosureTemplate(
 	h_pred->SetFillStyle(3001);
 	h_pred->Draw("E2 same");
 
-  if( hist_tag == "_sb" ){ /*mySearchBins.drawSBregionDef(0.0, 18.0);*/ }
+  if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 35.0, true); }
   //CMSStylePlot::CMS_lumi( c, 4, 0 );
 	title->Draw("same");
   leg->Draw("same");

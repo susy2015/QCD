@@ -154,7 +154,7 @@ void CombineHistgram::BookHistgram(const char *outFileName)
   return ;
 }
 
-#define BCBin 6
+#define BCBin 5
 
 class BasicCheckHistgram
 {
@@ -183,11 +183,10 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
   {
     std::string smalltag;
 
-    if (i == 0) smalltag = "TTJets";
-    else if (i == 1) smalltag = "SingleTop";
-    else if (i == 2) smalltag = "WJets";
-    else if (i == 3) smalltag = "ZJets";
-    else if (i == 4) smalltag = "QCD";
+    if (i == 0) smalltag = "LL";
+    else if (i == 1) smalltag = "HadTau";
+    else if (i == 2) smalltag = "Zinv";
+    else if (i == 3) smalltag = "QCD";
     else smalltag = "TTZ";
 
     h_b_met_MC[i] = new TH1D( ("h_b_met_MC_" + smalltag).c_str(),"",20,150,550);
@@ -199,7 +198,7 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",5,1,6);
     h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",5,1,6);
 
-    h_b_sb_MC[i] = new TH1D( ("h_b_sb_MC_" + smalltag).c_str(),"",50,0,50);
+    h_b_sb_MC[i] = new TH1D( ("h_b_sb_MC_" + smalltag).c_str(),"",60,0,60);
 
     h_b_met_MC[i]->SetFillColor(i+2);
     h_b_mt2_MC[i]->SetFillColor(i+2);
@@ -233,7 +232,7 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
   h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",5,1,6);
   h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",5,1,6);
 
-  h_b_sb_Data = new TH1D("h_b_sb_Data","",50,0,50);
+  h_b_sb_Data = new TH1D("h_b_sb_Data","",60,0,60);
 
   return ;
 }
@@ -265,9 +264,18 @@ class QCDFactors
   double MET_sb_mean[NSEARCH_BINS] = {0};
   double MT2_sb_sum[NSEARCH_BINS] = {0}, MT2_sb_sum_weight[NSEARCH_BINS] = {0};
   double MT2_sb_mean[NSEARCH_BINS] = {0}; 
+
   //variables for data card
-  double DC_sb_Data[NSEARCH_BINS] = {0}, DC_sb_hadtau[NSEARCH_BINS] = {0}, DC_sb_lostlept[NSEARCH_BINS] = {0}, DC_sb_zinvMC[NSEARCH_BINS] = {0}, DC_sb_ttzMC[NSEARCH_BINS] = {0};
-  double DC_sb_Data_err[NSEARCH_BINS] = {0}, DC_sb_hadtau_errup[NSEARCH_BINS] = {0}, DC_sb_lostlept_errup[NSEARCH_BINS] = {0}, DC_sb_hadtau_errdown[NSEARCH_BINS] = {0}, DC_sb_lostlept_errdown[NSEARCH_BINS] = {0}, DC_sb_zinvMC_err[NSEARCH_BINS] = {0}, DC_sb_ttzMC_err[NSEARCH_BINS] = {0};
+  double DC_sb_Data[NSEARCH_BINS] = {0}; 
+  double DC_sb_hadtauMC[NSEARCH_BINS] = {0}, DC_sb_lostleptMC[NSEARCH_BINS] = {0};
+  double DC_sb_zinvMC[NSEARCH_BINS] = {0}, DC_sb_ttzMC[NSEARCH_BINS] = {0};
+  double DC_sb_Data_err[NSEARCH_BINS] = {0}; 
+  double DC_sb_hadtauMC_err[NSEARCH_BINS] = {0}, DC_sb_lostleptMC_err[NSEARCH_BINS] = {0}; 
+  double DC_sb_zinvMC_err[NSEARCH_BINS] = {0}, DC_sb_ttzMC_err[NSEARCH_BINS] = {0};
+
+  double DC_sb_hadtau[NSEARCH_BINS] = {0}, DC_sb_lostlept[NSEARCH_BINS] = {0};
+  double DC_sb_hadtau_errup[NSEARCH_BINS] = {0}, DC_sb_lostlept_errup[NSEARCH_BINS] = {0}, DC_sb_hadtau_errdown[NSEARCH_BINS] = {0}, DC_sb_lostlept_errdown[NSEARCH_BINS] = {0};
+
   double DC_sb_TFactor[NSEARCH_BINS] = {0};
   double DC_sb_TFactor_err[NSEARCH_BINS] = {0};
 

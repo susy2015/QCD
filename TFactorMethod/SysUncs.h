@@ -25,8 +25,8 @@
 
 #include "CMSStylePlot/CMS_lumi.h"
 //#include "CMSStylePlot/tdrstyle.h"
-
-SearchBins mySearchBins("SB_69_2016");
+//SearchBins mySearchBins("SB_45_2015");
+SearchBins mySearchBins("SB_59_2016");
 
 class SysUncs
 {

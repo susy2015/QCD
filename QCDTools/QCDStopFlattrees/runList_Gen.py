@@ -26,9 +26,11 @@ for dirname, dirnames, filenames in os.walk(d):
 
   # print path to all filenames.
   for filename in filenames:
-    #if ( ('TTJets' in filename) or ('WJetsToLNu_HT' in filename) ): 
+    #if ( ('ST_' in filename) ):
+    #if ( ('WJetsToLNu_HT' in filename) ): 
     #if ( ('TTJets_' in filename) ): 
     if ( ('ZJetsToNuNu_HT-' in filename) ):
+    #if ( ('HTMHT' in filename) ):
       #sys.stdout.write('$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/' + filename + ', ')
       #print ("$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/" + filename + ", ")
       print ("arguments = $ENV(CMSSW_BASE) Zinv " + filename)

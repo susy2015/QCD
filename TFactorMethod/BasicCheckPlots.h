@@ -71,7 +71,8 @@ void BasicCheckPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("BasicCheckLL.root");
+  fin = TFile::Open("BasicCheckQCD.root");
+  //fin = TFile::Open("BasicCheckLL.root");
   list = fin->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1
@@ -126,10 +127,9 @@ void BasicCheckPlots::BasicCheckTemplate(
       {
         hs_MC->Add( (TH1D*)fin->Get(list->At(i)->GetName()) );
         
-        if( TString(list->At(i)->GetName()).Contains( "TTJets" ) ) { smalltag = "TTJets"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
-        if( TString(list->At(i)->GetName()).Contains( "SingleTop" ) ) { smalltag = "SingleTop"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
-        if( TString(list->At(i)->GetName()).Contains( "WJets" ) ) { smalltag = "WJets"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
-        if( TString(list->At(i)->GetName()).Contains( "ZJets" ) ) { smalltag = "ZJets"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
+        if( TString(list->At(i)->GetName()).Contains( "LL" ) ) { smalltag = "LL"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
+        if( TString(list->At(i)->GetName()).Contains( "HadTau" ) ) { smalltag = "HadTau"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
+        if( TString(list->At(i)->GetName()).Contains( "Zinv" ) ) { smalltag = "Zinv"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
         if( TString(list->At(i)->GetName()).Contains( "QCD" ) ) { smalltag = "QCD"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
         if( TString(list->At(i)->GetName()).Contains( "TTZ" ) ) { smalltag = "TTZ"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
       }

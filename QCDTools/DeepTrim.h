@@ -30,4 +30,3 @@ void mypassBaselineFunc(NTupleReader& tr)
 {
   (*myBaselineVessel)(tr);
 }
-

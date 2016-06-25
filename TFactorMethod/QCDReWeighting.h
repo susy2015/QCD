@@ -19,7 +19,8 @@
 //2016 Moriond
 //#define LUMI 2262.946
 //2016 ICHEP
-#define LUMI 8000
+//#define LUMI 8000
+#define LUMI 4004.345
 
 //Fill chain from txt file
 bool FillChain(TChain *chain, const TString &inputFileList, std::string tag)
