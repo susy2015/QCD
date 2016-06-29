@@ -500,18 +500,23 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
               )
             {
               bool isLL = tr.getVar<bool>("isLL");
+              double ttjetsFactor = 0.65;
               if(isLL)
               {
-                myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff);
+                myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor;
+                myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
               }
               else
               {
-                myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff); 
+                myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor; 
+                myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
               }
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             {
-              myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff);
+              double Rnorm = 0.85;
+              myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff) * Rnorm;
+              myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
             }
             else if(
                        ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
@@ -525,6 +530,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
               bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
               if( isNegativeWeight ) thisweight = -thisweight;
               isNegativeWeight ? myQCDFactors.DC_sb_ttzMC[searchbin_id] -= std::abs(thisweight * metEff) : myQCDFactors.DC_sb_ttzMC[searchbin_id] += std::abs(thisweight * metEff);
+              myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
             }
           }
 
@@ -546,13 +552,93 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
         {
           if( passdPhis )
           {
-            myQCDFactors.nQCDNormalData_all[mt2bin_number] += thisweight * metEff;
-            myQCDFactors.nQCDNormalData_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+            {
+              myQCDFactors.nQCDNormal_Data_all[mt2bin_number] += std::abs(thisweight * metEff);
+              myQCDFactors.nQCDNormal_Data_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            }
+            if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
+               || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
+               || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
+              )
+            { 
+              bool isLL = tr.getVar<bool>("isLL");
+              double ttjetsFactor = 0.65;
+              if(isLL)
+              { 
+                myQCDFactors.nQCDNormal_lostleptMC_all[mt2bin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                myQCDFactors.nQCDNormal_lostleptMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+              }
+              else
+              { 
+                myQCDFactors.nQCDNormal_hadtauMC_all[mt2bin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                myQCDFactors.nQCDNormal_hadtauMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+              }
+            }
+            else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
+            { 
+              double Rnorm = 0.85;
+              myQCDFactors.nQCDNormal_zinvMC_all[mt2bin_number] += std::abs(thisweight * metEff) * Rnorm;
+              myQCDFactors.nQCDNormal_zinvMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            }
+            else if(   
+                       ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                   )
+            { 
+              bool isGenZLep = tr.getVar<bool>("isGenZLep");
+              bool isGenWLep = tr.getVar<bool>("isGenWLep");
+              if( isGenZLep || isGenWLep ) continue;
+              
+              bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
+              isNegativeWeight ? myQCDFactors.nQCDNormal_ttzMC_all[mt2bin_number] -= std::abs(thisweight * metEff) : myQCDFactors.nQCDNormal_ttzMC_all[mt2bin_number] += std::abs(thisweight * metEff);
+              myQCDFactors.nQCDNormal_ttzMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            }
           }
           else 
           {
-            myQCDFactors.nQCDInvertedData_all[mt2bin_number] += thisweight * metEff;
-            myQCDFactors.nQCDInvertedData_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+            {
+              myQCDFactors.nQCDInverted_Data_all[mt2bin_number] += std::abs(thisweight * metEff);
+              myQCDFactors.nQCDInverted_Data_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            }
+            if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
+               || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
+               || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
+              )
+            { 
+              bool isLL = tr.getVar<bool>("isLL");
+              double ttjetsFactor = 0.65;
+              if(isLL)
+              {
+                myQCDFactors.nQCDInverted_lostleptMC_all[mt2bin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                myQCDFactors.nQCDInverted_lostleptMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor; 
+              }
+              else
+              { 
+                myQCDFactors.nQCDInverted_hadtauMC_all[mt2bin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                myQCDFactors.nQCDInverted_hadtauMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+              }
+            }
+            else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
+            { 
+              double Rnorm = 0.85;
+              myQCDFactors.nQCDInverted_zinvMC_all[mt2bin_number] += std::abs(thisweight * metEff) * Rnorm;
+              myQCDFactors.nQCDInverted_zinvMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            }
+            else if(   
+                       ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                   )
+            { 
+              bool isGenZLep = tr.getVar<bool>("isGenZLep");
+              bool isGenWLep = tr.getVar<bool>("isGenWLep");
+              if( isGenZLep || isGenWLep ) continue;
+              
+              bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
+              isNegativeWeight ? myQCDFactors.nQCDInverted_ttzMC_all[mt2bin_number] -= std::abs(thisweight * metEff) : myQCDFactors.nQCDInverted_ttzMC_all[mt2bin_number] += std::abs(thisweight * metEff);
+              myQCDFactors.nQCDInverted_ttzMC_all_err[mt2bin_number] += thisweight * thisweight * metEff * metEff;
+            }
           }
         }
       }//event loop
@@ -576,15 +662,20 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       //reset the met and mt2 id with average value from MC
       met_id = Set_metbin_number( head_QCD_meanMET_exp_sb[i] );
       mt2_id = Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i] );
+      if( head_QCD_meanMET_exp_sb[i] < 100 ) met_id = Set_metbin_number( head_QCD_meanMET_exp_sb[i-1] );
+      if( head_QCD_meanMT2_exp_sb[i] < 100 ) mt2_id = Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i-1] );
     }
     myQCDFactors.DC_sb_TFactor[i] = QCDTFactorPred[met_id][mt2_id];
     myQCDFactors.DC_sb_TFactor_err[i] = QCDTFactorPred_err[met_id][mt2_id];
     
     //set stat unc from DC central value
     myQCDFactors.DC_sb_Data_err[i] = std::sqrt(myQCDFactors.DC_sb_Data_err[i]);
+    myQCDFactors.DC_sb_hadtauMC_err[i] = std::sqrt(myQCDFactors.DC_sb_hadtauMC_err[i]);
+    myQCDFactors.DC_sb_lostleptMC_err[i] = std::sqrt(myQCDFactors.DC_sb_lostleptMC_err[i]);
     myQCDFactors.DC_sb_zinvMC_err[i] = std::sqrt(myQCDFactors.DC_sb_zinvMC_err[i]);
     myQCDFactors.DC_sb_ttzMC_err[i] = std::sqrt(myQCDFactors.DC_sb_ttzMC_err[i]);
   
+
     /*
     //set up data card from data driven input
     //myQCDFactors.DC_sb_hadtau[i] = pred_sb_hadtau[i];
@@ -639,7 +730,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
   }
   */
   //deal with the Tfactor from data.need to uncomment when you want to get low met side band tfactor from real data
-  //myQCDFactors.getAndprintTFactorsfromDataHeader(); 
+  myQCDFactors.getAndprintTFactorsfromDataHeader(); 
   myQCDFactors.printSysHeader();
   myQCDFactors.printDataCard();
 

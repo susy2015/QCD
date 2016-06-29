@@ -279,8 +279,18 @@ class QCDFactors
   double DC_sb_TFactor[NSEARCH_BINS] = {0};
   double DC_sb_TFactor_err[NSEARCH_BINS] = {0};
 
-  double nQCDNormalData_all[MT2_BINS] = {0}, nQCDInvertedData_all[MT2_BINS] = {0};
-  double nQCDNormalData_all_err[MT2_BINS] = {0}, nQCDInvertedData_all_err[MT2_BINS] = {0};
+  //to calculate the Tfactor from data in low met side band
+  double nQCDNormal_Data_all[MT2_BINS] = {0}, nQCDInverted_Data_all[MT2_BINS] = {0};
+  double nQCDNormal_hadtauMC_all[MT2_BINS] = {0}, nQCDInverted_hadtauMC_all[MT2_BINS] = {0};
+  double nQCDNormal_lostleptMC_all[MT2_BINS] = {0}, nQCDInverted_lostleptMC_all[MT2_BINS] = {0};
+  double nQCDNormal_zinvMC_all[MT2_BINS] = {0}, nQCDInverted_zinvMC_all[MT2_BINS] = {0};
+  double nQCDNormal_ttzMC_all[MT2_BINS] = {0}, nQCDInverted_ttzMC_all[MT2_BINS] = {0};
+  double nQCDNormal_Data_all_err[MT2_BINS] = {0}, nQCDInverted_Data_all_err[MT2_BINS] = {0};
+  double nQCDNormal_hadtauMC_all_err[MT2_BINS] = {0}, nQCDInverted_hadtauMC_all_err[MT2_BINS] = {0};
+  double nQCDNormal_lostleptMC_all_err[MT2_BINS] = {0}, nQCDInverted_lostleptMC_all_err[MT2_BINS] = {0};
+  double nQCDNormal_zinvMC_all_err[MT2_BINS] = {0}, nQCDInverted_zinvMC_all_err[MT2_BINS] = {0};
+  double nQCDNormal_ttzMC_all_err[MT2_BINS] = {0}, nQCDInverted_ttzMC_all_err[MT2_BINS] = {0};
+
   double QCDTFactorData[MT2_BINS] = {0}, QCDTFactorData_err[MT2_BINS] = {0};
 
   double QCDWeights[QCD_BINS] = {0};
@@ -518,7 +528,8 @@ void QCDFactors::TFactorScale()
 
   for(int i=0;i<MT2_BINS;i++)
   {
-    TFactorsDataMCDiff[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
+    //TFactorsDataMCDiff[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
+    TFactorsDataMCDiff[i] = head_QCDTFactorData[i] - QCDTFactor[0][i];
     //double r = head_QCDTFactorData[i]/QCDTFactorFit[0][i];
     TFactorsDataMCUnc[i] = head_QCDTFactorData_err[i];
     //r = exp/pred;
@@ -531,14 +542,16 @@ void QCDFactors::TFactorScale()
   {
     for(int j=0;j<MT2_BINS;j++)
     {
-      QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsDataMCDiff[j];
+      //QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsDataMCDiff[j];
+      QCDTFactorScaled[i][j] = QCDTFactor[i][j] + TFactorsDataMCDiff[j];
       if( QCDTFactorScaled[i][j] < 0 )
       { 
         std::cout << "METBIN,MT2BIN,TFactorScaled: " << i << "," << j << "," << QCDTFactorScaled[i][j] << std::endl;
         QCDTFactorScaled[i][j] = 0.000000000001;
       }
       //uncertainty of scaled tfactor have 3 parts: statistical, fit, and data MC difference
-      QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j] + QCDTFactorFit_err[i][j]*QCDTFactorFit_err[i][j] + TFactorsDataMCUnc[j]*TFactorsDataMCUnc[j] );
+      QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j]);
+      //QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j] + QCDTFactorFit_err[i][j]*QCDTFactorFit_err[i][j] + TFactorsDataMCUnc[j]*TFactorsDataMCUnc[j] );
     }
   }
 
@@ -618,12 +631,21 @@ void QCDFactors::getAndprintTFactorsfromDataHeader()
   std::cout << "TFactor in low MET region from Real Data:" << std::endl;
   for( int i=0 ; i<MT2_BINS ; i++ )
   {
-    nQCDNormalData_all_err[i] = std::sqrt( nQCDNormalData_all_err[i] );
-    nQCDInvertedData_all_err[i] = std::sqrt( nQCDInvertedData_all_err[i] );
-    QCDTFactorData[i] = nQCDNormalData_all[i]/nQCDInvertedData_all[i];
-    QCDTFactorData_err[i] = get_aoverb_Error( nQCDNormalData_all[i] , nQCDInvertedData_all[i] , nQCDNormalData_all_err[i], nQCDInvertedData_all_err[i] );
+    nQCDNormal_Data_all_err[i] = std::sqrt( nQCDNormal_Data_all_err[i] ); nQCDInverted_Data_all_err[i] = std::sqrt( nQCDInverted_Data_all_err[i] );
+    nQCDNormal_hadtauMC_all_err[i] = std::sqrt( nQCDNormal_hadtauMC_all_err[i] ); nQCDInverted_hadtauMC_all_err[i] = std::sqrt( nQCDInverted_hadtauMC_all_err[i] );
+    nQCDNormal_lostleptMC_all_err[i] = std::sqrt( nQCDNormal_lostleptMC_all_err[i] ); nQCDInverted_lostleptMC_all_err[i] = std::sqrt( nQCDInverted_lostleptMC_all_err[i] );
+    nQCDNormal_zinvMC_all_err[i] = std::sqrt( nQCDNormal_zinvMC_all_err[i] ); nQCDInverted_zinvMC_all_err[i] = std::sqrt( nQCDInverted_zinvMC_all_err[i] );
+    nQCDNormal_ttzMC_all_err[i] = std::sqrt( nQCDNormal_ttzMC_all_err[i] ); nQCDInverted_ttzMC_all_err[i] = std::sqrt( nQCDInverted_ttzMC_all_err[i] );
 
-    std::cout << "METBin0, MT2Bin" << i << " : " << nQCDNormalData_all[i] << "," << nQCDInvertedData_all[i] << std::endl;
+    QCDTFactorData[i] = (nQCDNormal_Data_all[i]-nQCDNormal_hadtauMC_all[i]-nQCDNormal_lostleptMC_all[i]-nQCDNormal_zinvMC_all[i]-nQCDNormal_ttzMC_all[i])/(nQCDInverted_Data_all[i]-nQCDInverted_hadtauMC_all[i]-nQCDInverted_lostleptMC_all[i]-nQCDInverted_zinvMC_all[i]-nQCDInverted_ttzMC_all[i]);
+    QCDTFactorData_err[i] = get_aoverb_Error( nQCDNormal_Data_all[i] , nQCDInverted_Data_all[i] , nQCDNormal_Data_all_err[i], nQCDInverted_Data_all_err[i] );
+
+    std::cout << "METBin0, MT2Bin (Data)     " << i << " : " << nQCDNormal_Data_all[i] << "," << nQCDInverted_Data_all[i] << std::endl;
+    std::cout << "METBin0, MT2Bin (HadTau_MC)" << i << " : " << nQCDNormal_hadtauMC_all[i] << "," << nQCDInverted_hadtauMC_all[i] << std::endl;
+    std::cout << "METBin0, MT2Bin (LL_MC)    " << i << " : " << nQCDNormal_lostleptMC_all[i] << "," << nQCDInverted_lostleptMC_all[i] << std::endl;
+    std::cout << "METBin0, MT2Bin (Zinv_MC)  " << i << " : " << nQCDNormal_zinvMC_all[i] << "," << nQCDInverted_zinvMC_all[i] << std::endl;
+    std::cout << "METBin0, MT2Bin (TTZ/W_MC) " << i << " : " << nQCDNormal_ttzMC_all[i] << "," << nQCDInverted_ttzMC_all[i] << std::endl;
+
     std::cout << "METBin0, MT2Bin" << i << " : " << QCDTFactorData[i] << "(" << QCDTFactorData_err[i] << ")" << std::endl;
   }
 
@@ -993,7 +1015,7 @@ void QCDFactors::CountingPlotsGen()
   //strs << (LUMI/1000);
   //std::string lumi_str = strs.str();
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2015, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2016, 4.0 fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -1041,12 +1063,15 @@ void QCDFactors::printDataCard()
 {
   std::cout << "Printing Data Card..." << std::endl;
 
+  //double sumcs = 0;
   std::cout << "QCD_Data_CS = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
+    //sumcs += DC_sb_Data[i_cal];
     std::cout << DC_sb_Data[i_cal] << " ";
     if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
   }
+  //std::cout << "nEvents All: " << sumcs << std::endl;  
 
   std::cout << "QCD_Data_CS_relative_err = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
@@ -1060,7 +1085,8 @@ void QCDFactors::printDataCard()
   std::cout << "QCD_otherBG_CS = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   { 
-    std::cout << DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal] << " ";
+    //std::cout << DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal] << " ";
+    std::cout << DC_sb_hadtauMC[i_cal] + DC_sb_lostleptMC[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal] << " ";
     if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
   }
   
@@ -1113,10 +1139,19 @@ void QCDFactors::printSysHeader()
   int i_cal = 0;
   int j_cal = 0;
 
-  SysHeader << "  const double head_QCD_TFactor_relative_err[" << NSEARCH_BINS <<"] = {";
+  SysHeader << "  const double head_QCD_Data_CS[" << NSEARCH_BINS <<"] = {";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
-  {
-    SysHeader << DC_sb_TFactor_err[i_cal]/DC_sb_TFactor[i_cal];
+  { 
+    SysHeader <<  DC_sb_Data[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
+    else SysHeader << "};"<<  std::endl;
+  }
+
+  SysHeader << "  const double head_QCD_otherBG_CS[" << NSEARCH_BINS << "] = {";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  { 
+    //SysHeader << DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal];
+    SysHeader << DC_sb_hadtauMC[i_cal] + DC_sb_lostleptMC[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal];
     if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
     else SysHeader << "};"<<  std::endl;
   }
@@ -1129,7 +1164,7 @@ void QCDFactors::printSysHeader()
     else SysHeader << "};"<<  std::endl;
   }
 
-  SysHeader << "  const double head_QCD_otherBG_sysdown[" << NSEARCH_BINS << "] = {";
+  SysHeader << "  const double head_QCD_otherBG_sysdn[" << NSEARCH_BINS << "] = {";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     SysHeader << nQCD_pred_sb_sysuncdown[i_cal];
@@ -1137,6 +1172,21 @@ void QCDFactors::printSysHeader()
     else SysHeader << "};"<<  std::endl;
   }
 
+  SysHeader << "  const double head_QCD_TFactor[" << NSEARCH_BINS << "] = {";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  { 
+    SysHeader << DC_sb_TFactor[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
+    else SysHeader << "};"<<  std::endl;
+  }
+
+  SysHeader << "  const double head_QCD_TFactor_relative_err[" << NSEARCH_BINS <<"] = {";
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    SysHeader << DC_sb_TFactor_err[i_cal]/DC_sb_TFactor[i_cal];
+    if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
+    else SysHeader << "};"<<  std::endl;
+  } 
   return ;
 }
 //##########functions to calculate Delta_R and Delta Phi###############

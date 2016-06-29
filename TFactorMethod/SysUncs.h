@@ -21,10 +21,18 @@
 
 #include "QCDReWeighting.h"
 #include "QCDBinFunction.h"
+
 #include "SysHeader.h"
+//#include "SysHeader45.h"
+//#include "SysHeader37.h"
+
+#include "Math/QuantFuncMathCore.h"
+#include "TMath.h"
+#include "TGraphAsymmErrors.h"
 
 #include "CMSStylePlot/CMS_lumi.h"
 //#include "CMSStylePlot/tdrstyle.h"
+//SearchBins mySearchBins("SB_37_2015");
 //SearchBins mySearchBins("SB_45_2015");
 SearchBins mySearchBins("SB_59_2016");
 
@@ -39,9 +47,9 @@ class SysUncs
   TFile * finSysUnc;
   TList * listSysUnc;
 
-  double final_pred[NSEARCH_BINS] = {0},final_pred_stat[NSEARCH_BINS] = {0};
+  double final_pred[NSEARCH_BINS] = {0},final_pred_stat_up[NSEARCH_BINS] = {0}, final_pred_stat_dn[NSEARCH_BINS] = {0};
   double sysunc_tfactors[NSEARCH_BINS] = {0}, sysunc_nonclosure[NSEARCH_BINS] = {0};
-  double sysunc_all_up[NSEARCH_BINS] = {0}, sysunc_all_down[NSEARCH_BINS] = {0};
+  double sysunc_all_up[NSEARCH_BINS] = {0}, sysunc_all_dn[NSEARCH_BINS] = {0};
 
   void Initialization(std::string type); 
   void Reset();
@@ -97,33 +105,18 @@ void SysUncs::Reset()
 
 void SysUncs::GetCentralPred()
 {
-  finPred = TFile::Open("PredQCDData.root");
-  listPred = finPred->GetListOfKeys();
-
-  TH1D * h_pred;
-
-  int NPredHist;
-  NPredHist = listPred->GetSize();
-
-  for(int i  = 0 ; i < NPredHist ; i++)
+  for (int i = 0; i < NSEARCH_BINS ; i++)
   {
-    if( TString(listPred->At(i)->GetName()).Contains( "_pred_sb" ) )
-    {
-      h_pred = (TH1D*)finPred->Get(listPred->At(i)->GetName())->Clone();
-    }
-    else 
-      continue;
+    final_pred[i] = (head_QCD_Data_CS[i] - head_QCD_otherBG_CS[i]) * head_QCD_TFactor[i];
+    const double alpha = 1 - 0.6827;
+    double N = head_QCD_Data_CS[i];
+    final_pred_stat_dn[i] = (N==0) ? 0  : (ROOT::Math::gamma_quantile(alpha/2,N,1.));
+    final_pred_stat_dn[i] = (N-final_pred_stat_dn[i]) * head_QCD_TFactor[i];
+    final_pred_stat_up[i] = ROOT::Math::gamma_quantile_c(alpha/2,N+1,1);
+    final_pred_stat_up[i] = (final_pred_stat_up[i]-N) * head_QCD_TFactor[i];
   }
 
-  for (int j = 1; j < NSEARCH_BINS+1 ; j++)
-  {
-    final_pred[j-1] = h_pred->GetBinContent(j);
-    final_pred_stat[j-1] = h_pred->GetBinError(j);
-  }
-
-  finPred->Close();
-  listPred->Clear();
-  std::cout << "Done with Cental Pred setting! Resetting the file and list object!" << std::endl;
+  std::cout << "Done with Cental Pred setting!" << std::endl;
   return ;
 }
 
@@ -233,7 +226,7 @@ void SysUncs::GetNonClosureSysUnc()
       sysunc_nonclosure[j-1] = std::max( std::abs(e) , std::abs((sysunc-pred)/pred) );
       std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< sysunc << " Error: " << e << std::endl;
     }
-    else if( j!=1 && ((pred <= 0) || (sysunc <= 0)) ){ sysunc_nonclosure[j-1] = std::abs(sysunc-pred); }
+    else if( j!=1 && ((pred <= 0) || (sysunc <= 0)) ){ sysunc_nonclosure[j-1] = sysunc_nonclosure[j-2]; }
     else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
   }
 
@@ -252,12 +245,14 @@ void SysUncs::combineSysUncs()
   for(int i=0;i<NSEARCH_BINS;i++)
   {
     sysunc_all_up[i] = head_QCD_otherBG_sysup[i];
-    sysunc_all_down[i] = head_QCD_otherBG_sysdown[i];
+    sysunc_all_dn[i] = head_QCD_otherBG_sysdn[i];
+
+    //sysunc_nonclosure[i] = head_QCD_NonClosure_relative_err[i];
 
     if( final_pred[i] > 0 )
     {
       sysunc_all_up[i] += final_pred[i] * std::sqrt(sysunc_tfactors[i]*sysunc_tfactors[i] + sysunc_nonclosure[i]*sysunc_nonclosure[i]);
-      sysunc_all_down[i] += final_pred[i] * std::sqrt(sysunc_tfactors[i]*sysunc_tfactors[i] + sysunc_nonclosure[i]*sysunc_nonclosure[i]);
+      sysunc_all_dn[i] += final_pred[i] * std::sqrt(sysunc_tfactors[i]*sysunc_tfactors[i] + sysunc_nonclosure[i]*sysunc_nonclosure[i]);
     }
   }
   return ;
@@ -267,7 +262,7 @@ void SysUncs::printSysUncs()
 {
   for(int i=0;i<NSEARCH_BINS;i++)
   {
-    std::cout << "SB: "<< i << ", SysUnc_All(up): " << sysunc_all_up[i] << ", SysUnc_All(down): " << sysunc_all_down[i] << ", SysUnc_TFactor: "<< sysunc_tfactors[i] << ", SysUnc_NonClosure: " << sysunc_nonclosure[i] << std::endl;
+    std::cout << "SB: "<< i << ", SysUnc_All(up): " << sysunc_all_up[i] << ", SysUnc_All(dn): " << sysunc_all_dn[i] << ", SysUnc_TFactor: "<< sysunc_tfactors[i] << ", SysUnc_NonClosure: " << sysunc_nonclosure[i] << std::endl;
   }
   return ;
 }
@@ -282,11 +277,13 @@ void SysUncs::printLatexTable()
   {
     double tmp_pred = final_pred[ib];
     if( tmp_pred < 0) tmp_pred = 0;
-    double tmp_stat = final_pred_stat[ib];
+    double tmp_stat_up = final_pred_stat_up[ib];
+    double tmp_stat_dn = final_pred_stat_dn[ib];
     double tmp_sys_up = sysunc_all_up[ib];
-    double tmp_sys_down = sysunc_all_down[ib];
+    double tmp_sys_dn = sysunc_all_dn[ib];
 
-    std::string addstr ="& " + (std::to_string(tmp_pred)).substr(0,5) + " $\\pm$ " + (std::to_string(tmp_stat)).substr(0,5) + " $^{+" + (std::to_string(tmp_sys_up)).substr(0,5) + "}_{-" + (std::to_string(tmp_sys_down)).substr(0,5) + "}$ " + " \\\\";
+    std::string addstr ="& " + (std::to_string(tmp_pred)).substr(0,5) + " $^{+" + (std::to_string(tmp_stat_up)).substr(0,5) + "}_{-" + (std::to_string(tmp_stat_dn)).substr(0,5) + "}$ " + " $^{+" + (std::to_string(tmp_sys_up)).substr(0,5) + "}_{-" + (std::to_string(tmp_sys_dn)).substr(0,5) + "}$ " + " \\\\";
+    //std::string addstr ="& " + (std::to_string(tmp_pred)).substr(0,5) + " $\\pm$ " + (std::to_string(tmp_stat)).substr(0,5) + " $^{+" + (std::to_string(tmp_sys_up)).substr(0,5) + "}_{-" + (std::to_string(tmp_sys_dn)).substr(0,5) + "}$ " + " \\\\";
 
     std::string outstr = mySearchBins.get_searchBins_defstr(ib,addstr);
     //printf("%s", outstr.c_str());
@@ -303,7 +300,9 @@ void SysUncs::printFinalPred()
   gStyle->SetOptStat(0);
 
   TH1D *h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+  //h->SetBinErrorOption(TH1::kPoisson);
 
+  /*
   h_pred_sb->SetMarkerStyle(20);
   h_pred_sb->SetMarkerColor(kBlue);
   h_pred_sb->SetLineColor(h_pred_sb->GetMarkerColor());
@@ -323,17 +322,34 @@ void SysUncs::printFinalPred()
   h_pred_sb->GetXaxis()->SetTitle("Search region bin number");
 
   h_pred_sb->GetYaxis()->SetRangeUser(0,18);
+  */
+
+  h_pred_sb->GetYaxis()->SetRangeUser(0,12);
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    final_pred[i_cal] > 0 ? h_pred_sb->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb->SetBinContent( i_cal+1 , 0 ) ;
+  }
+ 
+  //h_pred_sb->Draw("e0");
+  TGraphAsymmErrors * g = new TGraphAsymmErrors(h_pred_sb);
+  g->SetMarkerSize(0.5);
+  g->SetMarkerStyle (20);
 
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    double e = std::sqrt(sysunc_all_down[i_cal]*sysunc_all_down[i_cal] + final_pred_stat[i_cal]*final_pred_stat[i_cal]);
-    final_pred[i_cal] > 0 ? h_pred_sb->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb->SetBinContent( i_cal+1 , 0 ) ;
-    h_pred_sb->SetBinError( i_cal+1 , e );
-  }
-  
-  h_pred_sb->Draw("e0");
+    double N = h_pred_sb->GetBinContent( i_cal+1 ); 
+    double e_up = std::sqrt(sysunc_all_up[i_cal]*sysunc_all_up[i_cal] + final_pred_stat_up[i_cal]*final_pred_stat_up[i_cal]);
+    double e_dn = std::sqrt(sysunc_all_dn[i_cal]*sysunc_all_dn[i_cal] + final_pred_stat_dn[i_cal]*final_pred_stat_dn[i_cal]);
 
-  mySearchBins.drawSBregionDef(0.0, 18.0);
+    std::cout << "test on e_dn" << e_dn << std::endl;
+    g->SetPointEYlow(i_cal, e_dn);
+    g->SetPointEYhigh(i_cal, e_up);
+  }
+  g->GetXaxis()->SetRangeUser(0,NSEARCH_BINS+1);
+  g->GetYaxis()->SetRangeUser(0,12);
+  g->Draw("AP");
+
+  mySearchBins.drawSBregionDef(0.0,12.0,false);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );
