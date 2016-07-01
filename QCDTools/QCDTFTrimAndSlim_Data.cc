@@ -67,8 +67,13 @@ int main(int argc, char* argv[])
   Double_t metphi, mhtphi;
   selectedTree->Branch("metphi",&metphi,"metphi/D");
   selectedTree->Branch("mhtphi",&mhtphi,"mhtphi/D");
+
+  Int_t nmus,nels;
+  selectedTree->Branch("nMuons"    ,&nmus,"nMuons/I"    );
+  selectedTree->Branch("nElectrons",&nels,"nElectrons/I");
   //Boolean related to the baseline
-  Bool_t passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
+  Bool_t passLeptVeto, passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
+  selectedTree->Branch("passLeptVeto"        ,&passLeptVeto        ,"passLeptVeto/O");
   selectedTree->Branch("passTagger"          ,&passTagger          ,"passTagger/O");
   selectedTree->Branch("passBJets"           ,&passBJets           ,"passBJets/O");
   selectedTree->Branch("passQCDHighMETFilter",&passQCDHighMETFilter,"passQCDHighMETFilter/O");
@@ -97,7 +102,6 @@ int main(int argc, char* argv[])
   while(tr.getNextEvent())
   {
     met = tr.getVar<double>("met");
-    bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
     bool passnJets = tr.getVar<bool>("passnJets"+spec);
     bool passHT = tr.getVar<bool>("passHT"+spec);
     bool passMT2 = tr.getVar<bool>("passMT2"+spec);
@@ -108,7 +112,7 @@ int main(int argc, char* argv[])
     //bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
  
     bool passQCDTFTrimAndSlim = ( met > 175)
-                             && passLeptVeto
+                             //&& passLeptVeto
                              && passnJets
                              && passHT
                              && passMT2;
@@ -132,8 +136,12 @@ int main(int argc, char* argv[])
       mht = mht_TLV.Pt(); 
       metphi = tr.getVar<double>("metphi");
       mhtphi = mht_TLV.Phi();
+      nmus = tr.getVar<int>("nMuons_CUT"+spec);
+      nels = tr.getVar<int>("nElectrons_CUT"+spec);
+      
       TriggerNames = tr.getVec<std::string>("TriggerNames");
       PassTrigger = tr.getVec<int>("PassTrigger");
+      passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
       passTagger = tr.getVar<bool>("passTagger"+spec);
       passBJets = tr.getVar<bool>("passBJets"+spec);
       passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);

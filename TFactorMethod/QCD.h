@@ -524,10 +524,11 @@ void QCDFactors::TFactorFit()
 
 void QCDFactors::TFactorScale()
 {
-  double TFactorsDataMCDiff[MT2_BINS] = {0}, TFactorsDataMCUnc[MT2_BINS] = {0};
+  double TFactorsDataMCRatio[MT2_BINS] = {0}, TFactorsDataMCDiff[MT2_BINS] = {0}, TFactorsDataMCUnc[MT2_BINS] = {0};
 
   for(int i=0;i<MT2_BINS;i++)
   {
+    TFactorsDataMCRatio[i] = head_QCDTFactorData[i]/QCDTFactor[0][i];
     //TFactorsDataMCDiff[i] = head_QCDTFactorData[i] - QCDTFactorFit[0][i];
     TFactorsDataMCDiff[i] = head_QCDTFactorData[i] - QCDTFactor[0][i];
     //double r = head_QCDTFactorData[i]/QCDTFactorFit[0][i];
@@ -543,14 +544,19 @@ void QCDFactors::TFactorScale()
     for(int j=0;j<MT2_BINS;j++)
     {
       //QCDTFactorScaled[i][j] = QCDTFactorFit[i][j] + TFactorsDataMCDiff[j];
-      QCDTFactorScaled[i][j] = QCDTFactor[i][j] + TFactorsDataMCDiff[j];
-      if( QCDTFactorScaled[i][j] < 0 )
+      //QCDTFactorScaled[i][j] = QCDTFactor[i][j] + TFactorsDataMCDiff[j];
+      QCDTFactorScaled[i][j] = QCDTFactor[i][j] * TFactorsDataMCRatio[j];
+      double tmpunc = QCDTFactor[i][j] + TFactorsDataMCDiff[j];
+      if( tmpunc < 0 )
       { 
-        std::cout << "METBIN,MT2BIN,TFactorScaled: " << i << "," << j << "," << QCDTFactorScaled[i][j] << std::endl;
-        QCDTFactorScaled[i][j] = 0.000000000001;
+        std::cout << "METBIN,MT2BIN,TFactorScaled: " << i << "," << j << "," << tmpunc << std::endl;
+        tmpunc = 0.000000000001;
       }
+      tmpunc = std::abs(QCDTFactorScaled[i][j] - tmpunc);
       //uncertainty of scaled tfactor have 3 parts: statistical, fit, and data MC difference
-      QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j]);
+      //QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j]);
+      if(i!=0) QCDTFactorScaled_err[i][j] = tmpunc;
+      else QCDTFactorScaled_err[i][j] = TFactorsDataMCUnc[j];
       //QCDTFactorScaled_err[i][j] = std::sqrt( QCDTFactor_err[i][j]*QCDTFactor_err[i][j] + QCDTFactorFit_err[i][j]*QCDTFactorFit_err[i][j] + TFactorsDataMCUnc[j]*TFactorsDataMCUnc[j] );
     }
   }
@@ -1093,14 +1099,16 @@ void QCDFactors::printDataCard()
   std::cout << "QCD_otherBG_CS_relative_errup = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   { 
-    std::cout << std::sqrt( DC_sb_hadtau_errup[i_cal]*DC_sb_hadtau_errup[i_cal] + DC_sb_lostlept_errup[i_cal]*DC_sb_lostlept_errup[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " "; 
+    //std::cout << std::sqrt( DC_sb_hadtau_errup[i_cal]*DC_sb_hadtau_errup[i_cal] + DC_sb_lostlept_errup[i_cal]*DC_sb_lostlept_errup[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " "; 
+    std::cout << std::sqrt( DC_sb_hadtauMC_err[i_cal]*DC_sb_hadtauMC_err[i_cal] + DC_sb_lostleptMC_err[i_cal]*DC_sb_lostleptMC_err[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtauMC[i_cal] + DC_sb_lostleptMC[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " "; 
     if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
   }
 
   std::cout << "QCD_otherBG_CS_relative_errdown = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    std::cout << std::sqrt( DC_sb_hadtau_errdown[i_cal]*DC_sb_hadtau_errdown[i_cal] + DC_sb_lostlept_errdown[i_cal]*DC_sb_lostlept_errdown[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " ";
+    //std::cout << std::sqrt( DC_sb_hadtau_errdown[i_cal]*DC_sb_hadtau_errdown[i_cal] + DC_sb_lostlept_errdown[i_cal]*DC_sb_lostlept_errdown[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtau[i_cal] + DC_sb_lostlept[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " ";
+    std::cout << std::sqrt( DC_sb_hadtauMC_err[i_cal]*DC_sb_hadtauMC_err[i_cal] + DC_sb_lostleptMC_err[i_cal]*DC_sb_lostleptMC_err[i_cal] + DC_sb_zinvMC_err[i_cal]*DC_sb_zinvMC_err[i_cal] + DC_sb_ttzMC_err[i_cal]*DC_sb_ttzMC_err[i_cal] )/(DC_sb_hadtauMC[i_cal] + DC_sb_lostleptMC[i_cal] + DC_sb_zinvMC[i_cal] + DC_sb_ttzMC[i_cal]) << " ";
     if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
   }
 
@@ -1124,7 +1132,7 @@ void QCDFactors::printDataCard()
   std::cout << "QCD_TFactor_relative_err = ";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    std::cout << DC_sb_TFactor_err[i_cal]/DC_sb_TFactor[i_cal] << " ";
+    std::cout << DC_sb_TFactor_err[i_cal] << " ";
     if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
   }
 
@@ -1183,7 +1191,7 @@ void QCDFactors::printSysHeader()
   SysHeader << "  const double head_QCD_TFactor_relative_err[" << NSEARCH_BINS <<"] = {";
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    SysHeader << DC_sb_TFactor_err[i_cal]/DC_sb_TFactor[i_cal];
+    SysHeader << DC_sb_TFactor_err[i_cal];
     if(i_cal != NSEARCH_BINS -1 ) SysHeader << ",";
     else SysHeader << "};"<<  std::endl;
   } 

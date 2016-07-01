@@ -2,7 +2,7 @@ import sys
 import glob, os
 # Skimmed QCD samples location
 # d = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/TTJets_Nominal_MET200HT500_v3"
-d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_10/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt"
+d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt"
 # Full QCD samples location
 # d = "/eos/uscms/store/group/lpcsusyhad/Spring15_74X_Oct_2015_Ntp_v2X/"
 for dirname, dirnames, filenames in os.walk(d):
@@ -29,11 +29,11 @@ for dirname, dirnames, filenames in os.walk(d):
     #if ( ('ST_' in filename) ):
     #if ( ('WJetsToLNu_HT' in filename) ): 
     #if ( ('TTJets_' in filename) ): 
-    if ( ('ZJetsToNuNu_HT-' in filename) ):
-    #if ( ('HTMHT' in filename) ):
+    #if ( ('ZJetsToNuNu_HT-' in filename) ):
+    if ( ('HTMHT' in filename) ):
       #sys.stdout.write('$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/' + filename + ', ')
       #print ("$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/" + filename + ", ")
-      print ("arguments = $ENV(CMSSW_BASE) Zinv " + filename)
+      print ("arguments = $ENV(CMSSW_BASE) Data " + filename)
       print ("Queue")
       print ""
       #print(os.path.join(dirname, filename))

@@ -60,12 +60,19 @@ int main(int argc, char* argv[])
   selectedTree->Branch("nJets30",&njets30,"nJets30/I");
   selectedTree->Branch("nJets50",&njets50,"nJets50/I");
   selectedTree->Branch("ht",&ht,"ht/D");
+
+  Int_t nmus,nels;
+  selectedTree->Branch("nMuons"    ,&nmus,"nMuons/I"    );
+  selectedTree->Branch("nElectrons",&nels,"nElectrons/I");
   //Boolean related to the baseline
-  Bool_t passTagger,passBJets,passQCDHighMETFilter,passdPhis;
+  Bool_t passLeptVeto, passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
+  selectedTree->Branch("passLeptVeto"        ,&passLeptVeto        ,"passLeptVeto/O");
   selectedTree->Branch("passTagger"          ,&passTagger          ,"passTagger/O");
   selectedTree->Branch("passBJets"           ,&passBJets           ,"passBJets/O");
   selectedTree->Branch("passQCDHighMETFilter",&passQCDHighMETFilter,"passQCDHighMETFilter/O");
   selectedTree->Branch("passdPhis"           ,&passdPhis           ,"passdPhis/O");
+  selectedTree->Branch("passNoiseEventFilter",&passNoiseEventFilter,"passNoiseEventFilter/O");  
+
   //LL information for TTJets Wjets and singleTop
   Bool_t isLL;
   selectedTree->Branch("isLL",&isLL,"isLL/O");
@@ -83,24 +90,22 @@ int main(int argc, char* argv[])
   while(tr.getNextEvent())
   {
     met = tr.getVar<double>("met");
-    bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
     bool passnJets = tr.getVar<bool>("passnJets"+spec);
     bool passHT = tr.getVar<bool>("passHT"+spec);
     bool passMT2 = tr.getVar<bool>("passMT2"+spec);
     //bool passTagger = tr.getVar<bool>("passTagger"+spec);
     //bool passBJets = tr.getVar<bool>("passBJets"+spec);
-    bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
     //bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
     //bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
  
     bool passQCDTFTrimAndSlim = ( met > 175)
-                             && passLeptVeto
+                             //&& passLeptVeto
                              && passnJets
                              && passHT
-                             && passMT2
+                             && passMT2;
                              //&& passTagger
                              //&& passBJets
-                             && passNoiseEventFilter;
+                             //&& passNoiseEventFilter;
     
     if(passQCDTFTrimAndSlim)
     {
@@ -114,10 +119,15 @@ int main(int argc, char* argv[])
       njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       ht = tr.getVar<double>("HT"+spec);
       //double mht = tr.getVar<double>("mht"); 
+
+      nmus = tr.getVar<int>("nMuons_CUT"+spec);
+      nels = tr.getVar<int>("nElectrons_CUT"+spec);
+      passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
       passTagger = tr.getVar<bool>("passTagger"+spec);
       passBJets = tr.getVar<bool>("passBJets"+spec);
       passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
       passdPhis = tr.getVar<bool>("passdPhis"+spec);
+      passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
 
       //determine if LL or HadTau. be careful! we need to set passLeptVeto first
       std::vector<int> W_emuVec = tr.getVec<int>("W_emuVec");

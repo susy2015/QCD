@@ -10,7 +10,7 @@ eval `scramv1 runtime -sh`
 #for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'QCDTFTrimAndSlim_.*root'` 
 #for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'DeepTrimmd_Spring16_80X_Jun_2016_Ntp_v6p0_fix_topProj_wt_data_topoff_WJetsToLNu_HT-.*root'` 
 #for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'DeepTrimmd_Spring16_80X_Jun_2016_Ntp_v6p0_fix_topProj_wt_data_topoff_ST_tW_.*root'`
-#for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'DeepTrimmd_Spring16_80X_Jun_2016_Ntp_v6p0_fix_topProj_wt_data_topoff_TTJets_.*root'`
+#for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'QCDTFTrimAndSlim_Spring16_80X_Jun_2016_Ntp_v7p0_.*root'`
 #for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'QCDTFTrimAndSlim_stopFlatNtuples_.*root'` 
 for i in `xrdfs root://cmseos.fnal.gov/ ls /store/group/lpcsusyhad/hua/Skimmed_2015Nov15 | grep -E 'DeepTrimmd_.*root'`
 do 
