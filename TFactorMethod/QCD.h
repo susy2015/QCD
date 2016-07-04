@@ -109,51 +109,6 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
   return ;
 }
 
-class CombineHistgram
-{
- public:
-  void BookHistgram(const char *);
-  TFile *oFile;
-  //Plots for zhenbin
-  TH1D *h_zb_met, *h_zb_njets30, *h_zb_njets50, *h_zb_mt2, *h_zb_ht, *h_zb_ntopjets, *h_zb_nbjets;
-  TH1D *h_zb_sb;
-
-  //Plots for zhenbin, top tagger study
-  TH1D *h_zb_htnjets30, *h_zb_htnjets50, *h_zb_htntopjets, *h_zb_htnbjets, *h_zb_htmet, *h_zb_htht;
-  TH1D *h_zb_httoppt, *h_zb_httopeta, *h_zb_httopphi, *h_zb_httopmass;
-
-  TH1D *h_cutflow;
-};
-
-void CombineHistgram::BookHistgram(const char *outFileName)
-{
-  oFile = new TFile(outFileName, "recreate");
-
-  h_zb_met = new TH1D("hMET","MET;#slash{E}_{T} [GeV];Events",24,200,800);
-  h_zb_njets30 = new TH1D("hNJets30","NJets30;N_{jets} (p_{T} > 30);Events",10,0,10);
-  h_zb_njets50 = new TH1D("hNJets50","NJets30;N_{jets} (p_{T} > 50);Events",10,0,10);
-  h_zb_mt2 = new TH1D("hMT2","MT2;M_{T2} [GeV];Events",24,200,800);
-  h_zb_ht = new TH1D("hHT","HT;H_{T} [GeV];Events",20,500,1000);
-  h_zb_ntopjets = new TH1D("hNTops","NTops;N_{tops};Events",5,0,5);
-  h_zb_nbjets = new TH1D("hNbJets","NbJets;N_{bjets};Events",5,0,5);
-
-  h_zb_sb = new TH1D("hSearchBins","Search Bins;Search Bin;Events",NSEARCH_BINS,0,NSEARCH_BINS);
-
-  h_zb_htnjets30 = new TH1D("hHTNJets30"    , "NJets30;N_{jets} (p_{T} > 30);Events" , 10 , 0    , 10);   // "cntNJetsPt30Eta24"
-  h_zb_htnjets50 = new TH1D("hHTNJets50"    , "NJets50;N_{jets} (p_{T} > 50);Events" , 10 , 0    , 10);   // "cntNJetsPt50Eta24"
-  h_zb_htntopjets = new TH1D("hHTNTops"      , "NTops;N_{tops};Events"                , 5  , 0    , 5);    // "nTopCandSortedCnt"
-  h_zb_htnbjets = new TH1D("hHTNbJets"     , "NbJets;N_{bjets};Events"              , 5  , 0    , 5);    // "cntCSVS"
-  h_zb_htmet = new TH1D("hHTMET"        , "MET;#slash{E}_{T} [GeV];Events"       , 24 , 200  , 800);  // "met"
-  h_zb_htht = new TH1D("hHTHT"         , "HT;H_{T} [GeV];Events"                , 20 , 500  , 1000); // "HT"
-
-  h_zb_httoppt = new TH1D("hHTTopPT"   , "Reco Top PT;p_{T} [GeV];Events" , 50 , 0  , 1000); 
-  h_zb_httopeta = new TH1D("hHTTopEta"  , "Reco Top Eta;#eta;Events" ,       20 , -5 , 5);
-  h_zb_httopphi = new TH1D("hHTTopPhi"  , "Reco Top Phi;#phi;Events" ,       20 , -5 , 5);
-  h_zb_httopmass = new TH1D("hHTTopMass" , "Reco Top Mass;Mass;Events" ,      40 , 80 , 280);
-
-  return ;
-}
-
 #define BCBin 5
 
 class BasicCheckHistgram
@@ -234,6 +189,73 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
 
   h_b_sb_Data = new TH1D("h_b_sb_Data","",60,0,60);
 
+  return ;
+}
+
+class SBCheckHistgram
+{
+ public:
+  void BookHistgram(const char *);
+  TFile *oFile;
+
+  TH1D *h_b_met_MC[NSEARCH_BINS][BCBin], *h_b_mt2_MC[NSEARCH_BINS][BCBin];
+  TH1D *h_b_ht_MC[NSEARCH_BINS][BCBin], *h_b_mht_MC[NSEARCH_BINS][BCBin], *h_b_njets30_MC[NSEARCH_BINS][BCBin], *h_b_njets50_MC[NSEARCH_BINS][BCBin];
+  
+  TH1D *h_b_met_Data[NSEARCH_BINS], *h_b_mt2_Data[NSEARCH_BINS], *h_b_ntopjets_Data[NSEARCH_BINS], *h_b_nbjets_Data[NSEARCH_BINS];
+  TH1D *h_b_ht_Data[NSEARCH_BINS], *h_b_mht_Data[NSEARCH_BINS], *h_b_njets30_Data[NSEARCH_BINS], *h_b_njets50_Data[NSEARCH_BINS];
+
+  TH1D *h_b_pfcalometr_Data[NSEARCH_BINS];
+};
+
+void SBCheckHistgram::BookHistgram(const char *outFileName)
+{ 
+  oFile = new TFile(outFileName, "recreate");
+  
+  for( Int_t i = 0 ; i < NSEARCH_BINS ; i++ )
+  {
+    std::string sb_index = std::to_string(i);
+    for( Int_t j = 0 ; j < BCBin ; j++ )
+    {
+      std::string smalltag;
+
+      if (j == 0) smalltag = "LL";
+      else if (j == 1) smalltag = "HadTau";
+      else if (j == 2) smalltag = "Zinv";
+      else if (j == 3) smalltag = "QCD";
+      else if (j == 4) smalltag = "TTZ";
+      else { smalltag = "XXX"; std::cout << "what the fuck ??!!" << std::endl; }
+
+      h_b_met_MC[i][j]     = new TH1D( ("h_b_met_MC_SB_"     + sb_index + "_" + smalltag).c_str(),"",20,150,550);
+      h_b_mt2_MC[i][j]     = new TH1D( ("h_b_mt2_MC_SB_"     + sb_index + "_" + smalltag).c_str(),"",20,200,600);
+      h_b_ht_MC[i][j]      = new TH1D( ("h_b_ht_MC_SB_"      + sb_index + "_" + smalltag).c_str(),"",50,500,3000);
+      h_b_mht_MC[i][j]     = new TH1D( ("h_b_mht_MC_SB_"     + sb_index + "_" + smalltag).c_str(),"",50,0,1000);
+      h_b_njets30_MC[i][j] = new TH1D( ("h_b_njets30_MC_SB_" + sb_index + "_" + smalltag).c_str(),"",10,4,14);
+      h_b_njets50_MC[i][j] = new TH1D( ("h_b_njets50_MC_SB_" + sb_index + "_" + smalltag).c_str(),"",15,2,17);
+
+      h_b_met_MC[i][j]->SetFillColor(i+2);
+      h_b_mt2_MC[i][j]->SetFillColor(i+2);
+      h_b_ht_MC[i][j]->SetFillColor(i+2);
+      h_b_mht_MC[i][j]->SetFillColor(i+2);
+      h_b_njets30_MC[i][j]->SetFillColor(i+2);
+      h_b_njets50_MC[i][j]->SetFillColor(i+2);
+
+      h_b_met_MC[i][j]->SetLineColor(i+2);
+      h_b_mt2_MC[i][j]->SetLineColor(i+2);
+      h_b_ht_MC[i][j]->SetLineColor(i+2);
+      h_b_mht_MC[i][j]->SetLineColor(i+2);
+      h_b_njets30_MC[i][j]->SetLineColor(i+2);
+      h_b_njets50_MC[i][j]->SetLineColor(i+2);
+    }
+
+    h_b_met_Data[i]     = new TH1D(("h_b_met_Data_SB_"     + sb_index).c_str(),"",20,150,550);
+    h_b_mt2_Data[i]     = new TH1D(("h_b_mt2_Data_SB_"     + sb_index).c_str(),"",20,200,600);
+    h_b_ht_Data[i]      = new TH1D(("h_b_ht_Data_SB_"      + sb_index).c_str(),"",50,500,3000);
+    h_b_mht_Data[i]     = new TH1D(("h_b_mht_Data_SB_"     + sb_index).c_str(),"",50,0,1000);
+    h_b_njets30_Data[i] = new TH1D(("h_b_njets30_Data_SB_" + sb_index).c_str(),"",10,4,14);
+    h_b_njets50_Data[i] = new TH1D(("h_b_njets50_Data_SB_" + sb_index).c_str(),"",15,2,17);
+
+    h_b_pfcalometr_Data[i] = new TH1D(("h_b_pfcalometr_Data_SB_" + sb_index).c_str(),"",10,0,10);
+  }
   return ;
 }
 

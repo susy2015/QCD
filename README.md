@@ -47,7 +47,7 @@ And it will be involved into make command automatically and we do not have error
 
 ./QCD CalOnly ../QCDTools/QCDStopFlattrees/runList_QCD_HT_QCDTFTrimAndSlim_2016ICHEPv7.txt ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2016ICHEPv7.txt
 
-The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheckQCD BasicCheckLL QCDCombine
+The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheckQCD BasicCheckLL SBCheck
 
 3.Making plots:
 
@@ -93,4 +93,6 @@ python NTuple_DeepTrim.py QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
 
 3.Basic Slim:
 
-Under construction
+python NTuple_QCDTFTrimAndSlim.py QCD QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
+
+Other valid run types are: QCD, LLHadTau, Zinv, TTZ and Data

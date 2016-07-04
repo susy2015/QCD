@@ -287,7 +287,7 @@ void SysUncs::printLatexTable()
 
     std::string outstr = mySearchBins.get_searchBins_defstr(ib,addstr);
     //printf("%s", outstr.c_str());
-    std::cout<<outstr; 
+    std::cout<< outstr; 
   }
   std::cout<<std::endl<<std::endl;
   return ;
