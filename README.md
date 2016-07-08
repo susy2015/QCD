@@ -3,23 +3,23 @@
 
 1.Set CMS Environment:
 
+```
 setenv SCRAM_ARCH slc6_amd64_gcc491(export SCRAM_ARCH = slc6_amd64_gcc491)
-
-cmsrel CMSSW_8_0_10
-
-cd CMSSW_8_0_10/src/
-
+cmsrel CMSSW_8_0_12
+cd CMSSW_8_0_12/src/
 cmsenv
+```
 
 2.Download source code from github and compile plugins:
 
+```
+git cms-init
+git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
-
-git clone -b Ana_Prod_merged_June17_2016_fix_top_projection_bug_data_topoff git@github.com:susy2015/SusyAnaTools.git
-
+git clone -b Ana_V7_Fix_CSV_WP git@github.com:susy2015/SusyAnaTools.git
 git clone https://github.com/susy2015/QCD.git
-
-scram b -j 9
+scram b -j 10
+```
 
 # QCD Translation Factor Method
 
@@ -43,11 +43,11 @@ And it will be involved into make command automatically and we do not have error
 
 2.Run the QCD code:
 
+```
 ./QCD RunMode runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v4.txt
-
 ./QCD CalOnly ../QCDTools/QCDStopFlattrees/runList_QCD_HT_QCDTFTrimAndSlim_2016ICHEPv7.txt ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2016ICHEPv7.txt
-
 ./QCD CalOnly ../QCDTools/QCDStopFlattrees/runList_QCD_HT_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt
+```
 
 The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheckQCD BasicCheckLL SBCheck
 
