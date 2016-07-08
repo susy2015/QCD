@@ -1,3 +1,10 @@
+rm ../condor_DeepTrim_Data
+rm ../condor_DeepTrim_LL
+rm ../condor_QCDTFTrimAndSlim_Data
+rm ../condor_QCDTFTrimAndSlim_LLHadTau
+rm ../condor_QCDTFTrimAndSlim_Zinv
+rm ../condor_QCDTFTrimAndSlim_QCD
+rm ../condor_QCDTFTrimAndSlim_TTZ
 python python_condor_DeepTrim_Gen.py Data >> ../condor_DeepTrim_Data
 python python_condor_DeepTrim_Gen.py LL >> ../condor_DeepTrim_LL
 python python_condor_QCDTFTrimAndSlim_Gen.py Data >> ../condor_QCDTFTrimAndSlim_Data  

@@ -56,11 +56,15 @@ int main(int argc, char* argv[])
   selectedTree->Branch("nTop",&ntopjets,"nTop/I");
   selectedTree->Branch("nBot",&nbotjets,"nBot/I");
   //AUX variables maybe useful for research
-  Int_t njets30,njets50; Double_t ht;
+  Int_t njets30,njets50; Double_t ht,mht;
   selectedTree->Branch("nJets30",&njets30,"nJets30/I");
   selectedTree->Branch("nJets50",&njets50,"nJets50/I");
   selectedTree->Branch("ht",&ht,"ht/D");
- 
+  selectedTree->Branch("mht",&mht,"mht/D");
+  Double_t metphi, mhtphi;
+  selectedTree->Branch("metphi",&metphi,"metphi/D");
+  selectedTree->Branch("mhtphi",&mhtphi,"mhtphi/D");
+
   Int_t nmus,nels;
   selectedTree->Branch("nMuons"    ,&nmus,"nMuons/I"    );
   selectedTree->Branch("nElectrons",&nels,"nElectrons/I");
@@ -114,7 +118,10 @@ int main(int argc, char* argv[])
       njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       ht = tr.getVar<double>("HT"+spec);
-      //double mht = tr.getVar<double>("mht"); 
+      TLorentzVector mht_TLV = AnaFunctions::calcMHT(tr.getVec<TLorentzVector>("jetsLVec"), AnaConsts::pt30Eta24Arr);
+      mht = mht_TLV.Pt();
+      metphi = tr.getVar<double>("metphi");
+      mhtphi = mht_TLV.Phi();
 
       nmus = tr.getVar<int>("nMuons_CUT"+spec);
       nels = tr.getVar<int>("nElectrons_CUT"+spec);

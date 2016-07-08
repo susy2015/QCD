@@ -244,8 +244,8 @@ void SysUncs::combineSysUncs()
 {
   for(int i=0;i<NSEARCH_BINS;i++)
   {
-    sysunc_all_up[i] = head_QCD_otherBG_sysup[i];
-    sysunc_all_dn[i] = head_QCD_otherBG_sysdn[i];
+    sysunc_all_up[i] = head_QCD_TFactor[i]*head_QCD_otherBG_CS[i]*head_QCD_otherBG_sysup[i];
+    sysunc_all_dn[i] = head_QCD_TFactor[i]*head_QCD_otherBG_CS[i]*head_QCD_otherBG_sysdn[i];
 
     //sysunc_nonclosure[i] = head_QCD_NonClosure_relative_err[i];
 
@@ -324,7 +324,7 @@ void SysUncs::printFinalPred()
   h_pred_sb->GetYaxis()->SetRangeUser(0,18);
   */
 
-  h_pred_sb->GetYaxis()->SetRangeUser(0,12);
+  h_pred_sb->GetYaxis()->SetRangeUser(0,20);
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     final_pred[i_cal] > 0 ? h_pred_sb->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb->SetBinContent( i_cal+1 , 0 ) ;
@@ -346,10 +346,10 @@ void SysUncs::printFinalPred()
     g->SetPointEYhigh(i_cal, e_up);
   }
   g->GetXaxis()->SetRangeUser(0,NSEARCH_BINS+1);
-  g->GetYaxis()->SetRangeUser(0,12);
+  g->GetYaxis()->SetRangeUser(0,20);
   g->Draw("AP");
 
-  mySearchBins.drawSBregionDef(0.0,12.0,false);
+  mySearchBins.drawSBregionDef(0.0,20.0,false);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );

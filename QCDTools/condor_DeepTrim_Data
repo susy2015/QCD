@@ -1,263 +1,3 @@
-universe = vanilla
-request_disk   = 50 GB
-request_memory = 1.5 GB
-executable = $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh
-should_transfer_files = YES
-#when_to_transfer_output = ON_EXIT
-
-##transfer file list for ttbar-leptonic samples
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.dc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.db, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.da, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cy, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cx, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cu, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ct, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cs, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cr, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cp, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.co, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cn, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cm, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cl, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ck, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ci, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ch, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ce, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ca, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.by, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bx, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bu, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bs, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.br, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bp, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bo, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bn, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bm, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bl, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bk, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bi, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.be, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ba, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.az, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ay, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ax, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.av, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.au, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.at, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.as, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ar, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ap, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ao, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aa
-
-Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stdout
-Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr
-Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).log
-notify_user = hua.wei@cern.ch
-
-####HTMHT Data####
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.dc
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.db
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.da
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cz
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cy
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cx
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cw
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cv
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cu
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ct
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cs
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cr
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cq
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cp
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.co
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cn
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cm
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cl
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ck
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cj
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ci
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ch
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cg
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cf
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ce
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cd
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cc
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cb
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ca
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bz
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.by
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bx
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bw
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bv
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bu
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bt
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bs
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.br
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bq
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bp
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bo
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bn
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bm
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bl
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bk
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bj
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bi
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bh
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bg
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bf
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.be
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bd
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bc
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bb
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ba
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.az
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ay
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ax
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aw
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.av
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.au
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.at
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.as
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ar
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aq
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ap
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ao
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.an
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.am
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.al
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ak
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aj
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ai
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ah
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ag
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.af
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ae
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ad
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ac
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ab
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aa
-Queue
-
 #The valid run types for DeepTrim are Data, LL! While the current run type is : Data
 universe = vanilla
 request_disk   = 50 GB
@@ -267,7 +7,7 @@ should_transfer_files = YES
 #when_to_transfer_output = ON_EXIT
 
 ##transfer file list for Data samples
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.dc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.db, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.da, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cy, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cx, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cu, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ct, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cs, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cr, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cp, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.co, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cn, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cm, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cl, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ck, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ci, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ch, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ce, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ca, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.by, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bx, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bu, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bs, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.br, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bp, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bo, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bn, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bm, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bl, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bk, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bi, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.be, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ba, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.az, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ay, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ax, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.av, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.au, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.at, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.as, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ar, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ap, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ao, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aa, 
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ao, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ap, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ar, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.as, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.at, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.au, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.av, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.aw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ax, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ay, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.az, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ba, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.be, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bi, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bk, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bl, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bm, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bn, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bo, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bp, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.br, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bs, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bu, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bx, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.by, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.bz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ca, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ce, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ch, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ci, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ck, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cl, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cm, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cn, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.co, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cp, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cr, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cs, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.ct, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cu, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cx, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cy, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.cz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.da, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.db, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/HTMHTSplit.dc, 
 
 Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stdout
 Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr
@@ -276,246 +16,246 @@ notify_user = hua.wei@cern.ch
 
 #### HTMHT ####
 
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.dc
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.db
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.da
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cz
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cy
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cx
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cw
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cv
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cu
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ct
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cs
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cr
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cq
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cp
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.co
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cn
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cm
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cl
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ck
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cj
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ci
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ch
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cg
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cf
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ce
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cd
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cc
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.cb
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ca
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bz
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.by
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bx
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bw
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bv
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bu
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bt
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bs
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.br
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bq
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bp
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bo
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bn
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bm
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bl
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bk
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bj
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bi
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bh
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bg
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bf
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.be
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bd
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bc
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.bb
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ba
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.az
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ay
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ax
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aw
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.av
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.au
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.at
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.as
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ar
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aq
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ap
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ao
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.an
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.am
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.al
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ak
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aj
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ai
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ah
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ag
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.af
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ae
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ad
-Queue
-
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.ac
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.aa
 Queue
 
 arguments = $ENV(CMSSW_BASE) HTMHTSplit.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) HTMHTSplit.aa
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ac
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ad
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ae
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.af
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ag
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ah
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ai
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.aj
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ak
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.al
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.am
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.an
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ao
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ap
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.aq
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ar
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.as
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.at
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.au
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.av
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.aw
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ax
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ay
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.az
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ba
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bb
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bc
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bd
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.be
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bf
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bg
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bh
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bi
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bj
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bk
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bl
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bm
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bn
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bo
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bp
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bq
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.br
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bs
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bt
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bu
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bv
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bw
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bx
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.by
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.bz
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ca
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cb
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cc
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cd
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ce
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cf
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cg
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ch
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ci
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cj
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ck
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cl
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cm
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cn
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.co
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cp
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cq
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cr
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cs
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.ct
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cu
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cv
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cw
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cx
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cy
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.cz
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.da
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.db
+Queue
+
+arguments = $ENV(CMSSW_BASE) HTMHTSplit.dc
 Queue
 
