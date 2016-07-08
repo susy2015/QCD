@@ -31,10 +31,9 @@
 #include "Math/QuantFuncMathCore.h"
 #include "TMath.h"
 #include "TLorentzVector.h"
-//#include "TROOT.h"
-//#include "TInterpreter.h"
+
 #include "QCD.h"
-//#include "QCDReWeighting.h"
+
 #include "TFactorsHeader.h"
 #include "DataDriven.h"
 #include "TriggerEff.h"
@@ -755,7 +754,7 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
       int njets30 = tr.getVar<int>("nJets30");
       int njets50 = tr.getVar<int>("nJets50");
       double ht = tr.getVar<double>("ht");
-      //double mht = tr.getVar<double>("mht");
+      double mht = tr.getVar<double>("mht");
 
       //checking plots for full QCD samples
       //filling HT variables for quick weight check
@@ -812,7 +811,7 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_nbjets_Data)->Fill(nbotjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight*metEff);
-          //(myBasicCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*metEff);
 
@@ -854,7 +853,7 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*metEff);
-          //(myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*metEff);
 
@@ -905,7 +904,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       int njets30 = tr.getVar<int>("nJets30");
       int njets50 = tr.getVar<int>("nJets50");
       double ht = tr.getVar<double>("ht");
-      //double mht = tr.getVar<double>("mht");
+      double mht = tr.getVar<double>("mht");
 
       //if( met < 175 ) continue;
       int metbin_number = Set_metbin_number(met);
@@ -963,7 +962,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_nbjets_Data)->Fill(nbotjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight*metEff);
-          //(myBasicCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*metEff);
 
@@ -1007,7 +1006,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*metEff);
-          //(myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*metEff);
           (myBasicCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*metEff);
 
@@ -1058,7 +1057,7 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
       int njets30 = tr.getVar<int>("nJets30");
       int njets50 = tr.getVar<int>("nJets50");
       double ht = tr.getVar<double>("ht");
-      //double mht = tr.getVar<double>("mht");
+      double mht = tr.getVar<double>("mht");
 
       int metbin_number = Set_metbin_number(met);
       int mt2bin_number = Set_mt2bin_number(mt2);
@@ -1110,7 +1109,7 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
           (mySBCheckHistgram.h_b_met_Data[searchbin_id])->Fill(met,thisweight*metEff);
           (mySBCheckHistgram.h_b_mt2_Data[searchbin_id])->Fill(mt2,thisweight*metEff);
           (mySBCheckHistgram.h_b_ht_Data[searchbin_id])->Fill(ht,thisweight*metEff);
-          //(mySBCheckHistgram.h_b_mht_Data[searchbin_id])->Fill(mht,thisweight*metEff);
+          (mySBCheckHistgram.h_b_mht_Data[searchbin_id])->Fill(mht,thisweight*metEff);
           (mySBCheckHistgram.h_b_njets30_Data[searchbin_id])->Fill(njets30,thisweight*metEff);
           (mySBCheckHistgram.h_b_njets50_Data[searchbin_id])->Fill(njets50,thisweight*metEff);
 
@@ -1152,7 +1151,7 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
           (mySBCheckHistgram.h_b_met_MC[searchbin_id][ih])->Fill(met,thisweight*metEff);
           (mySBCheckHistgram.h_b_mt2_MC[searchbin_id][ih])->Fill(mt2,thisweight*metEff);
           (mySBCheckHistgram.h_b_ht_MC[searchbin_id][ih])->Fill(ht,thisweight*metEff);
-          //(mySBCheckHistgram.h_b_mht_MC[searchbin_id][ih])->Fill(mht,thisweight*metEff);
+          (mySBCheckHistgram.h_b_mht_MC[searchbin_id][ih])->Fill(mht,thisweight*metEff);
           (mySBCheckHistgram.h_b_njets30_MC)[searchbin_id][ih]->Fill(njets30,thisweight*metEff);
           (mySBCheckHistgram.h_b_njets50_MC)[searchbin_id][ih]->Fill(njets50,thisweight*metEff);
         }

@@ -18,7 +18,6 @@
 
 #include "SusyAnaTools/Tools/searchBins.h"
 
-#include "QCDReWeighting.h"
 #include "QCDBinFunction.h"
 
 #include "CMSStylePlot/CMS_lumi.h"
@@ -74,7 +73,7 @@ void ClosurePlots::Initialization(std::string dir)
 
   //convert lumi from double pb-1 to string, fb-1
   std::ostringstream strs;
-  strs << (LUMI/1000);
+  strs << (4000/1000);
   lumi_str = strs.str();
 }
 

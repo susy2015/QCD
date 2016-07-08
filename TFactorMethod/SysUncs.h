@@ -19,7 +19,6 @@
 #include "SusyAnaTools/Tools/searchBins.h"
 //#include "SusyAnaTools/Tools/CMS_lumi.h"
 
-#include "QCDReWeighting.h"
 #include "QCDBinFunction.h"
 
 #include "SysHeader.h"

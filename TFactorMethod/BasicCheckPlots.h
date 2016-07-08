@@ -15,8 +15,6 @@
 #include "TLatex.h"
 #include "TStyle.h"
 
-#include "QCDReWeighting.h"
-
 TH1D* merge_hist_list(const TList& hists)
 {
   TIter next(hists.MakeIterator());
@@ -77,7 +75,7 @@ void BasicCheckPlots::Initialization(std::string dir)
 
   //convert lumi from double pb-1 to string, fb-1
   std::ostringstream strs;
-  strs << (LUMI/1000);
+  strs << (4000/1000);
   lumi_str = strs.str();
 }
 
