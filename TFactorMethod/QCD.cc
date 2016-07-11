@@ -34,18 +34,13 @@
 
 #include "QCD.h"
 
-#include "TFactorsHeader.h"
-#include "DataDriven.h"
-#include "TriggerEff.h"
+#include "QCDHardCodedInput/TFactorsHeader.h"
+#include "QCDHardCodedInput/DataDriven.h"
+#include "QCDHardCodedInput/TriggerEff.h"
 
 const double Scale = 1;
 //const double Scale = 591.5/2153.736;
 SearchBins mySearchBins("SB_59_2016");
-
-//                                  NJets =      1        2       3        4        5        6       7      >=8
-//const double zinv_NJetRweightingFactor[8] = {0.926542,1.03995,0.919711,0.723581,0.869969,0.95682,0.584418,0.874059};
-const double zinv_NJetRweightingFactor[8] = {1.09758 ,0.92655,0.911107,0.728836,0.607093,0.88641,0.588388,0.851549};
-const double zinv_RNorm = 0.828;
 
 void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
@@ -261,7 +256,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
     myQCDFactors.nQCD_exp_sb_err[i] = std::sqrt( myQCDFactors.nQCD_exp_sb_err[i] );
   }
 
-  myQCDFactors.printQCDClosureExp(myClosureHistgram);
+  //myQCDFactors.printQCDClosureExp(myClosureHistgram);
   (myClosureHistgram.oFile)->Write();
   (myClosureHistgram.oFile)->Close();
 
@@ -381,7 +376,7 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
     myQCDFactors.nQCD_pred_sb_err[i] = std::sqrt( myQCDFactors.nQCD_pred_sb_err[i] );
   }
 
-  myQCDFactors.printQCDClosurePred(myClosureHistgram);
+  //myQCDFactors.printQCDClosurePred(myClosureHistgram);
   (myClosureHistgram.oFile)->Write();
   (myClosureHistgram.oFile)->Close();
   return ;
