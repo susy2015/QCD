@@ -1,3 +1,6 @@
+#ifndef _QCDConstants_H_
+#define _QCDConstants_H_
+
 //define lumi in pb-1
 //2016 Moriond
 //#define LUMI 2262.946
@@ -12,3 +15,11 @@
 //#define NSEARCH_BINS 45
 //#define NSEARCH_BINS 37
 #define NSEARCH_BINS 59
+
+const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,500.0,650.0};
+const double mt2bins_edge[MT2_BINS+1] = {200.0,350,500.0};
+//const double njetsbins_edge[NJETS_BINS+1] = {1,2,3,4};
+
+#define BCBin 5
+
+#endif
