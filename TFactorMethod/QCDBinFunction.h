@@ -1,82 +1,13 @@
-#define MET_BINS 4
-#define MT2_BINS 2
-#define NJETS_BINS 3
-#define QCD_BINS 5
-//#define NSEARCH_BINS 45
-//#define NSEARCH_BINS 37
-#define NSEARCH_BINS 59
+#include "ConstantsSnippet.h"
 
 const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,500.0,650.0};
 const double mt2bins_edge[MT2_BINS+1] = {200.0,350,500.0};
 //const double njetsbins_edge[NJETS_BINS+1] = {1,2,3,4};
 
-int Set_metbin_number(
-                       double met
-                     )
+class QCDBGModel
 {
-  int metbin_num = -1;
-
-  for(int i=0;i<MET_BINS;i++)
-  {
-    if(i!=MET_BINS-1)
-    {
-      if(met >= metbins_edge[i] && met < metbins_edge[i+1]){ metbin_num = i; return metbin_num; }
-    }
-    else
-    {
-      if(met >= metbins_edge[i]){ metbin_num = i; return metbin_num; }
-    }
-  }
-
-  return metbin_num;
-}
-
-int Set_njetsbin_number(
-                           int njets
-                          )
-{
-  int njetsbin_num;
-
-  //if( njets == 1 )
-  if( njets >= 4 && njets <= 6 )
-  {
-    njetsbin_num = 0;
-  }
-  //else if( njets == 2 )
-  else if( njets >= 7 && njets <= 8 )
-  {
-    njetsbin_num = 1;
-  }
-  //else if( njets >= 3 )
-  else if( njets >= 9 )
-  {
-    njetsbin_num = 2;
-  }
-  else
-  {
-    njetsbin_num = -1;
-  } 
-  return njetsbin_num;
-}
-
-
-int Set_mt2bin_number(
-                       double mt2
-                     )
-{
-  int mt2bin_num = -1;
-
-  for(int i=0;i<MT2_BINS;i++)
-  {
-    if(i!=MT2_BINS-1)
-    {
-      if(mt2 >= mt2bins_edge[i] && mt2 < mt2bins_edge[i+1]){ mt2bin_num = i; return mt2bin_num; }
-    }
-    else
-    {
-      if(mt2 >= mt2bins_edge[i]){ mt2bin_num = i; return mt2bin_num; }
-    }
-  }
-  return mt2bin_num;
-}
-
+ public:
+  int Set_metbin_number( double met );
+  int Set_njetsbin_number( int njets );
+  int Set_mt2bin_number( double mt2 );
+};

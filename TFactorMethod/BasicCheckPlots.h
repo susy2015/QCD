@@ -69,8 +69,8 @@ void BasicCheckPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("BasicCheckQCD.root");
-  //fin = TFile::Open("BasicCheckLL.root");
+  fin = TFile::Open("RootForPlotting/BasicCheckQCD.root");
+  //fin = TFile::Open("RootForPlotting/BasicCheckLL.root");
   list = fin->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1

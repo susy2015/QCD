@@ -44,8 +44,4 @@ notify_user = hwei@fnal.gov
 #arguments = BasicCheckLL runList_QCD_HT_skimmed_MET175_v6.txt runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
 #Queue
 
-####QCDCombine####
-
-#arguments = QCDCombine QCDStopFlattrees/runList_QCD_HT_skimmed_MET175_v6.txt QCDStopFlattrees/runList_QCD_DataMC_skimmed_MET175_v6.txt $ENV(CMSSW_BASE)
-#Queue
 

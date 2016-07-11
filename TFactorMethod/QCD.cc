@@ -87,9 +87,9 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       //filling HT variables for quick weight check
       //(myClosureHistgram.h_b_all_HT)->Fill(ht,thisweight);
 
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(njets30);
+      int metbin_number = myQCDBGModel.Set_metbin_number(met);
+      int mt2bin_number = myQCDBGModel.Set_mt2bin_number(mt2);
+      int njetsbin_number = myQCDBGModel.Set_njetsbin_number(njets30);
 
       bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
       bool passTagger = tr.getVar<bool>("passTagger");
@@ -212,10 +212,6 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
       //filling HT variables for quick weight check
       //(myClosureHistgram.h_b_all_HT)->Fill(ht,thisweight);
 
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(njets30);
-
       bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
       bool passTagger = tr.getVar<bool>("passTagger");
       bool passBJets = tr.getVar<bool>("passBJets");
@@ -331,9 +327,9 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
       //filling HT variables for quick weight check
       //(myClosureHistgram.h_b_all_HT)->Fill(ht,thisweight);
 
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(njets30);
+      int metbin_number = myQCDBGModel.Set_metbin_number(met);
+      int mt2bin_number = myQCDBGModel.Set_mt2bin_number(mt2);
+      int njetsbin_number = myQCDBGModel.Set_njetsbin_number(njets30);
 
       bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
       bool passTagger = tr.getVar<bool>("passTagger");
@@ -444,9 +440,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       double ht = tr.getVar<double>("ht");
       //double mht = tr.getVar<double>("mht");
 
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(njets30);
+      int metbin_number = myQCDBGModel.Set_metbin_number(met);
+      int mt2bin_number = myQCDBGModel.Set_mt2bin_number(mt2);
+      int njetsbin_number = myQCDBGModel.Set_njetsbin_number(njets30);
 
       bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
       bool passTagger = tr.getVar<bool>("passTagger");
@@ -653,17 +649,17 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     myQCDFactors.MET_sb_mean[i] = myQCDFactors.MET_sb_sum[i]/myQCDFactors.MET_sb_sum_weight[i];
     myQCDFactors.MT2_sb_mean[i] = myQCDFactors.MT2_sb_sum[i]/myQCDFactors.MT2_sb_sum_weight[i];
     int met_id = -1, mt2_id = -1;
-    met_id = Set_metbin_number( myQCDFactors.MET_sb_mean[i] );
-    mt2_id = Set_mt2bin_number( myQCDFactors.MT2_sb_mean[i] );
+    met_id = myQCDBGModel.Set_metbin_number( myQCDFactors.MET_sb_mean[i] );
+    mt2_id = myQCDBGModel.Set_mt2bin_number( myQCDFactors.MT2_sb_mean[i] );
     //std::cout << met_id << "," << mt2_id << std::endl;
     //set up data card from Tfactors
     if( met_id < 0 || mt2_id < 0 )
     {
       //reset the met and mt2 id with average value from MC
-      met_id = Set_metbin_number( head_QCD_meanMET_exp_sb[i] );
-      mt2_id = Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i] );
-      if( head_QCD_meanMET_exp_sb[i] < 100 ) met_id = Set_metbin_number( head_QCD_meanMET_exp_sb[i-1] );
-      if( head_QCD_meanMT2_exp_sb[i] < 100 ) mt2_id = Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i-1] );
+      met_id = myQCDBGModel.Set_metbin_number( head_QCD_meanMET_exp_sb[i] );
+      mt2_id = myQCDBGModel.Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i] );
+      if( head_QCD_meanMET_exp_sb[i] < 100 ) met_id = myQCDBGModel.Set_metbin_number( head_QCD_meanMET_exp_sb[i-1] );
+      if( head_QCD_meanMT2_exp_sb[i] < 100 ) mt2_id = myQCDBGModel.Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i-1] );
     }
     myQCDFactors.DC_sb_TFactor[i] = QCDTFactorPred[met_id][mt2_id];
     double tmptfsysunc1 = head_QCDTFactor_err[met_id][mt2_id]/head_QCDTFactor[met_id][mt2_id];
@@ -759,10 +755,6 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
       //checking plots for full QCD samples
       //filling HT variables for quick weight check
       //(myClosureHistgram.h_b_all_HT)->Fill(ht,thisweight);
-
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(njets30);
 
       bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
       bool passTagger = tr.getVar<bool>("passTagger");
@@ -905,10 +897,6 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       int njets50 = tr.getVar<int>("nJets50");
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
-
-      //if( met < 175 ) continue;
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
 
       int nMuons     = tr.getVar<int>("nMuons");
       int nElectrons = tr.getVar<int>("nElectrons");
@@ -1058,10 +1046,6 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
       int njets50 = tr.getVar<int>("nJets50");
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
-
-      int metbin_number = Set_metbin_number(met);
-      int mt2bin_number = Set_mt2bin_number(mt2);
-      int njetsbin_number = Set_njetsbin_number(njets30);
 
       bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
       bool passTagger = tr.getVar<bool>("passTagger");

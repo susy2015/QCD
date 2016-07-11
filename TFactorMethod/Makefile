@@ -60,7 +60,7 @@ $(ODIR)/%.o : $(IDIR)/%.cc
 tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/PDFUncertainty.o $(ODIR)/tupleReadTest.o
 	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
-QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/searchBins.o $(ODIR)/QCDReWeighting.o
+QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/searchBins.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 ClosurePlots: $(ODIR)/ClosurePlots.o $(ODIR)/searchBins.o

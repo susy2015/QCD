@@ -66,9 +66,9 @@ void ClosurePlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  finExp = TFile::Open("ExpQCD.root");
+  finExp = TFile::Open("RootForPlotting/ExpQCD.root");
   listExp = finExp->GetListOfKeys();
-  finPred = TFile::Open("PredQCDMC.root");
+  finPred = TFile::Open("RootForPlotting/PredQCDMC.root");
   listPred = finPred->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1

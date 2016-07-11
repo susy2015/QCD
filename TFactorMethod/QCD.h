@@ -28,21 +28,22 @@
 
 #include "QCDBinFunction.h"
 #include "QCDReWeighting.h"
+
 //Scale Tfactors with the Tfactor from Real Data
 #include "TFactorsfromDataHeader.h"
-
 #include "CMSStylePlot/CMS_lumi.h"
 //#include "CMSStylePlot/tdrstyle.h"
 
-std::string dir_out = "";
+std::string dir_out = "RootForPlotting/";
 
-//############finish the definition of class AccRecoEffs######################
 //baseline cut function definition
 static BaselineVessel *myBaselineVessel;
 void mypassBaselineFunc(NTupleReader& tr)
 {
   (*myBaselineVessel)(tr);
 }
+
+QCDBGModel myQCDBGModel;
 
 class CalHistgram
 {
