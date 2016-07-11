@@ -1157,7 +1157,7 @@ int main(int argc, char* argv[])
   std::string inputFileList_QCDMC = argv[2];
   std::string inputFileList_Data = argv[3];
   
-  std::cout << "The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData, BasicCheckQCD, BasicCheckLL SBCheck" << std::endl;
+  std::cout << "The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, BasicCheckQCD, BasicCheckLL SBCheck" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
@@ -1255,20 +1255,6 @@ int main(int argc, char* argv[])
   else if( RunMode == "PredDataOnly" )
   {
     LoopQCDPredData( myQCDFactors, myDataSampleWeight );
-    return 0;
-  }
-  else if( RunMode == "ExpMCPredMC" )
-  {
-    LoopQCDExpMC ( myQCDFactors, myQCDSampleWeight );
-    LoopQCDPredMC( myQCDFactors, myQCDSampleWeight );
-    myQCDFactors.printSBInfo();
-    return 0;
-  }
-  else if( RunMode == "ExpMCPredData" )
-  {
-    LoopQCDExpMC   ( myQCDFactors, myQCDSampleWeight );
-    LoopQCDPredData( myQCDFactors, myDataSampleWeight );
-    myQCDFactors.printSBInfo();
     return 0;
   }
   else if( RunMode == "BasicCheckQCD" )

@@ -45,11 +45,20 @@ And it will be involved into make command automatically and we do not have error
 
 ```
 ./QCD RunMode runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v4.txt
-./QCD CalOnly ../QCDTools/QCDStopFlattrees/runList_QCD_HT_QCDTFTrimAndSlim_2016ICHEPv7.txt ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2016ICHEPv7.txt
 ./QCD CalOnly ../QCDTools/QCDStopFlattrees/runList_QCD_HT_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt
 ```
+Specification of QCDHardCodedInput:
 
-The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, ExpMCPredMC, ExpMCPredData BasicCheckQCD BasicCheckLL SBCheck
+```
+DataDriven.h : Contains all data driven inputs from HadTau and LL (inverted dphi for all search bin, low met sideband, etc), refreshed by hand
+SysHeader.h : Contains all information to make final prediction plot, comes from data card, refreshed after run in mode "PredDataOnly"
+TFactorsHeader.h : Contains all the Translation factors (prefit, postfit, scaled), refreshed after run in mode "PredDataOnly" and "CalOnly"
+TFactorsfromDataHeader.h : Contains low met sideband Translation factors, refreshed after run in mode "PredDataOnly" 
+TriggerEff.h : Contains the fake met and real met eff, refreshed by hand
+```
+
+
+The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, PredDataOnly, BasicCheckQCD, BasicCheckLL, SBCheck
 
 3.Making plots:
 
