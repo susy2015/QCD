@@ -104,8 +104,6 @@ class QCDFactors
   double nQCD_exp_sb[NSEARCH_BINS] = {0}, nQCD_pred_sb[NSEARCH_BINS] = {0};
   double nQCD_exp_sb_err[NSEARCH_BINS] = {0}, nQCD_pred_sb_err[NSEARCH_BINS] = {0};
   void printSBInfo();
-  //void printQCDClosureExp ( ClosureHistgram& myClosureHistgram );
-  //void printQCDClosurePred( ClosureHistgram& myClosureHistgram );
 
  private:
   double get_aoverb_Error(
@@ -114,7 +112,7 @@ class QCDFactors
                           double ea,
                           double eb
                          );
+  void getNonClosureUnc();
   std::string printDataCardLine(std::string name,double (&nums)[NSEARCH_BINS]);
   std::string printSysHeaderLine(std::string name,double (&nums)[NSEARCH_BINS]);
-
 };

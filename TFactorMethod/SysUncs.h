@@ -50,57 +50,15 @@ class SysUncs
   double sysunc_tfactors[NSEARCH_BINS] = {0}, sysunc_nonclosure[NSEARCH_BINS] = {0};
   double sysunc_all_up[NSEARCH_BINS] = {0}, sysunc_all_dn[NSEARCH_BINS] = {0};
 
-  void Initialization(std::string type); 
-  void Reset();
-
   void GetCentralPred();
   void GetTFactorsSysUnc();
   void GetNonClosureSysUnc();
-
   void combineSysUncs();
   void printSysUncs();
+  
   void printLatexTable();
   void printFinalPred();
 };
-
-void SysUncs::Initialization(std::string type)
-{
-  sysunc_type = type;
-
-  if( type == "TFactorsUnc" )
-  {
-    //finPred = TFile::Open("PredQCDData.root");
-    //listPred = finPred->GetListOfKeys();
-
-    //finSysUnc = TFile::Open("TFactorsUnc.root");
-    //listSysUnc = finSysUnc->GetListOfKeys();
-  }
-  else if( type == "NonClosureUnc" )
-  {
-    finPred = TFile::Open("RootForPlotting/PredQCDMC.root");
-    listPred = finPred->GetListOfKeys();
-
-    finSysUnc = TFile::Open("RootForPlotting/ExpQCD.root");
-    listSysUnc = finSysUnc->GetListOfKeys();
-  }
-  else{ std::cout << "Unc type not included! Think carefully!" << std::endl; return ; }
-  //convert lumi from double pb-1 to string, fb-1
-  //std::ostringstream strs;
-  //strs << (LUMI/1000);
-  //lumi_str = strs.str();
-  return ;
-}
-
-void SysUncs::Reset()
-{
-  finPred->Close();
-  listPred->Clear();
-  finSysUnc->Close();
-  listSysUnc->Clear();
-  std::cout << "Done with " << sysunc_type << ". Resetting the file and list object!" << std::endl;
-  sysunc_type.clear();
-  return ;
-}
 
 void SysUncs::GetCentralPred()
 {
@@ -121,121 +79,21 @@ void SysUncs::GetCentralPred()
 
 void SysUncs::GetTFactorsSysUnc()
 { 
-  /*
-  TH1D * h_pred;
-  TH1D * h_sysunc;
-
-  int NPredHist, NSysUncHist;
-  NPredHist = listPred->GetSize();
-  NSysUncHist = listSysUnc->GetSize();
-
-  for(int i  = 0 ; i < NPredHist ; i++)
-  {
-    if( TString(listPred->At(i)->GetName()).Contains( "_pred_sb" ) )
-    {
-      h_pred = (TH1D*)finPred->Get(listPred->At(i)->GetName())->Clone();
-    }
-    else 
-      continue;
-  }
-
-  for (int j = 1; j < NSEARCH_BINS+1 ; j++)
-  {
-    final_pred[j-1] = h_pred->GetBinContent(j);
-    final_pred_stat[j-1] = h_pred->GetBinError(j);
-  }
-
-  for(int i  = 0 ; i < NSysUncHist ; i++)
-  {
-    if( TString(listPred->At(i)->GetName()).Contains( "_TFactorsUnc_up_0" ) ) continue;
-    if( TString(listPred->At(i)->GetName()).Contains( "_TFactorsUnc_down_" ) ) continue;
-
-    else
-    {
-      h_sysunc = (TH1D*)finSysUnc->Get(listSysUnc->At(i)->GetName())->Clone();
-
-      for (int j = 1; j < NSEARCH_BINS+1 ; j++)
-      {
-        double pred = h_pred->GetBinContent(j);
-        double sysunc = h_sysunc->GetBinContent(j);
-        double pred_err = h_pred->GetBinError(j);
-        double sysunc_err = h_sysunc->GetBinError(j);
-        double d = 1000;
-
-        if ( (pred >= 0) )
-        {
-          d = std::abs( sysunc-pred );
-        }
-        else if( pred < 0 && sysunc >= 0)
-          d = sysunc;
-        else
-        { 
-          d = 0; 
-          //std::cout << i << "Zero Sys Unc from Tfactors" <<std::endl; 
-        }
-        sysunc_tfactors[j-1] += d*d;
-      }
-      h_sysunc->Reset();
-    }
-  }
-  */
+  std::cout << "Setting TFactor Unc from SysHeader.h... " << std::endl;
   for (int i = 0; i < NSEARCH_BINS ; i++)
   { 
     sysunc_tfactors[i] = head_QCD_TFactor_relative_err[i];
   }
-  
   return ;
 }
 
 void SysUncs::GetNonClosureSysUnc()
 {
-  TH1D * h_pred;
-  TH1D * h_sysunc;
-
-  int NHist;
-  if( listPred->GetSize() == listSysUnc->GetSize() ) NHist = listSysUnc->GetSize();
-  else { NHist = -1; std::cout << "We do not have equal number of hist in Exp and Pred, what the fuck is going on??" << std::endl; return ; }
-
-  for(int i  = 0 ; i < NHist ; i++)
+  std::cout << "Setting NonClosure Unc from SysHeader.h... " << std::endl;
+  for (int i = 0; i < NSEARCH_BINS ; i++)
   {
-    if( TString(listPred->At(i)->GetName()).Contains( "_pred_sb" ) )
-    {
-      h_pred = (TH1D*)finPred->Get(listPred->At(i)->GetName())->Clone();
-    }
-    if( TString(listSysUnc->At(i)->GetName()).Contains( "_exp_sb" ) )
-    {
-      h_sysunc = (TH1D*)finSysUnc->Get(listSysUnc->At(i)->GetName())->Clone();
-    }
-    else
-      continue;
+    sysunc_nonclosure[i] = head_QCD_NonClosure_relative_err[i];
   }
-
-  for (int j = 1; j < NSEARCH_BINS+1 ; j++)
-  {
-    double pred = h_pred->GetBinContent(j);
-    double sysunc = h_sysunc->GetBinContent(j);
-    double pred_err = h_pred->GetBinError(j);
-    double sysunc_err = h_sysunc->GetBinError(j);
-    //std::cout << "i: " << i << " pred_err: " << pred_err << " sysunc_err: " << sysunc_err << std::endl;
-    double e = 5;
-    if ( (pred > 0) && (sysunc > 0) )
-    {
-      double r = sysunc/pred;
-      e = std::sqrt( sysunc_err*sysunc_err + pred_err*pred_err*r*r ) / pred;
-      sysunc_nonclosure[j-1] = std::max( std::abs(e) , std::abs((sysunc-pred)/pred) );
-      std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< sysunc << " Error: " << e << std::endl;
-    }
-    else if( j!=1 && ((pred <= 0) || (sysunc <= 0)) ){ sysunc_nonclosure[j-1] = sysunc_nonclosure[j-2]; }
-    else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
-  }
-
-  std::cout << "QCD_NonClosure_relative_err = ";
-  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
-  {
-    std::cout << sysunc_nonclosure[i_cal] << " ";
-    if(i_cal == NSEARCH_BINS -1 ) std::cout << std::endl;
-  }
-
   return ;
 }
 
@@ -245,8 +103,6 @@ void SysUncs::combineSysUncs()
   {
     sysunc_all_up[i] = head_QCD_TFactor[i]*head_QCD_otherBG_CS[i]*head_QCD_otherBG_sysup[i];
     sysunc_all_dn[i] = head_QCD_TFactor[i]*head_QCD_otherBG_CS[i]*head_QCD_otherBG_sysdn[i];
-
-    //sysunc_nonclosure[i] = head_QCD_NonClosure_relative_err[i];
 
     if( final_pred[i] > 0 )
     {
@@ -298,47 +154,47 @@ void SysUncs::printFinalPred()
 
   gStyle->SetOptStat(0);
 
-  TH1D *h_pred_sb = new TH1D("h_pred_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+  TH1D *h_pred_sb_data = new TH1D("h_pred_sb_data","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
   //h->SetBinErrorOption(TH1::kPoisson);
 
   /*
-  h_pred_sb->SetMarkerStyle(20);
-  h_pred_sb->SetMarkerColor(kBlue);
-  h_pred_sb->SetLineColor(h_pred_sb->GetMarkerColor());
-  h_pred_sb->SetMarkerSize(0.9);
+  h_pred_sb_data->SetMarkerStyle(20);
+  h_pred_sb_data->SetMarkerColor(kBlue);
+  h_pred_sb_data->SetLineColor(h_pred_sb_data->GetMarkerColor());
+  h_pred_sb_data->SetMarkerSize(0.9);
 
-  h_pred_sb->GetYaxis()->SetTitleOffset(0.9);
-  h_pred_sb->GetYaxis()->SetTitleFont(42);
-  h_pred_sb->GetYaxis()->SetTitleSize(0.045);
-  h_pred_sb->GetYaxis()->SetLabelSize(0.04);
-  h_pred_sb->GetYaxis()->SetLabelFont(42);
-  h_pred_sb->GetYaxis()->SetTitle("Events");
-  h_pred_sb->GetXaxis()->SetTitleOffset(0.9);
-  h_pred_sb->GetXaxis()->SetTitleFont(42);
-  h_pred_sb->GetXaxis()->SetTitleSize(0.045);
-  h_pred_sb->GetXaxis()->SetLabelSize(0.04);
-  h_pred_sb->GetXaxis()->SetLabelFont(42);
-  h_pred_sb->GetXaxis()->SetTitle("Search region bin number");
+  h_pred_sb_data->GetYaxis()->SetTitleOffset(0.9);
+  h_pred_sb_data->GetYaxis()->SetTitleFont(42);
+  h_pred_sb_data->GetYaxis()->SetTitleSize(0.045);
+  h_pred_sb_data->GetYaxis()->SetLabelSize(0.04);
+  h_pred_sb_data->GetYaxis()->SetLabelFont(42);
+  h_pred_sb_data->GetYaxis()->SetTitle("Events");
+  h_pred_sb_data->GetXaxis()->SetTitleOffset(0.9);
+  h_pred_sb_data->GetXaxis()->SetTitleFont(42);
+  h_pred_sb_data->GetXaxis()->SetTitleSize(0.045);
+  h_pred_sb_data->GetXaxis()->SetLabelSize(0.04);
+  h_pred_sb_data->GetXaxis()->SetLabelFont(42);
+  h_pred_sb_data->GetXaxis()->SetTitle("Search region bin number");
 
-  h_pred_sb->GetYaxis()->SetRangeUser(0,18);
+  h_pred_sb_data->GetYaxis()->SetRangeUser(0,18);
   */
 
-  h_pred_sb->GetYaxis()->SetRangeUser(0,20);
+  h_pred_sb_data->GetYaxis()->SetRangeUser(0,20);
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    final_pred[i_cal] > 0 ? h_pred_sb->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb->SetBinContent( i_cal+1 , 0 ) ;
+    final_pred[i_cal] > 0 ? h_pred_sb_data->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb_data->SetBinContent( i_cal+1 , 0 ) ;
   }
  
-  //h_pred_sb->Draw("e0");
-  TGraphAsymmErrors * g = new TGraphAsymmErrors(h_pred_sb);
+  //h_pred_sb_data->Draw("e0");
+  TGraphAsymmErrors * g = new TGraphAsymmErrors(h_pred_sb_data);
   g->SetMarkerSize(0.5);
   g->SetMarkerStyle (20);
 
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
-    double N = h_pred_sb->GetBinContent( i_cal+1 ); 
-    double e_up = std::sqrt(sysunc_all_up[i_cal]*sysunc_all_up[i_cal] + final_pred_stat_up[i_cal]*final_pred_stat_up[i_cal]);
-    double e_dn = std::sqrt(sysunc_all_dn[i_cal]*sysunc_all_dn[i_cal] + final_pred_stat_dn[i_cal]*final_pred_stat_dn[i_cal]);
+    double N = h_pred_sb_data->GetBinContent( i_cal+1 ); 
+    double e_up = std::sqrt( sysunc_all_up[i_cal]*sysunc_all_up[i_cal] + final_pred_stat_up[i_cal]*final_pred_stat_up[i_cal] );
+    double e_dn = std::sqrt( sysunc_all_dn[i_cal]*sysunc_all_dn[i_cal] + final_pred_stat_dn[i_cal]*final_pred_stat_dn[i_cal] );
 
     //std::cout << "test on e_dn" << e_dn << std::endl;
     g->SetPointEYlow(i_cal, e_dn);

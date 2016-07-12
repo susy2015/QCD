@@ -499,28 +499,7 @@ void QCDFactors::printTFactorsHeader()
 
   TFactorsHeader.close();
 }
-/*
-void QCDFactors::printQCDClosureExp(ClosureHistgram& myClosureHistgram)
-{
-  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
-  {
-    myClosureHistgram.h_exp_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
-    myClosureHistgram.h_exp_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
-  }
-  return ;
-}
 
-void QCDFactors::printQCDClosurePred(ClosureHistgram& myClosureHistgram)
-{
-  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
-  {
-    std::cout << nQCD_pred_sb[i_cal] << "," << std::endl;
-    myClosureHistgram.h_pred_sb->SetBinContent( i_cal+1 , nQCD_pred_sb[i_cal] );
-    myClosureHistgram.h_pred_sb->SetBinError( i_cal+1 , nQCD_pred_sb_err[i_cal] );
-  }
-  return ;
-}
-*/
 void QCDFactors::TFactorsPlotsGen()
 {
   TCanvas *c_prefit = new TCanvas("c_prefit", "",50,50,1200,600);
@@ -753,8 +732,8 @@ void QCDFactors::printDataCard(std::string pred_type)
     }
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
-    //QCD_NonClosure_relative_err[i] = ;
   }
+  getNonClosureUnc();
 
   std::cout << "Printing Data Card..." << std::endl;
 	std::cout << printDataCardLine("QCD_Data_CS"                    ,QCD_Data_CS);
@@ -799,8 +778,8 @@ void QCDFactors::printSysHeader(std::string pred_type)
     }
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
-    //QCD_NonClosure_relative_err[i] = ;
   }
+  getNonClosureUnc();
 
   std::ofstream SysHeader;
   SysHeader.open ( (header_out + "SysHeader.h").c_str() );
@@ -812,7 +791,7 @@ void QCDFactors::printSysHeader(std::string pred_type)
   SysHeader << printSysHeaderLine("head_QCD_otherBG_sysdn"          ,QCD_otherBG_CS_relative_errdown);
   SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor);  
   SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_relative_err);
-  //SysHeader << printSysHeaderLine("head_QCD_NonClosure_relative_err",QCD_NonClosure_relative_err);
+  SysHeader << printSysHeaderLine("head_QCD_NonClosure_relative_err",QCD_NonClosure_relative_err);
   
   return ;
 }
@@ -828,6 +807,42 @@ double QCDFactors::get_aoverb_Error(
   double e = std::abs( std::sqrt( ea*ea + eb*eb*r*r ) / b );
 
   return e;
+}
+
+void QCDFactors::getNonClosureUnc()
+{
+  TFile * finPred;
+  TFile * finSysUnc;
+
+  finPred = TFile::Open("RootForPlotting/PredQCDMC.root");
+  finSysUnc = TFile::Open("RootForPlotting/ExpQCD.root");
+
+  TH1D * h_pred;
+  TH1D * h_sysunc;
+
+  h_pred = (TH1D*)finPred->Get("h_pred_sb")->Clone();
+  h_sysunc = (TH1D*)finSysUnc->Get("h_exp_sb")->Clone();
+
+  for (int j = 1; j < NSEARCH_BINS+1 ; j++)
+  {
+    double pred = h_pred->GetBinContent(j);
+    double sysunc = h_sysunc->GetBinContent(j);
+    double pred_err = h_pred->GetBinError(j);
+    double sysunc_err = h_sysunc->GetBinError(j);
+    //std::cout << "i: " << i << " pred_err: " << pred_err << " sysunc_err: " << sysunc_err << std::endl;
+    double e = 5;
+    if ( (pred > 0) && (sysunc > 0) )
+    {
+      double r = sysunc/pred;
+      e = std::sqrt( sysunc_err*sysunc_err + pred_err*pred_err*r*r ) / pred;
+      QCD_NonClosure_relative_err[j-1] = std::max( std::abs(e) , std::abs((sysunc-pred)/pred) );
+      //std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< sysunc << " Error: " << e << std::endl;
+    }
+    else if( j!=1 && ((pred <= 0) || (sysunc <= 0)) ){ QCD_NonClosure_relative_err[j-1] = QCD_NonClosure_relative_err[j-2]; }
+    else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
+  }
+
+  return ;
 }
 
 std::string QCDFactors::printDataCardLine(std::string name,double (&nums)[NSEARCH_BINS])
