@@ -77,10 +77,10 @@ void SysUncs::Initialization(std::string type)
   }
   else if( type == "NonClosureUnc" )
   {
-    finPred = TFile::Open("PredQCDMC.root");
+    finPred = TFile::Open("RootForPlotting/PredQCDMC.root");
     listPred = finPred->GetListOfKeys();
 
-    finSysUnc = TFile::Open("ExpQCD.root");
+    finSysUnc = TFile::Open("RootForPlotting/ExpQCD.root");
     listSysUnc = finSysUnc->GetListOfKeys();
   }
   else{ std::cout << "Unc type not included! Think carefully!" << std::endl; return ; }

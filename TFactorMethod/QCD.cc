@@ -256,7 +256,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
     myQCDFactors.nQCD_exp_sb_err[i] = std::sqrt( myQCDFactors.nQCD_exp_sb_err[i] );
   }
 
-  //myQCDFactors.printQCDClosureExp(myClosureHistgram);
+  myClosureHistgram.printQCDClosureExp(myQCDFactors.nQCD_exp_sb, myQCDFactors.nQCD_exp_sb_err);
   (myClosureHistgram.oFile)->Write();
   (myClosureHistgram.oFile)->Close();
 
@@ -376,7 +376,7 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
     myQCDFactors.nQCD_pred_sb_err[i] = std::sqrt( myQCDFactors.nQCD_pred_sb_err[i] );
   }
 
-  //myQCDFactors.printQCDClosurePred(myClosureHistgram);
+  myClosureHistgram.printQCDClosurePred(myQCDFactors.nQCD_pred_sb, myQCDFactors.nQCD_pred_sb_err);
   (myClosureHistgram.oFile)->Write();
   (myClosureHistgram.oFile)->Close();
   return ;

@@ -27,3 +27,26 @@ void ClosureHistgram::BookHistgram(const char *outFileName)
 
   return ;
 }
+
+void ClosureHistgram::printQCDClosureExp( double (&nQCD_exp_sb)[NSEARCH_BINS], double (&nQCD_exp_sb_err)[NSEARCH_BINS] )
+{
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << nQCD_exp_sb[i_cal] << "," << std::endl;
+    h_exp_sb->SetBinContent( i_cal+1 , nQCD_exp_sb[i_cal] );
+    h_exp_sb->SetBinError( i_cal+1 , nQCD_exp_sb_err[i_cal] );
+  }
+  return ;
+}
+
+void ClosureHistgram::printQCDClosurePred( double (&nQCD_pred_sb)[NSEARCH_BINS], double (&nQCD_pred_sb_err)[NSEARCH_BINS] )
+{
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    std::cout << nQCD_pred_sb[i_cal] << "," << std::endl;
+    h_pred_sb->SetBinContent( i_cal+1 , nQCD_pred_sb[i_cal] );
+    h_pred_sb->SetBinError( i_cal+1 , nQCD_pred_sb_err[i_cal] );
+  }
+  return ;
+}
+
