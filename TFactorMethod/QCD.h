@@ -31,18 +31,27 @@
 #include "ConstantsSnippet.h"
 #include "CMSStylePlot/CMS_lumi.h"
 //#include "CMSStylePlot/tdrstyle.h"
+#include "QCDHardCodedInput/TFactorsHeader.h"
+#include "QCDHardCodedInput/DataDriven.h"
+#include "QCDHardCodedInput/TriggerEff.h"
 
 //all the root file for plotting will go to this directory
 std::string dir_out = "RootForPlotting/";
 
-//baseline cut function definition
+//baseline cut function definition, no need since move to QCD style root file
 static BaselineVessel *myBaselineVessel;
 void mypassBaselineFunc(NTupleReader& tr)
 {
   (*myBaselineVessel)(tr);
 }
 
+//QCD background model bag
 QCDBGModel myQCDBGModel;
+//search bin definition, with era
+SearchBins mySearchBins("SB_59_2016");
+//overall scale for all plots, will be set to be 1 if no special need
+const double Scale = 1;
+//const double Scale = 591.5/2153.736;
 
 //##########functions to calculate Delta_R and Delta Phi###############
 double DeltaPhi(double phi1, double phi2) 

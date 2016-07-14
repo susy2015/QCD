@@ -34,14 +34,6 @@
 
 #include "QCD.h"
 
-#include "QCDHardCodedInput/TFactorsHeader.h"
-#include "QCDHardCodedInput/DataDriven.h"
-#include "QCDHardCodedInput/TriggerEff.h"
-
-const double Scale = 1;
-//const double Scale = 591.5/2153.736;
-SearchBins mySearchBins("SB_59_2016");
-
 void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 {
   CalHistgram myCalHistgram;
