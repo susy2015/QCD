@@ -21,7 +21,7 @@ const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,500.0,650.0};
 const double mt2bins_edge[MT2_BINS+1] = {200.0,350,500.0};
 //const double njetsbins_edge[NJETS_BINS+1] = {1,2,3,4};
 
-
+//Constants from Zinv background
 //                                  NJets =      1        2       3        4        5        6       7      >=8
 //const double zinv_NJetRweightingFactor[8] = {0.926542,1.03995,0.919711,0.723581,0.869969,0.95682,0.584418,0.874059};//full status, 4.0fb-1
 //const double zinv_NJetRweightingFactor[8] = {1.09758 ,0.92655,0.911107,0.728836,0.607093,0.88641,0.588388,0.851549};//preapp after csv fix,4.0fb-1
