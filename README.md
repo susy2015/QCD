@@ -51,7 +51,6 @@ Specification of QCDHardCodedInput:
 
 ```
 DataDriven.h : Contains all data driven inputs from HadTau and LL (inverted dphi for all search bin, low met sideband, etc), refreshed by hand
-TriggerEff.h : Contains the fake met and real met eff, refreshed by hand
 TFactorsfromDataHeader.h : Contains low met sideband Translation factors, refreshed after run in mode "CalTFSideBandOnly", source file of run mode "CalOnly"
 TFactorsHeader.h : Contains all the Translation factors (prefit, postfit, scaled), refreshed after run in mode "CalOnly", source file of run mode "PredDataOnly" and "PredMCOnly"
 SysHeader.h : Contains all information to make final prediction plot, comes from data card, refreshed after run in mode "PredDataOnly"

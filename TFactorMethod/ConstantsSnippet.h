@@ -31,8 +31,10 @@ const double zinv_RNorm = 0.868;//7.6fb-1, v8
 
 //const double singlemuCS_InvertedDPhi = 0.556143;
 //const double singlemuCS_NormalDPhi = 0.606167;
-const double singlemuCS_InvertedDPhi = 0.579223;
-const double singlemuCS_NormalDPhi = 0.606808;
+//const double singlemuCS_InvertedDPhi = 0.579223;
+//const double singlemuCS_NormalDPhi = 0.606808;
+const double singlemuCS_InvertedDPhi = 0.745792;
+const double singlemuCS_NormalDPhi = 0.762781;
 #define BCBin 5
 
 #endif

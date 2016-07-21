@@ -222,8 +222,8 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
                           && passPFCaloMETRatio;
 
       //apply the met efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
-      double metEff = 1;
+      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
+      //double metEff = 1;
       if (
           passBaselineQCD
          )
@@ -341,8 +341,8 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
                           //&& passQCDHighMETFilter
                           && passPFCaloMETRatio;
       //apply trigger efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
-      double metEff = 1;
+      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
+      //double metEff = 1;
       if ( passBaselineQCD )
       {
         if( !passdPhis )
@@ -436,7 +436,6 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                           && passNoiseEventFilter;
 
       //apply trigger efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
       double metEff = 1;
       if ( passBaselineQCD )
       {
@@ -466,6 +465,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
           {
             if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
             {
+              metEff = 1;
               myQCDFactors.nQCDNormal_Data_all[sidebandbin_number] += std::abs(thisweight * metEff);
               myQCDFactors.nQCDNormal_Data_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff;
             }
@@ -474,6 +474,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
               )
             { 
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isLL = tr.getVar<bool>("isLL");
               double ttjetsFactor = singlemuCS_NormalDPhi;
               //double ttjetsFactor = 1;
@@ -490,6 +491,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             { 
+              metEff = 1;
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];
 
@@ -501,6 +503,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                     || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
                    )
             { 
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isGenZLep = tr.getVar<bool>("isGenZLep");
               bool isGenWLep = tr.getVar<bool>("isGenWLep");
               if( isGenZLep || isGenWLep ) continue;
@@ -514,6 +517,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
           {
             if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
             {
+              metEff = 1;
               myQCDFactors.nQCDInverted_Data_all[sidebandbin_number] += std::abs(thisweight * metEff);
               myQCDFactors.nQCDInverted_Data_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff;
             }
@@ -521,7 +525,8 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
                || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
               )
-            { 
+            {
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met ); 
               bool isLL = tr.getVar<bool>("isLL");
               double ttjetsFactor = singlemuCS_InvertedDPhi;
               //double ttjetsFactor = 1;
@@ -538,6 +543,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             { 
+              metEff = 1;
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];
               myQCDFactors.nQCDInverted_zinvMC_all[sidebandbin_number] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
@@ -548,6 +554,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                     || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
                    )
             { 
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isGenZLep = tr.getVar<bool>("isGenZLep");
               bool isGenWLep = tr.getVar<bool>("isGenWLep");
               if( isGenZLep || isGenWLep ) continue;
@@ -666,7 +673,6 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                           && passNoiseEventFilter;
 
       //apply trigger efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
       double metEff = 1;
       if ( passBaselineQCD )
       {
@@ -696,6 +702,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
           {
             if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
             { 
+              metEff = 1;
               myQCDFactors.MET_sb_sum[searchbin_id] = myQCDFactors.MET_sb_sum[searchbin_id] + met * thisweight * metEff;
               myQCDFactors.MET_sb_sum_weight[searchbin_id] = myQCDFactors.MET_sb_sum_weight[searchbin_id] + thisweight * metEff;
               myQCDFactors.MT2_sb_sum[searchbin_id] = myQCDFactors.MT2_sb_sum[searchbin_id] + mt2 * thisweight * metEff;
@@ -709,6 +716,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
               )
             {
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isLL = tr.getVar<bool>("isLL");
               double ttjetsFactor = singlemuCS_InvertedDPhi;
               //double ttjetsFactor = 1;
@@ -725,6 +733,8 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             {
+              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+              metEff = 1;
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];   
               myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
@@ -735,6 +745,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                     || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
                    )
             {
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isGenZLep = tr.getVar<bool>("isGenZLep");
               bool isGenWLep = tr.getVar<bool>("isGenWLep");
               if( isGenZLep || isGenWLep ) continue;
@@ -1001,9 +1012,8 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
                          && passNoiseEventFilter;
 
       //apply trigger efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
-      double metEff = 1;
-
+      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+      //double metEff = 1;
       if ( 
            passBaselineLL && (nElectrons==0) && (nMuons == 1) 
          && (!passdPhis)
@@ -1014,6 +1024,8 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
 
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
+          //becareful! reset trigger eff to be 1 for real data
+          metEff = 1;
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
           std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
           bool foundTrigger = false;
