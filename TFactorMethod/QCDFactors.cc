@@ -46,7 +46,9 @@ void QCDFactors::NumbertoTFactor()
   {
     //normalized to first bin
     QCDTNJF[i_cal] = tmp_QCDTNJF[i_cal]/tmp_QCDTNJF[0];
-    std::cout << "NTop correction factor, Bin " << i_cal << ": " << QCDTNJF[i_cal] << std::endl;
+    if(i_cal==0) QCDTNJF_err[i_cal] = 0;
+    else QCDTNJF_err[i_cal] = QCDTNJF[i_cal] * (1/std::sqrt(nQCDNormal_NJF_MC_all[i_cal]) + 1/std::sqrt(nQCDInverted_NJF_MC_all[i_cal]) + 1/std::sqrt(nQCDNormal_NJF_MC_all[0]) + 1/std::sqrt(nQCDInverted_NJF_MC_all[0]));
+    std::cout << "NTop correction factor, Bin " << i_cal << ": " << QCDTNJF[i_cal] << "(" << QCDTNJF_err[i_cal] << ")" << std::endl;
   }
   //MT2 and met mean value calculation in each search bin
   for(int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++)
@@ -804,7 +806,8 @@ double QCDFactors::get_aoverb_Error(
                                    )
 {
   double r = std::abs(a/b);
-  double e = std::abs( std::sqrt( ea*ea + eb*eb*r*r ) / b );
+  //double e = std::abs( std::sqrt( ea*ea + eb*eb*r*r ) / b );
+  double e = r*(ea/a+eb/b);
 
   return e;
 }

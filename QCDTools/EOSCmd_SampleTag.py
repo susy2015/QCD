@@ -1,8 +1,8 @@
 import glob, os, sys
 
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv8_lowerMET"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2016ICHEPv8_lowerMET"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_DataMC_2016ICHEPv8_lowerMET"
+#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2016ICHEPv8_lowerMET"
 MGM = "root://cmseos.fnal.gov/"
 
 sample_tag_list_Data = [
@@ -30,11 +30,11 @@ sample_tag_list_LLHadTau = [
                            ]
 
 sample_tag_list_Zinv = [
-"QCDTFTrimAndSlim_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_ZJetsToNuNu_HT-400To600_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Spring15_74X_Feb_2016_Ntp_v6p0_forMoriond_ZJetsToNuNu_HT-400To600_ext1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Spring16_80X_Jul_2016_Ntp_v8p0_new_JEC_new_muonID_top_up_ZJetsToNuNu_HT-400To600_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Spring16_80X_Jul_2016_Ntp_v8p0_new_JEC_new_muonID_top_up_ZJetsToNuNu_HT-600To800_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Spring16_80X_Jul_2016_Ntp_v8p0_new_JEC_new_muonID_top_up_ZJetsToNuNu_HT-800To1200_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Spring16_80X_Jul_2016_Ntp_v8p0_new_JEC_new_muonID_top_up_ZJetsToNuNu_HT-1200To2500_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Spring16_80X_Jul_2016_Ntp_v8p0_new_JEC_new_muonID_top_up_ZJetsToNuNu_HT-1200To2500_ext1_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Spring16_80X_Jul_2016_Ntp_v8p0_new_JEC_new_muonID_top_up_ZJetsToNuNu_HT-2500ToInf_stopFlatNtuples_",
                        ]
 
