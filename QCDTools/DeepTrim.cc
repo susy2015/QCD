@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
 
-  output_str = "DeepTrimmd_" + tag + fileid;
+  output_str = "DeepTrimmd_" + tag + "_" + fileid;
   std::cout << "Output File Name: " << output_str << std::endl;
 
   TChain *originalTree = new TChain("stopTreeMaker/AUX");
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
     bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
 
     bool passDeepTrim = false;
-    passDeepTrim = ( met > 175)
+    passDeepTrim = ( met > 125 )
                 && passnJets
                 && passHT
                 && passMT2

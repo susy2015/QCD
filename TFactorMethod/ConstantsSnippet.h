@@ -17,7 +17,7 @@
 //#define NSEARCH_BINS 37
 #define NSEARCH_BINS 59
 
-const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,500.0,650.0};
+const double metbins_edge[MET_BINS+1] = {150.0,200.0,350.0,500.0,650.0};
 const double mt2bins_edge[MT2_BINS+1] = {200.0,350,500.0};
 //const double njetsbins_edge[NJETS_BINS+1] = {1,2,3,4};
 
@@ -29,6 +29,10 @@ const double zinv_NJetRweightingFactor[8] = {0.974553,1.03047,0.957998,0.806491,
 //const double zinv_RNorm = 0.828;//4.0fb-1, v6 and v7
 const double zinv_RNorm = 0.868;//7.6fb-1, v8
 
+//const double singlemuCS_InvertedDPhi = 0.556143;
+//const double singlemuCS_NormalDPhi = 0.606167;
+const double singlemuCS_InvertedDPhi = 0.579223;
+const double singlemuCS_NormalDPhi = 0.606808;
 #define BCBin 5
 
 #endif

@@ -102,7 +102,7 @@ void ClosurePlots::ClosureTemplate(
   if( listPred->GetSize() == listExp->GetSize() ) NHist = listExp->GetSize();
   else { NHist = -1; std::cout << "We do not have equal number of hist in Exp and Pred, what the fuck is going on??" << std::endl; return ; }  
 
-	//Get Exp and Pred from root file
+  //Get Exp and Pred from root file
   for(int i  = 0 ; i < NHist ; i++)
   {
     if( TString(listPred->At(i)->GetName()).Contains( hist_tag ) )
@@ -162,7 +162,7 @@ void ClosurePlots::ClosureTemplate(
     
   h_ratio = static_cast<TH1*>(h_exp->Clone("Ratio"));
   h_ratio->Divide(h_pred);
-	h_ratio->SetMarkerSize(1);
+  h_ratio->SetMarkerSize(1);
   h_ratio->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
   //h_ratio->GetYaxis()->SetRangeUser(0.0,5.1);
   h_ratio->SetTitle("");
@@ -187,14 +187,14 @@ void ClosurePlots::ClosureTemplate(
   //Create LUMI stamp
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   //const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Supplementary                                                             4.0 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Supplementary                                                             7.6 fb^{-1}(13 TeV)";
 
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
 
   //Create Legend
-	TLegend* leg = new TLegend(0.55,0.75,0.90,0.90);
+  TLegend* leg = new TLegend(0.55,0.75,0.90,0.90);
   leg->SetBorderSize(1);
   leg->SetLineColor(1);
   leg->SetLineWidth(2);
@@ -207,10 +207,10 @@ void ClosurePlots::ClosureTemplate(
   //leg->AddEntry(hPred[0],"Treat simulation like data","L");
   leg->AddEntry(h_pred,"Treat simulation like data");
 
-	//Draw plots on Canvas
+  //Draw plots on Canvas
   TCanvas *c = new TCanvas("c","",50,50,800,600); 
-	//HistStyle::init();
-	gStyle->SetOptStat(0);
+  //HistStyle::init();
+  gStyle->SetOptStat(0);
 
   TPad *pad = (TPad*) c->GetPad(0); 
   pad->Clear();
@@ -226,15 +226,15 @@ void ClosurePlots::ClosureTemplate(
   pad1->SetBottomMargin(0);
   pad1->SetBorderMode(0);
   
-	TExec *setex = new TExec("setex", "gStyle->SetErrorX(0.0)");
+  TExec *setex = new TExec("setex", "gStyle->SetErrorX(0.0)");
 
-	if( hist_tag == "_sb" )
-	{ 
-	  pad1->SetLogy(); 
+  if( hist_tag == "_sb" )
+  { 
+    pad1->SetLogy(); 
     h_exp->GetXaxis()->SetRangeUser(0.,NSEARCH_BINS);
-	
-		Double_t pred,exp,pred_err,exp_err;
-		double non_closure_unc[NSEARCH_BINS] ={-10};
+  
+    Double_t pred,exp,pred_err,exp_err;
+    double non_closure_unc[NSEARCH_BINS] ={-10};
     for (Int_t i = 1; i < h_pred->GetNbinsX(); i++)
     {
       pred = h_pred->GetBinContent(i);
@@ -254,23 +254,23 @@ void ClosurePlots::ClosureTemplate(
         //std::cout << "i: " << i << " Pred: "<< pred << " Exp: "<< exp << " Ratio: " << r-1 << " Error: " << e << std::endl;
       }
     }
-	}
-	  
-	setex->Draw();
-	h_exp->Draw("PE1");
+  }
+    
+  setex->Draw();
+  h_exp->Draw("PE1");
   h_pred->DrawCopy("hist same");
-	h_pred->SetFillColor(kBlue-4);
-	h_pred->SetFillStyle(3001);
-	h_pred->Draw("E2 same");
+  h_pred->SetFillColor(kBlue-4);
+  h_pred->SetFillStyle(3001);
+  h_pred->Draw("E2 same");
 
-  if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 70.0, true); }
+  if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 75.0, true); }
   //CMSStylePlot::CMS_lumi( c, 4, 0 );
-	title->Draw("same");
+  title->Draw("same");
   leg->Draw("same");
 
   c->Update(); 
   
-	pad->cd(2);
+  pad->cd(2);
   TPad *pad2 = (TPad*) pad->GetPad(2);
   pad2->SetPad("ratio", "", 0, 0, 1.0, divRatio, kWhite);
   pad2->SetBottomMargin(0.3);

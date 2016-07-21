@@ -19,32 +19,6 @@ int QCDBGModel::Set_metbin_number( double met )
   return metbin_num;
 }
 
-int QCDBGModel::Set_njetsbin_number( int njets )
-{
-  int njetsbin_num;
-
-  //if( njets == 1 )
-  if( njets >= 4 && njets <= 6 )
-  {
-    njetsbin_num = 0;
-  }
-  //else if( njets == 2 )
-  else if( njets >= 7 && njets <= 8 )
-  {
-    njetsbin_num = 1;
-  }
-  //else if( njets >= 3 )
-  else if( njets >= 9 )
-  {
-    njetsbin_num = 2;
-  }
-  else
-  {
-    njetsbin_num = -1;
-  } 
-  return njetsbin_num;
-}
-
 int QCDBGModel::Set_mt2bin_number( double mt2 )
 {
   int mt2bin_num = -1;
@@ -61,5 +35,31 @@ int QCDBGModel::Set_mt2bin_number( double mt2 )
     }
   }
   return mt2bin_num;
+}
+
+int QCDBGModel::Set_njetsbin_number( int njets )
+{
+  int njetsbin_num;
+
+  if( njets == 1 )
+  //if( njets >= 4 && njets <= 6 )
+  {
+    njetsbin_num = 0;
+  }
+  else if( njets == 2 )
+  //else if( njets >= 7 && njets <= 8 )
+  {
+    njetsbin_num = 1;
+  }
+  else if( njets >= 3 )
+  //else if( njets >= 9 )
+  {
+    njetsbin_num = 2;
+  }
+  else
+  {
+    njetsbin_num = -1;
+  }
+  return njetsbin_num;
 }
 

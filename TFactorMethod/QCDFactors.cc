@@ -46,7 +46,7 @@ void QCDFactors::NumbertoTFactor()
   {
     //normalized to first bin
     QCDTNJF[i_cal] = tmp_QCDTNJF[i_cal]/tmp_QCDTNJF[0];
-    std::cout << "NJet 30 correction factor, Bin " << i_cal << ": " << QCDTNJF[i_cal] << std::endl;
+    std::cout << "NTop correction factor, Bin " << i_cal << ": " << QCDTNJF[i_cal] << std::endl;
   }
   //MT2 and met mean value calculation in each search bin
   for(int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++)

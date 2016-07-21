@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     {"_ntopjets", "Number of Top jets"    ,1   , 6    },
     {"_nbjets"  , "Number of B Jets"      ,1   , 6    },
     //search bin closure plots
-    {"_sb"   , "Search Bins"           ,0   , 60 },
+    {"_sb"      , "Search Bins"           ,0   , 60 },
   };
 
   std::vector<Plotting_Parameter>::iterator iter_p;
