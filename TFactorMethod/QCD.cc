@@ -97,7 +97,8 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
                           && passPFCaloMETRatio;
  
       //apply the met efficiencies
-      double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
+      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
+      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
       //double metEff = 1;
       if (
           passBaselineQCD
@@ -1260,7 +1261,7 @@ int main(int argc, char* argv[])
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
   //define my QCDFactors class to stroe counts and Translation factors
   QCDFactors myQCDFactors;
-
+  //myTriggerEff.SelfTest();
   //Sample needed in the calculation and expectation loop
   QCDSampleWeight myQCDSampleWeight;
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 62819508, LUMI, 1, inputFileList_QCDMC.c_str() );

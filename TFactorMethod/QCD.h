@@ -26,6 +26,7 @@
 #include "ClosureHistgram.h"
 #include "BasicCheckHistgram.h"
 #include "SBCheckHistgram.h"
+#include "TriggerEff.h"
 
 //Scale Tfactors with the Tfactor from Real Data
 #include "ConstantsSnippet.h"
@@ -33,7 +34,6 @@
 //#include "CMSStylePlot/tdrstyle.h"
 #include "QCDHardCodedInput/TFactorsHeader.h"
 #include "QCDHardCodedInput/DataDriven.h"
-#include "QCDHardCodedInput/TriggerEff.h"
 
 //all the root file for plotting will go to this directory
 std::string dir_out = "RootForPlotting/";
@@ -49,6 +49,8 @@ void mypassBaselineFunc(NTupleReader& tr)
 QCDBGModel myQCDBGModel;
 //search bin definition, with era
 SearchBins mySearchBins("SB_59_2016");
+//Trigger Eff
+TriggerEff myTriggerEff;
 //overall scale for all plots, will be set to be 1 if no special need
 const double Scale = 1;
 //const double Scale = 591.5/2153.736;
