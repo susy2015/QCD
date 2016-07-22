@@ -762,6 +762,8 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     }//end of inner loop
   }//end of QCD Samples loop
 
+  //get non closure unc from root file, need to be correcto in the following loop
+  myQCDFactors.getNonClosureUnc();
   for( int i=0 ; i<NSEARCH_BINS ; i++ )
   {
     // determine the mt2 met id from mt2 met mean value
@@ -798,6 +800,13 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     myQCDFactors.DC_sb_lostleptMC_err[i] = std::sqrt(myQCDFactors.DC_sb_lostleptMC_err[i]);
     myQCDFactors.DC_sb_zinvMC_err[i] = std::sqrt(myQCDFactors.DC_sb_zinvMC_err[i]);
     myQCDFactors.DC_sb_ttzMC_err[i] = std::sqrt(myQCDFactors.DC_sb_ttzMC_err[i]);
+    
+    //deal with NTop jets correction factors related issue
+    SearchBins::searchBinDef outBinDef; mySearchBins.find_BinBoundaries( i, outBinDef );
+    int ntopbinid = outBinDef.top_lo_ - 1;//0,1,2 for ntop =1,2,and >=3
+    myQCDFactors.QCD_NTopFactor[i] = head_QCDTNJF[ntopbinid];
+    myQCDFactors.QCD_NTopFactor_relative_err[i] = head_QCDTNJF_err[ntopbinid]/head_QCDTNJF[ntopbinid];
+    myQCDFactors.QCD_NonClosure_relative_err[i] += (head_QCDTNJF[ntopbinid]-1);
   }
   
   std::string pred_type;

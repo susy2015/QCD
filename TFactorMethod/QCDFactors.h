@@ -73,7 +73,10 @@ class QCDFactors
   double QCD_Data_CS[NSEARCH_BINS] = {0}, QCD_Data_CS_relative_err[NSEARCH_BINS] = {0};
   double QCD_otherBG_CS[NSEARCH_BINS] = {0}, QCD_otherBG_CS_relative_errup[NSEARCH_BINS] = {0}, QCD_otherBG_CS_relative_errdown[NSEARCH_BINS] = {0};
   double QCD_TFactor[NSEARCH_BINS] = {0}, QCD_TFactor_relative_err[NSEARCH_BINS] = {0};
+  double QCD_NTopFactor[NSEARCH_BINS] = {0}, QCD_NTopFactor_relative_err[NSEARCH_BINS] = {0};
   double QCD_NonClosure_relative_err[NSEARCH_BINS] = {0};
+
+  void getNonClosureUnc();
   void printDataCard(std::string pred_type);
   void printSysHeader(std::string pred_type);
 
@@ -112,7 +115,6 @@ class QCDFactors
                           double ea,
                           double eb
                          );
-  void getNonClosureUnc();
   std::string printDataCardLine(std::string name,double (&nums)[NSEARCH_BINS]);
   std::string printSysHeaderLine(std::string name,double (&nums)[NSEARCH_BINS]);
 };
