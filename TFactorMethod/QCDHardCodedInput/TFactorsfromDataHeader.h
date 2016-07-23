@@ -1,2 +1,2 @@
-  const double head_QCDTFactorData[2] = {0.150374,0.123688};
-  const double head_QCDTFactorData_err[2] = {0.0188131,0.0592276};
+  const double head_QCDTFactorData[2] = {0.163556,0.117151};
+  const double head_QCDTFactorData_err[2] = {0.0144513,0.0418471};

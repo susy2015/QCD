@@ -317,13 +317,13 @@ void QCDFactors::getAndprintTFactorsfromDataHeader(std::string pred_type)
     {
       std::cout << "Wrong pred_type! the valid types are : MCDriven and DataDriven!" << std::endl;
     }
-    std::cout << "METBin0, MT2Bin (Data)       " << i << " : " << nQCDNormal_Data_all[i]       << "," << nQCDInverted_Data_all[i]       << std::endl;
-    std::cout << "METBin0, MT2Bin (HadTau_MC)  " << i << " : " << nQCDNormal_hadtauMC_all[i]   << "," << nQCDInverted_hadtauMC_all[i]   << std::endl;
-    std::cout << "METBin0, MT2Bin (HadTau_Data)" << i << " : " << nQCDNormal_hadtau_all[i]     << "," << nQCDInverted_hadtau_all[i]     << std::endl;
-    std::cout << "METBin0, MT2Bin (LL_MC)      " << i << " : " << nQCDNormal_lostleptMC_all[i] << "," << nQCDInverted_lostleptMC_all[i] << std::endl;
-    std::cout << "METBin0, MT2Bin (LL_Data)    " << i << " : " << nQCDNormal_lostlept_all[i]   << "," << nQCDInverted_lostlept_all[i]   << std::endl;
-    std::cout << "METBin0, MT2Bin (Zinv_MC)    " << i << " : " << nQCDNormal_zinvMC_all[i]     << "," << nQCDInverted_zinvMC_all[i]     << std::endl;
-    std::cout << "METBin0, MT2Bin (TTZ/W_MC)   " << i << " : " << nQCDNormal_ttzMC_all[i]      << "," << nQCDInverted_ttzMC_all[i]      << std::endl;
+    std::cout << "[Data]        METBin0, MT2Bin" << i << " : " << nQCDNormal_Data_all[i]       << "," << nQCDInverted_Data_all[i]       << std::endl;
+    std::cout << "[HadTau_MC]   METBin0, MT2Bin" << i << " : " << nQCDNormal_hadtauMC_all[i]   << "," << nQCDInverted_hadtauMC_all[i]   << std::endl;
+    std::cout << "[HadTau_Data] METBin0, MT2Bin" << i << " : " << nQCDNormal_hadtau_all[i]     << "," << nQCDInverted_hadtau_all[i]     << std::endl;
+    std::cout << "[LL_MC]       METBin0, MT2Bin" << i << " : " << nQCDNormal_lostleptMC_all[i] << "," << nQCDInverted_lostleptMC_all[i] << std::endl;
+    std::cout << "[LL_Data]     METBin0, MT2Bin" << i << " : " << nQCDNormal_lostlept_all[i]   << "," << nQCDInverted_lostlept_all[i]   << std::endl;
+    std::cout << "[Zinv_MC]     METBin0, MT2Bin" << i << " : " << nQCDNormal_zinvMC_all[i]     << "," << nQCDInverted_zinvMC_all[i]     << std::endl;
+    std::cout << "[TTZ/W_MC]    METBin0, MT2Bin" << i << " : " << nQCDNormal_ttzMC_all[i]      << "," << nQCDInverted_ttzMC_all[i]      << std::endl;
     std::cout << pred_type << ":" << std::endl;
     std::cout << "METBin0, MT2Bin" << i << " : " << QCDTFactorData[i] << "(" << QCDTFactorData_err[i] << ")" << std::endl;
   }
@@ -737,6 +737,7 @@ void QCDFactors::printDataCard(std::string pred_type)
   }
 
   std::cout << "Printing Data Card..." << std::endl;
+  std::cout << std::setprecision(6);
 	std::cout << printDataCardLine("QCD_Data_CS"                    ,QCD_Data_CS);
   std::cout << printDataCardLine("QCD_Data_CS_relative_err"       ,QCD_Data_CS_relative_err);
   std::cout << printDataCardLine("QCD_otherBG_CS"                 ,QCD_otherBG_CS);
@@ -744,8 +745,8 @@ void QCDFactors::printDataCard(std::string pred_type)
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errdown",QCD_otherBG_CS_relative_errdown);
   std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
   std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
-  std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
-  std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
+  //std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
+  //std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
   std::cout << printDataCardLine("QCD_NonClosure_relative_err"    ,QCD_NonClosure_relative_err);
 
   /*

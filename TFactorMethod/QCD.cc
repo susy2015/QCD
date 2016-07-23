@@ -278,10 +278,10 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
 
   for(int i=0;i<MET_BINS;i++)
   {
-    QCDTNJFPred[i] = head_QCDTNJF[i];
-    QCDTNJFPred_err[i] = head_QCDTNJF_err[i];
-    //QCDTNJFPred[i] = 1;
-    //QCDTNJFPred_err[i] = 0;
+    //QCDTNJFPred[i] = head_QCDTNJF[i];
+    //QCDTNJFPred_err[i] = head_QCDTNJF_err[i];
+    QCDTNJFPred[i] = 1;
+    QCDTNJFPred_err[i] = 0;
   }
 
   //clock to monitor the run time
@@ -476,7 +476,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             { 
               metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isLL = tr.getVar<bool>("isLL");
-              double ttjetsFactor = singlemuCS_NormalDPhi;
+              double ttjetsFactor = singlemuCS_lowmet[sidebandbin_number];
               //double ttjetsFactor = 1;
               if(isLL)
               { 
@@ -528,7 +528,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             {
               metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met ); 
               bool isLL = tr.getVar<bool>("isLL");
-              double ttjetsFactor = singlemuCS_InvertedDPhi;
+              double ttjetsFactor = singlemuCS_lowmet[sidebandbin_number];
               //double ttjetsFactor = 1;
               if(isLL)
               {
@@ -616,10 +616,10 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
 
   for(int i=0;i<MET_BINS;i++)
   {
-    QCDTNJFPred[i] = head_QCDTNJF[i];
-    QCDTNJFPred_err[i] = head_QCDTNJF_err[i];
-    //QCDTNJFPred[i] = 1;
-    //QCDTNJFPred_err[i] = 0;
+    //QCDTNJFPred[i] = head_QCDTNJF[i];
+    //QCDTNJFPred_err[i] = head_QCDTNJF_err[i];
+    QCDTNJFPred[i] = 1;
+    QCDTNJFPred_err[i] = 0;
   }
 
   //clock to monitor the run time
@@ -718,7 +718,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
             {
               metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isLL = tr.getVar<bool>("isLL");
-              double ttjetsFactor = singlemuCS_InvertedDPhi;
+              double ttjetsFactor = singlemuCS_invdphi;
               //double ttjetsFactor = 1;
               if(isLL)
               {
@@ -806,17 +806,17 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     int ntopbinid = outBinDef.top_lo_ - 1;//0,1,2 for ntop =1,2,and >=3
     myQCDFactors.QCD_NTopFactor[i] = head_QCDTNJF[ntopbinid];
     myQCDFactors.QCD_NTopFactor_relative_err[i] = head_QCDTNJF_err[ntopbinid]/head_QCDTNJF[ntopbinid];
-    myQCDFactors.QCD_NonClosure_relative_err[i] += (head_QCDTNJF[ntopbinid]-1);
+    //myQCDFactors.QCD_NonClosure_relative_err[i] += (head_QCDTNJF[ntopbinid]-1);
   }
   
   std::string pred_type;
   //pred_type = "MCDriven";
   pred_type = "DataDriven";
   //deal with the Tfactor from data.need to uncomment when you want to get low met side band tfactor from real data
-  myQCDFactors.printSysHeader("DataDriven");
-  //myQCDFactors.printSysHeader("MCDriven");
-  myQCDFactors.printDataCard("DataDriven");
-  //myQCDFactors.printDataCard("MCDriven");
+  //myQCDFactors.printSysHeader("DataDriven");
+  myQCDFactors.printSysHeader("MCDriven");
+  //myQCDFactors.printDataCard("DataDriven");
+  myQCDFactors.printDataCard("MCDriven");
   return ;
 }
 
@@ -1025,7 +1025,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       //double metEff = 1;
       if ( 
            passBaselineLL && (nElectrons==0) && (nMuons == 1) 
-         && (!passdPhis)
+         //&& (!passdPhis)
          //&& passdPhis
          )
       {
@@ -1054,7 +1054,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
           if( !foundTrigger ) continue;
 
           if(met<metbins_edge[1] && met>metbins_edge[0]){ nDataLL[mt2bin_number]+=thisweight*metEff; }
-          if(met<metbins_edge[2] && met>metbins_edge[1] && mt2bin_number == 1){ nDataLL_test+=thisweight*metEff; }
+          if(met>metbins_edge[1] && (!passdPhis)){ nDataLL_test+=thisweight*metEff; }
           (myBasicCheckHistgram.h_b_met_Data)->Fill(met,thisweight*metEff);
           (myBasicCheckHistgram.h_b_mt2_Data)->Fill(mt2,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*metEff);
@@ -1099,7 +1099,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
 
           if(met<metbins_edge[1] && met>metbins_edge[0]){ nMCLL[mt2bin_number]+=thisweight*metEff; }
-          if(met<metbins_edge[2] && met>metbins_edge[1] && mt2bin_number == 1){ nMCLL_test+=thisweight*metEff; }
+          if(met>metbins_edge[1] && (!passdPhis)){ nMCLL_test+=thisweight*metEff; }
           (myBasicCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*metEff);
           (myBasicCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*metEff);
           (myBasicCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*metEff);

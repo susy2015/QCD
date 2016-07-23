@@ -7,7 +7,8 @@
 //2016 ICHEP
 //#define LUMI 8000 //test tag
 //#define LUMI 4004.345 //preapp, NTuple v7 fix b working point
-#define LUMI 7647.637518921 //app, NTuple v8
+//#define LUMI 7647.637518921 //app, NTuple v8
+#define LUMI 12918.140703927 //final 2016 ICHEP data set
 
 #define MET_BINS 4
 #define MT2_BINS 2
@@ -33,8 +34,10 @@ const double zinv_RNorm = 0.868;//7.6fb-1, v8
 //const double singlemuCS_NormalDPhi = 0.606167;
 //const double singlemuCS_InvertedDPhi = 0.579223;
 //const double singlemuCS_NormalDPhi = 0.606808;
-const double singlemuCS_InvertedDPhi = 0.745792;
-const double singlemuCS_NormalDPhi = 0.762781;
+//const double singlemuCS_InvertedDPhi = 0.745792;
+//const double singlemuCS_NormalDPhi = 0.762781;
+const double singlemuCS_lowmet[MT2_BINS] = {0.727846,0.334243};
+const double singlemuCS_invdphi = 0.669007;
 #define BCBin 5
 
 #endif
