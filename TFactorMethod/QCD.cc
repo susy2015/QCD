@@ -491,7 +491,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             { 
-              metEff = 1;
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];
 
@@ -543,7 +543,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             { 
-              metEff = 1;
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];
               myQCDFactors.nQCDInverted_zinvMC_all[sidebandbin_number] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
@@ -733,8 +733,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             {
-              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-              metEff = 1;
+              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];   
               myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
@@ -813,10 +812,10 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
   //pred_type = "MCDriven";
   pred_type = "DataDriven";
   //deal with the Tfactor from data.need to uncomment when you want to get low met side band tfactor from real data
-  //myQCDFactors.printSysHeader("DataDriven");
-  myQCDFactors.printSysHeader("MCDriven");
-  //myQCDFactors.printDataCard("DataDriven");
-  myQCDFactors.printDataCard("MCDriven");
+  myQCDFactors.printSysHeader("DataDriven");
+  //myQCDFactors.printSysHeader("MCDriven");
+  myQCDFactors.printDataCard("DataDriven");
+  //myQCDFactors.printDataCard("MCDriven");
   return ;
 }
 

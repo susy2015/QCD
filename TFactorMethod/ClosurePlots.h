@@ -187,7 +187,7 @@ void ClosurePlots::ClosureTemplate(
   //Create LUMI stamp
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   //const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Supplementary                                                             7.6 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Preliminary 2016                                                       12.9 fb^{-1}(13 TeV)";
 
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
@@ -201,7 +201,7 @@ void ClosurePlots::ClosureTemplate(
   leg->SetFillColor(0);
   //leg->SetFillStyle();
   leg->SetTextFont(42);
-  leg->SetTextSize(0.04);
+  leg->SetTextSize(0.03);
   leg->SetHeader("QCD background");
   leg->AddEntry(h_exp,"Direct from simulation","P");
   //leg->AddEntry(hPred[0],"Treat simulation like data","L");
@@ -264,8 +264,8 @@ void ClosurePlots::ClosureTemplate(
   h_pred->Draw("E2 same");
 
   if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 75.0, true); }
-  //CMSStylePlot::CMS_lumi( c, 4, 0 );
-  title->Draw("same");
+  CMSStylePlot::CMS_lumi( c, 4, 0 );
+  //title->Draw("same");
   leg->Draw("same");
 
   c->Update(); 

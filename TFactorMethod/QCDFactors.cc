@@ -669,7 +669,7 @@ void QCDFactors::CountingPlotsGen()
   //strs << (LUMI/1000);
   //std::string lumi_str = strs.str();
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2016, 4.0 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary 2016, 12.9 fb^{-1}, #sqrt{s} = 13 TeV";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -809,8 +809,8 @@ double QCDFactors::get_aoverb_Error(
                                    )
 {
   double r = std::abs(a/b);
-  //double e = std::abs( std::sqrt( ea*ea + eb*eb*r*r ) / b );
-  double e = r*(ea/a+eb/b);
+  double e = std::abs( std::sqrt( ea*ea + eb*eb*r*r ) / b );
+  //double e = r*(ea/a+eb/b);
 
   return e;
 }

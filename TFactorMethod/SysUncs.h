@@ -17,7 +17,6 @@
 #include "TStyle.h"
 
 #include "SusyAnaTools/Tools/searchBins.h"
-//#include "SusyAnaTools/Tools/CMS_lumi.h"
 
 #include "QCDBinFunction.h"
 
@@ -201,10 +200,10 @@ void SysUncs::printFinalPred()
     g->SetPointEYhigh(i_cal, e_up);
   }
   g->GetXaxis()->SetRangeUser(0,NSEARCH_BINS+1);
-  g->GetYaxis()->SetRangeUser(0,20);
+  g->GetYaxis()->SetRangeUser(0,100);
   g->Draw("AP");
 
-  mySearchBins.drawSBregionDef(0.0,20.0,false);
+  mySearchBins.drawSBregionDef(0.0,100.0,false);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );

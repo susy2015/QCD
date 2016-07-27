@@ -10,24 +10,23 @@ namespace CMSStylePlot
   float cmsTextFont   = 61;  // default is helvetic-bold
 
   bool writeExtraText = true;
-  TString extraText   = "Supplementary";
+  TString extraText   = "Preliminary";
   float extraTextFont = 52;  // default is helvetica-italics
-
   // text sizes and text offsets with respect to the top frame
   // in unit of the top margin size
-  float lumiTextSize     = 0.4;
-  float lumiTextOffset   = 0.2;
+  float lumiTextSize     = 0.45;
+  float lumiTextOffset   = 0.25;
   float cmsTextSize      = 0.45;
   float cmsTextOffset    = 0.1;  // only used in outOfFrame version
 
-  float relPosX    = 0.045;
-  float relPosY    = 0.025;
+  float relPosX    = 0.015;
+  float relPosY    = 0.020;
   float relExtraDY = 1.2;
 
   // ratio of "CMS" and extra text size
   float extraOverCmsTextSize  = 0.76;
 
-  TString lumi_13TeV = "4.0 fb^{-1}";
+  TString lumi_13TeV = "12.9 fb^{-1}";
   TString lumi_8TeV  = "19.7 fb^{-1}";
   TString lumi_7TeV  = "5.1 fb^{-1}";
   TString lumi_sqrtS = "(13 TeV)";
@@ -52,7 +51,7 @@ void CMSStylePlot::CMS_lumi( TPad* pad, int iPeriod, int iPosX )
   if( iPosX/10==1 ) alignX_=1;
   if( iPosX/10==2 ) alignX_=2;
   if( iPosX/10==3 ) alignX_=3;
-  if( iPosX == 0  ) relPosX = 0.15;//out of frame
+  if( iPosX == 0  ) relPosX = 0.1;//out of frame
   int align_ = 10*alignX_ + alignY_;
 
   float H = pad->GetWh();

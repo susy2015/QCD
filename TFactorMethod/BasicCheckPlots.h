@@ -15,6 +15,8 @@
 #include "TLatex.h"
 #include "TStyle.h"
 
+#include "CMSStylePlot/CMS_lumi.h"
+
 TH1D* merge_hist_list(const TList& hists)
 {
   TIter next(hists.MakeIterator());
@@ -168,19 +170,20 @@ void BasicCheckPlots::BasicCheckTemplate(
   //hs_MC->Sumw2();
   //hs_MC->Scale(scale);
   
-  h_Data->Draw("e0");
-  hs_MC->Draw("same hist");
+  //h_Data->Draw("e0");
+  //hs_MC->Draw("same hist");
 
-  //hs_MC->Draw("hist");
+  hs_MC->Draw("hist");
   h_Data->Draw("same e0");
 
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2016, 4.0 fb^{-1}, #sqrt{s} = 13 TeV";
-  TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
-  title->SetNDC();
-  title->SetTextSize(0.045);
-  title->Draw("same");
+  //const std::string titre="CMS Preliminary 2016, 12.9 fb^{-1}, #sqrt{s} = 13 TeV";
+  //TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
+  //title->SetNDC();
+  //title->SetTextSize(0.045);
+  //title->Draw("same");
   
+  CMSStylePlot::CMS_lumi( c, 4, 0 );
   leg->Draw("same");
 
   c->Update(); 
