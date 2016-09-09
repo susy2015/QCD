@@ -537,6 +537,11 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dPreFit->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_prefit, 0, 0 );
+  const std::string titre_prefit = "CMS Simulation                                                                                          12.9 fb^{-1}(13 TeV)";
+  TLatex *title_prefit = new TLatex(0.09770115,0.9194915,titre_prefit.c_str());
+  title_prefit->SetNDC();
+  title_prefit->SetTextSize(0.045);
+  title_prefit->Draw("same");
 
   c_prefit->SaveAs( (plot_out + "_tfactors2dPreFit.png").c_str() );
   c_prefit->SaveAs( (plot_out + "_tfactors2dPreFit.pdf").c_str() );
@@ -577,6 +582,7 @@ void QCDFactors::TFactorsPlotsGen()
   c_postfit->Close();
   */
   //Scaled Tfactor plot
+
   TCanvas *c_scaled = new TCanvas("c_scaled", "",50,50,1200,600);
   c_scaled->SetFillColor(0);
   c_scaled->cd();
@@ -607,12 +613,16 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dScaled->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_scaled, 4, 0 );
+  const std::string titre_scaled = "CMS Preliminary                                                                                         12.9 fb^{-1}(13 TeV)";
+  TLatex *title_scaled = new TLatex(0.09770115,0.9194915,titre_scaled.c_str());
+  title_scaled->SetNDC();
+  title_scaled->SetTextSize(0.045);
+  title_scaled->Draw("same");
 
   c_scaled->SaveAs( (plot_out + "_tfactors2dScaled.png").c_str() );
   c_scaled->SaveAs( (plot_out + "_tfactors2dScaled.pdf").c_str() );
   c_scaled->SaveAs( (plot_out + "_tfactors2dScaled.C").c_str() );
   c_scaled->Close();
-
   return ;
 }
 
@@ -668,8 +678,7 @@ void QCDFactors::CountingPlotsGen()
   //std::ostringstream strs;
   //strs << (LUMI/1000);
   //std::string lumi_str = strs.str();
-  //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2016, 12.9 fb^{-1}, #sqrt{s} = 13 TeV";
+  const std::string titre="CMS Preliminary                                                                           12.9 fb^{-1}(13 TeV)";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -745,8 +754,8 @@ void QCDFactors::printDataCard(std::string pred_type)
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errdown",QCD_otherBG_CS_relative_errdown);
   std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
   std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
-  //std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
-  //std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
+  std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
+  std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
   std::cout << printDataCardLine("QCD_NonClosure_relative_err"    ,QCD_NonClosure_relative_err);
 
   /*

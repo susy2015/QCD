@@ -9,10 +9,10 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
   int canSizeX = 600;
   int canSizeY = 600;
 
-  double ymax_Yields = 20000.;
-  double ymin_Yields = 0.2;
-  double ymax_Ratio = 1000;
-  double ymin_Ratio = 0.01;
+  double ymax_Yields = 2000.;
+  double ymin_Yields = 0.02;
+  double ymax_Ratio = 5.2;
+  double ymin_Ratio = 0.1;
   
   // Get histograms from file
   const unsigned int kNDists = 1;
@@ -31,8 +31,8 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
     else if (i == 8) name = "dPhi1"; 
     else if (i == 9) name = "dPhi2"; 
 
-		hPred[i] = HistReader::get("../../../../../45Result/PredQCDMC.root","h_pred_sb");
-		hTrue[i] = HistReader::get("../../../../../45Result/ExpQCD.root","h_exp_sb");
+    hPred[i] = HistReader::get("../../../../../../45Result/PredQCDMC.root","h_pred_sb");
+    hTrue[i] = HistReader::get("../../../../../../45Result/ExpQCD.root","h_exp_sb");
   }
   
   // Set style
@@ -44,7 +44,6 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
    hTrue[i]->SetMarkerSize(0.9);
    hTrue[i]->GetYaxis()->SetTitleOffset(0.6);
    hTrue[i]->GetYaxis()->SetTitleFont(42);
-   hTrue[i]->GetYaxis()->SetLabelSize(0.065);
    hTrue[i]->GetYaxis()->SetLabelSize(0.04);
    hTrue[i]->GetYaxis()->SetLabelFont(42);
    hPred[i]->SetLineColor(kBlue);
@@ -64,8 +63,8 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
   for(unsigned int i = 0; i < kNDists; ++i) {
     hRatio[i] = static_cast<TH1*>(hTrue[i]->Clone("Ratio"));
     hRatio[i]->Divide(hPred[i]);
-    hRatio[i]->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
-    hRatio[i]->GetYaxis()->SetRangeUser(0.05,5.1);
+    hRatio[i]->GetYaxis()->SetTitle("#frac{Direct}{Prediction }");
+    hRatio[i]->GetYaxis()->SetRangeUser(0.05,5.2);
     hRatio[i]->SetTitle("");
     hRatio[i]->SetStats(0);
     hRatio[i]->SetLineWidth(1);
@@ -83,7 +82,7 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
     if (i == 0){
       hRatio[i]->GetXaxis()->SetTitle("Search region bin number");
       hRatio[i]->SetAxisRange(0,45,"X");
-      hRatio[i]->SetAxisRange(0.05,5.1,"Y");
+      hRatio[i]->SetAxisRange(0.05,5.2,"Y");
     }
     
     hRatioFrame[i] = static_cast<TH1*>(hRatio[i]->Clone("RatioFrame"));
@@ -239,33 +238,22 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
     mark.DrawLatex(1 - gPad->GetRightMargin(), 1 - (gPad->GetTopMargin() - 0.017), lumistamp);
     
     can->cd();
-    TPad *pad2 = new TPad("pad2", "pad2", 0, 0.0, 1, 0.3);
+    TPad *pad2 = new TPad("pad2", "pad2", 0, 0.01, 1, 0.3);
     pad2->SetTopMargin(0);
     pad2->SetBottomMargin(0.3);
     pad2->SetLeftMargin(0.1);
     pad2->SetRightMargin(0.05);
     pad2->Draw();
     pad2->cd();       // pad2 becomes the current pad
-    pad2->SetLogy();
-
-		hRatio[i]->SetMarkerSize(1);
-    hRatio[i]->SetMaximum(5.1);
-		hRatio[i]->SetMaximum(ymax_Ratio);
-		hRatio[i]->SetMinimum(ymin_Ratio);
+    hRatio[i]->SetMarkerSize(1);
+    hRatio[i]->SetMaximum(5.2);
     if(i==0){
       hRatio[i]->GetXaxis()->SetLabelSize(0.15);
       hRatio[i]->GetXaxis()->SetTitleOffset(0.8);
     }
-	
-		TLine *tl_one = new TLine();
-		tl_one->SetLineStyle(2);
-	  tl_one->SetLineColor(1);
-	  tl_one->SetLineWidth(2);
-    
-		hRatio[i]->GetXaxis()->SetRangeUser(0., 45.);
-		hRatio[i]->Draw("PE1");
-    tl_one->DrawLine(0.,1.,45.,1.);
-		//hRatioFrame[i]->Draw("HISTsame");
+    hRatio[i]->GetXaxis()->SetRangeUser(0., 45.);
+    hRatio[i]->Draw("PE1");
+    hRatioFrame[i]->Draw("HISTsame");
     hRatio[i]->Draw("PE1same");   
 
     if (i==0){

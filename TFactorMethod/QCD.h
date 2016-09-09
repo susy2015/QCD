@@ -50,6 +50,7 @@ void mypassBaselineFunc(NTupleReader& tr)
 QCDBGModel myQCDBGModel;
 //search bin definition, with era
 SearchBins mySearchBins("SB_59_2016");
+//SearchBins mySearchBins("SB_Aggregate_ICHEP_2016");
 //Trigger Eff
 TriggerEff myTriggerEff;
 //overall scale for all plots, will be set to be 1 if no special need

@@ -10,20 +10,25 @@
 
 
 // Get histogram from ROOT file.
-class HistReader {
-public:
+class HistReader 
+{
+ public:
   static TH1* get(const TString &fileName, const TString &histName, const TString &xTitle = "", const TString &yTitle = "");
 };
 
 
-TH1* HistReader::get(const TString &fileName, const TString &histName, const TString &xTitle, const TString &yTitle) {
+TH1* HistReader::get(const TString &fileName, const TString &histName, const TString &xTitle, const TString &yTitle) 
+{
   TFile file(fileName,"READ");
   TH1* h = NULL;
   file.GetObject(histName,h);
-  if( h == NULL ) {
+  if( h == NULL )
+  {
     std::cerr << "\n\nERROR: Histogram '" << histName << "' not found\n\n" << std::endl;
     throw std::exception();
-  } else {
+  } 
+  else 
+  {
     h->SetDirectory(0);
     h->UseCurrentStyle();
     if( xTitle != "" ) h->GetXaxis()->SetTitle(xTitle);
