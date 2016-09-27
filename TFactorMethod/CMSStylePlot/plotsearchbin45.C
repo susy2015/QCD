@@ -42,6 +42,7 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
    hTrue[i]->SetMarkerColor(kRed);
    hTrue[i]->SetLineColor(hTrue[i]->GetMarkerColor());
    hTrue[i]->SetMarkerSize(0.9);
+   hTrue[i]->GetYaxis()->SetTitle("Events");
    hTrue[i]->GetYaxis()->SetTitleOffset(0.6);
    hTrue[i]->GetYaxis()->SetTitleFont(42);
    hTrue[i]->GetYaxis()->SetLabelSize(0.04);
@@ -209,9 +210,9 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
       ttextmt2->SetTextSize(0.055);
       ttextmt2->SetTextAlign(12);
       ttextmt2->SetTextAngle(90);
-      ttextmt2->DrawLatex( 2.5, ymax_Yields/1000. , "M_{T2}=[200,300]");
-      ttextmt2->DrawLatex( 6.0, ymax_Yields/1000. , "M_{T2}=[300,400]");
-      ttextmt2->DrawLatex(9.5, ymax_Yields/1000. , "M_{T2}#geq400 GeV");
+      ttextmt2->DrawLatex( 2.5, ymax_Yields/800. , "M_{T2}=[200,300]");
+      ttextmt2->DrawLatex( 6.0, ymax_Yields/800. , "M_{T2}=[300,400]");
+      ttextmt2->DrawLatex(9.5, ymax_Yields/800. , "M_{T2}#geq400 GeV");
       //-----------------------------------------------------------
  
     }
