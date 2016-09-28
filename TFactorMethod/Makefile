@@ -51,16 +51,34 @@ $(ODIR)/%.o : $(SDIR)/%.C
 $(ODIR)/%.o : $(SDIR)/%.cc
 	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
 
+$(ODIR)/%.o : $(SDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
+
 $(ODIR)/%.o : $(IDIR)/%.C
 	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
 
 $(ODIR)/%.o : $(IDIR)/%.cc
 	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
 
-tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/PDFUncertainty.o $(ODIR)/tupleReadTest.o
+$(ODIR)/%.o : $(IDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
+
+$(ODIR)/%.o : $(TTSDIR)/%.cc
+	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -fPIC -o $@ -c $<
+
+$(ODIR)/%.o : $(TTSDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -fPIC -o $@ -c $<
+
+$(ODIR)/%.o : $(TPSDIR)/%.cc
+	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -fPIC -o $@ -c $<
+
+$(ODIR)/%.o : $(TPSDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -fPIC -o $@ -c $<
+
+tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/PDFUncertainty.o $(ODIR)/searchBins.o $(ODIR)/tupleReadTest.o
 	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
-QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
+QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 ClosurePlots: $(ODIR)/ClosurePlots.o $(ODIR)/searchBins.o
