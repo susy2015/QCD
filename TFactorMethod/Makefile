@@ -26,7 +26,7 @@ LIBS     = $(shell root-config --glibs)
 MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 
-PROGRAMS = tupleTest QCD ClosurePlots BasicCheckPlots SysUncs
+PROGRAMS = tupleTest QCD SFCheck ClosurePlots BasicCheckPlots SFCheckPlots SysUncs
 
 all: mkobj sampPyWrap $(PROGRAMS)
 
@@ -81,10 +81,16 @@ tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/PDFUncertainty.
 QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
+SFCheck: $(ODIR)/SFCheck.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/QCDReWeighting.o $(ODIR)/SFCheckHistgram.o
+	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+
 ClosurePlots: $(ODIR)/ClosurePlots.o $(ODIR)/searchBins.o
 	$(LD) $^ $(LIBS)  -o $@
 
 BasicCheckPlots: $(ODIR)/BasicCheckPlots.o
+	$(LD) $^ $(LIBS)  -o $@
+
+SFCheckPlots: $(ODIR)/SFCheckPlots.o
 	$(LD) $^ $(LIBS)  -o $@
 
 SysUncs: $(ODIR)/SysUncs.o $(ODIR)/searchBins.o

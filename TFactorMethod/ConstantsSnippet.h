@@ -42,5 +42,6 @@ const double zinv_RNorm = 0.783;//v8 MC and v9 data, 12.9 fb-1
 const double singlemuCS_lowmet[MT2_BINS] = {0.727846,0.334243};
 const double singlemuCS_invdphi = 0.669007;
 #define BCBin 5
+#define SFMCBin 3
 
 #endif
