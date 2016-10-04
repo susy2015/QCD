@@ -244,6 +244,7 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
     pad2->SetBottomMargin(0.3);
     pad2->SetLeftMargin(0.1);
     pad2->SetRightMargin(0.05);
+    pad2->SetLogy();
     pad2->Draw();
     pad2->cd();       // pad2 becomes the current pad
     hRatio[i]->SetMarkerSize(1);

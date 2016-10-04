@@ -81,7 +81,7 @@ tupleTest: $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/PDFUncertainty.
 QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-SFCheck: $(ODIR)/SFCheck.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/QCDReWeighting.o $(ODIR)/SFCheckHistgram.o
+SFCheck: $(ODIR)/SFCheck.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/BTagCorrector.o $(ODIR)/BTagCalibrationStandalone.o $(ODIR)/QCDReWeighting.o $(ODIR)/SFCheckHistgram.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 ClosurePlots: $(ODIR)/ClosurePlots.o $(ODIR)/searchBins.o

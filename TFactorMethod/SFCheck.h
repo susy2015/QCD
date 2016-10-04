@@ -18,6 +18,7 @@
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
+#include "SusyAnaTools/Tools/BTagCorrector.h"
 
 //#include "CMSStylePlot/CMS_lumi.h"
 

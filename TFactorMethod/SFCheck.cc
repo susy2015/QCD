@@ -60,6 +60,16 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
     if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
+    if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) ) 
+    {
+      BTagCorrector btagcorr = BTagCorrector();
+      btagcorr.SetFastSim(false);
+      btagcorr.SetCalib("/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/TFactorMethod/BSFactors/");
+      TFile * bTagEffFile =0; bTagEffFile = new TFile("BSFactors/bTagEffHists.root"); btagcorr.SetEffs(bTagEffFile);
+      //btagcorr = new BTagCorrector("BSFactors/bTagEffHists.root", "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/TFactorMethod/BSFactors", false);
+      tr.registerFunction(btagcorr);
+    }
+
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
@@ -73,11 +83,17 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
       int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       double ht = tr.getVar<double>("HT"+spec);
-
+  
+      double bSF = 1;
+      if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) )  
+      {
+        bSF = tr.getVar<double>("bTagSF_EventWeightSimple_Central");
+        std::cout << "b tag scale factor : " << bSF << std::endl;
+      }
+   
       //apply trigger efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
-      double metEff = 1;
-
+      //double bSF = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
+      
       if ( nbotjets >= 1 )
       {
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
@@ -99,14 +115,14 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
 
           if( !foundTrigger ) continue;
 
-          (mySFCheckHistgram.h_b_met_Data)->Fill(met,thisweight*metEff);
-          (mySFCheckHistgram.h_b_mt2_Data)->Fill(mt2,thisweight*metEff);
-          (mySFCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*metEff);
-          (mySFCheckHistgram.h_b_nbjets_Data)->Fill(nbotjets,thisweight*metEff);
-          (mySFCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight*metEff);
-          //(mySFCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*metEff);
-          (mySFCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight*metEff);
-          (mySFCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*metEff);
+          (mySFCheckHistgram.h_b_met_Data)->Fill(met,thisweight*bSF);
+          (mySFCheckHistgram.h_b_mt2_Data)->Fill(mt2,thisweight*bSF);
+          (mySFCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*bSF);
+          (mySFCheckHistgram.h_b_nbjets_Data)->Fill(nbotjets,thisweight*bSF);
+          (mySFCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight*bSF);
+          //(mySFCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*bSF);
+          (mySFCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight*bSF);
+          (mySFCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*bSF);
 
         }
         else
@@ -118,14 +134,14 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
           else if( ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") ) ih = 2;
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
 
-          (mySFCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*metEff);
-          (mySFCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*metEff);
-          (mySFCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*metEff);
-          (mySFCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*metEff);
-          (mySFCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*metEff);
-          //(mySFCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
-          (mySFCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*metEff);
-          (mySFCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*metEff);
+          (mySFCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*bSF);
+          (mySFCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*bSF);
+          (mySFCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*bSF);
+          (mySFCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*bSF);
+          (mySFCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*bSF);
+          //(mySFCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*bSF);
+          (mySFCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*bSF);
+          (mySFCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*bSF);
         }
       }
     }//end of inner loop
