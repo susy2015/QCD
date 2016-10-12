@@ -43,9 +43,9 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
    hTrue[i]->SetLineColor(hTrue[i]->GetMarkerColor());
    hTrue[i]->SetMarkerSize(0.9);
    hTrue[i]->GetYaxis()->SetTitle("Events");
-   hTrue[i]->GetYaxis()->SetTitleOffset(0.6);
+   hTrue[i]->GetYaxis()->SetTitleOffset(0.7);
    hTrue[i]->GetYaxis()->SetTitleFont(42);
-   hTrue[i]->GetYaxis()->SetLabelSize(0.04);
+   hTrue[i]->GetYaxis()->SetLabelSize(0.05);
    hTrue[i]->GetYaxis()->SetLabelFont(42);
    hPred[i]->SetLineColor(kBlue);
    hPred[i]->SetMarkerStyle(20);
@@ -68,7 +68,7 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
     hRatio[i]->GetYaxis()->SetRangeUser(0.05,5.2);
     hRatio[i]->SetTitle("");
     hRatio[i]->SetStats(0);
-    hRatio[i]->SetLineWidth(1);
+    //hRatio[i]->SetLineWidth(1);
     hRatio[i]->GetYaxis()->SetTitleSize(0.15);
     hRatio[i]->GetYaxis()->SetTitleOffset(0.3);
     hRatio[i]->GetYaxis()->SetTitleFont(42);
@@ -76,10 +76,10 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
     hRatio[i]->GetYaxis()->SetLabelFont(42);
     hRatio[i]->GetXaxis()->SetLabelOffset(0.01);
     hRatio[i]->GetXaxis()->SetLabelFont(42);    
-    hRatio[i]->GetXaxis()->SetLabelSize(0.08);
+    hRatio[i]->GetXaxis()->SetLabelSize(0.05);
     hRatio[i]->GetXaxis()->SetTitleSize(0.16);
     hRatio[i]->GetXaxis()->SetTitleFont(42);
-    hRatio[i]->GetXaxis()->SetTitleOffset(0.6);
+    hRatio[i]->GetXaxis()->SetTitleOffset(0.8);
     if (i == 0){
       hRatio[i]->GetXaxis()->SetTitle("Search region bin number");
       hRatio[i]->SetAxisRange(0,45,"X");
@@ -105,7 +105,7 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
   leg->SetTextFont(42);
   leg->SetTextSize(0.06);
   leg->SetHeader("QCD background");
-  leg->AddEntry(hTrue[0],"Direct from simulation","P");
+  leg->AddEntry(hTrue[0],"Direct from simulation", "EP");
   leg->AddEntry(hPred[0],"Treat simulation like data");
 
 
@@ -247,11 +247,11 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
     pad2->SetLogy();
     pad2->Draw();
     pad2->cd();       // pad2 becomes the current pad
-    hRatio[i]->SetMarkerSize(1);
+    hRatio[i]->SetMarkerSize(0.9);
     hRatio[i]->SetMaximum(5.2);
     if(i==0){
-      hRatio[i]->GetXaxis()->SetLabelSize(0.15);
-      hRatio[i]->GetXaxis()->SetTitleOffset(0.8);
+      hRatio[i]->GetXaxis()->SetLabelSize(0.12);
+      hRatio[i]->GetXaxis()->SetTitleOffset(0.9);
     }
     hRatio[i]->GetXaxis()->SetRangeUser(0., 45.);
     hRatio[i]->Draw("PE1");

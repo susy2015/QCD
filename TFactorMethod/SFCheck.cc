@@ -45,8 +45,15 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
   const std::string spec = "QCD";
   myBaselineVessel = new BaselineVessel(spec);
 
-  std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;
-  
+  TFile *fel_1st = TFile::Open("LeptFactors/egammaEffi.txt_SF2D.root");
+  TH2F *hel_1st = (TH2F*)fel_1st->Get("EGamma_SF2D");
+  TFile *fel_2nd = TFile::Open("LeptFactors/scaleFactors.root");
+  TH2F *hel_2nd = (TH2F*)fel_2nd->Get("GsfElectronToVeto");
+  TFile *fmu_1st = TFile::Open("LeptFactors/TnP_MuonID_NUM_MiniIsoTight_DENOM_MediumID_VAR_map_pt_eta.root");
+  TH2F *hmu_1st = (TH2F*)fmu_1st->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_Medium2016_pass");
+
+  std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;  
+
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
     //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
@@ -59,13 +66,13 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
     double thisweight = (*iter_QCDSampleInfos).weight;
     if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
-
+    
     if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) ) 
     {
       BTagCorrector btagcorr = BTagCorrector();
       btagcorr.SetFastSim(false);
-      btagcorr.SetCalib("/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/TFactorMethod/BSFactors/");
-      TFile * bTagEffFile =0; bTagEffFile = new TFile("BSFactors/bTagEffHists.root"); btagcorr.SetEffs(bTagEffFile);
+      btagcorr.SetCalib("/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/TFactorMethod/BSFactors/CSVv2_ichep.csv");
+      TFile * bTagEffFile =0; bTagEffFile = new TFile("TTbarNoHad_bTagEff.root"); btagcorr.SetEffs(bTagEffFile);
       //btagcorr = new BTagCorrector("BSFactors/bTagEffHists.root", "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/TFactorMethod/BSFactors", false);
       tr.registerFunction(btagcorr);
     }
@@ -88,11 +95,28 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
       if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) )  
       {
         bSF = tr.getVar<double>("bTagSF_EventWeightSimple_Central");
-        std::cout << "b tag scale factor : " << bSF << std::endl;
+        //std::cout << "b tag scale factor : " << bSF << std::endl;
       }
    
       //apply trigger efficiencies
       //double bSF = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
+      double leptSF = 1;
+      
+      if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) )  
+      {
+        leptSF = ElMuDataMCScaleFactor(
+                                       tr.getVec<TLorentzVector>("elesLVec"),
+                                       tr.getVec<int>("elesFlagVeto"),
+                                       tr.getVec<double>("elesMiniIso"),
+                                       tr.getVec<TLorentzVector>("muonsLVec"),
+                                       tr.getVec<int>("muonsFlagMedium"),
+                                       tr.getVec<double>("muonsMiniIso"),
+                                       hel_1st,
+                                       hel_2nd,
+                                       hmu_1st
+                                      );
+      }
+      //std::cout << "Lept SF : " << leptSF << std::endl;
       
       if ( nbotjets >= 1 )
       {
@@ -115,14 +139,14 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
 
           if( !foundTrigger ) continue;
 
-          (mySFCheckHistgram.h_b_met_Data)->Fill(met,thisweight*bSF);
-          (mySFCheckHistgram.h_b_mt2_Data)->Fill(mt2,thisweight*bSF);
-          (mySFCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight*bSF);
-          (mySFCheckHistgram.h_b_nbjets_Data)->Fill(nbotjets,thisweight*bSF);
-          (mySFCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight*bSF);
-          //(mySFCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight*bSF);
-          (mySFCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight*bSF);
-          (mySFCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*bSF);
+          (mySFCheckHistgram.h_b_met_Data)->Fill(met,thisweight);
+          (mySFCheckHistgram.h_b_mt2_Data)->Fill(mt2,thisweight);
+          (mySFCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight);
+          (mySFCheckHistgram.h_b_nbjets_Data)->Fill(nbotjets,thisweight);
+          (mySFCheckHistgram.h_b_ht_Data)->Fill(ht,thisweight);
+          //(mySFCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight);
+          (mySFCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight);
+          (mySFCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight);
 
         }
         else
@@ -134,18 +158,22 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
           else if( ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") ) ih = 2;
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
 
-          (mySFCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*bSF);
-          (mySFCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*bSF);
-          (mySFCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*bSF);
-          (mySFCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*bSF);
-          (mySFCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*bSF);
-          //(mySFCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*bSF);
-          (mySFCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*bSF);
-          (mySFCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*bSF);
+          (mySFCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*bSF*leptSF);
+          (mySFCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*bSF*leptSF);
+          (mySFCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*bSF*leptSF);
+          (mySFCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*bSF*leptSF);
+          (mySFCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*bSF*leptSF);
+          //(mySFCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*bSF*leptSF);
+          (mySFCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*bSF*leptSF);
+          (mySFCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*bSF*leptSF);
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
+
+  fel_1st->Close();
+  fel_2nd->Close();
+  fmu_1st->Close();
 
   (mySFCheckHistgram.oFile)->Write();
   (mySFCheckHistgram.oFile)->Close();
