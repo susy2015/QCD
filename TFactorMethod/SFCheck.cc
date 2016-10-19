@@ -34,23 +34,30 @@
 
 #include "SFCheck.h"
 
-void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
+//std::string dir_out = "RootForPlotting/";
+std::string dir_out = "";
+
+void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_nb, bool isCondor )
 {
   SFCheckHistgram mySFCheckHistgram;
-  mySFCheckHistgram.BookHistgram( (dir_out + "SFCheck.root").c_str() );
+  mySFCheckHistgram.BookHistgram( (dir_out + "SFCheck_nb" + std::to_string(lower_nb) + "_" + std::to_string(higher_nb) + ".root").c_str() );
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
   //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
   const std::string spec = "QCD";
   myBaselineVessel = new BaselineVessel(spec);
-
-  TFile *fel_1st = TFile::Open("LeptFactors/egammaEffi.txt_SF2D.root");
-  TH2F *hel_1st = (TH2F*)fel_1st->Get("EGamma_SF2D");
-  TFile *fel_2nd = TFile::Open("LeptFactors/scaleFactors.root");
-  TH2F *hel_2nd = (TH2F*)fel_2nd->Get("GsfElectronToVeto");
-  TFile *fmu_1st = TFile::Open("LeptFactors/TnP_MuonID_NUM_MiniIsoTight_DENOM_MediumID_VAR_map_pt_eta.root");
-  TH2F *hmu_1st = (TH2F*)fmu_1st->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_Medium2016_pass");
+  
+	std::string LeptF_dir = "LeptFactors/";
+  if(isCondor) {LeptF_dir.clear(); LeptF_dir = "";}
+  TFile *flept_sf_all = TFile::Open( ( LeptF_dir + "allINone_leptonSF.root").c_str() );
+  TH2F *ele_VetoID_SF = (TH2F*) flept_sf_all->Get("GsfElectronToVeto");
+  TH2F *ele_miniISO_SF = (TH2F*) flept_sf_all->Get("MVAVLooseElectronToMini");
+  TH2F *ele_trkpt_SF = (TH2F*) flept_sf_all->Get("EGamma_SF2D");
+  TH2F *mu_mediumID_SF = (TH2F*) flept_sf_all->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0");
+  TH2F *mu_miniISO_SF = (TH2F*) flept_sf_all->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_Medium2016_pass");
+  TH1D *mu_trkptGT10_SF = (TH1D*) flept_sf_all->Get("mutrksfptg10");
+  TH1D *mu_trkptLT10_SF = (TH1D*) flept_sf_all->Get("mutrksfptl10");
 
   std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;  
 
@@ -69,14 +76,21 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
     
     if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) ) 
     {
-      BTagCorrector btagcorr = BTagCorrector();
-      btagcorr.SetFastSim(false);
-      btagcorr.SetCalib("/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/TFactorMethod/BSFactors/CSVv2_ichep.csv");
-      TFile * bTagEffFile =0; bTagEffFile = new TFile("TTbarNoHad_bTagEff.root"); btagcorr.SetEffs(bTagEffFile);
-      //btagcorr = new BTagCorrector("BSFactors/bTagEffHists.root", "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_12/src/QCD/TFactorMethod/BSFactors", false);
-      tr.registerFunction(btagcorr);
+      BTagCorrector *btagcorr;
+      btagcorr = nullptr;
+      if( ( (*iter_QCDSampleInfos).QCDTag ).find("WJetsToLNu_HT") != std::string::npos )
+      { 
+        if  (isCondor){btagcorr = new BTagCorrector("WJetsToLNu_HT_bTagEff_forHua.root", "", false);}
+        else          {btagcorr = new BTagCorrector("BSFactors/WJetsToLNu_HT_bTagEff_forHua.root", "BSFactors", false);}
+      }
+      else
+      { 
+        if  (isCondor){btagcorr = new BTagCorrector("TTbarNoHad_bTagEff.root", "", false);}
+        else          {btagcorr = new BTagCorrector("BSFactors/TTbarNoHad_bTagEff.root", "BSFactors", false);}
+      }
+      tr.registerFunction(*btagcorr);
     }
-
+    
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
@@ -101,7 +115,6 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
       //apply trigger efficiencies
       //double bSF = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
       double leptSF = 1;
-      
       if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) )  
       {
         leptSF = ElMuDataMCScaleFactor(
@@ -111,14 +124,18 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
                                        tr.getVec<TLorentzVector>("muonsLVec"),
                                        tr.getVec<int>("muonsFlagMedium"),
                                        tr.getVec<double>("muonsMiniIso"),
-                                       hel_1st,
-                                       hel_2nd,
-                                       hmu_1st
+                                       ele_VetoID_SF,
+                                       ele_miniISO_SF,
+                                       ele_trkpt_SF,
+                                       mu_mediumID_SF,
+                                       mu_miniISO_SF,
+                                       mu_trkptGT10_SF,
+                                       mu_trkptLT10_SF
                                       );
       }
       //std::cout << "Lept SF : " << leptSF << std::endl;
       
-      if ( nbotjets >= 1 )
+      if ( nbotjets >= lower_nb && nbotjets < higher_nb )
       {
         if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
         {
@@ -157,23 +174,42 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight )
           else if( ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos ) ih = 1;
           else if( ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") ) ih = 2;
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
+      
+          //Top pt reweighting
+          //Get gen top TLVec
+          double topptSF = 1;
+          if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos )
+          {
+            const std::vector<TLorentzVector> &genDecayLVec = tr.getVec<TLorentzVector>("genDecayLVec");
+            const std::vector<int> &genDecayIdxVec = tr.getVec<int>("genDecayIdxVec");
+            const std::vector<int> &genDecayPdgIdVec = tr.getVec<int>("genDecayPdgIdVec");
+            const std::vector<int> &genDecayMomIdxVec = tr.getVec<int>("genDecayMomIdxVec");
+            std::vector<TLorentzVector> GenTop = GetGenTopLVec(genDecayLVec, genDecayPdgIdVec, genDecayIdxVec, genDecayMomIdxVec);
+            if(GenTop.size()!=2){ std::cout << "Can not find 2 Gen top in TTJets sample?? what the fuck is going on!" << std::endl; }
+            for(auto& i:GenTop)
+            {
+              double toppt = i.Pt();
+              //https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopPtReweighting, l+jets, 8TeV
+              topptSF = topptSF*std::exp(0.159-0.00141*toppt);
+            }
+            topptSF = std::sqrt(topptSF);
+            //std::cout << topptSF << std::endl;
+          }
 
-          (mySFCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*bSF*leptSF);
-          (mySFCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*bSF*leptSF);
-          (mySFCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*bSF*leptSF);
-          (mySFCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*bSF*leptSF);
-          (mySFCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*bSF*leptSF);
-          //(mySFCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*bSF*leptSF);
-          (mySFCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*bSF*leptSF);
-          (mySFCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*bSF*leptSF);
+          (mySFCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*bSF*leptSF*topptSF);
+          (mySFCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*bSF*leptSF*topptSF);
+          (mySFCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*bSF*leptSF*topptSF);
+          (mySFCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*bSF*leptSF*topptSF);
+          (mySFCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*bSF*leptSF*topptSF);
+          //(mySFCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*bSF*leptSF*topptSF);
+          (mySFCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*bSF*leptSF*topptSF);
+          (mySFCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*bSF*leptSF*topptSF);
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
 
-  fel_1st->Close();
-  fel_2nd->Close();
-  fmu_1st->Close();
+  flept_sf_all->Close();
 
   (mySFCheckHistgram.oFile)->Write();
   (mySFCheckHistgram.oFile)->Close();
@@ -213,9 +249,16 @@ int main(int argc, char* argv[])
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       7063909, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,        253561, LUMI, 1.21, inputFileList_Data.c_str() );
 
-  if( RunMode == "SFCheck" )
+  if( RunMode == "SFCheckTTJets" )
   {
-    LoopSFCheck( myDataSampleWeight );
+    //LoopSFCheck( myDataSampleWeight, 1, 9, false );
+    LoopSFCheck( myDataSampleWeight, 1, 9, true );
+    return 0;
+  }
+  else if( RunMode == "SFCheckWJets" )
+  {
+    //LoopSFCheck( myDataSampleWeight, 0, 1, false );
+    LoopSFCheck( myDataSampleWeight, 0, 1, true );
     return 0;
   }
   else

@@ -29,9 +29,6 @@
 #include "ConstantsSnippet.h"
 //#include "CMSStylePlot/tdrstyle.h"
 
-//all the root file for plotting will go to this directory
-std::string dir_out = "RootForPlotting/";
-
 //baseline cut function definition, no need since move to QCD style root file
 static BaselineVessel *myBaselineVessel;
 void mypassBaselineFunc(NTupleReader& tr)
@@ -50,9 +47,13 @@ double ElMuDataMCScaleFactor(
 	                           std::vector<TLorentzVector> muonsLVec,
                              std::vector<int> muonsFlagMedium,
                              std::vector<double> muonsMiniIso,
-                             TH2F *hel_1st,
-                             TH2F *hel_2nd,
-                             TH2F *hmu_1st
+                             TH2F *el_ID_SF,
+                             TH2F *el_ISO_SF,
+                             TH2F *el_trk_SF,
+                             TH2F *mu_ID_SF,
+                             TH2F *mu_ISO_SF,
+                             TH1D *mu_trkptGT10_SF,
+                             TH1D *mu_trkptLT10_SF
                             )
 {
   //muonsLVec, elesLVec
@@ -83,29 +84,56 @@ double ElMuDataMCScaleFactor(
   if(isElCS && !isMuCS)
   {
     double elsf = 1;
-    int etabin1st = hel_1st->GetXaxis()->FindBin(reco_els_eta);
-    int ptbin1st = hel_1st->GetYaxis()->FindBin(reco_els_pt);
-    if(reco_els_pt > 200) ptbin1st = hel_1st->GetYaxis()->FindBin(200-1);
-    if(reco_els_pt < 20 ) ptbin1st = hel_1st->GetYaxis()->FindBin(20 +1);
-    elsf *= hel_1st->GetBinContent(etabin1st,ptbin1st);
-    //if(elsf<0.1) std::cout << "El Pt : " << reco_els_pt << " El Eta : "<< reco_els_eta << std::endl;
+    int ptbinid = el_ID_SF->GetXaxis()->FindBin(reco_els_pt);
+    if(reco_els_pt > el_ID_SF->GetXaxis()->GetXmax()) ptbinid = el_ID_SF->GetXaxis()->FindBin(el_ID_SF->GetXaxis()->GetXmax()-1);
+    if(reco_els_pt < el_ID_SF->GetXaxis()->GetXmin()) ptbinid = el_ID_SF->GetXaxis()->FindBin(el_ID_SF->GetXaxis()->GetXmin()+1);
+    int etabinid = el_ID_SF->GetYaxis()->FindBin(std::abs(reco_els_eta));
+    elsf *= el_ID_SF->GetBinContent(ptbinid,etabinid);
 
-    int ptbin2nd = hel_2nd->GetXaxis()->FindBin(reco_els_pt);
-    if(reco_els_pt > hel_2nd->GetXaxis()->GetXmax()) ptbin2nd = hel_2nd->GetXaxis()->FindBin(hel_2nd->GetXaxis()->GetXmax()-1);
-    if(reco_els_pt < hel_2nd->GetXaxis()->GetXmin()) ptbin2nd = hel_2nd->GetXaxis()->FindBin(hel_2nd->GetXaxis()->GetXmin()+1);
-    int etabin2nd = hel_2nd->GetYaxis()->FindBin(std::abs(reco_els_eta));
-    elsf *= hel_2nd->GetBinContent(ptbin2nd,etabin2nd);
-    //if(elsf<0.1) std::cout << "El Pt : " << reco_els_pt << " El Eta : "<< reco_els_eta << std::endl;
+    int ptbiniso = el_ISO_SF->GetXaxis()->FindBin(reco_els_pt);
+    if(reco_els_pt > el_ISO_SF->GetXaxis()->GetXmax()) ptbiniso = el_ISO_SF->GetXaxis()->FindBin(el_ISO_SF->GetXaxis()->GetXmax()-1);
+    if(reco_els_pt < el_ISO_SF->GetXaxis()->GetXmin()) ptbiniso = el_ISO_SF->GetXaxis()->FindBin(el_ISO_SF->GetXaxis()->GetXmin()+1);
+    int etabiniso = el_ISO_SF->GetYaxis()->FindBin(std::abs(reco_els_eta));
+    elsf *= el_ISO_SF->GetBinContent(ptbiniso,etabiniso);
+
+    int etabintrk = el_trk_SF->GetXaxis()->FindBin(reco_els_eta);
+    int ptbintrk = el_trk_SF->GetYaxis()->FindBin(reco_els_pt);
+    if(reco_els_pt > 200) ptbintrk = el_trk_SF->GetYaxis()->FindBin(200-1);
+    if(reco_els_pt < 20 ) ptbintrk = el_trk_SF->GetYaxis()->FindBin(20 +1);
+    elsf *= el_trk_SF->GetBinContent(etabintrk,ptbintrk);
+    
+    if(elsf<0.1) std::cout << "El Pt : " << reco_els_pt << " El Eta : "<< reco_els_eta << std::endl;
+
     return elsf;
   }
   else if(!isElCS && isMuCS)
   {
     double musf = 1;
-    int ptbin1st = hmu_1st->GetXaxis()->FindBin(reco_mus_pt);
-    if(reco_mus_pt > hmu_1st->GetXaxis()->GetXmax()) ptbin1st = hmu_1st->GetXaxis()->FindBin(hmu_1st->GetXaxis()->GetXmax()-1);
-    int etabin1st = hmu_1st->GetYaxis()->FindBin(std::abs(reco_mus_eta));
-    musf *= hmu_1st->GetBinContent(ptbin1st,etabin1st);
-    //if(musf<0.1) std::cout << "Mu Pt : " << reco_mus_pt << " Mu Eta : "<< reco_mus_eta << std::endl;
+    int ptbinid = mu_ID_SF->GetXaxis()->FindBin(reco_mus_pt);
+    if(reco_mus_pt > mu_ID_SF->GetXaxis()->GetXmax()) ptbinid = mu_ID_SF->GetXaxis()->FindBin(mu_ID_SF->GetXaxis()->GetXmax()-1);
+    if(reco_mus_pt < mu_ID_SF->GetXaxis()->GetXmin()) ptbinid = mu_ID_SF->GetXaxis()->FindBin(mu_ID_SF->GetXaxis()->GetXmin()+1);
+    int etabinid = mu_ID_SF->GetYaxis()->FindBin(std::abs(reco_mus_eta));
+    musf *= mu_ID_SF->GetBinContent(ptbinid,etabinid);
+
+    int ptbiniso = mu_ISO_SF->GetXaxis()->FindBin(reco_mus_pt);
+    if(reco_mus_pt > mu_ISO_SF->GetXaxis()->GetXmax()) ptbiniso = mu_ISO_SF->GetXaxis()->FindBin(mu_ISO_SF->GetXaxis()->GetXmax()-1);
+    if(reco_mus_pt < mu_ISO_SF->GetXaxis()->GetXmin()) ptbiniso = mu_ISO_SF->GetXaxis()->FindBin(mu_ISO_SF->GetXaxis()->GetXmin()+1);
+    int etabiniso = mu_ISO_SF->GetYaxis()->FindBin(std::abs(reco_mus_eta));
+    musf *= mu_ISO_SF->GetBinContent(ptbiniso,etabiniso);
+
+    if(reco_mus_pt > 10)
+    {
+      int etabintrk = mu_trkptGT10_SF->GetXaxis()->FindBin(reco_mus_eta);
+      musf *= mu_trkptGT10_SF->GetBinContent(etabintrk);
+    }
+    else
+    {
+      int etabintrk = mu_trkptLT10_SF->GetXaxis()->FindBin(reco_mus_eta);
+      musf *= mu_trkptLT10_SF->GetBinContent(etabintrk);
+    }
+
+    if(musf<0.1) std::cout << "Mu Pt : " << reco_mus_pt << " Mu Eta : "<< reco_mus_eta << std::endl;
+
     return musf;
   }
   else
@@ -113,6 +141,48 @@ double ElMuDataMCScaleFactor(
     std::cout << "the event is neither single electron CS nor single muon CS! Please check!" << std::endl;
     return 1;
   }
+}
+
+//Get Gen top information for top pt reweighting
+std::vector<TLorentzVector> GetGenTopLVec(
+                                          std::vector<TLorentzVector> genDecayLVec,
+                                          std::vector<int> genDecayPdgIdVec,
+                                          std::vector<int> genDecayIdxVec,
+                                          std::vector<int> genDecayMomIdxVec
+                                         )
+{
+  std::vector<TLorentzVector> tLVec;
+  for(unsigned it=0; it<genDecayLVec.size(); it++)
+  {
+    int pdgId = genDecayPdgIdVec.at(it);
+    if( std::abs(pdgId)==6 )
+    {
+      /*
+      for(unsigned ig=0; ig<genDecayLVec.size(); ig++)
+      {
+        if( genDecayMomIdxVec.at(ig) == genDecayIdxVec.at(it) )
+        {
+          int pdgId = genDecayPdgIdVec.at(ig);
+          if( std::abs(pdgId)==24 )
+          {
+            int flag = 0;
+            for(unsigned iq=0; iq<genDecayLVec.size(); iq++)
+            {
+              if( genDecayMomIdxVec.at(iq) == genDecayIdxVec.at(ig) )
+              {
+                int pdgid = genDecayPdgIdVec.at(iq);
+                if( std::abs(pdgid)==11 || std::abs(pdgid)==13 || std::abs(pdgid)==15 ) flag++;
+              }
+            }
+            if(!flag) tLVec.push_back(genDecayLVec.at(it));
+          }
+        }
+      }//dau. loop
+      */
+      tLVec.push_back(genDecayLVec.at(it));
+    }//top cond
+  }//genloop
+  return tLVec;
 }
 
 //##########functions to calculate Delta_R and Delta Phi###############

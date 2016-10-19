@@ -71,7 +71,10 @@ void SFCheckPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("RootForPlotting/SFCheck.root");
+  fin = TFile::Open("RootForPlotting/SFCheck_nb0_1.root");
+  //fin = TFile::Open("RootForPlotting/SFCheck_nb1_9.root");
+  //fin = TFile::Open("RootForPlotting/SFCheck_nb0_1_noTopReWeighting.root");
+  //fin = TFile::Open("RootForPlotting/SFCheck_nb1_9_noTopReWeighting.root");
   list = fin->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1
@@ -148,6 +151,7 @@ void SFCheckPlots::BasicCheckTemplate(
 
   pad->cd(1); 
   TPad *pad1 = (TPad*) pad->GetPad(1);
+  //pad1->SetLogy();
   pad1->SetPad("", "", 0, divRatio, 1.0, 1.0, kWhite);
   pad1->SetBottomMargin(0.005);
   pad1->SetBorderMode(0);
@@ -205,8 +209,8 @@ void SFCheckPlots::BasicCheckTemplate(
   xHT->SetTickLength(xHT->GetTickLength()*labelRatio);
   xHT->SetLabelSize(xHT->GetLabelSize()*labelRatio);
   xHT->SetLabelOffset(xHT->GetLabelOffset()*labelRatio);
-  ratio->SetMinimum(-2.0);
-  ratio->SetMaximum(2.0);
+  ratio->SetMinimum(-1.0);
+  ratio->SetMaximum(1.0);
 
   TAxis* yHT = ratio->GetYaxis();
   yHT->SetNdivisions(010);

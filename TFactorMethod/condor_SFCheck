@@ -1,0 +1,24 @@
+universe = vanilla
+request_disk   = 50 GB
+request_memory = 1.5 GB
+executable = $ENV(CMSSW_BASE)/src/QCD/TFactorMethod/goSFCheck.sh
+should_transfer_files = YES
+#when_to_transfer_output = ON_EXIT
+
+##transfer file list for senstivity study, BG
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/TFactorMethod/SFCheck, $ENV(CMSSW_BASE)/src/QCD/TFactorMethod/goSFCheck.sh, $ENV(CMSSW_BASE)/src/QCD/TFactorMethod/BSFactors/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/TFactorMethod/BSFactors/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/TFactorMethod/BSFactors/WJetsToLNu_HT_bTagEff_forHua.root, $ENV(CMSSW_BASE)/src/QCD/TFactorMethod/LeptFactors/allINone_leptonSF.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/runList_SFCheck_2016ICHEPv9.txt
+
+
+
+Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stdout
+Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr
+Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).log
+notify_user = hua.wei@cern.ch
+
+####SFCheck####
+
+arguments = $ENV(CMSSW_BASE) SFCheckTTJets runList_SFCheck_2016ICHEPv9.txt
+Queue 
+
+arguments = $ENV(CMSSW_BASE) SFCheckWJets runList_SFCheck_2016ICHEPv9.txt
+Queue

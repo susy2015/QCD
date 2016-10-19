@@ -19,8 +19,8 @@ void SFCheckHistgram::BookHistgram(const char *outFileName)
     h_b_mt2_MC[i] = new TH1D( ("h_b_mt2_MC_" + smalltag).c_str(),"",20,200,600);
     h_b_ht_MC[i] = new TH1D( ("h_b_ht_MC_" + smalltag).c_str(),"",50,250,2750);
     h_b_mht_MC[i] = new TH1D( ("h_b_mht_MC_" + smalltag).c_str(),"",50,0,1000);
-    h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",5,1,6);
-    h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",5,1,6);
+    h_b_ntopjets_MC[i] = new TH1D( ("h_b_ntopjets_MC_" + smalltag).c_str(),"",6,0,6);
+    h_b_nbjets_MC[i] = new TH1D( ("h_b_nbjets_MC_" + smalltag).c_str(),"",6,0,6);
 
     h_b_sb_MC[i] = new TH1D( ("h_b_sb_MC_" + smalltag).c_str(),"",60,0,60);
 
@@ -53,8 +53,8 @@ void SFCheckHistgram::BookHistgram(const char *outFileName)
   h_b_mt2_Data = new TH1D("h_b_mt2_Data","",20,200,600);
   h_b_ht_Data = new TH1D("h_b_ht_Data","",50,250,2750);
   h_b_mht_Data = new TH1D("h_b_mht_Data","",50,0,1000);
-  h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",5,1,6);
-  h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",5,1,6);
+  h_b_ntopjets_Data = new TH1D("h_b_ntopjets_Data","",6,0,6);
+  h_b_nbjets_Data = new TH1D("h_b_nbjets_Data","",6,0,6);
 
   h_b_sb_Data = new TH1D("h_b_sb_Data","",60,0,60);
 
