@@ -40,6 +40,50 @@ void mypassBaselineFunc(NTupleReader& tr)
 const double Scale = 1;
 //const double Scale = 591.5/2153.736;
 
+bool ElPtEtaCut(
+                std::vector<TLorentzVector> elesLVec,
+                std::vector<int> elesFlagVeto,
+                std::vector<double> elesMiniIso
+               )
+{
+  bool isElPass=false;
+
+  double reco_els_pt = -1, reco_els_eta = -20;
+  for(unsigned int ie = 0 ; ie < elesLVec.size() ; ie++)
+  {
+    if(elesFlagVeto[ie] && elesLVec[ie].Pt()>(AnaConsts::elesMiniIsoArr).minPt && fabs(elesLVec[ie].Eta()) < (AnaConsts::elesMiniIsoArr).maxAbsEta && elesMiniIso[ie] < (AnaConsts::elesMiniIsoArr).maxIsoEB )
+    {
+      reco_els_pt  = ( elesLVec.at(ie) ).Pt();
+      reco_els_eta = ( elesLVec.at(ie) ).Eta();
+    }
+  }
+  if(reco_els_pt>25 && std::abs(reco_els_eta) < 2.5) isElPass=true;
+
+  return isElPass;
+}
+
+bool MuPtEtaCut(
+                std::vector<TLorentzVector> muonsLVec,
+                std::vector<int> muonsFlagMedium,
+                std::vector<double> muonsMiniIso
+               )
+{ 
+  bool isMuPass=false;
+  
+  double reco_mus_pt = -1, reco_mus_eta = -20;
+  for(unsigned int im = 0 ; im < muonsLVec.size() ; im++)
+  { 
+    if(muonsFlagMedium[im] && muonsLVec[im].Pt()>(AnaConsts::muonsMiniIsoArr).minPt && fabs(muonsLVec[im].Eta()) < (AnaConsts::muonsMiniIsoArr).maxAbsEta && muonsMiniIso[im] < (AnaConsts::muonsMiniIsoArr).maxIso )
+    { 
+      reco_mus_pt  = ( muonsLVec.at(im) ).Pt();
+      reco_mus_eta = ( muonsLVec.at(im) ).Eta();
+    }
+  }
+  if(reco_mus_pt>25  && std::abs(reco_mus_eta) < 2.4) isMuPass=true;
+  
+  return isMuPass;
+}
+
 double ElMuDataMCScaleFactor(
                              std::vector<TLorentzVector> elesLVec,
                              std::vector<int> elesFlagVeto,

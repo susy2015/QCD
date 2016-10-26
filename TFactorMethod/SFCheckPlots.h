@@ -71,10 +71,12 @@ void SFCheckPlots::Initialization(std::string dir)
   target_DIR = dir;
   system( ("mkdir " + dir).c_str() );
 
-  fin = TFile::Open("RootForPlotting/SFCheck_nb0_1.root");
+  //fin = TFile::Open("RootForPlotting/SFCheck_nb0_1.root");
   //fin = TFile::Open("RootForPlotting/SFCheck_nb1_9.root");
-  //fin = TFile::Open("RootForPlotting/SFCheck_nb0_1_noTopReWeighting.root");
-  //fin = TFile::Open("RootForPlotting/SFCheck_nb1_9_noTopReWeighting.root");
+  //fin = TFile::Open("RootForPlotting/SFCheck_nb2_9.root");
+  fin = TFile::Open("RootForPlotting/SFCheck_nb0_1_TopReWeighting.root");
+  //fin = TFile::Open("RootForPlotting/SFCheck_nb1_9_TopReWeighting.root");
+  //fin = TFile::Open("RootForPlotting/SFCheck_nb2_9_TopReWeighting.root");
   list = fin->GetListOfKeys();
 
   //convert lumi from double pb-1 to string, fb-1

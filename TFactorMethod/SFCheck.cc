@@ -61,6 +61,9 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
 
   std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;  
 
+  double nData = 0, nMC = 0, nMC_raw = 0, nMC_bSF = 0, nMC_leptSF = 0;
+  double nData_el = 0, nMC_el = 0, nMC_el_raw = 0, nMC_el_bSF = 0, nMC_el_leptSF = 0;
+  double nData_mu = 0, nMC_mu = 0, nMC_mu_raw = 0, nMC_mu_bSF = 0, nMC_mu_leptSF = 0;
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
     //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
@@ -94,6 +97,19 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+      bool isHardEl = ElPtEtaCut(
+                                 tr.getVec<TLorentzVector>("elesLVec"),
+                                 tr.getVec<int>("elesFlagVeto"),
+                                 tr.getVec<double>("elesMiniIso")
+                                );
+      bool isHardMu = MuPtEtaCut(
+                                  tr.getVec<TLorentzVector>("muonsLVec"),
+                                  tr.getVec<int>("muonsFlagMedium"),
+                                  tr.getVec<double>("muonsMiniIso")
+                                );
+
+      if( (!isHardEl) && (!isHardMu) ) continue;
+      if( isHardEl && isHardMu ) { std::cout << "Damn thing happened!" << std::endl; };
 
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTopCandSortedCnt"+spec);
@@ -104,7 +120,11 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
       int njets30 = tr.getVar<int>("cntNJetsPt30Eta24"+spec);
       int njets50 = tr.getVar<int>("cntNJetsPt50Eta24"+spec);
       double ht = tr.getVar<double>("HT"+spec);
-  
+      bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
+      double calomet = tr.getVar<double>("calomet");
+      bool passPFCaloMETRatio = (met/calomet<5);
+      if( !(passQCDHighMETFilter && passPFCaloMETRatio) ) continue;
+
       double bSF = 1;
       if( ! ( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) )  
       {
@@ -156,6 +176,7 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
 
           if( !foundTrigger ) continue;
 
+          //if(ntopjets<0 || ntopjets>4) std::cout << "Ntops:" << ntopjets << std::endl;
           (mySFCheckHistgram.h_b_met_Data)->Fill(met,thisweight);
           (mySFCheckHistgram.h_b_mt2_Data)->Fill(mt2,thisweight);
           (mySFCheckHistgram.h_b_ntopjets_Data)->Fill(ntopjets,thisweight);
@@ -164,12 +185,14 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
           //(mySFCheckHistgram.h_b_mht_Data)->Fill(mht,thisweight);
           (mySFCheckHistgram.h_b_njets30_Data)->Fill(njets30,thisweight);
           (mySFCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight);
-
+          nData+=thisweight;
+          if(isHardEl) nData_el+=thisweight;
+          if(isHardMu) nData_mu+=thisweight;
         }
         else
         {
           Int_t ih = -1;
-
+          
           if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ih = 0;
           else if( ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos ) ih = 1;
           else if( ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") ) ih = 2;
@@ -178,6 +201,7 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
           //Top pt reweighting
           //Get gen top TLVec
           double topptSF = 1;
+          /*
           if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos )
           {
             const std::vector<TLorentzVector> &genDecayLVec = tr.getVec<TLorentzVector>("genDecayLVec");
@@ -195,7 +219,8 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
             topptSF = std::sqrt(topptSF);
             //std::cout << topptSF << std::endl;
           }
-
+          */
+          //if(ntopjets<0 || ntopjets>4) std::cout << "Ntops:" << ntopjets << std::endl;
           (mySFCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*bSF*leptSF*topptSF);
           (mySFCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*bSF*leptSF*topptSF);
           (mySFCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*bSF*leptSF*topptSF);
@@ -204,12 +229,22 @@ void LoopSFCheck( QCDSampleWeight& myQCDSampleWeight, int lower_nb, int higher_n
           //(mySFCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*bSF*leptSF*topptSF);
           (mySFCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*bSF*leptSF*topptSF);
           (mySFCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*bSF*leptSF*topptSF);
+          nMC+=thisweight*bSF*leptSF*topptSF; nMC_raw+=thisweight; nMC_bSF+=thisweight*bSF; nMC_leptSF+=thisweight*bSF*leptSF;
+          if(isHardEl){ nMC_el+=thisweight*bSF*leptSF*topptSF; nMC_el_raw+=thisweight; nMC_el_bSF+=thisweight*bSF; nMC_el_leptSF+=thisweight*bSF*leptSF; }
+          if(isHardMu){ nMC_mu+=thisweight*bSF*leptSF*topptSF; nMC_mu_raw+=thisweight; nMC_mu_bSF+=thisweight*bSF; nMC_mu_leptSF+=thisweight*bSF*leptSF; }
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
-
   flept_sf_all->Close();
+  std::cout << "Lower b cut :" << lower_nb << std::endl;
+  std::cout << "nData :" << nData << ", nMC : " << nMC << ", Ratio : " << nData/nMC << ", RatioUnc : " << nData/nMC*std::sqrt(1/nData+1/nMC) << std::endl;
+  std::cout << "nMC_raw :" << nMC_raw << ", nMC_bSF : " << nMC_bSF << ", nMC_leptSF : " << nMC_leptSF << ", Ratio_bSF : " << nMC_bSF/nMC_raw << ", Ratio_leptSF : " << nMC_leptSF/nMC_bSF << std::endl;
+  std::cout << "nData_el :" << nData_el << ", nMC_el : " << nMC_el << ", Ratio_el : " << nData_el/nMC_el << ", RatioUnc_el : " << nData_el/nMC_el*std::sqrt(1/nData_el+1/nMC_el) << std::endl;
+  std::cout << "nMC_el_raw :" << nMC_el_raw << ", nMC_el_bSF : " << nMC_el_bSF << ", nMC_el_leptSF : " << nMC_el_leptSF << ", Ratio_bSF : " << nMC_el_bSF/nMC_el_raw << ", Ratio_leptSF : " << nMC_el_leptSF/nMC_el_bSF << std::endl;
+  std::cout << "nData_mu :" << nData_mu << ", nMC_mu : " << nMC_mu << ", Ratio_mu : " << nData_mu/nMC_mu << ", RatioUnc_mu : " << nData_mu/nMC_mu*std::sqrt(1/nData_mu+1/nMC_mu) << std::endl;
+  std::cout << "nMC_mu_raw :" << nMC_mu_raw << ", nMC_mu_bSF : " << nMC_mu_bSF << ", nMC_mu_leptSF : " << nMC_mu_leptSF << ", Ratio_bSF : " << nMC_mu_bSF/nMC_mu_raw << ", Ratio_leptSF : " << nMC_mu_leptSF/nMC_mu_bSF << std::endl;
+
 
   (mySFCheckHistgram.oFile)->Write();
   (mySFCheckHistgram.oFile)->Close();
@@ -236,29 +271,37 @@ int main(int argc, char* argv[])
   double TTbar_DiLept_BR = 0.10614564; // W_Lept_BR^2
   //sample needed in the prediction loop
   QCDSampleWeight myDataSampleWeight;
-  myDataSampleWeight.QCDSampleInfo_push_back( "HTMHT"                      ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30682233, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 49576803, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 60494823, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,   998400, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,   985000, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "HTMHT"                       ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"              ,         831.76*TTbar_DiLept_BR, 30682233, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_stop", 831.76*0.5*TTbar_SingleLept_BR,  9468936, LUMI, 1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 49576803, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_" , 831.76*0.5*TTbar_SingleLept_BR, 60494823, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                  ,                           35.6,   998400, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"              ,                           35.6,   985000, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      19851624, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7432746, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,       3722395, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7854734, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       7063909, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,        253561, LUMI, 1.21, inputFileList_Data.c_str() );
 
-  if( RunMode == "SFCheckTTJets" )
+  if( RunMode == "SFCheckE0b" )
+  {
+    LoopSFCheck( myDataSampleWeight, 0, 1, false );
+    //LoopSFCheck( myDataSampleWeight, 0, 1, true );
+    return 0;
+  }
+  else if( RunMode == "SFCheckGE1b" )
   {
     //LoopSFCheck( myDataSampleWeight, 1, 9, false );
     LoopSFCheck( myDataSampleWeight, 1, 9, true );
     return 0;
   }
-  else if( RunMode == "SFCheckWJets" )
+  else if( RunMode == "SFCheckGE2b" )
   {
-    //LoopSFCheck( myDataSampleWeight, 0, 1, false );
-    LoopSFCheck( myDataSampleWeight, 0, 1, true );
+    //LoopSFCheck( myDataSampleWeight, 2, 9, false );
+    LoopSFCheck( myDataSampleWeight, 2, 9, true );
     return 0;
   }
   else
