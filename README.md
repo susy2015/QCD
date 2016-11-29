@@ -4,22 +4,46 @@
 1.Set CMS Environment:
 
 ```
-setenv SCRAM_ARCH slc6_amd64_gcc491(export SCRAM_ARCH = slc6_amd64_gcc491)
-cmsrel CMSSW_8_0_12
-cd CMSSW_8_0_12/src/
+cmsrel CMSSW_8_0_23
+cd CMSSW_8_0_23/src/
 cmsenv
 ```
 
 2.Download source code from github and compile plugins:
 
+SusyAnaTools:
 ```
 git cms-init
+git cms-merge-topic -u kpedro88:METfix8022
 git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
-git clone -b Ana_V7_Fix_CSV_WP git@github.com:susy2015/SusyAnaTools.git
-git clone https://github.com/susy2015/QCD.git
+git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_80X_V2
+git clone -b Moriond2017 git@github.com:susy2015/SusyAnaTools.git
 scram b -j 10
 ```
+
+TopTagger:
+```
+## Checkout OpenCV
+cd $CMSSW_BASE/src
+git clone git@github.com:susy2015/opencv.git
+cd opencv
+git checkout 3.1.0_StopBugFix
+cmake .
+make -j 8
+## Checkout Tagtagger
+cd $CMSSW_BASE/src
+git clone git@github.com:susy2015/TopTagger.git
+scram b -j 8
+cd TopTagger/TopTagger/test/
+make -j 8
+```
+
+QCD:
+```
+git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
+```
+
 
 # QCD Translation Factor Method
 

@@ -35,8 +35,8 @@ int main(int argc, char* argv[])
   //for all the MC samples
   //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   //for all the data samples
-  std::string tag = input_str.substr(find_Nth(input_str,9,"/") + 1,find_Nth(input_str,10,"/")-find_Nth(input_str,9,"/")-1);
-  //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
+  //std::string tag = input_str.substr(find_Nth(input_str,9,"/") + 1,find_Nth(input_str,10,"/")-find_Nth(input_str,9,"/")-1);
+  std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
 
@@ -52,23 +52,27 @@ int main(int argc, char* argv[])
   mydict->cd();
   TTree* selectedTree = originalTree->CloneTree(0);
 
-  const std::string spec = "QCD";
-  myBaselineVessel = new BaselineVessel(spec);
-
-  //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
-  NTupleReader tr(originalTree);
+  std::shared_ptr<topTagger::type3TopTagger>type3Ptr(nullptr);
+  NTupleReader *tr=0;
   //initialize the type3Ptr defined in the customize.h
-  AnaFunctions::prepareTopTagger();
+  AnaFunctions::prepareForNtupleReader();
+  tr = new NTupleReader(originalTree, AnaConsts::activatedBranchNames);
+  const std::string spec = "lostlept";
+  BaselineVessel *myBaselineVessel = 0;
+  myBaselineVessel = new BaselineVessel(*tr, spec);
+  myBaselineVessel->toptaggerCfgFile = "Example_TopTagger.cfg";
+  //type3Ptr=myBaselineVessel->GetType3Ptr();
+  //type3Ptr->setdebug(true);
   //The passBaseline is registered here
-  tr.registerFunction(&mypassBaselineFunc);
+  tr->registerFunction(*myBaselineVessel);
 
-  while(tr.getNextEvent())
+  while(tr->getNextEvent())
   {
-    double met = tr.getVar<double>("met");
-    double ht = tr.getVar<double>("HT"+spec);
-    int njetspt30 = tr.getVar<int>("cntNJetsPt30"+spec);
-    int nmus = tr.getVar<int>("nMuons_CUT"+spec);
-    int nels = tr.getVar<int>("nElectrons_CUT"+spec);
+    double met = tr->getVar<double>("met");
+    double ht = tr->getVar<double>("HT"+spec);
+    int njetspt30 = tr->getVar<int>("cntNJetsPt30"+spec);
+    int nmus = tr->getVar<int>("nMuons_CUT"+spec);
+    int nels = tr->getVar<int>("nElectrons_CUT"+spec);
 
     bool passSFCheckTrim = false;
     passSFCheckTrim = ( met > 250 )

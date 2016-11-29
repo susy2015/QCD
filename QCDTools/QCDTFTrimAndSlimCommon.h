@@ -1,3 +1,6 @@
+#ifndef _QCDTFTrimAndSlimCommon_H_
+#define _QCDTFTrimAndSlimCommon_H_
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -5,7 +8,9 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
 
-size_t find_Nth
+const double trigger_turn_on_met = 150;
+
+inline size_t find_Nth
 (
   const std::string & str ,   // where to work
   unsigned            N ,     // N'th ocurrence
@@ -24,10 +29,4 @@ size_t find_Nth
   }
   return pos;
 }
-
-static BaselineVessel *myBaselineVessel;
-void mypassBaselineFunc(NTupleReader& tr)
-{
-  (*myBaselineVessel)(tr);
-}
-
+#endif

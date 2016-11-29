@@ -24,9 +24,3 @@ size_t find_Nth
   }
   return pos;
 }
-
-static BaselineVessel *myBaselineVessel;
-void mypassBaselineFunc(NTupleReader& tr)
-{
-  (*myBaselineVessel)(tr);
-}
