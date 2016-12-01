@@ -29,7 +29,7 @@ MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2 -L$(CMSSW
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 FILES = $(wildcard $(SDIR)/*.cc)
 OBJS  := $(FILES:$(SDIR)/%.cc=$(ODIR)/%.o)
-PROGRAMS = QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_Zinv #QCDTFTrimAndSlim_QCD QCDTFTrimAndSlim_TTZ QCDTFTrimAndSlim_Data
+PROGRAMS = DeepTrim SFCheckTrim QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_Zinv QCDTFTrimAndSlim_QCD QCDTFTrimAndSlim_TTZ QCDTFTrimAndSlim_Data
 
 all: mkobj $(OBJS) SusyAnaTools $(PROGRAMS)
 
