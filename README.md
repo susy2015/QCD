@@ -5,7 +5,7 @@
 
 ```
 cmsrel CMSSW_8_0_23
-cd CMSSW_8_0_23/src/
+cd CMSSW_8_0_23/src
 cmsenv
 ```
 
@@ -18,32 +18,48 @@ git cms-merge-topic -u kpedro88:METfix8022
 git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_80X_V2
-git clone -b Moriond2017 git@github.com:susy2015/SusyAnaTools.git
-scram b -j 10
+git clone git@github.com:susy2015/SusyAnaTools.git
+cd $CMSSW_BASE/src/SusyAnaTools
+git fetch origin
+git checkout Ana_BugFix1_Nov30_2016_Moriond_new_code_baseline_and_tagger
 ```
 
 TopTagger:
 ```
-## Checkout OpenCV
+## Checkout and build OpenCV library for Toptagger
 cd $CMSSW_BASE/src
 git clone git@github.com:susy2015/opencv.git
-cd opencv
+cd $CMSSW_BASE/src/opencv
 git checkout 3.1.0_StopBugFix
 cmake .
 make -j 8
 ## Checkout Tagtagger
 cd $CMSSW_BASE/src
 git clone git@github.com:susy2015/TopTagger.git
-scram b -j 8
-cd TopTagger/TopTagger/test/
-make -j 8
+cd $CMSSW_BASE/src/TopTagger
+git fetch origin
+git checkout HadStopAnaDevel_Moriond2017_Nov28_2016
 ```
+
+CMS Build application:
+```
+cd $CMSSW_BASE/src
+scram b -j 10
+```
+
+Build SusyAnaTools and TopTagger library:
+```
+cd $CMSSW_BASE/src/TopTagger/TopTagger/test
+make -j 8
+cd $CMSSW_BASE/src/SusyAnaTools/Tools
+make
+```
+Please make sure compile the TopTagger first then SusyAnaTools/Tools! Since baselineDef.cc is rely on the toptagger library!
 
 QCD:
 ```
 git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
 ```
-
 
 # QCD Translation Factor Method
 
