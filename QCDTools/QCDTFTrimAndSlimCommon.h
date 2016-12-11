@@ -8,9 +8,12 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
 
-const double trigger_turn_on_met = 150;
+const double trigger_turn_on_met = 200;
 const int nth_slash_nametag_MC = 10;
 const int nth_slash_nametag_Data = 10;
+
+bool useNewTagger = true;
+bool useLegacycfg = false;
 
 inline size_t find_Nth
 (

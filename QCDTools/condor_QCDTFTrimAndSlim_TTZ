@@ -7,7 +7,7 @@ should_transfer_files = YES
 #when_to_transfer_output = ON_EXIT
 
 ##transfer file list for TTZ samples
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/TTWJetsToQQ_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt, 
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/TTWJetsToQQ_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt, 
 
 Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stdout
 Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr
@@ -16,7 +16,22 @@ notify_user = hua.wei@cern.ch
 
 #### TTZTo ####
 
-arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.aa
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ab
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ac
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ad
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ae
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.af
 Queue
 
 arguments = $ENV(CMSSW_BASE) TTZ TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt
@@ -24,7 +39,22 @@ Queue
 
 #### TTWJetsTo ####
 
-arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.aa
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ab
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ac
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ad
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ae
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.af
 Queue
 
 arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToQQ_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt

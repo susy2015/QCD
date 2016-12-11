@@ -8,8 +8,17 @@ cmsrel CMSSW_8_0_23
 cd CMSSW_8_0_23/src
 cmsenv
 ```
-
 2.Download source code from github and compile plugins:
+
+SusyAnaTools:
+```
+git cms-init
+git cms-merge-topic -u kpedro88:METfix8022
+git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
+git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
+git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_80X_V2
+git clone -b Ana_Dec9_2016_Moriond2017_updatesForSBStudies_v2 git@github.com:susy2015/SusyAnaTools.git
+```
 
 TopTagger:
 ```
@@ -22,23 +31,7 @@ cmake .
 make -j 8
 ## Checkout Tagtagger
 cd $CMSSW_BASE/src
-git clone git@github.com:susy2015/TopTagger.git
-cd $CMSSW_BASE/src/TopTagger
-git fetch origin
-git checkout HadStopAnaDevel_Moriond2017_Nov28_2016
-```
-
-SusyAnaTools:
-```
-git cms-init
-git cms-merge-topic -u kpedro88:METfix8022
-git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
-git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
-git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_80X_V2
-git clone git@github.com:susy2015/SusyAnaTools.git
-cd $CMSSW_BASE/src/SusyAnaTools
-git fetch origin
-git checkout Ana_BugFix1_Nov30_2016_Moriond_new_code_baseline_and_tagger
+git clone -b HadStopAnaDevel_v3_Moriond2017_Dec8_2016 git@github.com:susy2015/TopTagger.git
 ```
 
 CMS Build application:
@@ -63,13 +56,16 @@ git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
 ```
 # QCD Tools
 
-1.Basic Skim:
+1.Deep skim for lost lepton background estimation:
 ```
 cd $CMSSW_BASE/src/QCD/QCDTools
 make
-source rmsetup.csh
+source reset.csh
 source $CMSSW_BASE/src/SusyAnaTools/Tools/setup.csh
+$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Medium_v1.0.0 -d /uscms_data/d3/hwei/stop
+$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.0.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
 ```
+2.QCD skim and slim for QCD background estimation:
 
 # QCD Translation Factor Method
 

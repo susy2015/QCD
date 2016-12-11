@@ -12,11 +12,11 @@ def PrintCondorHeaderLine():
 
 def PrintTransferFileLine(directory, sampletype, isfirst, islast):
   if(isfirst):
-    sys.stdout.write('transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, ')
+    sys.stdout.write('transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, ')
   for dirname, dirnames, filenames in os.walk(directory):
     for filename in filenames:
       if ( sampletype in filename ):
-        sys.stdout.write('$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2016ICHEPMCTxt/' + filename + ', ')
+        sys.stdout.write('$ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/' + filename + ', ')
       else:
         continue
   if(islast):
@@ -49,9 +49,9 @@ print ("#The valid run types for QCDTFTrimAndSlim are Data, LLHadTau, Zinv, QCD,
 if(runtype == "Data"):
   PrintCondorHeaderLine()
   print("##transfer file list for " + runtype + " samples")
-  PrintTransferFileLine(d, "HTMHT", True, True)
+  PrintTransferFileLine(d, "MET", True, True)
   PrintCondorLogLine()
-  PrintCondorSubmitLine(d, "HTMHT", runtype)
+  PrintCondorSubmitLine(d, "MET", runtype)
 elif(runtype == "LLHadTau"):
   PrintCondorHeaderLine()
   print("##transfer file list for " + runtype + " samples")

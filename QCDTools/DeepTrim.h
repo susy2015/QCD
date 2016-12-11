@@ -5,6 +5,9 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
 
+bool useNewTagger = true;
+bool useLegacycfg = false;
+
 size_t find_Nth
 (
   const std::string & str ,   // where to work
