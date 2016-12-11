@@ -11,9 +11,6 @@
 #include <fstream>
 #include <vector>
 
-#include "SusyAnaTools/Tools/samples.h"
-#include "SusyAnaTools/Tools/searchBins.h"
-
 #include "TStopwatch.h"
 #include "TString.h"
 #include "TGraph.h"
@@ -845,9 +842,6 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
-  //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
-  const std::string spec = "QCD";
-  myBaselineVessel = new BaselineVessel(spec);
 
   std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;
   
@@ -990,9 +984,6 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
-  //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
-  const std::string spec = "lostlept";
-  myBaselineVessel = new BaselineVessel(spec);
 
   double nDataLL[MT2_BINS] = {0}, nMCLL[MT2_BINS] = {0};
   double nDataLL_test = 0, nMCLL_test = 0;
@@ -1151,9 +1142,6 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
-  //use class BaselineVessel in the SusyAnaTools/Tools/baselineDef.h file
-  const std::string spec = "QCD";
-  myBaselineVessel = new BaselineVessel(spec);
 
   std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;
   
