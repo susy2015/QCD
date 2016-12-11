@@ -35,8 +35,8 @@ int main(int argc, char* argv[])
   //for all the MC samples
   //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   //for all the data samples
-  std::string tag = input_str.substr(find_Nth(input_str,9,"/") + 1,find_Nth(input_str,10,"/")-find_Nth(input_str,9,"/")-1);
-  //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
+  //std::string tag = input_str.substr(find_Nth(input_str,9,"/") + 1,find_Nth(input_str,10,"/")-find_Nth(input_str,9,"/")-1);
+  std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
 
@@ -52,33 +52,40 @@ int main(int argc, char* argv[])
   mydict->cd();
   TTree* selectedTree = originalTree->CloneTree(0);
 
-  const std::string spec = "QCD";
-  myBaselineVessel = new BaselineVessel(spec);
-
-  //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
-  NTupleReader tr(originalTree);
+  std::shared_ptr<topTagger::type3TopTagger>type3Ptr(nullptr);
+  NTupleReader *tr=0;
   //initialize the type3Ptr defined in the customize.h
-  AnaFunctions::prepareTopTagger();
-  //The passBaseline is registered here
-  tr.registerFunction(&mypassBaselineFunc);
-
-  while(tr.getNextEvent())
+  AnaFunctions::prepareForNtupleReader();
+  tr = new NTupleReader(originalTree, AnaConsts::activatedBranchNames);
+  const std::string spec = "lostlept";
+  BaselineVessel *myBaselineVessel = 0;
+  myBaselineVessel = new BaselineVessel(*tr, spec);
+  if( !useNewTagger ){ myBaselineVessel->SetupTopTagger(false, "Legacy_TopTagger.cfg" ); }
+  else
   {
-    double met = tr.getVar<double>("met");
+    if( useLegacycfg ){ myBaselineVessel->SetupTopTagger(true, "Legacy_TopTagger.cfg" ); }
+    else{ myBaselineVessel->SetupTopTagger(true, "TopTagger.cfg" ); }
+  }
+  //The passBaseline is registered here
+  tr->registerFunction(*myBaselineVessel);
 
-    //bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
-    bool passnJets = tr.getVar<bool>("passnJets"+spec);
-    //bool passMET = tr.getVar<bool>("passMET"+spec);
-    bool passHT = tr.getVar<bool>("passHT"+spec);
-    bool passMT2 = tr.getVar<bool>("passMT2"+spec);
-    bool passTagger = tr.getVar<bool>("passTagger"+spec);
-    bool passBJets = tr.getVar<bool>("passBJets"+spec);
-    bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
-    bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
-    bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
+  while(tr->getNextEvent())
+  {
+    double met = tr->getVar<double>("met");
+
+    //bool passLeptVeto = tr->getVar<bool>("passLeptVeto"+spec);
+    bool passnJets = tr->getVar<bool>("passnJets"+spec);
+    //bool passMET = tr->getVar<bool>("passMET"+spec);
+    bool passHT = tr->getVar<bool>("passHT"+spec);
+    bool passMT2 = tr->getVar<bool>("passMT2"+spec);
+    bool passTagger = tr->getVar<bool>("passTagger"+spec);
+    bool passBJets = tr->getVar<bool>("passBJets"+spec);
+    bool passNoiseEventFilter = tr->getVar<bool>("passNoiseEventFilter"+spec);
+    bool passQCDHighMETFilter = tr->getVar<bool>("passQCDHighMETFilter"+spec);
+    bool passdPhis = tr->getVar<bool>("passdPhis"+spec);
 
     bool passDeepTrim = false;
-    passDeepTrim = ( met > 125 )
+    passDeepTrim = ( met > 200 )
                 && passnJets
                 && passHT
                 && passMT2

@@ -5,6 +5,9 @@
 #include "SusyAnaTools/Tools/NTupleReader.h"
 #include "SusyAnaTools/Tools/baselineDef.h"
 
+bool useNewTagger = true;
+bool useLegacycfg = false;
+
 size_t find_Nth
 (
   const std::string & str ,   // where to work
@@ -23,10 +26,4 @@ size_t find_Nth
     ++i;
   }
   return pos;
-}
-
-static BaselineVessel *myBaselineVessel;
-void mypassBaselineFunc(NTupleReader& tr)
-{
-  (*myBaselineVessel)(tr);
 }

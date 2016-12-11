@@ -4,46 +4,75 @@
 1.Set CMS Environment:
 
 ```
-setenv SCRAM_ARCH slc6_amd64_gcc491(export SCRAM_ARCH = slc6_amd64_gcc491)
-cmsrel CMSSW_8_0_12
-cd CMSSW_8_0_12/src/
+cmsrel CMSSW_8_0_23
+cd CMSSW_8_0_23/src
 cmsenv
 ```
-
 2.Download source code from github and compile plugins:
 
+SusyAnaTools:
 ```
 git cms-init
+git cms-merge-topic -u kpedro88:METfix8022
 git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
-git clone -b Ana_V7_Fix_CSV_WP git@github.com:susy2015/SusyAnaTools.git
-git clone https://github.com/susy2015/QCD.git
+git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_80X_V2
+git clone -b Ana_Dec9_2016_Moriond2017_updatesForSBStudies_v2 git@github.com:susy2015/SusyAnaTools.git
+```
+
+TopTagger:
+```
+## Checkout and build OpenCV library for Toptagger
+cd $CMSSW_BASE/src
+git clone git@github.com:susy2015/opencv.git
+cd $CMSSW_BASE/src/opencv
+git checkout 3.1.0_StopBugFix
+cmake .
+make -j 8
+## Checkout Tagtagger
+cd $CMSSW_BASE/src
+git clone -b HadStopAnaDevel_v3_Moriond2017_Dec8_2016 git@github.com:susy2015/TopTagger.git
+```
+
+CMS Build application:
+```
+cd $CMSSW_BASE/src
 scram b -j 10
 ```
 
+Build SusyAnaTools and TopTagger library:
+```
+cd $CMSSW_BASE/src/TopTagger/TopTagger/test
+make -j 8
+cd $CMSSW_BASE/src/SusyAnaTools/Tools
+make
+```
+Please make sure compile the TopTagger first then SusyAnaTools/Tools! Since baselineDef.cc is rely on the toptagger library!
+
+QCD:
+```
+cd $CMSSW_BASE/src
+git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
+```
+# QCD Tools
+
+1.Deep skim for lost lepton background estimation:
+```
+cd $CMSSW_BASE/src/QCD/QCDTools
+make
+source reset.csh
+source $CMSSW_BASE/src/SusyAnaTools/Tools/setup.csh
+$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Medium_v1.0.0 -d /uscms_data/d3/hwei/stop
+$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.0.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
+```
+2.QCD skim and slim for QCD background estimation:
+
 # QCD Translation Factor Method
 
-1.Go to QCD directory and then compile the code
-
-cd QCD/TFactorMethod
-
-make
-
-PS: We have Error like "cannot find libtbb.so.2", to solve this problem, we want to build a soft link to this lib for temporary solution. To do this:
-
-Go to QCD/TFactorMethod
-
-and then do:
-
-ln -s /cvmfs/cms.cern.ch/slc6_amd64_gcc481/external/tbb/42_20131118oss/lib/libtbb.so.2
-
-This will generate a soft link : libtbb.so.2
-
-And it will be involved into make command automatically and we do not have error report anymore
-
-2.Run the QCD code:
-
+1.QCD Translation Method
 ```
+cd $CMSSW_BASE/src/QCD/TFactorMethod
+make
 ./QCD RunMode runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v4.txt
 ./QCD CalOnly ../QCDTools/QCDStopFlattrees/runList_QCD_HT_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt
 ```
@@ -57,15 +86,14 @@ SysHeader.h : Contains all information to make final prediction plot, comes from
 ```
 The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, CalTFSideBandOnly, PredDataOnly, BasicCheckQCD, BasicCheckLL, SBCheck
 
-3.Making plots:
-
 For closure and MCExp vs DataPred, reading PredQCD.root and ExpQCD.root:
-
+```
 ./ClosurePlots QCDClosure20151204 or ./ClosurePlots QCDDataMC20151209
-
+```
 For Data/MC comparison in CS, reading BasicCheckQCD.root:
-
+```
 ./BasicCheckPlots BasicCheckQCD20151209
+```
 
 # QCD Rebalance and Smear Method
 
@@ -78,29 +106,3 @@ Under construction
 3.Jet Smear
 
 4.Final Prediction
-
-# QCD Tools
-
-1.Basic Skim:
-
-cd QCD/QCDTools/QCDStopFlattrees
-
-g++ stopNTuple_skim.cc \`root-config --libs --cflags\` -o PrivateSkim
-
-PS: For QCD, MET > 175, while for all other samples, MET > 200 && HT > 500
-
-python NTuple_Skim.py QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-
-2.Deep Skim
-
-cd QCD/QCDTools
-
-make
-
-python NTuple_DeepTrim.py QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-
-3.Basic Slim:
-
-python NTuple_QCDTFTrimAndSlim.py QCD QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
-
-Other valid run types are: QCD, LLHadTau, Zinv, TTZ and Data
