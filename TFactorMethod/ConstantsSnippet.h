@@ -8,7 +8,8 @@
 //#define LUMI 8000 //test tag
 //#define LUMI 4004.345 //preapp, NTuple v7 fix b working point
 //#define LUMI 7647.637518921 //app, NTuple v8
-#define LUMI 12918.140703927 //final 2016 ICHEP data set
+//#define LUMI 12918.140703927 //final 2016 ICHEP data set
+#define LUMI 36352.970569733 //final 2017 Moriond data set
 
 #define MET_BINS 4
 #define MT2_BINS 2

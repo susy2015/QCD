@@ -52,14 +52,12 @@ int main(int argc, char* argv[])
   mydict->cd();
   TTree* selectedTree = originalTree->CloneTree(0);
 
-  std::shared_ptr<topTagger::type3TopTagger>type3Ptr(nullptr);
   NTupleReader *tr=0;
-  //initialize the type3Ptr defined in the customize.h
   AnaFunctions::prepareForNtupleReader();
-  tr = new NTupleReader(originalTree, AnaConsts::activatedBranchNames);
+  tr = new NTupleReader(originalTree);
   const std::string spec = "lostlept";
   BaselineVessel *myBaselineVessel = 0;
-  myBaselineVessel = new BaselineVessel(*tr, spec);
+  myBaselineVessel = new BaselineVessel( *tr, spec);
   if( !useNewTagger ){ myBaselineVessel->SetupTopTagger(false, "Legacy_TopTagger.cfg" ); }
   else
   {
