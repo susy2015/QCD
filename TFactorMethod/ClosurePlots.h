@@ -263,7 +263,7 @@ void ClosurePlots::ClosureTemplate(
   h_pred->SetFillStyle(3001);
   h_pred->Draw("E2 same");
 
-  if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 75.0, true); }
+  //if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 75.0, true); }
   CMSStylePlot::CMS_lumi( c, 4, 0 );
   //title->Draw("same");
   leg->Draw("same");

@@ -170,11 +170,12 @@ void BasicCheckPlots::BasicCheckTemplate(
   //hs_MC->Sumw2();
   //hs_MC->Scale(scale);
   
-  //h_Data->Draw("e0");
-  //hs_MC->Draw("same hist");
-
-  hs_MC->Draw("hist");
+  h_Data->Draw("e0");
+  hs_MC->Draw("same hist");
   h_Data->Draw("same e0");
+
+  //hs_MC->Draw("hist");
+  //h_Data->Draw("same e0");
 
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   //const std::string titre="CMS Preliminary 2016, 12.9 fb^{-1}, #sqrt{s} = 13 TeV";
@@ -208,8 +209,8 @@ void BasicCheckPlots::BasicCheckTemplate(
   xHT->SetTickLength(xHT->GetTickLength()*labelRatio);
   xHT->SetLabelSize(xHT->GetLabelSize()*labelRatio);
   xHT->SetLabelOffset(xHT->GetLabelOffset()*labelRatio);
-  ratio->SetMinimum(-2.0);
-  ratio->SetMaximum(2.0);
+  ratio->SetMinimum(-1.0);
+  ratio->SetMaximum(1.0);
 
   TAxis* yHT = ratio->GetYaxis();
   yHT->SetNdivisions(010);

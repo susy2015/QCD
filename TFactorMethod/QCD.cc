@@ -55,7 +55,6 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
 
-
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTop");
       int nbotjets = tr.getVar<int>("nBot");
@@ -95,8 +94,8 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
  
       //apply the met efficiencies
       //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
-      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
-      //double metEff = 1;
+      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
+      double metEff = 1;
       if (
           passBaselineQCD
          )
@@ -224,12 +223,13 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
                           && passPFCaloMETRatio;
 
       //apply the met efficiencies
-      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
-      //double metEff = 1;
+      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
+      double metEff = 1;
       if (
           passBaselineQCD
          )
       {
+        if(ht<700){ std::cout << "HT: " << ht << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << std::endl; }
         (myClosureHistgram.h_exp_met)->Fill(met,thisweight*metEff);
         (myClosureHistgram.h_exp_njets30)->Fill(njets30,thisweight*metEff);
         (myClosureHistgram.h_exp_njets50)->Fill(njets50,thisweight*metEff);
@@ -348,8 +348,8 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
                           //&& passQCDHighMETFilter
                           && passPFCaloMETRatio;
       //apply trigger efficiencies
-      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
-      //double metEff = 1;
+      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
+      double metEff = 1;
       if ( passBaselineQCD )
       {
         if( !passdPhis )
@@ -408,7 +408,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
 
     double thisweight = (*iter_QCDSampleInfos).weight;
     //negative weight for other MC samples
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -450,7 +450,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
       double metEff = 1;
       if ( passBaselineQCD )
       {
-        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
           std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
@@ -474,7 +474,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
         {
           if( passdPhis )
           {
-            if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+            if( (*iter_QCDSampleInfos).QCDTag == "MET" )
             {
               metEff = 1;
               myQCDFactors.nQCDNormal_Data_all[sidebandbin_number] += std::abs(thisweight * metEff);
@@ -485,7 +485,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
               )
             { 
-              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isLL = tr.getVar<bool>("isLL");
               double ttjetsFactor = singlemuCS_lowmet[sidebandbin_number];
               //double ttjetsFactor = 1;
@@ -502,7 +502,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             { 
-              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];
 
@@ -514,7 +514,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                     || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
                    )
             { 
-              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isGenZLep = tr.getVar<bool>("isGenZLep");
               bool isGenWLep = tr.getVar<bool>("isGenWLep");
               if( isGenZLep || isGenWLep ) continue;
@@ -526,7 +526,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
           }
           else 
           {
-            if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+            if( (*iter_QCDSampleInfos).QCDTag == "MET" )
             {
               metEff = 1;
               myQCDFactors.nQCDInverted_Data_all[sidebandbin_number] += std::abs(thisweight * metEff);
@@ -537,7 +537,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
               )
             {
-              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met ); 
+              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met ); 
               bool isLL = tr.getVar<bool>("isLL");
               double ttjetsFactor = singlemuCS_lowmet[sidebandbin_number];
               //double ttjetsFactor = 1;
@@ -554,7 +554,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             }
             else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
             { 
-              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               double njetRWF = 1;
               njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];
               myQCDFactors.nQCDInverted_zinvMC_all[sidebandbin_number] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
@@ -565,7 +565,7 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                     || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
                    )
             { 
-              metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
               bool isGenZLep = tr.getVar<bool>("isGenZLep");
               bool isGenWLep = tr.getVar<bool>("isGenWLep");
               if( isGenZLep || isGenWLep ) continue;
@@ -638,7 +638,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
   int i = 0;
 
-  std::cout << "Prediction(HTMHT): " << std::endl;
+  std::cout << "Prediction(MET): " << std::endl;
   
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
@@ -647,7 +647,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
 
     double thisweight = (*iter_QCDSampleInfos).weight;
     //negative weight for other MC samples
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -687,7 +687,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       double metEff = 1;
       if ( passBaselineQCD )
       {
-        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
           std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
@@ -715,7 +715,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
             int searchbin_id = searchbin_ids.at(i);
             if( searchbin_id >= 0 )
             {
-              if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+              if( (*iter_QCDSampleInfos).QCDTag == "MET" )
               { 
                 metEff = 1;
                 myQCDFactors.MET_sb_sum[searchbin_id] = myQCDFactors.MET_sb_sum[searchbin_id] + met * thisweight * metEff;
@@ -731,7 +731,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                  || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
                 )
               {
-                metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+                //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
                 bool isLL = tr.getVar<bool>("isLL");
                 double ttjetsFactor = singlemuCS_invdphi;
                 //double ttjetsFactor = 1;
@@ -748,7 +748,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
               }
               else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
               {
-                metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+                //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
                 double njetRWF = 1;
                 njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];   
                 myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
@@ -759,7 +759,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                       || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
                      )
               {
-                metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+                //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
                 bool isGenZLep = tr.getVar<bool>("isGenZLep");
                 bool isGenWLep = tr.getVar<bool>("isGenWLep");
                 if( isGenZLep || isGenWLep ) continue;
@@ -825,13 +825,13 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
   }
   
   std::string pred_type;
-  //pred_type = "MCDriven";
-  pred_type = "DataDriven";
+  pred_type = "MCDriven";
+  //pred_type = "DataDriven";
   //deal with the Tfactor from data.need to uncomment when you want to get low met side band tfactor from real data
-  myQCDFactors.printSysHeader("DataDriven");
-  //myQCDFactors.printSysHeader("MCDriven");
-  myQCDFactors.printDataCard("DataDriven");
-  //myQCDFactors.printDataCard("MCDriven");
+  //myQCDFactors.printSysHeader("DataDriven");
+  myQCDFactors.printSysHeader("MCDriven");
+  //myQCDFactors.printDataCard("DataDriven");
+  myQCDFactors.printDataCard("MCDriven");
   return ;
 }
 
@@ -851,7 +851,7 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
     NTupleReader tr((*iter_QCDSampleInfos).chain);
 
     double thisweight = (*iter_QCDSampleInfos).weight;
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -895,7 +895,7 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
       {
         int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
 
-        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
           std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
@@ -905,9 +905,13 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           {
             if
             ( 
-             TriggerNames[it].find("HLT_PFHT300_PFMET100_v") != std::string::npos
+                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
             )
-
             {
               if( PassTrigger[it] ) foundTrigger = true;
             }
@@ -995,7 +999,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
     NTupleReader tr((*iter_QCDSampleInfos).chain);
 
     double thisweight = (*iter_QCDSampleInfos).weight;
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -1030,8 +1034,8 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
                          && passNoiseEventFilter;
 
       //apply trigger efficiencies
-      double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-      //double metEff = 1;
+      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+      double metEff = 1;
       if ( 
            passBaselineLL && (nElectrons==0) && (nMuons == 1) 
          //&& (!passdPhis)
@@ -1040,9 +1044,9 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       {
         int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
 
-        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
-          //becareful! reset trigger eff to be 1 for real data
+          //be careful! reset trigger eff to be 1 for real data
           metEff = 1;
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
           std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
@@ -1052,9 +1056,13 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
           {
             if
             ( 
-             TriggerNames[it].find("HLT_PFHT300_PFMET100_v") != std::string::npos
+                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
             )
-
             {
               if( PassTrigger[it] ) foundTrigger = true;
             }
@@ -1151,7 +1159,7 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
     NTupleReader tr((*iter_QCDSampleInfos).chain);
 
     double thisweight = (*iter_QCDSampleInfos).weight;
-    if( ( (*iter_QCDSampleInfos).QCDTag ).find("HTMHT") != std::string::npos ) thisweight = 1 * Scale;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos ) thisweight = 1 * Scale;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
 
     while(tr.getNextEvent())
@@ -1192,7 +1200,7 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
         int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
         if(searchbin_id < 0) continue;
 
-        if( (*iter_QCDSampleInfos).QCDTag == "HTMHT" )
+        if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
           std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
           std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
@@ -1291,6 +1299,7 @@ int main(int argc, char* argv[])
   //myTriggerEff.SelfTest();
   //Sample needed in the calculation and expectation loop
   QCDSampleWeight myQCDSampleWeight;
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500"  , 366800  , 54706298, LUMI, 1, inputFileList_QCDMC.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 63337753, LUMI, 1, inputFileList_QCDMC.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 45453945, LUMI, 1, inputFileList_QCDMC.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    , 15316362, LUMI, 1, inputFileList_QCDMC.c_str() );
@@ -1306,19 +1315,21 @@ int main(int argc, char* argv[])
   double TTbar_DiLept_BR = 0.10614564; // W_Lept_BR^2
   //sample needed in the prediction loop
   QCDSampleWeight myDataSampleWeight;
-  myDataSampleWeight.QCDSampleInfo_push_back( "HTMHT"                      ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "MET"                        ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30682233, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 53057043, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 60494823, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,   998400, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,   985000, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      19591498, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7432746, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      18088165, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7854734, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       7023857, LUMI, 1.21, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2507809, LUMI, 1.21, inputFileList_Data.c_str() );
 
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-200To400"  ,    77.67,      25035015, LUMI, 1.23, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-400To600"  ,    10.73,       9290017, LUMI, 1.23, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-600To800"  ,  0.853*3,       5712221, LUMI, 1.23, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-800To1200" ,  0.394*3,       1944423, LUMI, 1.23, inputFileList_Data.c_str() );
@@ -1333,19 +1344,21 @@ int main(int argc, char* argv[])
 
   //sample needed in the basic check loop
   QCDSampleWeight myBasicCheckSampleWeight;
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "HTMHT"                      ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "MET"                        ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30682233, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 53057043, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 60494823, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,   998400, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,   985000, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      19591498, LUMI, 1.21, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7432746, LUMI, 1.21, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      18088165, LUMI, 1.21, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7854734, LUMI, 1.21, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       7023857, LUMI, 1.21, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2507809, LUMI, 1.21, inputFileList_Data.c_str() );
 
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-200To400"  ,    77.67,      25035015, LUMI, 1.23, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-400To600"  ,    10.73,       9290017, LUMI, 1.23, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-600To800"  ,  0.853*3,       5712221, LUMI, 1.23, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-800To1200" ,  0.394*3,       1944423, LUMI, 1.23, inputFileList_Data.c_str() );
@@ -1357,6 +1370,7 @@ int main(int argc, char* argv[])
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToLNu"           , 0.2043, 1821666 - 582855, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToQQ"            , 0.4062,  631804 - 201494, LUMI, 1, inputFileList_Data.c_str() );
 
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500"  , 366800  , 54706298, LUMI, 1, inputFileList_QCDMC.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 63337753, LUMI, 1, inputFileList_QCDMC.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 45453945, LUMI, 1, inputFileList_QCDMC.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    , 15316362, LUMI, 1, inputFileList_QCDMC.c_str() );

@@ -14,13 +14,14 @@
 #define MET_BINS 4
 #define MT2_BINS 2
 #define NJETS_BINS 3
-#define QCD_BINS 5
+#define QCD_BINS 6
 //#define NSEARCH_BINS 45
 //#define NSEARCH_BINS 37
 #define NSEARCH_BINS 59
 //#define NSEARCH_BINS 8
 //const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,500.0,650.0};
-const double metbins_edge[MET_BINS+1] = {150.0,200.0,350.0,500.0,650.0};
+//const double metbins_edge[MET_BINS+1] = {150.0,200.0,350.0,500.0,650.0};
+const double metbins_edge[MET_BINS+1] = {200.0,250.0,350.0,500.0,650.0};
 const double mt2bins_edge[MT2_BINS+1] = {200.0,350,500.0};
 //const double njetsbins_edge[NJETS_BINS+1] = {1,2,3,4};
 
@@ -40,8 +41,12 @@ const double zinv_RNorm = 0.783;//v8 MC and v9 data, 12.9 fb-1
 //const double singlemuCS_NormalDPhi = 0.606808;
 //const double singlemuCS_InvertedDPhi = 0.745792;
 //const double singlemuCS_NormalDPhi = 0.762781;
-const double singlemuCS_lowmet[MT2_BINS] = {0.727846,0.334243};
-const double singlemuCS_invdphi = 0.669007;
+//const double singlemuCS_lowmet[MT2_BINS] = {0.727846,0.334243};
+//const double singlemuCS_invdphi = 0.669007;
+
+const double singlemuCS_lowmet[MT2_BINS] = {0.791615,0.704817};
+const double singlemuCS_invdphi = 0.775379;
+
 #define BCBin 5
 #define SFMCBin 3
 

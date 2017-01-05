@@ -36,11 +36,11 @@ int main(int argc, char* argv[])
   std::vector<Plotting_Parameter> myPlotting_Paramete = 
   { 
     //QCD basic check plots
-    {"_met"     , "MET [GeV]"             ,150 , 550  },
+    {"_met"     , "MET [GeV]"             ,200 , 600  },
     {"_njets30" , "Number of 30 GeV jets" ,4   , 14   }, 
     {"_njets50" , "Number of 50 GeV jets" ,2   , 17   },  
     {"_mt2"     , "MT2 [GeV]"             ,200 , 600  },                                               
-    {"_ht"      , "HT [GeV]"              ,500 , 3000 },
+    {"_ht"      , "HT [GeV]"              ,300 , 2800 },
     //{"_mht"     , "MHT [GeV]"             ,0   , 1000 },
     {"_ntopjets", "Number of Top jets"    ,1   , 6    },
     {"_nbjets"  , "Number of B Jets"      ,1   , 6    },
