@@ -36,10 +36,10 @@ int main(int argc, char* argv[])
   { 
     //QCD closure plots
     {"_met"     , "MET [GeV]"             ,200 , 800  },
-    {"_njets30" , "Number of 30 GeV jets" ,2   , 17   }, 
-    {"_njets50" , "Number of 50 GeV jets" ,2   , 17   },  
+    {"_njets30" , "Number of 30 GeV jets" ,2   , 15   }, 
+    {"_njets50" , "Number of 50 GeV jets" ,2   , 15   },  
     {"_mt2"     , "MT2 [GeV]"             ,200 , 600  },                                               
-    {"_ht"      , "HT [GeV]"              ,300 , 1300 },
+    {"_ht"      , "HT [GeV]"              ,300 , 1800 },
     {"_mht"     , "MHT [GeV]"             ,100 , 500  },
     {"_ntopjets", "Number of Top jets"    ,0   , 5    },
     {"_nbjets"  , "Number of B Jets"      ,0   , 5    },
@@ -67,31 +67,6 @@ int main(int argc, char* argv[])
   }
 
   myPlotting_Paramete.clear();
-  /*
-  myPlotting_Paramete =
-  {
-    //QCD closure plots
-    {"_b_met"     , "MET [GeV]"             ,150 , 600  },
-    {"_b_mt2"     , "MT2 [GeV]"             ,100 , 600  },
-    {"_b_dphi0"   , "Delta Phi(MET,Jet1)"   ,0   , 4    },
-    {"_b_dphi1"   , "Delta Phi(MET,Jet2)"   ,0   , 4    },
-    {"_b_dphi2"   , "Delta Phi(MET,Jet3)"   ,0   , 4    },
-    //search bin closure plots
-    //{"_sb"   , "Search Bins"           ,0   , 65  },
-  };
-
-
-  for( iter_p = myPlotting_Paramete.begin() ; iter_p != myPlotting_Paramete.end() ; iter_p ++)
-  {
-    myClosurePlots.BTStudyTemplate(
-                                   (*iter_p).hist_tag,
-                                   (*iter_p).XTitle,
-                                   (*iter_p).min,
-                                   (*iter_p).max
-                                  );
-  }
-  
-  */
   myClosurePlots.ClosureTemplate(
                                  "_sb",
                                  "Search Bins",

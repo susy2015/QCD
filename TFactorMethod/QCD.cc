@@ -109,39 +109,39 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         
         if ( passdPhis )
         {
-          //if( njetsbin_number == 0)
-          //{
+          if( ntopjets < 3 && nbotjets < 3 )
+          {
             myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
             myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
-          //}
+          }
           myQCDFactors.nQCDNormal_NJF_MC_all[njetsbin_number]++;
         }
 
         if ( !passdPhis )
         {
-          //if( njetsbin_number == 0)
-          //{
+          if( ntopjets < 3 && nbotjets < 3 )
+          {
             myQCDFactors.nQCDInverted_MC[i][metbin_number][mt2bin_number]++;
             myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
-            myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight * metEff;
-            myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight * metEff;
+          }
+          myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight * metEff;
+          myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight * metEff;
 
-            //(myCalHistgram.h_cal_met_MC[metbin_number][mt2bin_number])->Fill(met,thisweight*metEff);
-
-            //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
-            std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets , ntopjets , mt2, met );
-            for(auto i=0;i<searchbin_ids.size();i++)
+          //(myCalHistgram.h_cal_met_MC[metbin_number][mt2bin_number])->Fill(met,thisweight*metEff);
+          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
+          //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
+          std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
+          for(auto i=0;i<searchbin_ids.size();i++)
+          {
+            int searchbin_id = searchbin_ids.at(i);
+            if( searchbin_id >= 0)
             {
-              int searchbin_id = searchbin_ids.at(i);
-              if( searchbin_id >= 0)
-              {
-                myQCDFactors.MET_sum_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_all_exp_sb[searchbin_id] + met * thisweight * metEff;
-                myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] + thisweight * metEff;
-                myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] = myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] + mt2 * thisweight * metEff;
-                myQCDFactors.MT2_sum_weight_all_exp_sb[searchbin_id] = myQCDFactors.MT2_sum_weight_all_exp_sb[searchbin_id] + thisweight * metEff;
-              }
+              myQCDFactors.MET_sum_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_all_exp_sb[searchbin_id] + met * thisweight * metEff;
+              myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_weight_all_exp_sb[searchbin_id] + thisweight * metEff;
+              myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] = myQCDFactors.MT2_sum_all_exp_sb[searchbin_id] + mt2 * thisweight * metEff;
+              myQCDFactors.MT2_sum_weight_all_exp_sb[searchbin_id] = myQCDFactors.MT2_sum_weight_all_exp_sb[searchbin_id] + thisweight * metEff;
             }
-          //}
+          }
           myQCDFactors.nQCDInverted_NJF_MC_all[njetsbin_number]++;
         }
       }
@@ -239,8 +239,9 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
         (myClosureHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight*metEff);
         (myClosureHistgram.h_exp_nbjets)->Fill(nbotjets,thisweight*metEff);
           
-        //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
-        std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets , ntopjets , mt2, met );
+        //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
+        //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
+        std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
         for(auto i=0;i<searchbin_ids.size();i++)
         {
           int searchbin_id = searchbin_ids.at(i);
@@ -365,8 +366,9 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
           (myClosureHistgram.h_pred_nbjets)->Fill(nbotjets,predweight);
 
           //if( ht < 500) std::cout << ht << " small ht, what the fuck!!" << std::endl;
-          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
-          std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets , ntopjets , mt2, met );
+          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
+          //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
+          std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
           for(auto i=0;i<searchbin_ids.size();i++)
           {
             int searchbin_id = searchbin_ids.at(i);
@@ -459,7 +461,14 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
           for(unsigned it=0; it<TriggerNames.size(); it++)
           {
             if
-            ( TriggerNames[it].find("HLT_PFHT300_PFMET100_v") != std::string::npos )
+            (
+                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
+            )
             {
               if( PassTrigger[it] ) foundTrigger = true;
             }
@@ -696,7 +705,14 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
           for(unsigned it=0; it<TriggerNames.size(); it++)
           {
             if
-            ( TriggerNames[it].find("HLT_PFHT300_PFMET100_v") != std::string::npos )
+            (
+                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
+             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
+            )
             {
               if( PassTrigger[it] ) foundTrigger = true;
             }
@@ -708,8 +724,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
         if( (!passdPhis) )
         {
           //if( ht < 500) std::cout << ht << " small ht, what the fuck!!" << std::endl;
-          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
-          std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets , ntopjets , mt2, met );
+          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
+          //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
+          std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
           for(auto i=0;i<searchbin_ids.size();i++)
           { 
             int searchbin_id = searchbin_ids.at(i);
@@ -893,7 +910,8 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
 
       if (passBaseline_dPhisInverted)
       {
-        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
+        //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
+        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
 
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
@@ -1042,7 +1060,8 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
          //&& passdPhis
          )
       {
-        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
+        //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
+        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
 
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
@@ -1197,7 +1216,8 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
 
       if (passBaseline)
       {
-        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets , ntopjets , mt2, met );
+        //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
+        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
         if(searchbin_id < 0) continue;
 
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )

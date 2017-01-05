@@ -22,7 +22,7 @@
 
 #include "CMSStylePlot/CMS_lumi.h"
 
-SearchBins mySearchBins("SB_59_2016");
+SearchBins mySearchBins("SB_v1_2017");
 
 class ClosurePlots
 {
