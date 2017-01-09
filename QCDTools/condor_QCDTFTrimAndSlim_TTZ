@@ -19,3 +19,44 @@ notify_user = hua.wei@cern.ch
 arguments = $ENV(CMSSW_BASE) TTZ TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8.txt
 Queue
 
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.aa
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ab
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ac
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ad
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.ae
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8Split.af
+Queue
+
+#### TTWJetsTo ####
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToQQ_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8.txt
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.aa
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ab
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ac
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ad
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.ae
+Queue
+
+arguments = $ENV(CMSSW_BASE) TTZ TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8Split.af
+Queue
+

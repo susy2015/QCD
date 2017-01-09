@@ -32,7 +32,8 @@
 //#include "CMSStylePlot/tdrstyle.h"
 //SearchBins mySearchBins("SB_37_2015");
 //SearchBins mySearchBins("SB_45_2015");
-SearchBins mySearchBins("SB_59_2016");
+//SearchBins mySearchBins("SB_59_2016");
+SearchBins mySearchBins("SB_v1_2017");
 
 class SysUncs
 {
@@ -178,7 +179,6 @@ void SysUncs::printFinalPred()
   h_pred_sb_data->GetYaxis()->SetRangeUser(0,18);
   */
 
-  h_pred_sb_data->GetYaxis()->SetRangeUser(0,20);
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     final_pred[i_cal] > 0 ? h_pred_sb_data->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb_data->SetBinContent( i_cal+1 , 0 ) ;
@@ -200,10 +200,10 @@ void SysUncs::printFinalPred()
     g->SetPointEYhigh(i_cal, e_up);
   }
   g->GetXaxis()->SetRangeUser(0,NSEARCH_BINS+1);
-  g->GetYaxis()->SetRangeUser(0,100);
+  g->GetYaxis()->SetRangeUser(0,250);
   g->Draw("AP");
 
-  mySearchBins.drawSBregionDef(0.0,100.0,false);
+  //mySearchBins.drawSBregionDef(0.0,100.0,false);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );
