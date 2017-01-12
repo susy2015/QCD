@@ -502,27 +502,8 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
       {
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
-          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
-          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
-          bool foundTrigger = false;
-
-          for(unsigned it=0; it<TriggerNames.size(); it++)
-          {
-            if
-            (
-                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
-            )
-            {
-              if( PassTrigger[it] ) foundTrigger = true;
-            }
-          }
-
-          if( !foundTrigger ) continue;
+          bool passSearchTrigger = tr.getVar<bool>("passSearchTrigger");
+          if( !passSearchTrigger ) continue;
         }
 
         //Get normalized Tfactor in Inverted dPhi region in Real Data
@@ -857,27 +838,8 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       {
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
-          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
-          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
-          bool foundTrigger = false;
-
-          for(unsigned it=0; it<TriggerNames.size(); it++)
-          {
-            if
-            (
-                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
-            )
-            {
-              if( PassTrigger[it] ) foundTrigger = true;
-            }
-          }
-
-          if( !foundTrigger ) continue;
+          bool passSearchTrigger = tr.getVar<bool>("passSearchTrigger");
+          if( !passSearchTrigger ) continue;
         }
 
         if( (!passdPhis) )
@@ -1109,27 +1071,8 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
 
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
-          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
-          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
-          bool foundTrigger = false;
-
-          for(unsigned it=0; it<TriggerNames.size(); it++)
-          {
-            if
-            ( 
-                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
-            )
-            {
-              if( PassTrigger[it] ) foundTrigger = true;
-            }
-          }
-
-          if( !foundTrigger ) continue;
+          bool passSearchTrigger = tr.getVar<bool>("passSearchTrigger");
+          if( !passSearchTrigger ) continue;
 
           (myBasicCheckHistgram.h_b_met_Data)->Fill(met,thisweight*metEff);
           (myBasicCheckHistgram.h_b_mt2_Data)->Fill(mt2,thisweight*metEff);
@@ -1203,8 +1146,9 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
 
   double nDataLL[MT2_BINS] = {0}, nMCLL[MT2_BINS] = {0};
   double nDataLL_test = 0, nMCLL_test = 0;
-  std::cout << "Let's check single Muon region for LL: " << std::endl;
-  
+  double nmuCS[NSEARCH_BINS] = {0};
+
+  std::cout << "Let's check single Muon region for LL: " << std::endl;  
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
     //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
@@ -1243,6 +1187,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       bool passBaselineLL = passTagger
                          && passBJets
                          //&& passdPhis
+                         && passQCDHighMETFilter
                          && passNoiseEventFilter;
 
       bool ismt2metsb =    (ntopjets==1 && nbotjets==1)
@@ -1254,40 +1199,26 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
       double metEff = 1;
       if ( 
-            passBaselineLL && (nElectrons==0) && (nMuons == 1) 
-         && (!ismt2metsb)
+            passBaselineLL 
+         //&& pass1mu0elmtwmu
+         && (nElectrons==0) && (nMuons == 1) 
+         //&& (!ismt2metsb)
          //&& (!passdPhis)
-         //&& passdPhis
+         && passdPhis
          )
       {
         //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
         int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
-
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
           //be careful! reset trigger eff to be 1 for real data
           metEff = 1;
-          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
-          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
-          bool foundTrigger = false;
+          bool passSearchTrigger = tr.getVar<bool>("passSearchTrigger");
+          if( !passSearchTrigger ) continue;
+          //bool pass1mu0elmtwmu = tr.getVar<bool>("pass1mu0elmtwmu");
+          //if( !pass1mu0elmtwmu ) continue;
 
-          for(unsigned it=0; it<TriggerNames.size(); it++)
-          {
-            if
-            ( 
-                TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
-             || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
-            )
-            {
-              if( PassTrigger[it] ) foundTrigger = true;
-            }
-          }
-
-          if( !foundTrigger ) continue;
+          if(met>=250) nmuCS[searchbin_id]+=thisweight*metEff;
 
           if(met<metbins_edge[1] && met>metbins_edge[0]){ nDataLL[mt2bin_number]+=thisweight*metEff; }
           if(met>metbins_edge[1] && (!passdPhis)){ nDataLL_test+=thisweight*metEff; }
@@ -1357,6 +1288,11 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
   }
   std::cout << "Counting Test, nData : " << nDataLL_test << "; nMC : "<< nMCLL_test << std::endl;
   std::cout << "Single Mu Data/MC Factor Test: " << nDataLL_test/nMCLL_test << std::endl;
+
+  for(int i=0;i<NSEARCH_BINS;i++)
+  {
+    std::cout << nmuCS[i] << " ";
+  }
   (myBasicCheckHistgram.oFile)->Write();
   (myBasicCheckHistgram.oFile)->Close();
   return ;
@@ -1422,24 +1358,9 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
 
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
-          std::vector<std::string> TriggerNames = tr.getVec<std::string>("TriggerNames");
-          std::vector<int> PassTrigger = tr.getVec<int>("PassTrigger");
-          bool foundTrigger = false;
+          bool passSearchTrigger = tr.getVar<bool>("passSearchTrigger");
+          if( !passSearchTrigger ) continue;
 
-          for(unsigned it=0; it<TriggerNames.size(); it++)
-          {
-            if
-            ( 
-             TriggerNames[it].find("HLT_PFHT300_PFMET100_v") != std::string::npos
-            )
-
-            {
-              if( PassTrigger[it] ) foundTrigger = true;
-            }
-          }
-
-          if( !foundTrigger ) continue;
-        
           (mySBCheckHistgram.h_b_met_Data[searchbin_id])->Fill(met,thisweight*metEff);
           (mySBCheckHistgram.h_b_mt2_Data[searchbin_id])->Fill(mt2,thisweight*metEff);
           (mySBCheckHistgram.h_b_ht_Data[searchbin_id])->Fill(ht,thisweight*metEff);

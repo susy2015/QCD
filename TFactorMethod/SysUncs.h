@@ -195,6 +195,7 @@ void SysUncs::printFinalPred()
     double e_up = std::sqrt( sysunc_all_up[i_cal]*sysunc_all_up[i_cal] + final_pred_stat_up[i_cal]*final_pred_stat_up[i_cal] );
     double e_dn = std::sqrt( sysunc_all_dn[i_cal]*sysunc_all_dn[i_cal] + final_pred_stat_dn[i_cal]*final_pred_stat_dn[i_cal] );
 
+    if(sysunc_nonclosure[i_cal]>10){ std::cout << "SB : " << i_cal << ", QCD Final Pred : " << N << ", Non-Closure Unc : " << sysunc_nonclosure[i_cal] << std::endl; }
     //std::cout << "test on e_dn" << e_dn << std::endl;
     g->SetPointEYlow(i_cal, e_dn);
     g->SetPointEYhigh(i_cal, e_up);

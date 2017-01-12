@@ -9,6 +9,8 @@
 #include "SusyAnaTools/Tools/baselineDef.h"
 
 const double trigger_turn_on_met = 200;
+const double cut_mtwmu = 100;
+const double cut_mtwel = 100;
 const int nth_slash_nametag_MC = 10;
 const int nth_slash_nametag_Data = 10;
 
