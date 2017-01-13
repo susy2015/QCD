@@ -32,7 +32,8 @@
 //#include "CMSStylePlot/tdrstyle.h"
 //SearchBins mySearchBins("SB_37_2015");
 //SearchBins mySearchBins("SB_45_2015");
-SearchBins mySearchBins("SB_59_2016");
+//SearchBins mySearchBins("SB_59_2016");
+SearchBins mySearchBins("SB_v1_2017");
 
 class SysUncs
 {
@@ -178,7 +179,6 @@ void SysUncs::printFinalPred()
   h_pred_sb_data->GetYaxis()->SetRangeUser(0,18);
   */
 
-  h_pred_sb_data->GetYaxis()->SetRangeUser(0,20);
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     final_pred[i_cal] > 0 ? h_pred_sb_data->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb_data->SetBinContent( i_cal+1 , 0 ) ;
@@ -195,15 +195,16 @@ void SysUncs::printFinalPred()
     double e_up = std::sqrt( sysunc_all_up[i_cal]*sysunc_all_up[i_cal] + final_pred_stat_up[i_cal]*final_pred_stat_up[i_cal] );
     double e_dn = std::sqrt( sysunc_all_dn[i_cal]*sysunc_all_dn[i_cal] + final_pred_stat_dn[i_cal]*final_pred_stat_dn[i_cal] );
 
+    if(sysunc_nonclosure[i_cal]>10){ std::cout << "SB : " << i_cal << ", QCD Final Pred : " << N << ", Non-Closure Unc : " << sysunc_nonclosure[i_cal] << std::endl; }
     //std::cout << "test on e_dn" << e_dn << std::endl;
     g->SetPointEYlow(i_cal, e_dn);
     g->SetPointEYhigh(i_cal, e_up);
   }
   g->GetXaxis()->SetRangeUser(0,NSEARCH_BINS+1);
-  g->GetYaxis()->SetRangeUser(0,100);
+  g->GetYaxis()->SetRangeUser(0,350);
   g->Draw("AP");
 
-  mySearchBins.drawSBregionDef(0.0,100.0,false);
+  //mySearchBins.drawSBregionDef(0.0,100.0,false);
   CMSStylePlot::CMS_lumi( c, 4, 0 );
 
   c->SaveAs( "_sb_Data.png" );

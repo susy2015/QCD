@@ -17,7 +17,7 @@ git cms-merge-topic -u kpedro88:METfix8022
 git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_80X_V2
-git clone -b Ana_Dec9_2016_Moriond2017_updatesForSBStudies_v2 git@github.com:susy2015/SusyAnaTools.git
+git clone -b Ana_Dec21_2016_Moriond2017_forBkgPred git@github.com:susy2015/SusyAnaTools.git
 ```
 
 TopTagger:
@@ -31,7 +31,7 @@ cmake .
 make -j 8
 ## Checkout Tagtagger
 cd $CMSSW_BASE/src
-git clone -b HadStopAnaDevel_v3_Moriond2017_Dec8_2016 git@github.com:susy2015/TopTagger.git
+git clone -b HadStopAnaDevel_v5_Moriond2017_Dec21_2016 git@github.com:susy2015/TopTagger.git
 ```
 
 CMS Build application:
@@ -62,8 +62,8 @@ cd $CMSSW_BASE/src/QCD/QCDTools
 make
 source reset.csh
 source $CMSSW_BASE/src/SusyAnaTools/Tools/setup.csh
-$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Medium_v1.0.0 -d /uscms_data/d3/hwei/stop
-$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.0.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
+$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Tight_v1.1.1 -d /uscms_data/d3/hwei/stop
+$CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.1.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
 ```
 2.QCD skim and slim for QCD background estimation:
 

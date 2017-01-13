@@ -17,7 +17,7 @@
 #include "TMath.h"
 
 #include "SusyAnaTools/Tools/NTupleReader.h"
-#include "SusyAnaTools/Tools/baselineDef.h"
+#include "SusyAnaTools/Tools/searchBins.h"
 
 //#include "CMSStylePlot/CMS_lumi.h"
 
@@ -39,18 +39,12 @@
 //all the root file for plotting will go to this directory
 std::string dir_out = "RootForPlotting/";
 
-//baseline cut function definition, no need since move to QCD style root file
-static BaselineVessel *myBaselineVessel;
-void mypassBaselineFunc(NTupleReader& tr)
-{
-  (*myBaselineVessel)(tr);
-}
-
 //QCD background model bag
 QCDBGModel myQCDBGModel;
 //search bin definition, with era
-SearchBins mySearchBins("SB_59_2016");
+//SearchBins mySearchBins("SB_59_2016");
 //SearchBins mySearchBins("SB_Aggregate_ICHEP_2016");
+SearchBins mySearchBins("SB_v1_2017");
 //Trigger Eff
 TriggerEff myTriggerEff;
 //overall scale for all plots, will be set to be 1 if no special need

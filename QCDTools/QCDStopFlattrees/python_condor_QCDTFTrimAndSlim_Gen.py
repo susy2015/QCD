@@ -23,10 +23,10 @@ def PrintTransferFileLine(directory, sampletype, isfirst, islast):
     print ""
     print ""
 
-def PrintCondorLogLine():
-  print ("Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stdout")
-  print ("Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).stderr")
-  print ("Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_$(Process).log")
+def PrintCondorLogLine(runtype):
+  print ("Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_" + runtype + "_$(Process).stdout")
+  print ("Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_" + runtype + "_$(Process).stderr")
+  print ("Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_" + runtype + "_$(Process).log")
   print ("notify_user = hua.wei@cern.ch")
   print ""
 
@@ -50,7 +50,7 @@ if(runtype == "Data"):
   PrintCondorHeaderLine()
   print("##transfer file list for " + runtype + " samples")
   PrintTransferFileLine(d, "MET", True, True)
-  PrintCondorLogLine()
+  PrintCondorLogLine(runtype)
   PrintCondorSubmitLine(d, "MET", runtype)
 elif(runtype == "LLHadTau"):
   PrintCondorHeaderLine()
@@ -58,7 +58,7 @@ elif(runtype == "LLHadTau"):
   PrintTransferFileLine(d, "TTJets_", True, False)
   PrintTransferFileLine(d, "WJetsToLNu_HT-", False, False)
   PrintTransferFileLine(d, "ST_tW_", False, True)
-  PrintCondorLogLine()
+  PrintCondorLogLine(runtype)
   PrintCondorSubmitLine(d, "TTJets_", runtype)
   PrintCondorSubmitLine(d, "WJetsToLNu_HT-", runtype)
   PrintCondorSubmitLine(d, "ST_tW_", runtype)
@@ -66,20 +66,20 @@ elif(runtype == "Zinv"):
   PrintCondorHeaderLine()
   print("##transfer file list for " + runtype + " samples")
   PrintTransferFileLine(d, "ZJetsToNuNu_HT-", True, True)
-  PrintCondorLogLine()
+  PrintCondorLogLine(runtype)
   PrintCondorSubmitLine(d, "ZJetsToNuNu_HT-", runtype)
 elif(runtype == "QCD"):
   PrintCondorHeaderLine()
   print("##transfer file list for " + runtype + " samples")
   PrintTransferFileLine(d, "QCD_HT", True, True)
-  PrintCondorLogLine()
+  PrintCondorLogLine(runtype)
   PrintCondorSubmitLine(d, "QCD_HT", runtype)
 elif(runtype == "TTZ"):
   PrintCondorHeaderLine()
   print("##transfer file list for " + runtype + " samples")
   PrintTransferFileLine(d, "TTZTo", True, False)
   PrintTransferFileLine(d, "TTWJetsTo", False, True)
-  PrintCondorLogLine()
+  PrintCondorLogLine(runtype)
   PrintCondorSubmitLine(d, "TTZTo", runtype)
   PrintCondorSubmitLine(d, "TTWJetsTo", runtype)
 else:

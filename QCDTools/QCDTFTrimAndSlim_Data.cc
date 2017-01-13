@@ -4,6 +4,7 @@
 #include <locale>
 #include <sstream>
 #include <stdlib.h>
+#include <cmath>
 
 #include "TTree.h"
 #include "TFile.h"
@@ -16,6 +17,14 @@
 #include "SusyAnaTools/Tools/searchBins.h"
 
 #include "QCDTFTrimAndSlimCommon.h"
+
+double DeltaPhi(double phi1, double phi2) 
+{
+  double result = phi1 - phi2;
+  while (result > M_PI)    result -= 2 * M_PI;
+  while (result <= -M_PI)  result += 2 * M_PI;
+  return result;
+}
 
 int main(int argc, char* argv[])
 {
@@ -49,16 +58,16 @@ int main(int argc, char* argv[])
   TTree* selectedTree = new TTree("QCDTFTree","QCDTFTree");
   //TTree* selectedTree = originalTree->CloneTree(0);
   //search bin variables
-  Double_t met,mt2; Int_t ntopjets,nbotjets;
+  Double_t met,mt2,ht; Int_t ntopjets,nbotjets;
   selectedTree->Branch("met",&met,"met/D");
   selectedTree->Branch("mt2",&mt2,"mt2/D");
+  selectedTree->Branch("ht",&ht,"ht/D");
   selectedTree->Branch("nTop",&ntopjets,"nTop/I");
   selectedTree->Branch("nBot",&nbotjets,"nBot/I");
   //AUX variables maybe useful for research
-  Int_t njets30,njets50; Double_t ht,mht;
+  Int_t njets30,njets50; Double_t mht;
   selectedTree->Branch("nJets30",&njets30,"nJets30/I");
   selectedTree->Branch("nJets50",&njets50,"nJets50/I");
-  selectedTree->Branch("ht",&ht,"ht/D");
   selectedTree->Branch("mht",&mht,"mht/D");
   Double_t metphi, mhtphi;
   selectedTree->Branch("metphi",&metphi,"metphi/D");
@@ -67,8 +76,9 @@ int main(int argc, char* argv[])
   Int_t nmus,nels;
   selectedTree->Branch("nMuons"    ,&nmus,"nMuons/I"    );
   selectedTree->Branch("nElectrons",&nels,"nElectrons/I");
+
   //Boolean related to the baseline
-  Bool_t passLeptVeto, passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
+  Bool_t passLeptVeto,passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
   selectedTree->Branch("passLeptVeto"        ,&passLeptVeto        ,"passLeptVeto/O");
   selectedTree->Branch("passTagger"          ,&passTagger          ,"passTagger/O");
   selectedTree->Branch("passBJets"           ,&passBJets           ,"passBJets/O");
@@ -80,10 +90,12 @@ int main(int argc, char* argv[])
   selectedTree->Branch("calomet"   ,&calomet   ,"calomet/D");
   selectedTree->Branch("calometphi",&calometphi,"calometphi/D");
   //Trigger information, for Data only
-  std::vector<std::string> TriggerNames;
-  std::vector<int> PassTrigger;
-  selectedTree->Branch("TriggerNames","std::vector<std::string>",&TriggerNames);
-  selectedTree->Branch("PassTrigger","std::vector<int>",&PassTrigger);
+  Bool_t passSearchTrigger;  
+  selectedTree->Branch("passSearchTrigger",&passSearchTrigger,"passSearchTrigger/O");
+  //Boolean helper on single mu single el CS
+  Bool_t pass1mu0elmtwmu,pass0mu1elmtwel;
+  selectedTree->Branch("pass1mu0elmtwmu",&pass1mu0elmtwmu,"pass1mu0elmtwmu/O");
+  selectedTree->Branch("pass0mu1elmtwel",&pass0mu1elmtwel,"pass0mu1elmtwel/O");
 
   std::shared_ptr<topTagger::type3TopTagger>type3Ptr(nullptr);
   NTupleReader *tr=0;
@@ -122,19 +134,17 @@ int main(int argc, char* argv[])
                              //&& passTagger
                              //&& passBJets
                              //&& passNoiseEventFilter;
-    TriggerNames.clear();
-    PassTrigger.clear();
     if(passQCDTFTrimAndSlim)
     {
       //searchbin variables
       //met = tr->getVar<double>("met");
       mt2 = tr->getVar<double>("best_had_brJet_MT2"+spec);       
+      ht = tr->getVar<double>("HT"+spec);
       ntopjets = tr->getVar<int>("nTopCandSortedCnt"+spec);
       nbotjets = tr->getVar<int>("cntCSVS"+spec);
       //AUX variables
       njets30 = tr->getVar<int>("cntNJetsPt30Eta24"+spec);
       njets50 = tr->getVar<int>("cntNJetsPt50Eta24"+spec);
-      ht = tr->getVar<double>("HT"+spec);
       TLorentzVector mht_TLV = AnaFunctions::calcMHT(tr->getVec<TLorentzVector>("jetsLVec"), AnaConsts::pt30Eta24Arr);
       mht = mht_TLV.Pt(); 
       metphi = tr->getVar<double>("metphi");
@@ -142,16 +152,88 @@ int main(int argc, char* argv[])
       nmus = tr->getVar<int>("nMuons_CUT"+spec);
       nels = tr->getVar<int>("nElectrons_CUT"+spec);
       
-      TriggerNames = tr->getVec<std::string>("TriggerNames");
-      PassTrigger = tr->getVec<int>("PassTrigger");
+      //Baseline Boolean
       passLeptVeto = tr->getVar<bool>("passLeptVeto"+spec);
       passTagger = tr->getVar<bool>("passTagger"+spec);
       passBJets = tr->getVar<bool>("passBJets"+spec);
       passQCDHighMETFilter = tr->getVar<bool>("passQCDHighMETFilter"+spec);
       passdPhis = tr->getVar<bool>("passdPhis"+spec);
       passNoiseEventFilter = tr->getVar<bool>("passNoiseEventFilter"+spec);
+      //QCD filter related
       calomet = tr->getVar<double>("calomet");
       calometphi = tr->getVar<double>("calometphi");
+
+      //Trigger information
+      std::vector<std::string> TriggerNames = tr->getVec<std::string>("TriggerNames");
+      std::vector<int> PassTrigger = tr->getVec<int>("PassTrigger");
+      passSearchTrigger = false;
+      for(unsigned it=0; it<TriggerNames.size(); it++)
+      {
+        if
+        (
+            TriggerNames[it].find("HLT_PFMET100_PFMHT100_IDTight_v") != std::string::npos
+         || TriggerNames[it].find("HLT_PFMET110_PFMHT110_IDTight_v") != std::string::npos
+         || TriggerNames[it].find("HLT_PFMET120_PFMHT120_IDTight_v") != std::string::npos
+         || TriggerNames[it].find("HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_v") != std::string::npos
+         || TriggerNames[it].find("HLT_PFMETNoMu110_PFMHTNoMu110_IDTight_v") != std::string::npos
+         || TriggerNames[it].find("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v") != std::string::npos
+        )
+        {
+          if( PassTrigger[it] ) passSearchTrigger = true;
+        }
+      }
+
+      //Single Mu Single El CS boolean helper
+      //Single Mu
+      pass1mu0elmtwmu = false;
+      if(nmus==1 && nels==0)
+      {
+        double this_mus_pt = -1, this_mus_eta = 0, this_mus_phi = -1;
+        std::vector<TLorentzVector> muonsLVec = tr->getVec<TLorentzVector>("muonsLVec");
+        std::vector<double> muonsMiniIso = tr->getVec<double>("muonsMiniIso");
+        std::vector<int> muonsFlagMedium = tr->getVec<int>("muonsFlagMedium");
+        for(unsigned int im = 0 ; im < muonsLVec.size() ; im++)
+        {
+          if(muonsFlagMedium[im] && muonsLVec[im].Pt()>(AnaConsts::muonsMiniIsoArr).minPt && fabs(muonsLVec[im].Eta()) < (AnaConsts::muonsMiniIsoArr).maxAbsEta && muonsMiniIso[im] < (AnaConsts::muonsMiniIsoArr).maxIso )
+          {
+            this_mus_pt  = ( muonsLVec.at(im) ).Pt();
+            this_mus_eta = ( muonsLVec.at(im) ).Eta();
+            this_mus_phi = ( muonsLVec.at(im) ).Phi();
+          }
+        }
+        if(this_mus_pt>0)
+        {
+          double deltaphi_mus = DeltaPhi( this_mus_phi , metphi );
+          double thismtwmu = std::sqrt( 2.0 * this_mus_pt * met * ( 1.0 - cos(deltaphi_mus) ) );
+          if(thismtwmu<cut_mtwmu) pass1mu0elmtwmu = true;
+        }
+      }
+
+      //Single El
+      pass0mu1elmtwel = false;
+      if(nmus==0 && nels==1)
+      {
+        double this_els_pt = -1, this_els_eta = 0, this_els_phi = -1;
+        std::vector<TLorentzVector> elesLVec = tr->getVec<TLorentzVector>("elesLVec");
+        std::vector<int> elesFlagVeto = tr->getVec<int>("elesFlagVeto");
+        std::vector<double> elesMiniIso = tr->getVec<double>("elesMiniIso");
+
+        for(unsigned int im = 0 ; im < elesLVec.size() ; im++)
+        {
+          if(elesFlagVeto[im] && elesLVec[im].Pt()>(AnaConsts::elesMiniIsoArr).minPt && fabs(elesLVec[im].Eta()) < (AnaConsts::elesMiniIsoArr).maxAbsEta && elesMiniIso[im] < (AnaConsts::elesMiniIsoArr).maxIsoEB )
+          {
+            this_els_pt  = ( elesLVec.at(im) ).Pt();
+            this_els_eta = ( elesLVec.at(im) ).Eta();
+            this_els_phi = ( elesLVec.at(im) ).Phi();
+          }
+        }
+        if(this_els_pt>0)
+        {
+          double deltaphi_els = DeltaPhi( this_els_phi , metphi );
+          double thismtwel = std::sqrt( 2.0 * this_els_pt * met * ( 1.0 - cos(deltaphi_els) ) );
+          if(thismtwel<cut_mtwel) pass0mu1elmtwel = true;
+        }
+      }
 
       selectedTree->Fill();
     }
