@@ -201,7 +201,7 @@ void SysUncs::printFinalPred()
     g->SetPointEYhigh(i_cal, e_up);
   }
   g->GetXaxis()->SetRangeUser(0,NSEARCH_BINS+1);
-  g->GetYaxis()->SetRangeUser(0,250);
+  g->GetYaxis()->SetRangeUser(0,350);
   g->Draw("AP");
 
   //mySearchBins.drawSBregionDef(0.0,100.0,false);

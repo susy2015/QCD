@@ -248,7 +248,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
           passBaselineQCD
          )
       {
-        if(ht<700){ std::cout << "HT: " << ht << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << std::endl; }
+        //if(ht<700){ std::cout << "HT: " << ht << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << std::endl; }
         (myClosureHistgram.h_exp_met)->Fill(met,thisweight*metEff);
         (myClosureHistgram.h_exp_njets30)->Fill(njets30,thisweight*metEff);
         (myClosureHistgram.h_exp_njets50)->Fill(njets50,thisweight*metEff);
@@ -264,6 +264,11 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
         for(auto i=0;i<searchbin_ids.size();i++)
         {
           int searchbin_id = searchbin_ids.at(i);
+          if(searchbin_id==38 || searchbin_id==62)
+          { 
+            std::cout << "Weight: " << thisweight << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << "; SB : " << searchbin_id << std::endl; 
+            std::cout << "MET: " << met << "; METPhi : " << tr.getVar<double>("metphi") << "; CaloMET : " << calomet << "; CaloMETPhi : " << tr.getVar<double>("calometphi") << std::endl;
+          }
           if( searchbin_id >= 0 )
           {
             myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
@@ -409,6 +414,11 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
           for(auto i=0;i<searchbin_ids.size();i++)
           {
             int searchbin_id = searchbin_ids.at(i);
+            if(searchbin_id==38 || searchbin_id==62)
+            {
+              std::cout << "Weight: " << thisweight << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << "; SB : " << searchbin_id << std::endl;
+              std::cout << "MET: " << met << "; METPhi : " << tr.getVar<double>("metphi") << "; CaloMET : " << calomet << "; CaloMETPhi : " << tr.getVar<double>("calometphi") << std::endl;
+            }
             if( searchbin_id >= 0 )
             {
               myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
@@ -488,8 +498,8 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
       int metbin_ext_number = myQCDBGModel.Set_metbin_ext_number(met);
       int htbin_ext_number = myQCDBGModel.Set_htbin_ext_number(ht);
       int sidebandbin_ext_number = -1;
-      if( metbin_ext_number==0 && htbin_ext_number==0){ sidebandbin_ext_number=0; }
-      if( metbin_ext_number==1 && htbin_ext_number==0){ sidebandbin_ext_number=1; }
+      if( metbin_ext_number==0 && /*htbin_ext_number==0*/ mt2bin_number==0){ sidebandbin_ext_number=0; }
+      if( metbin_ext_number==0 && /*htbin_ext_number==0*/ mt2bin_number==1){ sidebandbin_ext_number=1; }
 
       bool ismt2metsb =    (ntopjets==1 && nbotjets==1)
                         || (ntopjets==1 && nbotjets==2)
@@ -873,8 +883,15 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
               {
                 //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
                 bool isLL = tr.getVar<bool>("isLL");
-                double ttjetsFactor = singlemuCS_invdphi;
-                //double ttjetsFactor = 1;
+                bool ismt2metsb =    (ntopjets==1 && nbotjets==1)
+                                  || (ntopjets==1 && nbotjets==2)
+                                  || (ntopjets==2 && nbotjets==1)
+                                  || (ntopjets==2 && nbotjets==2);
+
+                //double ttjetsFactor = singlemuCS_invdphi;
+                double ttjetsFactor = 1;
+                ismt2metsb ? ttjetsFactor = singlemuCS_invdphi : ttjetsFactor = singlemuCS_ext_invdphi;
+
                 if(isLL)
                 {
                   myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor;
@@ -1202,9 +1219,9 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
             passBaselineLL 
          //&& pass1mu0elmtwmu
          && (nElectrons==0) && (nMuons == 1) 
-         //&& (!ismt2metsb)
+         && (ismt2metsb)
          //&& (!passdPhis)
-         && passdPhis
+         //&& passdPhis
          )
       {
         //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
