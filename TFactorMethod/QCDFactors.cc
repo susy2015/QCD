@@ -766,7 +766,7 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dPreFit->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_prefit, 0, 0 );
-  const std::string titre_prefit = "CMS Simulation                                                                                          12.9 fb^{-1}(13 TeV)";
+  const std::string titre_prefit = "CMS Simulation                                                                                          36.4 fb^{-1}(13 TeV)";
   TLatex *title_prefit = new TLatex(0.09770115,0.9194915,titre_prefit.c_str());
   title_prefit->SetNDC();
   title_prefit->SetTextSize(0.045);
@@ -842,7 +842,7 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dScaled->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_scaled, 4, 0 );
-  const std::string titre_scaled = "CMS Preliminary                                                                                         12.9 fb^{-1}(13 TeV)";
+  const std::string titre_scaled = "CMS Preliminary                                                                                         36.4 fb^{-1}(13 TeV)";
   TLatex *title_scaled = new TLatex(0.09770115,0.9194915,titre_scaled.c_str());
   title_scaled->SetNDC();
   title_scaled->SetTextSize(0.045);
@@ -907,7 +907,7 @@ void QCDFactors::CountingPlotsGen()
   //std::ostringstream strs;
   //strs << (LUMI/1000);
   //std::string lumi_str = strs.str();
-  const std::string titre="CMS Preliminary                                                                           12.9 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Preliminary                                                                           36.4 fb^{-1}(13 TeV)";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);

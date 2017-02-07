@@ -12,7 +12,7 @@ def PrintCondorHeaderLine():
 
 def PrintTransferFileLine(directory, sampletype, isfirst, islast):
   if(isfirst):
-    sys.stdout.write('transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/CMSSW_8_0_23.tar.gz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, ')
+    sys.stdout.write('transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/CMSSW_8_0_25.tar.gz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, ')
   for dirname, dirnames, filenames in os.walk(directory):
     for filename in filenames:
       if ( sampletype in filename ):
@@ -36,13 +36,13 @@ def PrintCondorSubmitLine(directory, sampletype):
   for dirname, dirnames, filenames in os.walk(directory):
     for filename in filenames:
       if ( sampletype in filename ):
-        print ("arguments = $ENV(CMSSW_BASE) " + filename)
+        print ("arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) " + filename)
         print ("Queue")
         print ""
       else:
         continue
 
-d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_23/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt"
+d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_25/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt"
 runtype = sys.argv[1]
 print ("#The valid run types for DeepTrim are Data, LL! While the current run type is : " + runtype)
 

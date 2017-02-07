@@ -12,7 +12,7 @@ def PrintCondorHeaderLine():
 
 def PrintTransferFileLine(directory, sampletype, isfirst, islast):
   if(isfirst):
-    sys.stdout.write('transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, ')
+    sys.stdout.write('transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/CMSSW_8_0_25.tar.gz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, ')
   for dirname, dirnames, filenames in os.walk(directory):
     for filename in filenames:
       if ( sampletype in filename ):
@@ -36,13 +36,13 @@ def PrintCondorSubmitLine(directory, sampletype, command):
   for dirname, dirnames, filenames in os.walk(directory):
     for filename in filenames:
       if ( sampletype in filename ):
-        print ("arguments = $ENV(CMSSW_BASE) " + command + " " + filename)
+        print ("arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) " + command + " " + filename)
         print ("Queue")
         print ""
       else:
         continue
 
-d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_23/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt"
+d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_25/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt"
 runtype = sys.argv[1]
 print ("#The valid run types for QCDTFTrimAndSlim are Data, LLHadTau, Zinv, QCD, and TTZ! While the current run type is : " + runtype)
 
@@ -78,9 +78,15 @@ elif(runtype == "TTZ"):
   PrintCondorHeaderLine()
   print("##transfer file list for " + runtype + " samples")
   PrintTransferFileLine(d, "TTZTo", True, False)
-  PrintTransferFileLine(d, "TTWJetsTo", False, True)
+  PrintTransferFileLine(d, "TTWJetsTo", False, False)
+  PrintTransferFileLine(d, "WW", False, False)
+  PrintTransferFileLine(d, "WZ", False, False)
+  PrintTransferFileLine(d, "ZZ", False, True)
   PrintCondorLogLine(runtype)
   PrintCondorSubmitLine(d, "TTZTo", runtype)
   PrintCondorSubmitLine(d, "TTWJetsTo", runtype)
+  PrintCondorSubmitLine(d, "WW", runtype)
+  PrintCondorSubmitLine(d, "WZ", runtype)
+  PrintCondorSubmitLine(d, "ZZ", runtype)
 else:
   print ("#Invalid run type for QCDTFTrimAndSlim! What the fuck is going on ??!!")
