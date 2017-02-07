@@ -56,7 +56,6 @@ git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
 ```
 # QCD Tools
 
-1.Deep skim for lost lepton background estimation:
 ```
 cd $CMSSW_BASE/src/QCD/QCDTools
 make
@@ -65,6 +64,16 @@ source $CMSSW_BASE/src/SusyAnaTools/Tools/setup.csh
 $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Tight_v1.1.1 -d /uscms_data/d3/hwei/stop
 $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.1.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
 ```
+
+Tarball CMSSW release : 
+```
+cd $CMSSW_BASE/src/QCD/QCDTools/QCDStopFlattrees
+sh cache_all.sh
+tar --exclude-caches-all -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_VERSION}
+```
+
+1.Deep skim for lost lepton background estimation:
+
 2.QCD skim and slim for QCD background estimation:
 
 # QCD Translation Factor Method
