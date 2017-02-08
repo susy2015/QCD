@@ -1,8 +1,8 @@
 ## the following line can be commented out once the bug fixed in the SusyAnaTools/Tools/setup.csh
 setenv LD_LIBRARY_PATH ./:${CMSSW_BASE}/src/opencv/lib/:${CMSSW_BASE}/src/TopTagger/TopTagger/test/:${CMSSW_BASE}/src/SusyAnaTools/Tools/obj/:${LD_LIBRARY_PATH}
 ## Delete the btagging file
-if (-f CSVv2_ichep.csv) then
-  unlink CSVv2_ichep.csv
+if (-f CSVv2_Moriond17_B_H.csv) then
+  unlink CSVv2_Moriond17_B_H.csv
 endif
 
 if (-f TTbarNoHad_bTagEff.root) then
@@ -12,6 +12,11 @@ endif
 ## Delete Pileup Reweighting file
 if (-f PileupHistograms_Nov17.root) then
   unlink PileupHistograms_Nov17.root
+endif
+
+##delete puppi file for toptagger
+if (-f puppiSoftdropResol.root) then
+  unlink puppiSoftdropResol.root
 endif
 
 ## Delete the Top tagger files

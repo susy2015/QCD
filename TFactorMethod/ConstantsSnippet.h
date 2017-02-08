@@ -11,7 +11,7 @@
 //#define LUMI 12918.140703927 //final 2016 ICHEP data set
 #define LUMI 36352.970569733 //final 2017 Moriond data set
 
-#define QCD_BINS 6
+#define QCD_BINS 2*6
 #define MET_BINS 4
 #define MT2_BINS 2
 #define MET_Ext_BINS 2

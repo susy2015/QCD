@@ -591,6 +591,15 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             else if(   
                        ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
                     || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
                    )
             { 
               //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
@@ -681,6 +690,15 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
             else if(   
                        ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
                     || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
                    )
             { 
               //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
@@ -914,6 +932,15 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
               else if(
                          ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
                       || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
                      )
               {
                 //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
@@ -1125,6 +1152,15 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           else if( 
                      ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos 
                   || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos 
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
                  ) 
           { 
             ih = 4;
@@ -1274,6 +1310,15 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
           else if( 
                      ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos 
                   || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos 
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
                  ) 
           { 
             ih = 4;
@@ -1412,6 +1457,15 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
           else if( 
                      ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos 
                   || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos 
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                  || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
                  ) 
           { 
             ih = 4;
@@ -1442,13 +1496,14 @@ int main(int argc, char* argv[])
   {
     std::cerr <<"Please give at least 3 arguments " << "RunMode " << " " << "runListMC " << " " << "runListData"<< std::endl;
     std::cerr <<" Valid configurations are " << std::endl;
-    std::cerr <<" ./QCD RunMode runlist_QCDMC.txt runlist_Data.txt" << std::endl;
+    std::cerr <<" ./QCD RunMode runlist_QCDMC.txt runlist_QCDMC_BFilter.txt runlist_Data.txt" << std::endl;
     return -1;
   }
 
   std::string RunMode = argv[1];
   std::string inputFileList_QCDMC = argv[2];
-  std::string inputFileList_Data = argv[3];
+  std::string inputFileList_QCDMC_BFilter = argv[3];
+  std::string inputFileList_Data = argv[4];
   
   std::cout << "The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, CalTFSideBandOnly, PredDataOnly, BasicCheckQCD, BasicCheckLL, SBCheck" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
@@ -1457,15 +1512,23 @@ int main(int argc, char* argv[])
   //myTriggerEff.SelfTest();
   //Sample needed in the calculation and expectation loop
   QCDSampleWeight myQCDSampleWeight;
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500"  , 366800  , 54706298, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 63337753, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 45453945, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    , 15316362, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000", 121.5   , 11650581, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf" , 25.42   ,  6007777, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500"  , 366800  , 54479109, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 62271343, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 45058463, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    , 15064562, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000", 121.5   , 11826702, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf" , 25.42   ,  6039005, LUMI, 1, inputFileList_QCDMC.c_str() );
+
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500_BFilter"  , 38970  , 6046724, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700_BFilter"  , 4150   , 7076024, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000_BFilter" , 1000   , 2869662, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500_BFilter", 184.4  ,  834688, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000_BFilter", 21.31  ,  240962, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf_BFilter" , 4.16   ,  136826, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+
   if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
   {
-    std::cout << "QCD_BINS in QCDBinFunction.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
+    std::cout << "QCD_BINS in ConstantsSnippet.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
     return 0;
   }
 
@@ -1474,66 +1537,90 @@ int main(int argc, char* argv[])
   //sample needed in the prediction loop
   QCDSampleWeight myDataSampleWeight;
   myDataSampleWeight.QCDSampleInfo_push_back( "MET"                        ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30682233, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 53057043, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 60494823, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,   998400, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,   985000, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!
-  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      19591498, LUMI, 1.21, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7432746, LUMI, 1.21, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      18088165, LUMI, 1.21, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7854734, LUMI, 1.21, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       7023857, LUMI, 1.21, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2507809, LUMI, 1.21, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      38867206, LUMI, 1.21, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7759701, LUMI, 1.21, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      17494743, LUMI, 1.21, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7745467, LUMI, 1.21, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       6801534, LUMI, 1.21, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2637821, LUMI, 1.21, inputFileList_Data.c_str() );
 
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-200To400"  ,    77.67,      25035015, LUMI, 1.23, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-400To600"  ,    10.73,       9290017, LUMI, 1.23, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-600To800"  ,  0.853*3,       5712221, LUMI, 1.23, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-800To1200" ,  0.394*3,       1944423, LUMI, 1.23, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-200To400"  ,    77.67,      24663714, LUMI, 1.23, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-400To600"  ,    10.73,       9862869, LUMI, 1.23, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-600To800"  ,  0.853*3,       5611895, LUMI, 1.23, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-800To1200" ,  0.394*3,       2100324, LUMI, 1.23, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-1200To2500", 0.0974*3,        513471, LUMI, 1.23, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-2500ToInf" ,0.00230*3,        405752, LUMI, 1.23, inputFileList_Data.c_str() );
-  //be careful! TTZ has negative weight issue!!
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTZToLLNuNu"            , 0.2529, 1744167 - 635909, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTZToQQ"                , 0.5297,  550282 - 199118, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToLNu"           , 0.2043, 1821666 - 582855, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToQQ"            , 0.4062,  631804 - 201494, LUMI, 1, inputFileList_Data.c_str() );
-
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-2500ToInf" ,0.00230*3,        405030, LUMI, 1.23, inputFileList_Data.c_str() );
+  //be careful! Rare has negative weight!!
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTZToLLNuNu"            , 0.2529,  1416634 - 516458, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTZToQQ"                , 0.5297,   435723 - 157814, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToLNu"           , 0.2043, 3998407 - 1282158, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToQQ"            , 0.4062,   631804 - 201494, LUMI, 1, inputFileList_Data.c_str() );
+  //Di-Boson
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WWTo4Q_"                , 51.723,            1998400, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WZ_"                    ,  47.13,            3995828, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZZTo2Q2Nu_"             ,   4.04, 23902489 - 5716189, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZZTo4Q_"                ,  6.842, 22590415 - 5321419, LUMI, 1, inputFileList_Data.c_str() );
+  //Tri-boson: negative weights!
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WWW_"                , 0.20860, 225269 - 14731, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WWZ_"                , 0.16510, 235734 - 14266, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WZZ_"                , 0.05565, 231583 - 15217, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_ZZZ_"                , 0.01398, 231217 - 18020, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WZG_"                , 0.04123, 921527 - 76673, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_WWG_"                , 0.21470, 913515 - 85885, LUMI, 1, inputFileList_Data.c_str() );
 
   //sample needed in the basic check loop
   QCDSampleWeight myBasicCheckSampleWeight;
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "MET"                        ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30682233, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 53057043, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 60494823, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,   998400, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,   985000, LUMI, 1, inputFileList_Data.c_str() );
-  //be careful!! WJets and ZJets samples have some tricky part, need to understand!
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      19591498, LUMI, 1.21, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7432746, LUMI, 1.21, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      18088165, LUMI, 1.21, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7854734, LUMI, 1.21, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       7023857, LUMI, 1.21, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2507809, LUMI, 1.21, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_Data.c_str() );
+  //be careful!! WJets and ZJets samples have to take NLO(NNLO??) correction into account
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      38867206, LUMI, 1.21, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7759701, LUMI, 1.21, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      17494743, LUMI, 1.21, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7745467, LUMI, 1.21, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       6801534, LUMI, 1.21, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2637821, LUMI, 1.21, inputFileList_Data.c_str() );
 
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-200To400"  ,    77.67,      25035015, LUMI, 1.23, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-400To600"  ,    10.73,       9290017, LUMI, 1.23, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-600To800"  ,  0.853*3,       5712221, LUMI, 1.23, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-800To1200" ,  0.394*3,       1944423, LUMI, 1.23, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-200To400"  ,    77.67,      24663714, LUMI, 1.23, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-400To600"  ,    10.73,       9862869, LUMI, 1.23, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-600To800"  ,  0.853*3,       5611895, LUMI, 1.23, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-800To1200" ,  0.394*3,       2100324, LUMI, 1.23, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-1200To2500", 0.0974*3,        513471, LUMI, 1.23, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-2500ToInf" ,0.00230*3,        405752, LUMI, 1.23, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZJetsToNuNu_HT-2500ToInf" ,0.00230*3,        405030, LUMI, 1.23, inputFileList_Data.c_str() );
   //be careful! TTZ has negative weight issue!!
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTZToLLNuNu"            , 0.2529, 1744167 - 635909, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTZToQQ"                , 0.5297,  550282 - 199118, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToLNu"           , 0.2043, 1821666 - 582855, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToQQ"            , 0.4062,  631804 - 201494, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTZToLLNuNu"            , 0.2529,  1416634 - 516458, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTZToQQ"                , 0.5297,   435723 - 157814, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToLNu"           , 0.2043, 3998407 - 1282158, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTWJetsToQQ"            , 0.4062,   631804 - 201494, LUMI, 1, inputFileList_Data.c_str() );
 
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500"  , 366800  , 54706298, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 63337753, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 45453945, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    , 15316362, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000", 121.5   , 11650581, LUMI, 1, inputFileList_QCDMC.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf" , 25.42   ,  6007777, LUMI, 1, inputFileList_QCDMC.c_str() );
+  //Di-Boson
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WWTo4Q_"                , 51.723,            1998400, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WZ_"                    ,  47.13,            3995828, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZZTo2Q2Nu_"             ,   4.04, 23902489 - 5716189, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZZTo4Q_"                ,  6.842, 22590415 - 5321419, LUMI, 1, inputFileList_Data.c_str() );
+  //Tri-boson: negative weights!
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WWW_"                , 0.20860, 225269 - 14731, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WWZ_"                , 0.16510, 235734 - 14266, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WZZ_"                , 0.05565, 231583 - 15217, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ZZZ_"                , 0.01398, 231217 - 18020, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WZG_"                , 0.04123, 921527 - 76673, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_WWG_"                , 0.21470, 913515 - 85885, LUMI, 1, inputFileList_Data.c_str() );
+
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500"  , 366800  , 54479109, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700"  , 29370   , 62271343, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000" , 6524    , 45058463, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500", 1064    , 15064562, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000", 121.5   , 11826702, LUMI, 1, inputFileList_QCDMC.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf" , 25.42   ,  6039005, LUMI, 1, inputFileList_QCDMC.c_str() );
 
   if( RunMode == "CalOnly" )
   {
