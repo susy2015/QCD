@@ -1508,7 +1508,19 @@ int main(int argc, char* argv[])
   std::string inputFileList_QCDMC = argv[2];
   std::string inputFileList_QCDMC_BFilter = argv[3];
   std::string inputFileList_Data = argv[4];
-  
+ 
+  if(RunMode == "TestNonClosureUnc")
+  {
+    double Test_QCD_NonClosureUnc[NSEARCH_BINS] = {0};
+    getNonClosureUnc(Test_QCD_NonClosureUnc);
+    for (int i = 0; i < NSEARCH_BINS ; i++)
+    {
+      std::cout << Test_QCD_NonClosureUnc[i] << " ";
+      if(i==NSEARCH_BINS-1) std::cout << std::endl;
+    }
+    return 0;
+  }
+ 
   std::cout << "The valid run modes are: CalOnly, ExpMCOnly, PredMCOnly, CalTFSideBandOnly, PredDataOnly, BasicCheckQCD, BasicCheckLL, SBCheck" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
   //define my QCDFactors class to stroe counts and Translation factors
