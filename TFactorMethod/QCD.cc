@@ -964,7 +964,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
   }//end of QCD Samples loop
 
   //get non closure unc from root file, need to be correcto in the following loop
-  myQCDFactors.getNonClosureUnc();
+  getNonClosureUnc(myQCDFactors.QCD_NonClosure_relative_err);
   for( int i=0 ; i<NSEARCH_BINS ; i++ )
   {
     // determine the mt2 met id from mt2 met mean value
