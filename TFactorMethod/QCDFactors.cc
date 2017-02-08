@@ -1057,36 +1057,59 @@ double QCDFactors::get_aoverb_Error(
 void QCDFactors::getNonClosureUnc()
 {
   TFile * finPred;
-  TFile * finSysUnc;
+  TFile * finExp;
 
   finPred = TFile::Open("RootForPlotting/PredQCDMC.root");
-  finSysUnc = TFile::Open("RootForPlotting/ExpQCD.root");
+  finExp = TFile::Open("RootForPlotting/ExpQCD.root");
 
   TH1D * h_pred;
-  TH1D * h_sysunc;
+  TH1D * h_exp;
 
   h_pred = (TH1D*)finPred->Get("h_pred_sb")->Clone();
-  h_sysunc = (TH1D*)finSysUnc->Get("h_exp_sb")->Clone();
+  h_exp = (TH1D*)finExp->Get("h_exp_sb")->Clone();
 
   for (int j = 1; j < NSEARCH_BINS+1 ; j++)
   {
     double pred = h_pred->GetBinContent(j);
-    double sysunc = h_sysunc->GetBinContent(j);
+    double exp = h_exp->GetBinContent(j);
     double pred_err = h_pred->GetBinError(j);
-    double sysunc_err = h_sysunc->GetBinError(j);
-    //std::cout << "i: " << i << " pred_err: " << pred_err << " sysunc_err: " << sysunc_err << std::endl;
+    double exp_err = h_exp->GetBinError(j);
+    //std::cout << "i: " << i << " pred_err: " << pred_err << " exp_err: " << exp_err << std::endl;
     double e = 5;
-    if ( (pred > 0) && (sysunc > 0) )
+    if ( (pred > 0) && (exp > 0) )
     {
-      double r = sysunc/pred;
-      e = std::sqrt( sysunc_err*sysunc_err + pred_err*pred_err*r*r ) / pred;
-      QCD_NonClosure_relative_err[j-1] = std::max( std::abs(e) , std::abs((sysunc-pred)/pred) );
-      //std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< sysunc << " Error: " << e << std::endl;
+      double r = exp/pred;
+      e = std::sqrt( exp_err*exp_err + pred_err*pred_err*r*r ) / pred;
+      QCD_NonClosure_relative_err[j-1] = std::max( std::abs(e) , std::abs((exp-pred)/pred) );
+      //std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< exp << " Error: " << e << std::endl;
     }
-    else if( j!=1 && ((pred <= 0) || (sysunc <= 0)) ){ QCD_NonClosure_relative_err[j-1] = QCD_NonClosure_relative_err[j-2]; }
+    else if( j!=1 && ((pred <= 0) || (exp <= 0)) ){ QCD_NonClosure_relative_err[j-1] = QCD_NonClosure_relative_err[j-2]; }
     else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
   }
 
+	/*
+  TH1D *h_pred_met, *h_pred_mt2, *h_pred_ht, *h_pred_ntopjets, *h_pred_nbjets;
+  TH1D *h_exp_met, *h_exp_mt2, *h_exp_ht, *h_exp_ntopjets, *h_exp_nbjets;
+  h_pred_met = (TH1D*)finPred->Get("h_pred_met")->Clone();
+  h_exp_met = (TH1D*)finExp->Get("h_exp_met")->Clone();
+  h_pred_mt2 = (TH1D*)finPred->Get("h_pred_mt2")->Clone();
+  h_exp_mt2 = (TH1D*)finExp->Get("h_exp_mt2")->Clone();
+  h_pred_ht = (TH1D*)finPred->Get("h_pred_ht")->Clone();
+  h_exp_ht = (TH1D*)finExp->Get("h_exp_ht")->Clone();
+  h_pred_ntopjets = (TH1D*)finPred->Get("h_pred_ntopjets")->Clone();
+  h_exp_ntopjets = (TH1D*)finExp->Get("h_exp_ntopjets")->Clone();
+  h_pred_nbjets = (TH1D*)finPred->Get("h_pred_nbjets")->Clone();
+  h_exp_nbjets = (TH1D*)finExp->Get("h_exp_nbjets")->Clone();
+  
+  for (int i = 0; i < NSEARCH_BINS ; i++)
+  {
+    SearchBins::searchBinDef outBinDef; mySearchBins.find_BinBoundaries( i, outBinDef );
+    //double intup_met = -10; outBinDef.met_hi_>0 ? intup_met = (outBinDef.met_hi_ + outBinDef.met_lo_)/2 : LastOption_met = outBinDef.met_lo_+10;
+    double intdn_met = outBinDef.met_lo_;
+    //double intdn_met = -10; outBinDef.MT2_hi_>0 ? LastOption_mt2ht = (outBinDef.MT2_hi_ + outBinDef.MT2_lo_)/2 : LastOption_mt2ht = outBinDef.MT2_lo_+10;
+    QCD_NonClosure_relative_err[i] = 0.2;
+  }
+  */
   return ;
 }
 

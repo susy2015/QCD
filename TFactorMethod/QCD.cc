@@ -263,8 +263,9 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
         std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
         for(auto i=0;i<searchbin_ids.size();i++)
         {
+          if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
           int searchbin_id = searchbin_ids.at(i);
-          if(searchbin_id==38 || searchbin_id==62)
+          if(searchbin_id==38 || searchbin_id==7)
           { 
             std::cout << "Weight: " << thisweight << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << "; SB : " << searchbin_id << std::endl; 
             std::cout << "MET: " << met << "; METPhi : " << tr.getVar<double>("metphi") << "; CaloMET : " << calomet << "; CaloMETPhi : " << tr.getVar<double>("calometphi") << std::endl;
@@ -413,8 +414,9 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
           std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
           for(auto i=0;i<searchbin_ids.size();i++)
           {
+            if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
             int searchbin_id = searchbin_ids.at(i);
-            if(searchbin_id==38 || searchbin_id==62)
+            if(searchbin_id==38 || searchbin_id==7)
             {
               std::cout << "Weight: " << thisweight << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << "; SB : " << searchbin_id << std::endl;
               std::cout << "MET: " << met << "; METPhi : " << tr.getVar<double>("metphi") << "; CaloMET : " << calomet << "; CaloMETPhi : " << tr.getVar<double>("calometphi") << std::endl;
@@ -975,6 +977,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     mt2_id = myQCDBGModel.Set_mt2bin_number( myQCDFactors.MT2_sb_mean[i] );
     //std::cout << met_id << "," << mt2_id << std::endl;
     //reset id if no events in Data CS FIXME
+    SearchBins::searchBinDef outBinDef; mySearchBins.find_BinBoundaries( i, outBinDef );
+    double LastOption_met = -10; outBinDef.met_hi_>0 ? LastOption_met = (outBinDef.met_hi_ + outBinDef.met_lo_)/2 : LastOption_met = outBinDef.met_lo_+10;
+    double LastOption_mt2ht = -10; outBinDef.MT2_hi_>0 ? LastOption_mt2ht = (outBinDef.MT2_hi_ + outBinDef.MT2_lo_)/2 : LastOption_mt2ht = outBinDef.MT2_lo_+10;
     if( met_id < 0 || mt2_id < 0 )
     {
       //reset the met and mt2 id with average value from MC
@@ -982,8 +987,8 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       mt2_id = myQCDBGModel.Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i] );
       //if( head_QCD_meanMET_exp_sb[i] < 100 ) met_id = myQCDBGModel.Set_metbin_number( head_QCD_meanMET_exp_sb[i-1] );
       //if( head_QCD_meanMT2_exp_sb[i] < 100 ) mt2_id = myQCDBGModel.Set_mt2bin_number( head_QCD_meanMT2_exp_sb[i-1] );
-      if( head_QCD_meanMET_exp_sb[i] < 100 ) met_id = myQCDBGModel.Set_metbin_number( myQCDFactors.MET_sb_mean[i-1] );
-      if( head_QCD_meanMT2_exp_sb[i] < 100 ) mt2_id = myQCDBGModel.Set_mt2bin_number( myQCDFactors.MT2_sb_mean[i-1] );
+      if( head_QCD_meanMET_exp_sb[i] < 100 ) met_id = myQCDBGModel.Set_metbin_number( LastOption_met );
+      if( head_QCD_meanMT2_exp_sb[i] < 100 ) mt2_id = myQCDBGModel.Set_mt2bin_number( LastOption_mt2ht );
     }
 
     int met_ext_id = -1, ht_ext_id = -1;
@@ -996,12 +1001,10 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       ht_ext_id = myQCDBGModel.Set_htbin_ext_number( head_QCD_meanHT_exp_sb[i] );
       //if( head_QCD_meanMET_exp_sb[i] < 100 ) met_ext_id = myQCDBGModel.Set_metbin_ext_number( head_QCD_meanMET_exp_sb[i-1] );
       //if( head_QCD_meanHT_exp_sb[i] < 100 ) ht_ext_id = myQCDBGModel.Set_htbin_ext_number( head_QCD_meanHT_exp_sb[i-1] );
-      if( head_QCD_meanMET_exp_sb[i] < 100 ) met_ext_id = myQCDBGModel.Set_metbin_ext_number( myQCDFactors.MET_sb_mean[i-1] );
-      if( head_QCD_meanHT_exp_sb[i] < 100 ) ht_ext_id = myQCDBGModel.Set_htbin_ext_number( myQCDFactors.HT_sb_mean[i-1] );
+      if( head_QCD_meanMET_exp_sb[i] < 100 ) met_ext_id = myQCDBGModel.Set_metbin_ext_number( LastOption_met );
+      if( head_QCD_meanHT_exp_sb[i] < 100 ) ht_ext_id = myQCDBGModel.Set_htbin_ext_number( LastOption_mt2ht );
     }
 
-    //deal with NTop jets correction factors related issue
-    SearchBins::searchBinDef outBinDef; mySearchBins.find_BinBoundaries( i, outBinDef );
     bool ismt2metsb =    (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
                       || (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3)
                       || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2) 
@@ -1020,7 +1023,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       double tmptfsysunc1 = head_ext_QCDTFactor_err[met_ext_id][ht_ext_id]/head_ext_QCDTFactor[met_ext_id][ht_ext_id];
       double tmptfsysunc2 = head_ext_QCDTFactorScaled_err[met_ext_id][ht_ext_id]/head_ext_QCDTFactorScaled[met_ext_id][ht_ext_id];
       myQCDFactors.DC_sb_TFactor_err[i] = std::sqrt( tmptfsysunc1*tmptfsysunc1 + tmptfsysunc2*tmptfsysunc2);
-      if(!(myQCDFactors.DC_sb_TFactor_err[i]<100)) { std::cout << "??? : " << i << std::endl; }
+      if(!(myQCDFactors.DC_sb_TFactor_err[i]<100)) { std::cout << "??? : " << i << " " << tmptfsysunc1 <<" " << tmptfsysunc2 << " " << met_ext_id << " " << ht_ext_id << std::endl; }
     }
     //deal with NTop jets correction factors related issue
     int ntopbinid = outBinDef.top_lo_ - 1;//0,1,2 for ntop =1,2,and >=3
@@ -1255,7 +1258,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
             passBaselineLL 
          //&& pass1mu0elmtwmu
          && (nElectrons==0) && (nMuons == 1) 
-         && (ismt2metsb)
+         && !(ismt2metsb)
          //&& (!passdPhis)
          //&& passdPhis
          )
@@ -1354,6 +1357,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
   for(int i=0;i<NSEARCH_BINS;i++)
   {
     std::cout << nmuCS[i] << " ";
+    if(i==NSEARCH_BINS-1) std::cout << std::endl;
   }
   (myBasicCheckHistgram.oFile)->Write();
   (myBasicCheckHistgram.oFile)->Close();
