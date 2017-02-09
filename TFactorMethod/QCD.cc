@@ -987,7 +987,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
   }//end of QCD Samples loop
 
   //get non closure unc from root file, need to be correcto in the following loop
-  getNonClosureUnc(myQCDFactors.QCD_NonClosure_relative_err);
+  getNonClosureUnc(123,myQCDFactors.QCD_NonClosure_relative_err);
   for( int i=0 ; i<NSEARCH_BINS ; i++ )
   {
     // determine the mt2 met id from mt2 met mean value
@@ -1535,12 +1535,38 @@ int main(int argc, char* argv[])
   if(RunMode == "TestNonClosureUnc")
   {
     double Test_QCD_NonClosureUnc[NSEARCH_BINS] = {0};
-    getNonClosureUnc(Test_QCD_NonClosureUnc);
+    getNonClosureUnc(1,Test_QCD_NonClosureUnc);
+    std::cout << "Method 1 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)
     {
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
     }
+
+    getNonClosureUnc(2,Test_QCD_NonClosureUnc);
+    std::cout << "Method 2 : " << std::endl;
+    for (int i = 0; i < NSEARCH_BINS ; i++)
+    {
+      std::cout << Test_QCD_NonClosureUnc[i] << " ";
+      if(i==NSEARCH_BINS-1) std::cout << std::endl;
+    }
+
+    getNonClosureUnc(3,Test_QCD_NonClosureUnc);
+    std::cout << "Method 3 : " << std::endl;
+    for (int i = 0; i < NSEARCH_BINS ; i++)
+    {
+      std::cout << Test_QCD_NonClosureUnc[i] << " ";
+      if(i==NSEARCH_BINS-1) std::cout << std::endl;
+    }
+
+    getNonClosureUnc(13,Test_QCD_NonClosureUnc);
+    std::cout << "Method 13 : " << std::endl;
+    for (int i = 0; i < NSEARCH_BINS ; i++)
+    {
+      std::cout << Test_QCD_NonClosureUnc[i] << " ";
+      if(i==NSEARCH_BINS-1) std::cout << std::endl;
+    }
+
     return 0;
   }
  

@@ -86,38 +86,57 @@ double OneBinNonClosureUnc(double pred, double exp, double pred_err, double exp_
   return -5;
 }
 //Important function to get non closure uncertainty
-void getNonClosureUnc(double (&QCD_NonClosure_relative_err)[NSEARCH_BINS])
+void getNonClosureUnc(int mbit, double (&QCD_NonClosure_relative_err)[NSEARCH_BINS])
 {
+  //Loading related root file input
   TFile * finPred; finPred = TFile::Open("RootForPlotting/PredQCDMC.root");
   TFile * finExp; finExp = TFile::Open("RootForPlotting/ExpQCD.root");
-  
-  /*
-  TH1D * h_pred;
-  TH1D * h_exp;
+  TFile * finAUXPred; finAUXPred = TFile::Open("RootForPlotting/ClosureUncAUXPredQCDMC.root");
+  TFile * finAUXExp; finAUXExp = TFile::Open("RootForPlotting/ClosureUncAUXExpQCD.root");
 
-  h_pred = (TH1D*)finPred->Get("h_pred_sb")->Clone();
-  h_exp = (TH1D*)finExp->Get("h_exp_sb")->Clone();
+  //Method 1 - - - derived directly from sb closure plot, the bin without enough MC will be set to be -1
+  double nc_unc_m1[NSEARCH_BINS] = {0};
+  TH1D * h_pred_sb; TH1D * h_exp_sb;
+  h_pred_sb = (TH1D*)finPred->Get("h_pred_sb")->Clone(); h_exp_sb = (TH1D*)finExp->Get("h_exp_sb")->Clone();
+  TH1D * h_nMC_pred_sb; TH1D * h_nMC_exp_sb;
+  h_nMC_pred_sb = (TH1D*)finAUXPred->Get("h_nMC_pred_sb")->Clone(); h_nMC_exp_sb = (TH1D*)finAUXExp->Get("h_nMC_exp_sb")->Clone();
 
   for (int j = 1; j < NSEARCH_BINS+1 ; j++)
   {
-    double pred = h_pred->GetBinContent(j);
-    double exp = h_exp->GetBinContent(j);
-    double pred_err = h_pred->GetBinError(j);
-    double exp_err = h_exp->GetBinError(j);
+    double pred = h_pred_sb->GetBinContent(j);
+    double exp = h_exp_sb->GetBinContent(j);
+    double pred_err = h_pred_sb->GetBinError(j);
+    double exp_err = h_exp_sb->GetBinError(j);
+
+    double pred_nMC= h_nMC_pred_sb->GetBinContent(j);
+    double exp_nMC = h_nMC_exp_sb->GetBinContent(j);
+   
     //std::cout << "i: " << i << " pred_err: " << pred_err << " exp_err: " << exp_err << std::endl;
-    double e = 5;
-    if ( (pred > 0) && (exp > 0) )
+    if ( (pred_nMC >= 3) && (exp_nMC >= 3) )
     {
       double r = exp/pred;
-      e = std::sqrt( exp_err*exp_err + pred_err*pred_err*r*r ) / pred;
-      QCD_NonClosure_relative_err[j-1] = std::max( std::abs(e) , std::abs((exp-pred)/pred) );
+      double e = std::sqrt( exp_err*exp_err + pred_err*pred_err*r*r ) / pred;
+      nc_unc_m1[j-1] = std::max( std::abs(e) , std::abs((exp-pred)/pred) );
       //std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< exp << " Error: " << e << std::endl;
     }
-    else if( j!=1 && ((pred <= 0) || (exp <= 0)) ){ QCD_NonClosure_relative_err[j-1] = QCD_NonClosure_relative_err[j-2]; }
-    else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
+    //else if( j!=1 && ((pred <= 0) || (exp <= 0)) ){ nc_unc_m1[j-1] = nc_unc_m1[j-2]; }
+    //else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
+    else { nc_unc_m1[j-1] = -1; }
   }
-  return ;
-  */
+  //End of Method 1
+
+  //Method 2 - - - derived from 2d MET,MT2 or MET,HT, then combine nbot, ntop, the bin without enough MC will be set to be -1
+  double nc_unc_m2[NSEARCH_BINS] = {0};
+  for(int i = 0; i < NSEARCH_BINS; i++)
+  {
+
+  }
+  //End of Method 2
+
+  //Method 3 - - - derived from 4d closure plots and then combine
+  double nc_unc_m3[NSEARCH_BINS]={0};
+  double nc_unc_m3_fix[NSEARCH_BINS]={0};
+  double nc_unc_met_m3[NSEARCH_BINS]={0}, nc_unc_mt2_m3[NSEARCH_BINS]={0}, nc_unc_ht_m3[NSEARCH_BINS]={0}, nc_unc_ntop_m3[NSEARCH_BINS]={0}, nc_unc_nbot_m3[NSEARCH_BINS]={0};
 
   TH1D *h_pred_met, *h_pred_mt2, *h_pred_ht, *h_pred_ntopjets, *h_pred_nbjets;
   TH1D *h_exp_met, *h_exp_mt2, *h_exp_ht, *h_exp_ntopjets, *h_exp_nbjets;
@@ -151,8 +170,6 @@ void getNonClosureUnc(double (&QCD_NonClosure_relative_err)[NSEARCH_BINS])
     double intdn_nbot = outBinDef.bJet_lo_;
 
     //search bin uncertainty variables
-    double nc_unc_met = -0.2, nc_unc_mt2 = -0.3, nc_unc_ht = -0.1, nc_unc_ntop = -0.1, nc_unc_nbot = -0.1;
-
     double int_pred_met = IntegrateTH1D(intdn_met, intup_met, h_pred_met);
     double int_exp_met  = IntegrateTH1D(intdn_met, intup_met, h_exp_met);
     double err_pred_met = ErrorTH1D(intdn_met, intup_met, h_pred_met);
@@ -176,13 +193,13 @@ void getNonClosureUnc(double (&QCD_NonClosure_relative_err)[NSEARCH_BINS])
     double err_pred_ntop = ErrorTH1D(intdn_ntop, intup_ntop, h_pred_ntopjets);
     double err_exp_ntop  = ErrorTH1D(intdn_ntop, intup_ntop, h_exp_ntopjets);
 
-    nc_unc_met = OneBinNonClosureUnc(int_pred_met, int_exp_met, err_pred_met, err_exp_met);
+    nc_unc_met_m3[i] = OneBinNonClosureUnc(int_pred_met, int_exp_met, err_pred_met, err_exp_met);
 
-    nc_unc_mt2 = OneBinNonClosureUnc(int_pred_mt2, int_exp_mt2, err_pred_mt2, err_exp_mt2);
-    nc_unc_ht = OneBinNonClosureUnc(int_pred_ht, int_exp_ht, err_pred_ht, err_exp_ht);
+    nc_unc_mt2_m3[i] = OneBinNonClosureUnc(int_pred_mt2, int_exp_mt2, err_pred_mt2, err_exp_mt2);
+    nc_unc_ht_m3[i] = OneBinNonClosureUnc(int_pred_ht, int_exp_ht, err_pred_ht, err_exp_ht);
 
-    nc_unc_ntop = OneBinNonClosureUnc(int_pred_ntop, int_exp_ntop, err_pred_ntop, err_exp_ntop);
-    nc_unc_nbot = OneBinNonClosureUnc(int_pred_nbot, int_exp_nbot, err_pred_nbot, err_exp_nbot);
+    nc_unc_ntop_m3[i] = OneBinNonClosureUnc(int_pred_ntop, int_exp_ntop, err_pred_ntop, err_exp_ntop);
+    nc_unc_nbot_m3[i] = OneBinNonClosureUnc(int_pred_nbot, int_exp_nbot, err_pred_nbot, err_exp_nbot);
 
     bool ismt2sb = false, ishtsb = false;
     ismt2sb = (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
@@ -192,28 +209,110 @@ void getNonClosureUnc(double (&QCD_NonClosure_relative_err)[NSEARCH_BINS])
     ishtsb = outBinDef.top_lo_==3 || outBinDef.bJet_lo_==3;
     if( (ismt2sb && ishtsb) || (!ismt2sb && !ishtsb) ){ std::cout << "error sb : " << i << std::endl; }
 
-    if     (ismt2sb && !ishtsb) QCD_NonClosure_relative_err[i] = std::sqrt(nc_unc_met*nc_unc_met+nc_unc_mt2*nc_unc_mt2+nc_unc_ntop*nc_unc_ntop+nc_unc_nbot*nc_unc_nbot);
-    else if(!ismt2sb && ishtsb) QCD_NonClosure_relative_err[i] = std::sqrt(nc_unc_met*nc_unc_met+nc_unc_ht*nc_unc_ht+nc_unc_ntop*nc_unc_ntop+nc_unc_nbot*nc_unc_nbot);
+    if     (ismt2sb && !ishtsb) nc_unc_m3[i] = std::sqrt(nc_unc_met_m3[i]*nc_unc_met_m3[i]+nc_unc_mt2_m3[i]*nc_unc_mt2_m3[i]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
+    else if(!ismt2sb && ishtsb) nc_unc_m3[i] = std::sqrt(nc_unc_met_m3[i]*nc_unc_met_m3[i]+nc_unc_ht_m3[i]*nc_unc_ht_m3[i]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
 
     if(ismt2sb && !ishtsb)
     { 
-      if(!(nc_unc_met>0 && nc_unc_mt2>0 && nc_unc_ntop>0 && nc_unc_nbot>0))
+      if(!(nc_unc_met_m3[i]>0 && nc_unc_mt2_m3[i]>0 && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
       { 
-        QCD_NonClosure_relative_err[i]=QCD_NonClosure_relative_err[i-1];
-        //QCD_NonClosure_relative_err[i]=-1; 
+        //nc_unc_m3[i]=nc_unc_m3[i-1];
+        nc_unc_m3[i]=-1; 
         //std::cout<<"??"<<std::endl; 
       } 
     }
     else if(!ismt2sb && ishtsb)
     { 
-      if(!(nc_unc_met>0 && nc_unc_ht>0  && nc_unc_ntop>0 && nc_unc_nbot>0))
+      if(!(nc_unc_met_m3[i]>0 && nc_unc_ht_m3[i]>0  && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
       { 
-        QCD_NonClosure_relative_err[i]=QCD_NonClosure_relative_err[i-1];
-        //QCD_NonClosure_relative_err[i]=-1; 
+        //nc_unc_m3[i]=nc_unc_m3[i-1];
+        nc_unc_m3[i]=-1; 
         //std::cout<<"??"<<std::endl; 
       } 
     }
   }
+  //Fix Method 3 on negative value
+  for(int i = 0; i < NSEARCH_BINS; i++)
+  {
+    SearchBins::searchBinDef outBinDef; mySearchBins.find_BinBoundaries( i, outBinDef );
+    bool ismt2sb = false, ishtsb = false;
+    ismt2sb = (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
+           || (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3)
+           || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
+           || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3);
+    ishtsb = outBinDef.top_lo_==3 || outBinDef.bJet_lo_==3;
+    if(nc_unc_m3[i]>0){ nc_unc_m3_fix[i] = nc_unc_m3[i]; }
+    else
+    {
+      if(ismt2sb && !ishtsb)
+      {
+        if(!(nc_unc_met_m3[i]>0 && nc_unc_mt2_m3[i-1]>0 && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
+        {
+          nc_unc_m3_fix[i] = std::sqrt(nc_unc_met_m3[i]*nc_unc_met_m3[i]+nc_unc_mt2_m3[i-1]*nc_unc_mt2_m3[i-1]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
+        }
+        else nc_unc_m3_fix[i] = -1;
+      }
+      else
+      {
+        if(!(nc_unc_met_m3[i]>0 && nc_unc_ht_m3[i+1]>0  && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
+        {
+          nc_unc_m3_fix[i] = std::sqrt(nc_unc_met_m3[i]*nc_unc_met_m3[i]+nc_unc_ht_m3[i+1]*nc_unc_ht_m3[i+1]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
+        }
+        else nc_unc_m3_fix[i] = -1;
+      }
+    }
+  }
+  //End of Method 3
+
+  if (mbit==1)
+  {
+    for(int i = 0; i < NSEARCH_BINS; i++)
+    {
+      QCD_NonClosure_relative_err[i] = nc_unc_m1[i];
+    }
+    return ;
+  }
+  else if(mbit==2)
+  {
+    for(int i = 0; i < NSEARCH_BINS; i++)
+    {
+      QCD_NonClosure_relative_err[i] = nc_unc_m2[i]; 
+    }
+    return ;
+  }
+  else if(mbit==3)
+  {
+    for(int i = 0; i < NSEARCH_BINS; i++)
+    {
+      QCD_NonClosure_relative_err[i] = nc_unc_m3[i];    
+    }
+    return ;
+  }
+  else if(mbit==13)
+  {
+    for(int i = 0; i < NSEARCH_BINS; i++)
+    {
+      if( nc_unc_m1[i] > 0 ){ QCD_NonClosure_relative_err[i] = nc_unc_m1[i]; }
+      else
+      {
+        if( nc_unc_m3[i] > 0 ){ QCD_NonClosure_relative_err[i] = nc_unc_m3[i]; }
+        else { QCD_NonClosure_relative_err[i] = nc_unc_m3_fix[i]; }
+      }   
+    }
+    return ;
+  }
+  else if(mbit==123)
+  {
+    for(int i = 0; i < NSEARCH_BINS; i++)
+    {
+    
+    }
+  }
+  else
+  {
+    std::cout << "Ilegal method bit! the good method bits are : 1 for Method 1, 2 for Method 2, 3 for Method 3, While current method bit is : " << mbit << std::endl;
+  }
+
   return ;
 }
 
