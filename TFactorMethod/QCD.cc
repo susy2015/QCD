@@ -186,6 +186,8 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
 {
   ClosureHistgram myClosureHistgram;
   myClosureHistgram.BookHistgram( (dir_out + "ExpQCD.root").c_str() );
+  ClosureUncAUX myClosureUncAUX;
+  myClosureUncAUX.BookHistgram( (dir_out + "ClosureUncAUXExpQCD.root").c_str() );
 
   //clock to monitor the run time
   size_t t0 = clock();
@@ -257,7 +259,12 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
         (myClosureHistgram.h_exp_mht)->Fill(mht,thisweight*metEff);
         (myClosureHistgram.h_exp_ntopjets)->Fill(ntopjets,thisweight*metEff);
         (myClosureHistgram.h_exp_nbjets)->Fill(nbotjets,thisweight*metEff);
-          
+
+        (myClosureUncAUX.h_nMC_exp_x_met_y_mt2)->Fill(met,mt2,1);
+        (myClosureUncAUX.h_nMC_exp_x_met_y_ht)->Fill(met,ht,1);
+        (myClosureUncAUX.h_exp_x_met_y_mt2)->Fill(met,mt2,thisweight*metEff);
+        (myClosureUncAUX.h_exp_x_met_y_ht)->Fill(met,ht,thisweight*metEff);
+    
         //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
         //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
         std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
@@ -275,6 +282,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
             myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
             myQCDFactors.nQCD_exp_sb[searchbin_id] += (thisweight*metEff);
             myQCDFactors.nQCD_exp_sb_err[searchbin_id] += (thisweight*metEff)*(thisweight*metEff);
+            (myClosureUncAUX.h_nMC_exp_sb)->Fill(searchbin_id,1);
           }
         }
       }  
@@ -287,8 +295,11 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
   }
 
   myClosureHistgram.printQCDClosureExp(myQCDFactors.nQCD_exp_sb, myQCDFactors.nQCD_exp_sb_err);
+
   (myClosureHistgram.oFile)->Write();
   (myClosureHistgram.oFile)->Close();
+  (myClosureUncAUX.oFile)->Write();
+  (myClosureUncAUX.oFile)->Close();
 
   return ;
 }
@@ -325,6 +336,8 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
 
   ClosureHistgram myClosureHistgram;
   myClosureHistgram.BookHistgram( (dir_out + "PredQCDMC.root").c_str() );
+  ClosureUncAUX myClosureUncAUX;
+  myClosureUncAUX.BookHistgram( (dir_out + "ClosureUncAUXPredQCDMC.root").c_str() );
 
   //clock to monitor the run time
   size_t t0 = clock();
@@ -408,6 +421,11 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
           (myClosureHistgram.h_pred_ntopjets)->Fill(ntopjets,predweight);
           (myClosureHistgram.h_pred_nbjets)->Fill(nbotjets,predweight);
 
+          (myClosureUncAUX.h_nMC_pred_x_met_y_mt2)->Fill(met,mt2,1);
+          (myClosureUncAUX.h_nMC_pred_x_met_y_ht)->Fill(met,ht,1);
+          (myClosureUncAUX.h_pred_x_met_y_mt2)->Fill(met,mt2,predweight);
+          (myClosureUncAUX.h_pred_x_met_y_ht)->Fill(met,ht,predweight);
+
           //if( ht < 500) std::cout << ht << " small ht, what the fuck!!" << std::endl;
           //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
           //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
@@ -425,6 +443,7 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
             {
               myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
               myQCDFactors.nQCD_pred_sb_err[searchbin_id] += (predweight * predweight);
+              (myClosureUncAUX.h_nMC_pred_sb)->Fill(searchbin_id,1);
             }
           }
         }
@@ -438,8 +457,12 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
   }
 
   myClosureHistgram.printQCDClosurePred(myQCDFactors.nQCD_pred_sb, myQCDFactors.nQCD_pred_sb_err);
+
   (myClosureHistgram.oFile)->Write();
   (myClosureHistgram.oFile)->Close();
+  (myClosureUncAUX.oFile)->Write();
+  (myClosureUncAUX.oFile)->Close();
+
   return ;
 }
 

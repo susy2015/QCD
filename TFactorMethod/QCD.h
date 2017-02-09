@@ -27,6 +27,7 @@
 #include "QCDBinFunction.h"
 #include "CalHistgram.h"
 #include "ClosureHistgram.h"
+#include "ClosureUncAUX.h"
 #include "BasicCheckHistgram.h"
 #include "SBCheckHistgram.h"
 #include "TriggerEff.h"
