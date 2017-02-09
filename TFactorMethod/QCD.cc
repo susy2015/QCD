@@ -1281,7 +1281,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
             passBaselineLL 
          //&& pass1mu0elmtwmu
          && (nElectrons==0) && (nMuons == 1) 
-         && !(ismt2metsb)
+         && (ismt2metsb)
          //&& (!passdPhis)
          //&& passdPhis
          )
@@ -1534,13 +1534,15 @@ int main(int argc, char* argv[])
  
   if(RunMode == "TestNonClosureUnc")
   {
-    double Test_QCD_NonClosureUnc[NSEARCH_BINS] = {0};
+    double Test_QCD_NonClosureUnc[NSEARCH_BINS] = {-1};
+
     getNonClosureUnc(1,Test_QCD_NonClosureUnc);
     std::cout << "Method 1 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)
     {
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
+      Test_QCD_NonClosureUnc[i] = -1;
     }
 
     getNonClosureUnc(2,Test_QCD_NonClosureUnc);
@@ -1549,6 +1551,7 @@ int main(int argc, char* argv[])
     {
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
+      Test_QCD_NonClosureUnc[i] = -1;
     }
 
     getNonClosureUnc(3,Test_QCD_NonClosureUnc);
@@ -1557,6 +1560,7 @@ int main(int argc, char* argv[])
     {
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
+      Test_QCD_NonClosureUnc[i] = -1;
     }
 
     getNonClosureUnc(13,Test_QCD_NonClosureUnc);
@@ -1565,8 +1569,26 @@ int main(int argc, char* argv[])
     {
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
+      Test_QCD_NonClosureUnc[i] = -1;
     }
 
+    getNonClosureUnc(12,Test_QCD_NonClosureUnc);
+    std::cout << "Method 12 : " << std::endl;
+    for (int i = 0; i < NSEARCH_BINS ; i++)
+    {
+      std::cout << Test_QCD_NonClosureUnc[i] << " ";
+      if(i==NSEARCH_BINS-1) std::cout << std::endl;
+      Test_QCD_NonClosureUnc[i] = -1;
+    }
+
+    getNonClosureUnc(123,Test_QCD_NonClosureUnc);
+    std::cout << "Method 123 : " << std::endl;
+    for (int i = 0; i < NSEARCH_BINS ; i++)
+    {
+      std::cout << Test_QCD_NonClosureUnc[i] << " ";
+      if(i==NSEARCH_BINS-1) std::cout << std::endl;
+      Test_QCD_NonClosureUnc[i] = -1;
+    }
     return 0;
   }
  
