@@ -55,7 +55,8 @@ class SysUncs
   void GetNonClosureSysUnc();
   void combineSysUncs();
   void printSysUncs();
-  
+  void printPurity(); 
+
   void printLatexTable();
   void printFinalPred();
 };
@@ -122,6 +123,30 @@ void SysUncs::printSysUncs()
   return ;
 }
 
+void SysUncs::printPurity()
+{
+  TCanvas *c = new TCanvas("c","",50,50,800,600);
+  gStyle->SetOptStat(0);
+
+  TH1D *h_purity_sb = new TH1D("h_purity_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+
+  for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
+  {
+    //if(head_QCD_Data_CS[i_cal]<=0 ){ std::cout << i_cal << " " << head_QCD_Data_CS[i_cal] << " " << head_QCD_otherBG_CS[i_cal] << std::endl; }
+    //if(head_QCD_otherBG_CS[i_cal]/head_QCD_Data_CS[i_cal]>1 && head_QCD_Data_CS[i_cal]>0 ){ std::cout << i_cal << " " << head_QCD_Data_CS[i_cal] << " " << head_QCD_otherBG_CS[i_cal] << std::endl; }
+    (head_QCD_Data_CS[i_cal] > 0 && head_QCD_otherBG_CS[i_cal]/head_QCD_Data_CS[i_cal]<=1) ? h_purity_sb->SetBinContent( i_cal+1 , 1-head_QCD_otherBG_CS[i_cal]/head_QCD_Data_CS[i_cal] ) : h_purity_sb->SetBinContent( i_cal+1 , 0 ) ;
+  }
+  h_purity_sb->Draw();
+
+  //mySearchBins.drawSBregionDef(0.0,100.0,false);
+  CMSStylePlot::CMS_lumi( c, 4, 0 );
+
+  c->SaveAs( "_sb_Purity.png" );
+  c->SaveAs( "_sb_Purity.pdf" );
+  c->SaveAs( "_sb_Purity.C" );
+  return ;
+}
+
 void SysUncs::printLatexTable()
 {
   std::vector<std::vector<std::vector<double> > > out_MT2_met_Binning;
@@ -151,14 +176,11 @@ void SysUncs::printLatexTable()
 void SysUncs::printFinalPred()
 {
   TCanvas *c = new TCanvas("c","",50,50,800,600);
-
   gStyle->SetOptStat(0);
 
   TH1D *h_pred_sb_data = new TH1D("h_pred_sb_data","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
-  TH1D *h_purity_sb = new TH1D("h_purity_sb","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
 
   //h->SetBinErrorOption(TH1::kPoisson);
-
   /*
   h_pred_sb_data->SetMarkerStyle(20);
   h_pred_sb_data->SetMarkerColor(kBlue);
@@ -184,11 +206,7 @@ void SysUncs::printFinalPred()
   for( int i_cal = 0 ; i_cal < NSEARCH_BINS ; i_cal++ )
   {
     final_pred[i_cal] > 0 ? h_pred_sb_data->SetBinContent( i_cal+1 , final_pred[i_cal] ) : h_pred_sb_data->SetBinContent( i_cal+1 , 0 ) ;
-    //if(head_QCD_Data_CS[i_cal]<=0 ){ std::cout << i_cal << " " << head_QCD_Data_CS[i_cal] << " " << head_QCD_otherBG_CS[i_cal] << std::endl; }
-    //if(head_QCD_otherBG_CS[i_cal]/head_QCD_Data_CS[i_cal]>1 && head_QCD_Data_CS[i_cal]>0 ){ std::cout << i_cal << " " << head_QCD_Data_CS[i_cal] << " " << head_QCD_otherBG_CS[i_cal] << std::endl; }
-    //(head_QCD_Data_CS[i_cal] > 0 && head_QCD_otherBG_CS[i_cal]/head_QCD_Data_CS[i_cal]<=1) ? h_purity_sb->SetBinContent( i_cal+1 , 1-head_QCD_otherBG_CS[i_cal]/head_QCD_Data_CS[i_cal] ) : h_purity_sb->SetBinContent( i_cal+1 , 0 ) ;
   }
-  //h_purity_sb->Draw();
   
   TGraphAsymmErrors * g = new TGraphAsymmErrors(h_pred_sb_data);
   g->SetMarkerSize(0.5);

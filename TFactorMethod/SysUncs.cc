@@ -26,8 +26,11 @@ int main()
   mySysUncs.combineSysUncs();
   mySysUncs.printSysUncs();
   
+  mySysUncs.printPurity();
+  
   mySysUncs.printLatexTable();
   mySysUncs.printFinalPred();
+
   return 0;
 }
 
