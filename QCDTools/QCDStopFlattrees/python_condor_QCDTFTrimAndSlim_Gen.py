@@ -24,9 +24,9 @@ def PrintTransferFileLine(directory, sampletype, isfirst, islast):
     print ""
 
 def PrintCondorLogLine(runtype):
-  print ("Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_" + runtype + "_$(Process).stdout")
-  print ("Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_" + runtype + "_$(Process).stderr")
-  print ("Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_" + runtype + "_$(Process).log")
+  print ("Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/QCDTFTrimAndSlim_" + runtype + "_$(Process).stdout")
+  print ("Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/QCDTFTrimAndSlim_" + runtype + "_$(Process).stderr")
+  print ("Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/QCDTFTrimAndSlim_" + runtype + "_$(Process).log")
   print ("notify_user = hua.wei@cern.ch")
   print ""
 

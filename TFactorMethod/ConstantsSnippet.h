@@ -58,8 +58,8 @@ const double zinv_RNorm = 0.963;//v11 MC Data, 36.4 fb-1
 //const double singlemuCS_invdphi = 0.790159;
 
 //ntop and nbot 1,2, v12
-const double singlemuCS_lowmet[MT2_BINS] = {0.706821,0.572684};
-const double singlemuCS_invdphi = 0.681629;
+const double singlemuCS_lowmet[MT2_BINS] = {0.711128,0.572684};
+const double singlemuCS_invdphi = 0.68748;
 
 //ntop or nbot >= 3, v11
 //const double singlemuCS_ext_lowmet[MT2_BINS] = {0.686758,0.340552};
@@ -67,7 +67,7 @@ const double singlemuCS_invdphi = 0.681629;
 //const double singlemuCS_ext_invdphi = 0.776688;
 
 //ntop or nbot >= 3, v12
-const double singlemuCS_ext_lowmet[MT2_BINS] = {0.667259,1.0278};
+const double singlemuCS_ext_lowmet[MT2_BINS] = {0.673138,1.0278};
 const double singlemuCS_ext_invdphi = 0.707942;
 
 #define BCBin 5

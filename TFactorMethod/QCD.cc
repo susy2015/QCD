@@ -1279,9 +1279,8 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       double metEff = 1;
       if ( 
             passBaselineLL 
-         //&& pass1mu0elmtwmu
          && (nElectrons==0) && (nMuons == 1) 
-         && (ismt2metsb)
+         && !(ismt2metsb)
          //&& (!passdPhis)
          //&& passdPhis
          )
@@ -1535,11 +1534,26 @@ int main(int argc, char* argv[])
   if(RunMode == "TestNonClosureUnc")
   {
     double Test_QCD_NonClosureUnc[NSEARCH_BINS] = {-1};
+    TCanvas *c = new TCanvas("c","",50,50,1800,600);
+    gStyle->SetOptStat(0);
+
+    TH1D *ncu_m1 = new TH1D("ncu_m1","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+    TH1D *ncu_m2 = new TH1D("ncu_m2","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+    TH1D *ncu_m3 = new TH1D("ncu_m3","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+    TH1D *ncu_m12 = new TH1D("ncu_m12","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+    TH1D *ncu_m13 = new TH1D("ncu_m13","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+    TH1D *ncu_m123 = new TH1D("ncu_m123","",NSEARCH_BINS+1,0,NSEARCH_BINS+1);
+    ncu_m1->SetLineColor(1); ncu_m2->SetLineColor(2); ncu_m3->SetLineColor(3); ncu_m12->SetLineColor(4); ncu_m13->SetLineColor(6); ncu_m123->SetLineColor(7);
+    //ncu_m1->SetLineWidth(5); ncu_m2->SetLineWidth(5); ncu_m3->SetLineWidth(5); ncu_m12->SetLineWidth(5); ncu_m13->SetLineWidth(5); ncu_m123->SetLineWidth(5);
+    ncu_m1->SetMarkerColor(1); ncu_m2->SetMarkerColor(2); ncu_m3->SetMarkerColor(3); ncu_m12->SetMarkerColor(4); ncu_m13->SetMarkerColor(6); ncu_m123->SetMarkerColor(7);
+    ncu_m1->SetMarkerStyle(20); ncu_m2->SetMarkerStyle(21); ncu_m3->SetMarkerStyle(22); ncu_m12->SetMarkerStyle(23); ncu_m13->SetMarkerStyle(24); ncu_m123->SetMarkerStyle(25);
 
     getNonClosureUnc(1,Test_QCD_NonClosureUnc);
     std::cout << "Method 1 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)
     {
+      Test_QCD_NonClosureUnc[i] > 0 ? ncu_m1->SetBinContent(i+1,Test_QCD_NonClosureUnc[i]) : ncu_m1->SetBinContent(i+1,0);
+      ncu_m1->SetBinError(i+1,0.001);
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
       Test_QCD_NonClosureUnc[i] = -1;
@@ -1549,6 +1563,8 @@ int main(int argc, char* argv[])
     std::cout << "Method 2 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)
     {
+      Test_QCD_NonClosureUnc[i] > 0 ? ncu_m2->SetBinContent(i+1,Test_QCD_NonClosureUnc[i]) : ncu_m2->SetBinContent(i+1,0);
+      ncu_m2->SetBinError(i+1,0.001);
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
       Test_QCD_NonClosureUnc[i] = -1;
@@ -1558,15 +1574,8 @@ int main(int argc, char* argv[])
     std::cout << "Method 3 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)
     {
-      std::cout << Test_QCD_NonClosureUnc[i] << " ";
-      if(i==NSEARCH_BINS-1) std::cout << std::endl;
-      Test_QCD_NonClosureUnc[i] = -1;
-    }
-
-    getNonClosureUnc(13,Test_QCD_NonClosureUnc);
-    std::cout << "Method 13 : " << std::endl;
-    for (int i = 0; i < NSEARCH_BINS ; i++)
-    {
+      Test_QCD_NonClosureUnc[i] > 0 ? ncu_m3->SetBinContent(i+1,Test_QCD_NonClosureUnc[i]) : ncu_m3->SetBinContent(i+1,0);
+      ncu_m3->SetBinError(i+1,0.001);
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
       Test_QCD_NonClosureUnc[i] = -1;
@@ -1576,6 +1585,19 @@ int main(int argc, char* argv[])
     std::cout << "Method 12 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)
     {
+      Test_QCD_NonClosureUnc[i] > 0 ? ncu_m12->SetBinContent(i+1,Test_QCD_NonClosureUnc[i]) : ncu_m12->SetBinContent(i+1,0);
+      ncu_m12->SetBinError(i+1,0.001);
+      std::cout << Test_QCD_NonClosureUnc[i] << " ";
+      if(i==NSEARCH_BINS-1) std::cout << std::endl;
+      Test_QCD_NonClosureUnc[i] = -1;
+    }
+
+    getNonClosureUnc(13,Test_QCD_NonClosureUnc);
+    std::cout << "Method 13 : " << std::endl;
+    for (int i = 0; i < NSEARCH_BINS ; i++)
+    {
+      Test_QCD_NonClosureUnc[i] > 0 ? ncu_m13->SetBinContent(i+1,Test_QCD_NonClosureUnc[i]) : ncu_m13->SetBinContent(i+1,0);
+      ncu_m13->SetBinError(i+1,0.001);
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
       Test_QCD_NonClosureUnc[i] = -1;
@@ -1585,10 +1607,30 @@ int main(int argc, char* argv[])
     std::cout << "Method 123 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)
     {
+      Test_QCD_NonClosureUnc[i] > 0 ? ncu_m123->SetBinContent(i+1,Test_QCD_NonClosureUnc[i]) : ncu_m123->SetBinContent(i+1,0);
+      ncu_m123->SetBinError(i+1,0.001);
       std::cout << Test_QCD_NonClosureUnc[i] << " ";
       if(i==NSEARCH_BINS-1) std::cout << std::endl;
       Test_QCD_NonClosureUnc[i] = -1;
     }
+    
+    ncu_m123->Draw("E2");
+    ncu_m1->Draw("E2 same"); ncu_m2->Draw("E2 same"); ncu_m3->Draw("E2 same"); ncu_m12->Draw("E2 same"); ncu_m13->Draw("E2 same"); ncu_m123->Draw("E2 same");
+
+    TLegend* leg = new TLegend(0.80,0.75,0.90,0.90);
+    leg->SetBorderSize(1);
+    leg->SetLineColor(1);
+    leg->SetLineWidth(2);
+    leg->SetFillColor(0);
+    leg->SetTextFont(42);
+    leg->SetTextSize(0.03);
+    leg->AddEntry(ncu_m1,"Method 1"); leg->AddEntry(ncu_m2,"Method 2"); leg->AddEntry(ncu_m3,"Method 3"); leg->AddEntry(ncu_m12,"Method 12"); leg->AddEntry(ncu_m13,"Method 13"); leg->AddEntry(ncu_m123,"Method 123");
+    leg->Draw("same");
+
+    c->SaveAs( "_sb_ncu_all.png" );
+    c->SaveAs( "_sb_ncu_all.pdf" );
+    c->SaveAs( "_sb_ncu_all.C" );
+
     return 0;
   }
  

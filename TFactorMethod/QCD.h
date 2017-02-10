@@ -363,17 +363,38 @@ void getNonClosureUnc(int mbit, double (&QCD_NonClosure_relative_err)[NSEARCH_BI
     {
       if(ismt2sb && !ishtsb)
       {
-        if(!(nc_unc_met_m3[i]>0 && nc_unc_mt2_m3[i-1]>0 && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
+        if(!(nc_unc_met_m3[i]>0 && nc_unc_mt2_m3[i]>0 && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
         {
-          nc_unc_m3_fix[i] = std::sqrt(nc_unc_met_m3[i]*nc_unc_met_m3[i]+nc_unc_mt2_m3[i-1]*nc_unc_mt2_m3[i-1]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
+          //std::cout << i << " " << nc_unc_mt2_m3[i] << std::endl;
+          //std::cout << i << " " << nc_unc_met_m3[i] << std::endl;
+          double tmp_nc_unc_met_m3 = nc_unc_met_m3[i]; //FIXME
+          for(int j=i-1;j>=0;j--)
+          {
+            if(nc_unc_met_m3[j]>0){tmp_nc_unc_met_m3 = nc_unc_met_m3[j]; break;}
+            else continue; 
+          }
+          if(tmp_nc_unc_met_m3<0){ std::cout << i << " " << nc_unc_met_m3[i] << std::endl; }
+          if(!(tmp_nc_unc_met_m3>0 && nc_unc_mt2_m3[i]>0 && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0)){ std::cout << i << " " << nc_unc_mt2_m3[i] << std::endl; }
+
+          nc_unc_m3_fix[i] = std::sqrt(tmp_nc_unc_met_m3*tmp_nc_unc_met_m3+nc_unc_mt2_m3[i]*nc_unc_mt2_m3[i]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
         }
         else nc_unc_m3_fix[i] = -1;
       }
       else
       {
-        if(!(nc_unc_met_m3[i]>0 && nc_unc_ht_m3[i+1]>0  && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
+        if(!(nc_unc_met_m3[i]>0 && nc_unc_ht_m3[i]>0  && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0))
         {
-          nc_unc_m3_fix[i] = std::sqrt(nc_unc_met_m3[i]*nc_unc_met_m3[i]+nc_unc_ht_m3[i+1]*nc_unc_ht_m3[i+1]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
+          //std::cout << i << " " << nc_unc_ht_m3[i] << std::endl;
+          //std::cout << i << " " << nc_unc_met_m3[i] << std::endl;
+          double tmp_nc_unc_met_m3 = nc_unc_met_m3[i]; //FIXME
+          for(int j=i-1;j>=0;j--)
+          {
+            if(nc_unc_met_m3[j]>0){tmp_nc_unc_met_m3 = nc_unc_met_m3[j]; break;}
+            else continue;
+          }
+          if(tmp_nc_unc_met_m3<0){ std::cout << i << " " << nc_unc_met_m3[i] << std::endl; }
+          if(!(tmp_nc_unc_met_m3>0 && nc_unc_ht_m3[i]>0 && nc_unc_ntop_m3[i]>0 && nc_unc_nbot_m3[i]>0)){ std::cout << i << " " << nc_unc_ht_m3[i] << std::endl; }
+          nc_unc_m3_fix[i] = std::sqrt(tmp_nc_unc_met_m3*tmp_nc_unc_met_m3+nc_unc_ht_m3[i]*nc_unc_ht_m3[i]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
         }
         else nc_unc_m3_fix[i] = -1;
       }

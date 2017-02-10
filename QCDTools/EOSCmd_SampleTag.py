@@ -1,8 +1,8 @@
 import glob, os, sys
 
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv12p5c_ReRun1"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv12p5c_ReRun1"
+#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv12p5c_ReRun2"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv12p5c_ReRun2"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SFCheckTrim_2016Sep"
 
 MGM = "root://cmseos.fnal.gov/"
@@ -15,6 +15,7 @@ sample_tag_list_Data = [
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016F-23Sep2016-v1_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016G-23Sep2016-v1_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v2_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v3_stopFlatNtuples_",
                        ]
 
 sample_tag_list_LLHadTau = [
@@ -124,6 +125,7 @@ sample_tag_list_DeepTrim = [
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016F-23Sep2016-v1_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016G-23Sep2016-v1_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v2_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v3_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromT_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromT_ext1_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromTbar_stopFlatNtuples_",
