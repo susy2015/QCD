@@ -49,5 +49,8 @@ void SBCheckHistgram::BookHistgram(const char *outFileName)
 
     h_b_pfcalometr_Data[i] = new TH1D(("h_b_pfcalometr_Data_SB_" + sb_index).c_str(),"",10,0,10);
   }
+
+  h_Data_x_ht24_y_ht50 = new TH2D("h_Data_x_ht24_y_ht50","",60,0,3000,60,0,3000);
+
   return ;
 }

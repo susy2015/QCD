@@ -1427,7 +1427,7 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
       bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
       //normal baseline without dPhis cut
-      bool passBaseline = (met>200)
+      bool passBaseline = (met>250)
                        && passLeptVeto
                        && passTagger
                        && passBJets
@@ -1440,9 +1440,14 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
 
       if (passBaseline)
       {
-        //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
         int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
         if(searchbin_id < 0) continue;
+
+        if( (*iter_QCDSampleInfos).QCDTag == "MET" && met>300 )
+        {
+          double ht50 = tr.getVar<double>("ht50");
+          (mySBCheckHistgram.h_Data_x_ht24_y_ht50)->Fill(ht,ht50,1);
+        }
 
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {

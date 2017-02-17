@@ -2,6 +2,7 @@
 
 #include "TFile.h"
 #include "TH1D.h"
+#include "TH2D.h"
 
 #include "ConstantsSnippet.h"
 
@@ -18,5 +19,8 @@ class SBCheckHistgram
   TH1D *h_b_ht_Data[NSEARCH_BINS], *h_b_mht_Data[NSEARCH_BINS], *h_b_njets30_Data[NSEARCH_BINS], *h_b_njets50_Data[NSEARCH_BINS];
 
   TH1D *h_b_pfcalometr_Data[NSEARCH_BINS];
+
+  TH2D *h_Data_x_ht24_y_ht50;
+
 };
 

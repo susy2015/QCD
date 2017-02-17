@@ -75,6 +75,9 @@ int main(int argc, char* argv[])
   Double_t calomet, calometphi;
   selectedTree->Branch("calomet"   ,&calomet   ,"calomet/D");
   selectedTree->Branch("calometphi",&calometphi,"calometphi/D");
+  //HT with Eta<5.0, study on High pt HF jet issue
+  Double_t ht50;
+  selectedTree->Branch("ht50",&ht50,"ht50/D");
   //Trigger information, for Data only
   Bool_t passSearchTrigger;  
   selectedTree->Branch("passSearchTrigger",&passSearchTrigger,"passSearchTrigger/O");
@@ -137,6 +140,8 @@ int main(int argc, char* argv[])
       //QCD filter related
       calomet = tr->getVar<double>("calomet");
       calometphi = tr->getVar<double>("calometphi");
+      //HT50
+      ht50 = tr->getVar<double>("HT50"+spec);
       //Trigger information
       std::vector<std::string> TriggerNames = tr->getVec<std::string>("TriggerNames");
       std::vector<int> PassTrigger = tr->getVec<int>("PassTrigger");
