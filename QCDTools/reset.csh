@@ -1,15 +1,6 @@
 ## the following line can be commented out once the bug fixed in the SusyAnaTools/Tools/setup.csh
 setenv LD_LIBRARY_PATH ./:${CMSSW_BASE}/src/opencv/lib/:${CMSSW_BASE}/src/TopTagger/TopTagger/test/:${CMSSW_BASE}/src/SusyAnaTools/Tools/obj/:${LD_LIBRARY_PATH}
 
-## Unlink btagging factor files
-if (-f CSVv2_Moriond17_B_H.csv) then
-  unlink CSVv2_Moriond17_B_H.csv
-endif
-
-if (-f allINone_bTagEff.root) then
-  unlink allINone_bTagEff.root
-endif
-
 ## Unlink ISR Reweighting files
 if (-f allINone_ISRJets.root) then
   unlink allINone_ISRJets.root
@@ -17,6 +8,15 @@ endif
 
 if (-f ISRWeights.root) then
   unlink ISRWeights.root
+endif
+
+## Unlink btagging factor files
+if (-f CSVv2_Moriond17_B_H.csv) then
+  unlink CSVv2_Moriond17_B_H.csv
+endif
+
+if (-f allINone_bTagEff.root) then
+  unlink allINone_bTagEff.root
 endif
 
 ## Unlink lepton factor file

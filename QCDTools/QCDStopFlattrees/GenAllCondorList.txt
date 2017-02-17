@@ -4,11 +4,11 @@ rm ../condor_QCDTFTrimAndSlim_Data
 rm ../condor_QCDTFTrimAndSlim_LLHadTau
 rm ../condor_QCDTFTrimAndSlim_Zinv
 rm ../condor_QCDTFTrimAndSlim_QCD
-rm ../condor_QCDTFTrimAndSlim_TTZ
+rm ../condor_QCDTFTrimAndSlim_Rare
 python python_condor_DeepTrim_Gen.py Data >> ../condor_DeepTrim_Data
 python python_condor_DeepTrim_Gen.py LL >> ../condor_DeepTrim_LL
 python python_condor_QCDTFTrimAndSlim_Gen.py Data >> ../condor_QCDTFTrimAndSlim_Data  
 python python_condor_QCDTFTrimAndSlim_Gen.py LLHadTau >> ../condor_QCDTFTrimAndSlim_LLHadTau  
 python python_condor_QCDTFTrimAndSlim_Gen.py Zinv >> ../condor_QCDTFTrimAndSlim_Zinv
 python python_condor_QCDTFTrimAndSlim_Gen.py QCD >> ../condor_QCDTFTrimAndSlim_QCD
-python python_condor_QCDTFTrimAndSlim_Gen.py TTZ >> ../condor_QCDTFTrimAndSlim_TTZ
+python python_condor_QCDTFTrimAndSlim_Gen.py Rare >> ../condor_QCDTFTrimAndSlim_Rare
