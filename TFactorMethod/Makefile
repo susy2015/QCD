@@ -48,13 +48,13 @@ $(ODIR)/%.o : $(IDIR)/%.cc
 $(ODIR)/%.o : $(IDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
 
-QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
+QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/ClosureUncAUX.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
 	$(LD) $^ $(LIBS) -o $@
 
 #SFCheck: $(ODIR)/SFCheck.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/BTagCorrector.o $(ODIR)/BTagCalibrationStandalone.o $(ODIR)/QCDReWeighting.o $(ODIR)/SFCheckHistgram.o
 #	$(LD) $^ $(LIBS) -o $@
 
-ClosurePlots: $(ODIR)/ClosurePlots.o $(ODIR)/searchBins.o
+ClosurePlots: $(ODIR)/ClosurePlots.o $(ODIR)/searchBins.o $(ODIR)/SATException.o
 	$(LD) $^ $(LIBS) -o $@
 
 BasicCheckPlots: $(ODIR)/BasicCheckPlots.o
@@ -63,7 +63,7 @@ BasicCheckPlots: $(ODIR)/BasicCheckPlots.o
 #SFCheckPlots: $(ODIR)/SFCheckPlots.o
 #	$(LD) $^ $(LIBS) -o $@
 
-SysUncs: $(ODIR)/SysUncs.o $(ODIR)/searchBins.o
+SysUncs: $(ODIR)/SysUncs.o $(ODIR)/searchBins.o $(ODIR)/SATException.o
 	$(LD) $^ $(LIBS) -o $@
 
 clean:

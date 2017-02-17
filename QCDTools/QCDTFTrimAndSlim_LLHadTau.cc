@@ -27,27 +27,15 @@ int main(int argc, char* argv[])
     return -1;
   }
   std::string input_str(argv[1]);
-  std::string trim;
-
-  std::string output_str;
-  //here is a little bit tricky when dealing with the slash... need to improve
-  //for all the data samples and ttbar leptonic MC samples
-  std::string tag = input_str.substr(find_Nth(input_str,nth_slash_nametag_MC,"/") + 1,find_Nth(input_str,nth_slash_nametag_MC+1,"/")-find_Nth(input_str,nth_slash_nametag_MC,"/")-1);
-  std::size_t idpos = input_str.find("stopFlatNtuples");
-  std::string fileid = input_str.substr (idpos);
-
-  output_str = "QCDTFTrimAndSlim_" + tag + "_" + fileid;
-  std::cout << "Output File Name: " << output_str << std::endl;
+  std::string output_str = QCDOutputFileNameGenerator(input_str,false);
 
   TChain *originalTree = new TChain("stopTreeMaker/AUX");
   originalTree->Add(input_str.c_str());
-  //originalTree->SetBranchStatus("*", 1);
    
   TFile* output = new TFile((output_str).c_str(), "RECREATE");
-  TDirectory *mydict = output->mkdir("stopTreeMaker");
-  mydict->cd();
+  TDirectory *mydict = output->mkdir("stopTreeMaker"); mydict->cd();
   TTree* selectedTree = new TTree("QCDTFTree","QCDTFTree");
-  //TTree* selectedTree = originalTree->CloneTree(0);
+  
   //search bin variables
   Double_t met,mt2; Int_t ntopjets,nbotjets;
   selectedTree->Branch("met",&met,"met/D");
@@ -60,22 +48,24 @@ int main(int argc, char* argv[])
   selectedTree->Branch("nJets50",&njets50,"nJets50/I");
   selectedTree->Branch("ht",&ht,"ht/D");
   selectedTree->Branch("mht",&mht,"mht/D");
-  Double_t metphi, mhtphi;
+  Double_t metphi,mhtphi;
   selectedTree->Branch("metphi",&metphi,"metphi/D");
   selectedTree->Branch("mhtphi",&mhtphi,"mhtphi/D");
-
   Int_t nmus,nels;
   selectedTree->Branch("nMuons"    ,&nmus,"nMuons/I"    );
   selectedTree->Branch("nElectrons",&nels,"nElectrons/I");
   //Boolean related to the baseline
-  Bool_t passLeptVeto, passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
+  Bool_t passLeptVeto,passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
   selectedTree->Branch("passLeptVeto"        ,&passLeptVeto        ,"passLeptVeto/O");
   selectedTree->Branch("passTagger"          ,&passTagger          ,"passTagger/O");
   selectedTree->Branch("passBJets"           ,&passBJets           ,"passBJets/O");
   selectedTree->Branch("passQCDHighMETFilter",&passQCDHighMETFilter,"passQCDHighMETFilter/O");
   selectedTree->Branch("passdPhis"           ,&passdPhis           ,"passdPhis/O");
   selectedTree->Branch("passNoiseEventFilter",&passNoiseEventFilter,"passNoiseEventFilter/O");  
-
+  //Correction factors
+  Double_t ISRCorr,BTagCorr;
+  selectedTree->Branch("ISRCorr",&ISRCorr,"ISRCorr/D");
+  selectedTree->Branch("BTagCorr",&BTagCorr,"BTagCorr/D");
   //LL information for TTJets Wjets and singleTop
   Bool_t isLL;
   selectedTree->Branch("isLL",&isLL,"isLL/O");
@@ -85,17 +75,19 @@ int main(int argc, char* argv[])
   //initialize the type3Ptr defined in the customize.h
   AnaFunctions::prepareForNtupleReader();
   tr = new NTupleReader(originalTree, AnaConsts::activatedBranchNames);
+
   const std::string spec = "lostlept";
-  BaselineVessel *myBaselineVessel = 0;
-  myBaselineVessel = new BaselineVessel(*tr, spec);
+  BaselineVessel *myBaselineVessel = new BaselineVessel(*tr, spec);
   if( !useNewTagger ){ myBaselineVessel->SetupTopTagger(false, "Legacy_TopTagger.cfg" ); }
   else
   {
     if( useLegacycfg ){ myBaselineVessel->SetupTopTagger(true, "Legacy_TopTagger.cfg" ); }
     else{ myBaselineVessel->SetupTopTagger(true, "TopTagger.cfg" ); }
   }
-  //The passBaseline is registered here
   tr->registerFunction(*myBaselineVessel);
+
+  ISRReWeightingSet(*tr,output_str);
+  BTagReWeightingSet(*tr,output_str);
 
   while(tr->getNextEvent())
   {
@@ -103,24 +95,14 @@ int main(int argc, char* argv[])
     bool passnJets = tr->getVar<bool>("passnJets"+spec);
     bool passHT = tr->getVar<bool>("passHT"+spec);
     bool passMT2 = tr->getVar<bool>("passMT2"+spec);
-    //bool passTagger = tr->getVar<bool>("passTagger"+spec);
-    //bool passBJets = tr->getVar<bool>("passBJets"+spec);
-    //bool passQCDHighMETFilter = tr->getVar<bool>("passQCDHighMETFilter"+spec);
-    //bool passdPhis = tr->getVar<bool>("passdPhis"+spec);
- 
     bool passQCDTFTrimAndSlim = ( met > trigger_turn_on_met)
-                             //&& passLeptVeto
                              && passnJets
                              && passHT
                              && passMT2;
-                             //&& passTagger
-                             //&& passBJets
-                             //&& passNoiseEventFilter;
     
     if(passQCDTFTrimAndSlim)
     {
       //searchbin variables
-      //met = tr->getVar<double>("met");
       mt2 = tr->getVar<double>("best_had_brJet_MT2"+spec);       
       ntopjets = tr->getVar<int>("nTopCandSortedCnt"+spec);
       nbotjets = tr->getVar<int>("cntCSVS"+spec);
@@ -132,7 +114,6 @@ int main(int argc, char* argv[])
       mht = mht_TLV.Pt();
       metphi = tr->getVar<double>("metphi");
       mhtphi = mht_TLV.Phi();
-
       nmus = tr->getVar<int>("nMuons_CUT"+spec);
       nels = tr->getVar<int>("nElectrons_CUT"+spec);
       passLeptVeto = tr->getVar<bool>("passLeptVeto"+spec);
@@ -141,7 +122,8 @@ int main(int argc, char* argv[])
       passQCDHighMETFilter = tr->getVar<bool>("passQCDHighMETFilter"+spec);
       passdPhis = tr->getVar<bool>("passdPhis"+spec);
       passNoiseEventFilter = tr->getVar<bool>("passNoiseEventFilter"+spec);
-
+      ISRCorr = tr->getVar<double>("isr_Unc_Cent");
+      BTagCorr = tr->getVar<double>("bTagSF_EventWeightSimple_Central");
       //determine if LL or HadTau. be careful! we need to set passLeptVeto first
       std::vector<int> W_emuVec = tr->getVec<int>("W_emuVec");
       std::vector<int> W_tau_emuVec = tr->getVec<int>("W_tau_emuVec");
@@ -163,8 +145,8 @@ int main(int argc, char* argv[])
   if (originalTree) delete originalTree;
 
   std::string d = "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15";
-  std::system(("xrdcp " + output_str + " " + d).c_str());
-  std::system(("rm " + output_str).c_str());
+  //std::system(("xrdcp " + output_str + " " + d).c_str());
+  //std::system(("rm " + output_str).c_str());
 
   return 0;
 }

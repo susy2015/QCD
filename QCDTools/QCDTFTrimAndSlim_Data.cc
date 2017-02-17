@@ -36,27 +36,15 @@ int main(int argc, char* argv[])
     return -1;
   }
   std::string input_str(argv[1]);
-  std::string trim;
-
-  std::string output_str;
-  //here is a little bit tricky when dealing with the slash... need to improve
-  //for all the data samples and ttbar leptonic MC samples
-  std::string tag = input_str.substr(find_Nth(input_str,nth_slash_nametag_Data,"/") + 1,find_Nth(input_str,nth_slash_nametag_Data+1,"/")-find_Nth(input_str,nth_slash_nametag_Data,"/")-1);
-  std::size_t idpos = input_str.find("stopFlatNtuples");
-  std::string fileid = input_str.substr (idpos);
-
-  output_str = "QCDTFTrimAndSlim_" + tag + "_" + fileid;
-  std::cout << "Output File Name: " << output_str << std::endl;
+  std::string output_str = QCDOutputFileNameGenerator(input_str,true);
 
   TChain *originalTree = new TChain("stopTreeMaker/AUX");
   originalTree->Add(input_str.c_str());
-  //originalTree->SetBranchStatus("*", 1);
    
   TFile* output = new TFile((output_str).c_str(), "RECREATE");
-  TDirectory *mydict = output->mkdir("stopTreeMaker");
-  mydict->cd();
+  TDirectory *mydict = output->mkdir("stopTreeMaker"); mydict->cd();
   TTree* selectedTree = new TTree("QCDTFTree","QCDTFTree");
-  //TTree* selectedTree = originalTree->CloneTree(0);
+  
   //search bin variables
   Double_t met,mt2,ht; Int_t ntopjets,nbotjets;
   selectedTree->Branch("met",&met,"met/D");
@@ -72,11 +60,9 @@ int main(int argc, char* argv[])
   Double_t metphi, mhtphi;
   selectedTree->Branch("metphi",&metphi,"metphi/D");
   selectedTree->Branch("mhtphi",&mhtphi,"mhtphi/D");
-
   Int_t nmus,nels;
   selectedTree->Branch("nMuons"    ,&nmus,"nMuons/I"    );
   selectedTree->Branch("nElectrons",&nels,"nElectrons/I");
-
   //Boolean related to the baseline
   Bool_t passLeptVeto,passTagger,passBJets,passQCDHighMETFilter,passdPhis,passNoiseEventFilter;
   selectedTree->Branch("passLeptVeto"        ,&passLeptVeto        ,"passLeptVeto/O");
@@ -120,24 +106,14 @@ int main(int argc, char* argv[])
     bool passnJets = tr->getVar<bool>("passnJets"+spec);
     bool passHT = tr->getVar<bool>("passHT"+spec);
     bool passMT2 = tr->getVar<bool>("passMT2"+spec);
-    //bool passTagger = tr->getVar<bool>("passTagger"+spec);
-    //bool passBJets = tr->getVar<bool>("passBJets"+spec);
-    //bool passNoiseEventFilter = tr->getVar<bool>("passNoiseEventFilter"+spec);
-    //bool passQCDHighMETFilter = tr->getVar<bool>("passQCDHighMETFilter"+spec);
-    //bool passdPhis = tr->getVar<bool>("passdPhis"+spec);
- 
     bool passQCDTFTrimAndSlim = ( met > trigger_turn_on_met)
-                             //&& passLeptVeto
                              && passnJets
                              && passHT
                              && passMT2;
-                             //&& passTagger
-                             //&& passBJets
-                             //&& passNoiseEventFilter;
+
     if(passQCDTFTrimAndSlim)
     {
       //searchbin variables
-      //met = tr->getVar<double>("met");
       mt2 = tr->getVar<double>("best_had_brJet_MT2"+spec);       
       ht = tr->getVar<double>("HT"+spec);
       ntopjets = tr->getVar<int>("nTopCandSortedCnt"+spec);
@@ -151,7 +127,6 @@ int main(int argc, char* argv[])
       mhtphi = mht_TLV.Phi();
       nmus = tr->getVar<int>("nMuons_CUT"+spec);
       nels = tr->getVar<int>("nElectrons_CUT"+spec);
-      
       //Baseline Boolean
       passLeptVeto = tr->getVar<bool>("passLeptVeto"+spec);
       passTagger = tr->getVar<bool>("passTagger"+spec);
@@ -162,7 +137,6 @@ int main(int argc, char* argv[])
       //QCD filter related
       calomet = tr->getVar<double>("calomet");
       calometphi = tr->getVar<double>("calometphi");
-
       //Trigger information
       std::vector<std::string> TriggerNames = tr->getVec<std::string>("TriggerNames");
       std::vector<int> PassTrigger = tr->getVec<int>("PassTrigger");

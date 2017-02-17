@@ -9,9 +9,10 @@
 //#define LUMI 4004.345 //preapp, NTuple v7 fix b working point
 //#define LUMI 7647.637518921 //app, NTuple v8
 //#define LUMI 12918.140703927 //final 2016 ICHEP data set
-#define LUMI 36352.970569733 //final 2017 Moriond data set
+//#define LUMI 36352.970569733 //final 2017 Moriond data set
+#define LUMI 36813.714859265 //final 2017 Moriond data set, after reprocess
 
-#define QCD_BINS 6
+#define QCD_BINS 2*6
 #define MET_BINS 4
 #define MT2_BINS 2
 #define MET_Ext_BINS 2
@@ -52,14 +53,22 @@ const double zinv_RNorm = 0.963;//v11 MC Data, 36.4 fb-1
 //const double singlemuCS_invdphi = 0.775379;
 
 //ntop and nbot 1,2, v11
-const double singlemuCS_lowmet[MT2_BINS] = {0.813645,0.521239};
+//const double singlemuCS_lowmet[MT2_BINS] = {0.813645,0.521239};
 //const double singlemuCS_dphi = 0.7974; //not using
-const double singlemuCS_invdphi = 0.790159;
+//const double singlemuCS_invdphi = 0.790159;
+
+//ntop and nbot 1,2, v12
+const double singlemuCS_lowmet[MT2_BINS] = {0.711128,0.572684};
+const double singlemuCS_invdphi = 0.68748;
 
 //ntop or nbot >= 3, v11
-const double singlemuCS_ext_lowmet[MT2_BINS] = {0.686758,0.340552};
+//const double singlemuCS_ext_lowmet[MT2_BINS] = {0.686758,0.340552};
 //const double singlemuCS_ext_dphi = 0.67888663; //not using
-const double singlemuCS_ext_invdphi = 0.776688;
+//const double singlemuCS_ext_invdphi = 0.776688;
+
+//ntop or nbot >= 3, v12
+const double singlemuCS_ext_lowmet[MT2_BINS] = {0.673138,1.0278};
+const double singlemuCS_ext_invdphi = 0.707942;
 
 #define BCBin 5
 #define SFMCBin 3

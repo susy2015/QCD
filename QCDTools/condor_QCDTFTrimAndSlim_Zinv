@@ -1,4 +1,4 @@
-#The valid run types for QCDTFTrimAndSlim are Data, LLHadTau, Zinv, QCD, and TTZ! While the current run type is : Zinv
+#The valid run types for QCDTFTrimAndSlim are Data, LLHadTau, Zinv, QCD, and Rare! While the current run type is : Zinv
 universe = vanilla
 request_disk   = 50 GB
 request_memory = 1.5 GB
@@ -7,234 +7,231 @@ should_transfer_files = YES
 #when_to_transfer_output = ON_EXIT
 
 ##transfer file list for Zinv samples
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_TTZ, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_ichep.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-1200To2500_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-2500ToInf_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ao, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ap, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ar, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.as, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.at, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.au, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.av, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ax, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ay, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.az, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ba, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.be, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bi, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bk, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bl, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bm, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bn, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bo, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bp, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.br, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bs, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bt, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bu, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bx, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.by, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ca, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.cb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.cc, 
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/CMSSW_8_0_25.tar.gz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_LLHadTau, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Zinv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_QCD, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Rare, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDTFTrimAndSlim_Data, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_QCDTFTrimAndSlim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goQCDTFTrimAndSlim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/allINone_ISRJets.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/ISRWeights.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_Moriond17_B_H.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/allINone_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/allINone_leptonSF_Moriond17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_0121_69p2mb_pm4p6.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/puppiCorr.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-1200To2500_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-1200To2500_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ao, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ap, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aq, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ar, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.as, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.at, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.au, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.av, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aw, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ax, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ay, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.az, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ba, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bb, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bc, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bd, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.be, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bf, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-2500ToInf_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-2500ToInf_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ai, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.aj, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ak, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.al, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.am, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.an, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.aa, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ab, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ac, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ad, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ae, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.af, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ag, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ah, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt/ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ai, 
 
-Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_Zinv_$(Process).stdout
-Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_Zinv_$(Process).stderr
-Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/Trim_Zinv_$(Process).log
+Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/QCDTFTrimAndSlim_Zinv_$(Process).stdout
+Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/QCDTFTrimAndSlim_Zinv_$(Process).stderr
+Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/QCDTFTrimAndSlim_Zinv_$(Process).log
 notify_user = hua.wei@cern.ch
 
 #### ZJetsToNuNu_HT- ####
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-1200To2500_13TeV-madgraphSplit.aa
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-1200To2500_13TeV-madgraphSplit.aa
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-2500ToInf_13TeV-madgraphSplit.aa
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-1200To2500_13TeV-madgraphSplit.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.aa
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aa
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ab
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ac
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ac
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ad
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ad
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ae
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ae
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.af
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.af
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ag
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ag
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.aa
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ah
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ab
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ai
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ac
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aj
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ad
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ak
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ae
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.al
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.af
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.am
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ag
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.an
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.aa
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ao
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ab
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ap
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ac
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aq
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aa
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ar
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ab
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.as
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ac
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.at
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ad
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.au
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ae
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.av
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.af
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aw
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ag
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ax
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ah
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ay
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ai
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.az
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aj
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ba
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ak
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bb
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.al
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bc
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.am
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bd
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.an
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.be
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ao
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bf
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ap
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-2500ToInf_13TeV-madgraphSplit.aa
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aq
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-2500ToInf_13TeV-madgraphSplit.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ar
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.aa
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.as
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.at
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ac
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.au
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ad
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.av
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ae
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.aw
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.af
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ax
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ag
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ay
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ah
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.az
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ai
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ba
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.aj
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bb
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.ak
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bc
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.al
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bd
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.am
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.be
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-400To600_13TeV-madgraphSplit.an
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bf
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.aa
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bg
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bh
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ac
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bi
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ad
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bj
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ae
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bk
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.af
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bl
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ag
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bm
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ah
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bn
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ai
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bo
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.aj
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bp
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.ak
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bq
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.al
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.br
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.am
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bs
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-600To800_13TeV-madgraphSplit.an
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bt
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.aa
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bu
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ab
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bv
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ac
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bw
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ad
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bx
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ae
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.by
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.af
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.bz
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ag
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.ca
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ah
 Queue
 
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.cb
-Queue
-
-arguments = $ENV(CMSSW_BASE) Zinv ZJetsToNuNu_HT-200To400_13TeV-madgraphSplit.cc
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) Zinv ZJetsToNuNu_HT-800To1200_13TeV-madgraphSplit.ai
 Queue
 

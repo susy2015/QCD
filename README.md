@@ -4,8 +4,8 @@
 1.Set CMS Environment:
 
 ```
-cmsrel CMSSW_8_0_23
-cd CMSSW_8_0_23/src
+cmsrel CMSSW_8_0_25
+cd CMSSW_8_0_25/src
 cmsenv
 ```
 2.Download source code from github and compile plugins:
@@ -14,10 +14,11 @@ SusyAnaTools:
 ```
 git cms-init
 git cms-merge-topic -u kpedro88:METfix8022
-git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
+git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
-git clone git@github.com:cms-jet/JetToolbox.git JMEAnalysis/JetToolbox -b jetToolbox_80X_V2
-git clone -b Ana_Dec21_2016_Moriond2017_forBkgPred git@github.com:susy2015/SusyAnaTools.git
+git clone git@github.com:susy2015/JetToolbox.git JMEAnalysis/JetToolbox -b fix_NoLep_jetToolbox_80X_V3
+git cms-merge-topic gpetruc:badMuonFilters_80X_v2
+git clone -b ana_Summer16_MC_23Sep2016_Data_Feb07_2017 git@github.com:susy2015/SusyAnaTools.git
 ```
 
 TopTagger:
@@ -31,7 +32,7 @@ cmake .
 make -j 8
 ## Checkout Tagtagger
 cd $CMSSW_BASE/src
-git clone -b HadStopAnaDevel_v5_Moriond2017_Dec21_2016 git@github.com:susy2015/TopTagger.git
+git clone -b HadStopAnaDevel_v6_Moriond2017_Feb5_2017 git@github.com:susy2015/TopTagger.git
 ```
 
 CMS Build application:
@@ -56,15 +57,27 @@ git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
 ```
 # QCD Tools
 
-1.Deep skim for lost lepton background estimation:
 ```
 cd $CMSSW_BASE/src/QCD/QCDTools
 make
 source reset.csh
 source $CMSSW_BASE/src/SusyAnaTools/Tools/setup.csh
+```
+OR customized TaggerCfg setting : 
+```
 $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Tight_v1.1.1 -d /uscms_data/d3/hwei/stop
 $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.1.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
 ```
+
+Tarball CMSSW release : 
+```
+cd $CMSSW_BASE/src/QCD/QCDTools/QCDStopFlattrees
+sh cache_all.sh
+tar --exclude-caches-all -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_VERSION}
+```
+
+1.Deep skim for lost lepton background estimation:
+
 2.QCD skim and slim for QCD background estimation:
 
 # QCD Translation Factor Method
@@ -73,8 +86,6 @@ $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.1.0 -f Lega
 ```
 cd $CMSSW_BASE/src/QCD/TFactorMethod
 make
-./QCD RunMode runList_QCD_HT_skimmed_MET175_v3.txt runList_QCD_DataMC_skimmed_MET175_v4.txt
-./QCD CalOnly ../QCDTools/QCDStopFlattrees/runList_QCD_HT_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2016ICHEPv7_csv_fix.txt
 ```
 Specification of QCDHardCodedInput:
 

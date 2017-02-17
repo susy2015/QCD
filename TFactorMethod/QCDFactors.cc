@@ -766,7 +766,7 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dPreFit->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_prefit, 0, 0 );
-  const std::string titre_prefit = "CMS Simulation                                                                                          12.9 fb^{-1}(13 TeV)";
+  const std::string titre_prefit = "CMS Simulation                                                                                          36.8 fb^{-1}(13 TeV)";
   TLatex *title_prefit = new TLatex(0.09770115,0.9194915,titre_prefit.c_str());
   title_prefit->SetNDC();
   title_prefit->SetTextSize(0.045);
@@ -842,7 +842,7 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dScaled->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_scaled, 4, 0 );
-  const std::string titre_scaled = "CMS Preliminary                                                                                         12.9 fb^{-1}(13 TeV)";
+  const std::string titre_scaled = "CMS Preliminary                                                                                         36.8 fb^{-1}(13 TeV)";
   TLatex *title_scaled = new TLatex(0.09770115,0.9194915,titre_scaled.c_str());
   title_scaled->SetNDC();
   title_scaled->SetTextSize(0.045);
@@ -907,7 +907,7 @@ void QCDFactors::CountingPlotsGen()
   //std::ostringstream strs;
   //strs << (LUMI/1000);
   //std::string lumi_str = strs.str();
-  const std::string titre="CMS Preliminary                                                                           12.9 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Preliminary                                                                           36.8 fb^{-1}(13 TeV)";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -1052,42 +1052,6 @@ double QCDFactors::get_aoverb_Error(
   //double e = r*(ea/a+eb/b);
 
   return e;
-}
-
-void QCDFactors::getNonClosureUnc()
-{
-  TFile * finPred;
-  TFile * finSysUnc;
-
-  finPred = TFile::Open("RootForPlotting/PredQCDMC.root");
-  finSysUnc = TFile::Open("RootForPlotting/ExpQCD.root");
-
-  TH1D * h_pred;
-  TH1D * h_sysunc;
-
-  h_pred = (TH1D*)finPred->Get("h_pred_sb")->Clone();
-  h_sysunc = (TH1D*)finSysUnc->Get("h_exp_sb")->Clone();
-
-  for (int j = 1; j < NSEARCH_BINS+1 ; j++)
-  {
-    double pred = h_pred->GetBinContent(j);
-    double sysunc = h_sysunc->GetBinContent(j);
-    double pred_err = h_pred->GetBinError(j);
-    double sysunc_err = h_sysunc->GetBinError(j);
-    //std::cout << "i: " << i << " pred_err: " << pred_err << " sysunc_err: " << sysunc_err << std::endl;
-    double e = 5;
-    if ( (pred > 0) && (sysunc > 0) )
-    {
-      double r = sysunc/pred;
-      e = std::sqrt( sysunc_err*sysunc_err + pred_err*pred_err*r*r ) / pred;
-      QCD_NonClosure_relative_err[j-1] = std::max( std::abs(e) , std::abs((sysunc-pred)/pred) );
-      //std::cout << "j: " << j << " Pred: "<< pred << " Exp: "<< sysunc << " Error: " << e << std::endl;
-    }
-    else if( j!=1 && ((pred <= 0) || (sysunc <= 0)) ){ QCD_NonClosure_relative_err[j-1] = QCD_NonClosure_relative_err[j-2]; }
-    else { std::cout << "First Bin have werid behavior, too bad, WTF??!!" << std::endl; return ;}
-  }
-
-  return ;
 }
 
 std::string QCDFactors::printDataCardLine(std::string name,double (&nums)[NSEARCH_BINS])

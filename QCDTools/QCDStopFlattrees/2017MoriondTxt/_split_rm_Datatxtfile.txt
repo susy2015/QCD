@@ -1,0 +1,2 @@
+split -l 40 MET.txt METSplit.
+rm MET.txt

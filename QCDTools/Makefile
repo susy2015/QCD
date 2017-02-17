@@ -29,7 +29,7 @@ MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2 -L$(CMSSW
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 FILES = $(wildcard $(SDIR)/*.cc)
 OBJS  := $(FILES:$(SDIR)/%.cc=$(ODIR)/%.o)
-PROGRAMS = DeepTrim SFCheckTrim QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_Zinv QCDTFTrimAndSlim_QCD QCDTFTrimAndSlim_TTZ QCDTFTrimAndSlim_Data
+PROGRAMS = DeepTrim SFCheckTrim QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_Zinv QCDTFTrimAndSlim_QCD QCDTFTrimAndSlim_Rare QCDTFTrimAndSlim_Data
 
 all: mkobj $(OBJS) SusyAnaTools $(PROGRAMS)
 
@@ -65,19 +65,19 @@ DeepTrim: $(ODIR)/DeepTrim.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
 SFCheckTrim: $(ODIR)/SFCheckTrim.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-QCDTFTrimAndSlim_LLHadTau: $(ODIR)/QCDTFTrimAndSlim_LLHadTau.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
+QCDTFTrimAndSlim_LLHadTau: $(ODIR)/QCDTFTrimAndSlim_LLHadTau.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-QCDTFTrimAndSlim_Zinv: $(ODIR)/QCDTFTrimAndSlim_Zinv.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
+QCDTFTrimAndSlim_Zinv: $(ODIR)/QCDTFTrimAndSlim_Zinv.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-QCDTFTrimAndSlim_QCD: $(ODIR)/QCDTFTrimAndSlim_QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
+QCDTFTrimAndSlim_QCD: $(ODIR)/QCDTFTrimAndSlim_QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-QCDTFTrimAndSlim_TTZ: $(ODIR)/QCDTFTrimAndSlim_TTZ.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
+QCDTFTrimAndSlim_Rare: $(ODIR)/QCDTFTrimAndSlim_Rare.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
-QCDTFTrimAndSlim_Data: $(ODIR)/QCDTFTrimAndSlim_Data.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
+QCDTFTrimAndSlim_Data: $(ODIR)/QCDTFTrimAndSlim_Data.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
 	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
 
 clean:

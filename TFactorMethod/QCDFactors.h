@@ -92,7 +92,6 @@ class QCDFactors
   double QCD_NTopFactor[NSEARCH_BINS] = {0}, QCD_NTopFactor_relative_err[NSEARCH_BINS] = {0};
   double QCD_NonClosure_relative_err[NSEARCH_BINS] = {0};
 
-  void getNonClosureUnc();
   void printDataCard(std::string pred_type);
   void printSysHeader(std::string pred_type);
 

@@ -42,7 +42,7 @@ def PrintCondorSubmitLine(directory, sampletype):
       else:
         continue
 
-d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_23/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt"
+d = "/uscms_data/d3/hwei/stop/QCD/CMSSW_8_0_25/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt"
 runtype = sys.argv[1]
 print ("#The valid run types for SFCheckTrim are Data, LL! While the current run type is : " + runtype)
 
