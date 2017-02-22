@@ -18,7 +18,7 @@ git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 git clone git@github.com:susy2015/JetToolbox.git JMEAnalysis/JetToolbox -b fix_NoLep_jetToolbox_80X_V3
 git cms-merge-topic gpetruc:badMuonFilters_80X_v2
-git clone -b ana_Summer16_MC_23Sep2016_Data_Feb07_2017 git@github.com:susy2015/SusyAnaTools.git
+git clone -b ana_v3_Summer16_MC_23Sep2016_Data_Feb21_2017 git@github.com:susy2015/SusyAnaTools.git
 ```
 
 TopTagger:
@@ -32,7 +32,7 @@ cmake .
 make -j 8
 ## Checkout Tagtagger
 cd $CMSSW_BASE/src
-git clone -b HadStopAnaDevel_v6_Moriond2017_Feb5_2017 git@github.com:susy2015/TopTagger.git
+git clone -b HadStopAnaDevel_v7_Moriond2017_Feb20_2017 git@github.com:susy2015/TopTagger.git
 ```
 
 CMS Build application:
@@ -69,11 +69,12 @@ $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Tight_v1.1.1 -d /uscms
 $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.1.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
 ```
 
-Tarball CMSSW release : 
+Tarball CMSSW release and Txt file : 
 ```
 cd $CMSSW_BASE/src/QCD/QCDTools/QCDStopFlattrees
 sh cache_all.sh
 tar --exclude-caches-all -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_VERSION}
+tar -zcf 2017MoriondTxt.tar.gz 2017MoriondTxt
 ```
 
 1.Deep skim for lost lepton background estimation:

@@ -70,8 +70,10 @@ std::string ISRAndBTagStringConverter(std::string QCDoutputFileName)
   else if( QCDoutputFileName.find("_WJetsToLNu_HT-800To1200_"  ) != std::string::npos ) histTag = "WJetsToLNu_HT_800to1200" ;
   else if( QCDoutputFileName.find("_WJetsToLNu_HT-1200To2500_" ) != std::string::npos ) histTag = "WJetsToLNu_HT_1200to2500";
   else if( QCDoutputFileName.find("_WJetsToLNu_HT-2500ToInf_"  ) != std::string::npos ) histTag = "WJetsToLNu_HT_2500toInf" ;
-  else if( QCDoutputFileName.find("_ST_tW_top_5f_"             ) != std::string::npos ) histTag = "tW_top_incl";
-  else if( QCDoutputFileName.find("_ST_tW_antitop_5f_"         ) != std::string::npos ) histTag = "tW_antitop_incl";
+  else if( QCDoutputFileName.find("_ST_tW_top_5f_inclusiveDecays_"          ) != std::string::npos ) histTag = "tW_top_incl";
+  else if( QCDoutputFileName.find("_ST_tW_antitop_5f_inclusiveDecays_"      ) != std::string::npos ) histTag = "tW_antitop_incl";
+  else if( QCDoutputFileName.find("_ST_tW_top_5f_NoFullyHadronicDecays_"    ) != std::string::npos ) histTag = "tW_top_NoHad";
+  else if( QCDoutputFileName.find("_ST_tW_antitop_5f_NoFullyHadronicDecays_") != std::string::npos ) histTag = "tW_antitop_NoHad";
   else if( QCDoutputFileName.find("_ZJetsToNuNu_HT-100To200_"  ) != std::string::npos ) histTag = "ZJetsToNuNu_HT_100to200"  ;
   else if( QCDoutputFileName.find("_ZJetsToNuNu_HT-200To400_"  ) != std::string::npos ) histTag = "ZJetsToNuNu_HT_200to400"  ;
   else if( QCDoutputFileName.find("_ZJetsToNuNu_HT-400To600_"  ) != std::string::npos ) histTag = "ZJetsToNuNu_HT_400to600"  ;

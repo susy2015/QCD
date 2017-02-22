@@ -39,8 +39,8 @@ if (-f TopTagger.cfg) then
   unlink TopTagger.cfg
 endif
 
-if (-f TrainingOutput_dR20_pt30_depth14_2016_Dec2.model) then
-  unlink TrainingOutput_dR20_pt30_depth14_2016_Dec2.model
+if (-f TrainingOutput_dR20_pt30_depth12_500tree_2017_Feb16.model) then
+  unlink TrainingOutput_dR20_pt30_depth12_500tree_2017_Feb16.model
 endif
 
 if (-f Legacy_TopTagger.cfg) then

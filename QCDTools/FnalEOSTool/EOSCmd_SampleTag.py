@@ -1,7 +1,7 @@
 import glob, os, sys
 
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv12p5c_ReRun3_HT50Test"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv12p5c_ReRun4_PreApp"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv12p5c_ReRun2"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SFCheckTrim_2016Sep"
 
@@ -88,7 +88,7 @@ sample_tag_list_QCD = [
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_QCD_HT2000toInf_BFilter_stopFlatNtuples_",
                       ]
 
-sample_tag_list_TTZ = [
+sample_tag_list_Rare = [
 #"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTWJetsToLNu_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTWJetsToLNu_ext1_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTWJetsToLNu_ext2_stopFlatNtuples_",
@@ -194,8 +194,8 @@ elif(sample_tag == 'Zinv') :
   sample_tag_list = sample_tag_list_Zinv
 elif(sample_tag == 'QCD') :
   sample_tag_list = sample_tag_list_QCD
-elif(sample_tag == 'TTZ') :
-  sample_tag_list = sample_tag_list_TTZ
+elif(sample_tag == 'Rare') :
+  sample_tag_list = sample_tag_list_Rare
 elif(sample_tag == 'DeepTrim') :
   sample_tag_list = sample_tag_list_DeepTrim
 elif(sample_tag == 'SFCheckTrim') :
