@@ -85,7 +85,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
       bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
       double calomet = tr.getVar<double>("calomet");
-      bool passPFCaloMETRatio = (met/calomet<3) && (calomet>80);
+      bool passPFCaloMETRatio = (met/calomet<5);
       //normal baseline without dPhis cut
       bool passBaselineQCD = passLeptVeto
                           && passTagger
@@ -99,7 +99,6 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
                         || (ntopjets==2 && nbotjets==1)
                         || (ntopjets==2 && nbotjets==2);
       //apply the met efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
       //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
       double metEff = 1;
       if (
@@ -115,6 +114,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         
         if ( passdPhis )
         {
+          metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(true, ht, met);
           if( ismt2metsb )
           {
             myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
@@ -130,6 +130,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
 
         if ( !passdPhis )
         {
+          metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
           if( ismt2metsb )
           {
             myQCDFactors.nQCDInverted_MC[i][metbin_number][mt2bin_number]++;
@@ -233,7 +234,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
       bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
       double calomet = tr.getVar<double>("calomet");
-      bool passPFCaloMETRatio = (met/calomet<3) && (calomet>80);
+      bool passPFCaloMETRatio = (met/calomet<5);
       //normal baseline without dPhis cut
       bool passBaselineQCD = passLeptVeto
                           && passTagger
@@ -244,8 +245,8 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
                           && passPFCaloMETRatio;
 
       //apply the met efficiencies
-      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
       double metEff = 1;
+      metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(true, ht, met);
       if (
           passBaselineQCD
          )
@@ -394,7 +395,7 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
       bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
       double calomet = tr.getVar<double>("calomet");
-      bool passPFCaloMETRatio = (met/calomet<3) && (calomet>80);
+      bool passPFCaloMETRatio = (met/calomet<5);
       //normal baseline without dPhis cut
       bool passBaselineQCD = passLeptVeto
                           && passTagger
@@ -403,8 +404,8 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
                           //&& passQCDHighMETFilter
                           && passPFCaloMETRatio;
       //apply trigger efficiencies
-      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( false, ht, met );
       double metEff = 1;
+      metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
       if ( passBaselineQCD )
       {
         if( !passdPhis )
@@ -919,66 +920,76 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                 myQCDFactors.DC_sb_Data[searchbin_id] += thisweight * metEff;
                 myQCDFactors.DC_sb_Data_err[searchbin_id] += thisweight * metEff * thisweight * metEff; 
               }
-              if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
-                 || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
-                 || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
-                )
+              else
               {
-                //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-                bool isLL = tr.getVar<bool>("isLL");
-                bool ismt2metsb =    (ntopjets==1 && nbotjets==1)
-                                  || (ntopjets==1 && nbotjets==2)
-                                  || (ntopjets==2 && nbotjets==1)
-                                  || (ntopjets==2 && nbotjets==2);
+                //double ISRCorr = tr.getVar<double>("ISRCorr");
+                double BTagCorr = tr.getVar<double>("BTagCorr");
+                double ISRCorr = 1;
+                //double BTagCorr = 1;
 
-                //double ttjetsFactor = singlemuCS_invdphi;
-                double ttjetsFactor = 1;
-                ismt2metsb ? ttjetsFactor = singlemuCS_invdphi : ttjetsFactor = singlemuCS_ext_invdphi;
-
-                if(isLL)
+                if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
+                   || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
+                   || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
+                  )
                 {
-                  myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
-                }
-                else
-                {
-                  myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor; 
-                  myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
-                }
-              }
-              else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
-              {
-                //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-                double njetRWF = 1;
-                njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];   
-                myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
-                myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * njetRWF * zinv_RNorm * thisweight * metEff * njetRWF * zinv_RNorm;
-              }
-              else if(
-                         ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
-                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
-                     )
-              {
-                //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-                bool isGenZLep = tr.getVar<bool>("isGenZLep");
-                bool isGenWLep = tr.getVar<bool>("isGenWLep");
-                if( isGenZLep || isGenWLep ) continue;
+                  metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
+                  if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
 
-                bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
-                if( isNegativeWeight ) thisweight = -thisweight;
-                isNegativeWeight ? myQCDFactors.DC_sb_ttzMC[searchbin_id] -= std::abs(thisweight * metEff) : myQCDFactors.DC_sb_ttzMC[searchbin_id] += std::abs(thisweight * metEff);
-                //isNegativeWeight ? myQCDFactors.DC_sb_ttzMC_err[searchbin_id] -= thisweight * metEff * thisweight * metEff : myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
-                myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff;
-              }
+                  bool isLL = tr.getVar<bool>("isLL");
+                
+                  //bool ismt2metsb =    (ntopjets==1 && nbotjets==1)
+                  //                  || (ntopjets==1 && nbotjets==2)
+                  //                  || (ntopjets==2 && nbotjets==1)
+                  //                  || (ntopjets==2 && nbotjets==2);
+                  double ttjetsFactor = 0.815; //FIXME
+                  //ismt2metsb ? ttjetsFactor = singlemuCS_invdphi : ttjetsFactor = singlemuCS_ext_invdphi;
+
+                  if(isLL)
+                  {
+                    //myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    //myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
+                    myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor;
+                    myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor * ttjetsFactor;
+                  }
+                  else
+                  {
+                    //myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    //myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
+                    myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor; 
+                    myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor;
+                  }
+                }
+                else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
+                {
+                  double njetRWF = 1;
+                  njets30<8 ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[7];   
+                  myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
+                  myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * njetRWF * zinv_RNorm * thisweight * metEff * njetRWF * zinv_RNorm;
+                }
+                else if(
+                           ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                        || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
+                       )
+                {
+                  bool isGenZLep = tr.getVar<bool>("isGenZLep");
+                  bool isGenWLep = tr.getVar<bool>("isGenWLep");
+                  if( isGenZLep || isGenWLep ) continue;
+
+                  bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
+                  if( isNegativeWeight ) thisweight = -thisweight;
+                  isNegativeWeight ? myQCDFactors.DC_sb_ttzMC[searchbin_id] -= std::abs(thisweight * metEff * BTagCorr * ISRCorr) : myQCDFactors.DC_sb_ttzMC[searchbin_id] += std::abs(thisweight * metEff * BTagCorr * ISRCorr);
+                  myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr;
+                }
+              }//if MC
             }//if valid search bin id >=0
           }//event search region loop
         }//if inverted dphi
@@ -1131,8 +1142,9 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
       bool passBaseline_dPhisInverted = false;
       passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
       //apply trigger efficiencies
-      //double metEff = QCDGetTriggerEff( (*iter_QCDSampleInfos).QCDTag, met );
       double metEff = 1;
+      if   ( (*iter_QCDSampleInfos).QCDTag == "MET" ) metEff = 1;
+      else metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
 
       if (passBaseline_dPhisInverted)
       {
@@ -1158,6 +1170,14 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
         else
         {
           Int_t ih = -1;
+    
+          //Apply the b scale factor and ISR scale factor
+          //double ISRCorr = tr.getVar<double>("ISRCorr");
+          double BTagCorr = tr.getVar<double>("BTagCorr");
+          double ISRCorr = 1;
+          //double BTagCorr = 1;
+          //if(ISRCorr>0 && BTagCorr>0){ thisweight = thisweight*ISRCorr*BTagCorr; }
+          //else{std::cout << "ISRCorr : " << ISRCorr << ", BTagCorr : " << BTagCorr << std::endl; }
 
           if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
              || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
@@ -1166,12 +1186,15 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           { 
             bool isLL = tr.getVar<bool>("isLL");
             isLL ? ih = 0 : ih = 1;
+            
+            if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
+            //BTagCorr = tr.getVar<double>("BTagCorr");
           }
           else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos ) ih = 2;
           else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos )
           {
             double calomet = tr.getVar<double>("calomet");
-            bool passPFCaloMETRatio = (met/calomet<3) && (calomet>80); 
+            bool passPFCaloMETRatio = (met/calomet<5); 
             if( !passPFCaloMETRatio ) continue;
             ih = 3;
           }
@@ -1195,16 +1218,16 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           }
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
 
-          (myBasicCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*metEff);
-          (myBasicCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_met_MC[ih])->Fill(met,thisweight*metEff*ISRCorr*BTagCorr);
+          (myBasicCheckHistgram.h_b_mt2_MC[ih])->Fill(mt2,thisweight*metEff*ISRCorr*BTagCorr);
+          (myBasicCheckHistgram.h_b_ntopjets_MC[ih])->Fill(ntopjets,thisweight*metEff*ISRCorr*BTagCorr);
+          (myBasicCheckHistgram.h_b_nbjets_MC[ih])->Fill(nbotjets,thisweight*metEff*ISRCorr*BTagCorr);
+          (myBasicCheckHistgram.h_b_ht_MC[ih])->Fill(ht,thisweight*metEff*ISRCorr*BTagCorr);
+          (myBasicCheckHistgram.h_b_mht_MC[ih])->Fill(mht,thisweight*metEff*ISRCorr*BTagCorr);
+          (myBasicCheckHistgram.h_b_njets30_MC)[ih]->Fill(njets30,thisweight*metEff*ISRCorr*BTagCorr);
+          (myBasicCheckHistgram.h_b_njets50_MC)[ih]->Fill(njets50,thisweight*metEff*ISRCorr*BTagCorr);
 
-          (myBasicCheckHistgram.h_b_sb_MC)[ih]->Fill(searchbin_id,thisweight*metEff);
+          (myBasicCheckHistgram.h_b_sb_MC)[ih]->Fill(searchbin_id,thisweight*metEff*ISRCorr*BTagCorr);
         }
       }
     }//end of inner loop
@@ -1280,7 +1303,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
       if ( 
             passBaselineLL 
          && (nElectrons==0) && (nMuons == 1) 
-         && !(ismt2metsb)
+         && (ismt2metsb)
          //&& (!passdPhis)
          //&& passdPhis
          )
@@ -1328,7 +1351,7 @@ void LoopBasicCheckLL( QCDSampleWeight& myQCDSampleWeight )
           else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos )
           {
             double calomet = tr.getVar<double>("calomet");
-            bool passPFCaloMETRatio = (met/calomet<3) && (calomet>80); 
+            bool passPFCaloMETRatio = (met/calomet<5); 
             if( !passPFCaloMETRatio ) continue;
             ih = 3;
           }
@@ -1481,7 +1504,7 @@ void LoopSBCheck( QCDSampleWeight& myQCDSampleWeight )
           else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos )
           {
             double calomet = tr.getVar<double>("calomet");
-            bool passPFCaloMETRatio = (met/calomet<3) && (calomet>80); 
+            bool passPFCaloMETRatio = (met/calomet<5); 
             if( !passPFCaloMETRatio ) continue;
             ih = 3;
           }
