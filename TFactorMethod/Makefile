@@ -22,7 +22,7 @@ LDFLAGS  =
 
 LIBS     = $(shell root-config --glibs)
 
-PROGRAMS = QCD ClosurePlots BasicCheckPlots SysUncs
+PROGRAMS = QCD ClosurePlots BasicCheckPlots SysUncs LLHadTau
 
 all: mkobj $(PROGRAMS)
 
@@ -64,6 +64,9 @@ BasicCheckPlots: $(ODIR)/BasicCheckPlots.o
 #	$(LD) $^ $(LIBS) -o $@
 
 SysUncs: $(ODIR)/SysUncs.o $(ODIR)/searchBins.o $(ODIR)/SATException.o
+	$(LD) $^ $(LIBS) -o $@
+
+LLHadTau: $(ODIR)/LLHadTau.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/LLHadTauFactors.o $(ODIR)/QCDReWeighting.o
 	$(LD) $^ $(LIBS) -o $@
 
 clean:
