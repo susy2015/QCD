@@ -9,12 +9,6 @@ cd $CMSSW_BASE/tmp
 cachedir
 cd $CMSSW_BASE/src/.git
 cachedir
-cd $CMSSW_BASE/src/CalibMuon
-cachedir
-cd $CMSSW_BASE/src/Configuration
-cachedir
-cd $CMSSW_BASE/src/DQMOffline
-cachedir
 cd $CMSSW_BASE/src/JMEAnalysis
 cachedir
 cd $CMSSW_BASE/src/PhysicsTools
@@ -36,8 +30,6 @@ cachedir
 cd $CMSSW_BASE/src/SusyAnaTools/StopTreeMaker
 cachedir
 cd $CMSSW_BASE/src/SusyAnaTools/TopTagger
-cachedir
-cd $CMSSW_BASE/src/TopQuarkAnalysis
 cachedir
 cd $CMSSW_BASE/src/TopTagger/.git
 cachedir

@@ -4,8 +4,8 @@
 1.Set CMS Environment:
 
 ```
-cmsrel CMSSW_8_0_25
-cd CMSSW_8_0_25/src
+cmsrel CMSSW_8_0_26_patch1
+cd CMSSW_8_0_26_patch1/src/
 cmsenv
 ```
 2.Download source code from github and compile plugins:
@@ -13,12 +13,10 @@ cmsenv
 SusyAnaTools:
 ```
 git cms-init
-git cms-merge-topic -u kpedro88:METfix8022
-git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
+git cms-merge-topic cms-met:METRecipe_8020 -u
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 git clone git@github.com:susy2015/JetToolbox.git JMEAnalysis/JetToolbox -b fix_NoLep_jetToolbox_80X_V3
-git cms-merge-topic gpetruc:badMuonFilters_80X_v2
-git clone -b ana_v3_Summer16_MC_23Sep2016_Data_Feb21_2017 git@github.com:susy2015/SusyAnaTools.git
+git clone -b ana_reMINIAOD_Mar06_2017 git@github.com:susy2015/SusyAnaTools.git
 ```
 
 TopTagger:
@@ -53,7 +51,7 @@ Please make sure compile the TopTagger first then SusyAnaTools/Tools! Since base
 QCD:
 ```
 cd $CMSSW_BASE/src
-git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
+git clone -b QCD2017MoriondBranch git@github.com:susy2015/QCD.git
 ```
 # QCD Tools
 

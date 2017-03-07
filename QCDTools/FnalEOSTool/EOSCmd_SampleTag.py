@@ -1,21 +1,21 @@
 import glob, os, sys
 
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv12p5c_ReRun4_PreApp"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv13p5c_ReminiAOD_App"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv12p5c_ReRun2"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SFCheckTrim_2016Sep"
 
 MGM = "root://cmseos.fnal.gov/"
 
 sample_tag_list_Data = [
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016B-23Sep2016-v3_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016C-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016D-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016E-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016F-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016G-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v2_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v3_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016B-03Feb2017_ver2-v2_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016C-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016D-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016E-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016F-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016G-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver2-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver3-v1_stopFlatNtuples_",
                        ]
 
 sample_tag_list_LLHadTau = [

@@ -9,8 +9,7 @@
 //#define LUMI 4004.345 //preapp, NTuple v7 fix b working point
 //#define LUMI 7647.637518921 //app, NTuple v8
 //#define LUMI 12918.140703927 //final 2016 ICHEP data set
-//#define LUMI 36352.970569733 //final 2017 Moriond data set
-#define LUMI 36813.714859265 //final 2017 Moriond data set, after reprocess
+#define LUMI 35866.210733056 //final 2017 Moriond data set, after re miniAOD
 
 #define QCD_BINS 2*6
 #define MET_BINS 4
