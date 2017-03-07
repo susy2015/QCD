@@ -179,6 +179,7 @@ void ClosurePlots::ClosureTemplate(
   h_ratio->GetXaxis()->SetTitleSize(0.16);
   h_ratio->GetXaxis()->SetTitleFont(42);
   h_ratio->GetXaxis()->SetTitleOffset(1.0);
+
   if (hist_tag == "_sb")
   {
     h_ratio->GetXaxis()->SetTitle("Search region bin number");
