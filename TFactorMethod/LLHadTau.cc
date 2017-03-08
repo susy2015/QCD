@@ -37,7 +37,7 @@ void LoopLLHadTauCal( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& myQCD
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
 
-  std::cout << "Let's check single Muon region for LL: " << std::endl;  
+  std::cout << "Let's calculate the LL and HadTau translation factor: " << std::endl;  
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
     //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
@@ -87,13 +87,20 @@ void LoopLLHadTauCal( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& myQCD
 
         double ISRCorr = tr.getVar<double>("ISRCorr");
         double BTagCorr = tr.getVar<double>("BTagCorr");
+        bool isLL = tr.getVar<bool>("isLL");
 
-        if( passLeptVeto && ( passdPhis) ){ myLLHadTauFactors.SR_dphi_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( passLeptVeto && (!passdPhis) ){ myLLHadTauFactors.SR_invdphi_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( passLeptVeto && ( passdPhis) ){ myLLHadTauFactors.SR_dphi_ll_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( passLeptVeto && (!passdPhis) ){ myLLHadTauFactors.SR_invdphi_ll_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_ll_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_ll_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_ll_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_ll_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( passLeptVeto && ( passdPhis) ){ myLLHadTauFactors.SR_dphi_hadtau_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( passLeptVeto && (!passdPhis) ){ myLLHadTauFactors.SR_invdphi_hadtau_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_hadtau_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_hadtau_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_hadtau_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_hadtau_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
       }
     }//end of inner loop
   }//end of QCD Samples loop
@@ -102,6 +109,81 @@ void LoopLLHadTauCal( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& myQCD
   myLLHadTauFactors.printInfo();
   return ;
 }
+
+void LoopLLHadTauPredData( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& myQCDSampleWeight )
+{
+  //clock to monitor the run time
+  size_t t0 = clock();
+  std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
+
+  std::cout << "Let's predict the LL and HadTau yield: " << std::endl;  
+  for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
+  {    
+    //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
+    NTupleReader tr((*iter_QCDSampleInfos).chain);
+
+    double thisweight = (*iter_QCDSampleInfos).weight;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos ) thisweight = 1 * Scale;
+    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
+
+    while(tr.getNextEvent())
+    {
+      if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+
+      //searchbin variables
+      int ntopjets = tr.getVar<int>("nTop");
+      int nbotjets = tr.getVar<int>("nBot");
+      double mt2 = tr.getVar<double>("mt2");
+      double met = tr.getVar<double>("met");
+      //closure plots variables
+      int njets30 = tr.getVar<int>("nJets30");
+      int njets50 = tr.getVar<int>("nJets50");
+      double ht = tr.getVar<double>("ht");
+      double mht = tr.getVar<double>("mht");
+
+      int nMuons     = tr.getVar<int>("nMuons");
+      int nElectrons = tr.getVar<int>("nElectrons");
+
+      bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
+      bool passTagger = tr.getVar<bool>("passTagger");
+      bool passBJets = tr.getVar<bool>("passBJets");
+      bool passdPhis = tr.getVar<bool>("passdPhis");
+      bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
+      bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
+      //normal baseline without dPhis and Lepton veto cut
+      bool passBaselineLL = passTagger
+                         && passBJets
+                         && passQCDHighMETFilter
+                         && passNoiseEventFilter;
+
+      //apply trigger efficiencies
+      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+      double metEff = 1;
+      if ( passBaselineLL )
+      {
+        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
+        if( met<250 ) continue;
+
+        if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos )
+        {
+
+
+        }
+        else
+        {
+          double ISRCorr = tr.getVar<double>("ISRCorr");
+          double BTagCorr = tr.getVar<double>("BTagCorr");
+        }
+
+
+
+      }
+    }//end of inner loop
+  }//end of QCD Samples loop
+
+  return ;
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -150,7 +232,7 @@ int main(int argc, char* argv[])
   }
   else if( RunMode == "PredDataLLHadTau" )
   {
-    //LoopLLHadTauPredData( myLLHadTauFactors, myLLHadTauDataSampleWeight );
+    LoopLLHadTauPredData( myLLHadTauFactors, myLLHadTauDataSampleWeight );
     return 0;
   }
   else

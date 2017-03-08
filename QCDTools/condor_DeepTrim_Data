@@ -7,7 +7,7 @@ should_transfer_files = YES
 #when_to_transfer_output = ON_EXIT
 
 ##transfer file list for Data samples
-transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/CMSSW_8_0_25.tar.gz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_Moriond17_B_H.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TTbarNoHad_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_Nov17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/puppiSoftdropResol.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth14_2016_Dec2.model, 
+transfer_input_files = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/$ENV(CMSSW_VERSION).tar.gz, $ENV(CMSSW_BASE)/src/QCD/QCDTools/DeepTrim, $ENV(CMSSW_BASE)/src/QCD/QCDTools/NTuple_DeepTrim.py, $ENV(CMSSW_BASE)/src/QCD/QCDTools/goDeepTrim.sh, $ENV(CMSSW_BASE)/src/QCD/QCDTools/allINone_ISRJets.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/ISRWeights.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/CSVv2_Moriond17_B_H.csv, $ENV(CMSSW_BASE)/src/QCD/QCDTools/allINone_bTagEff.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/allINone_leptonSF_Moriond17.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/PileupHistograms_0121_69p2mb_pm4p6.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/puppiCorr.root, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/TrainingOutput_dR20_pt30_depth12_500tree_2017_Feb16.model, $ENV(CMSSW_BASE)/src/QCD/QCDTools/Legacy_TopTagger.cfg, $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/2017MoriondTxt.tar.gz
 
 Output = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/DeepTrim_Data_$(Process).stdout
 Error = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/DeepTrim_Data_$(Process).stderr
@@ -15,4 +15,1747 @@ Log = $ENV(CMSSW_BASE)/src/QCD/QCDTools/QCDStopFlattrees/res/DeepTrim_Data_$(Pro
 notify_user = hua.wei@cern.ch
 
 #### MET ####
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.aa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ab
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ac
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ad
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ae
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.af
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ag
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ah
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ai
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.aj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ak
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.al
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.am
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.an
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ao
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ap
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.aq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ar
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.as
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.at
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.au
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.av
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.aw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ax
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ay
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.az
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ba
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.be
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.br
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.by
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.bz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ca
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ce
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ch
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ci
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ck
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.co
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ct
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.cz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.da
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.db
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.de
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.df
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.di
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.do
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ds
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.du
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.dz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ea
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.eb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ec
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ed
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ee
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ef
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.eg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.eh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ei
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ej
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ek
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.el
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.em
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.en
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.eo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ep
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.eq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.er
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.es
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.et
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.eu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ev
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ew
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ex
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ey
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ez
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fe
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ff
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ft
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.fz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ga
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ge
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.go
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.gz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ha
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.he
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ho
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ht
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.hz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ia
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ib
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ic
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.id
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ie
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.if
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ig
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ih
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ii
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ij
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ik
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.il
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.im
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.in
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.io
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ip
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.iq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ir
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.is
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.it
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.iu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.iv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.iw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ix
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.iy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.iz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ja
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.je
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ji
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.js
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ju
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.jz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ka
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ke
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ki
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.km
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ko
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ks
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ku
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ky
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.kz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.la
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ld
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.le
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.li
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ll
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ln
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ls
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ly
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.lz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ma
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.md
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.me
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ml
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ms
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.my
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.mz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.na
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ne
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ng
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ni
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.no
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.np
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ns
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ny
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.nz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ob
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.od
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oe
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.of
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.og
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ok
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ol
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.om
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.on
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.op
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.or
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.os
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ot
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ou
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ov
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ow
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ox
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.oz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pe
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ph
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.po
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ps
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.px
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.py
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.pz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qe
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ql
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.qz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ra
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.re
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ri
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ro
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ru
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ry
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.rz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.se
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.si
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.so
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ss
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.st
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.su
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.sz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ta
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.td
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.te
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.th
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ti
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.to
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ts
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ty
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.tz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ua
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ub
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ud
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ue
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ug
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ui
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ul
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.um
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.un
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.up
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ur
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.us
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ut
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ux
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.uz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.va
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.ve
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vi
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vj
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vk
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vl
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vm
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vn
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vo
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vp
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vq
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vr
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vs
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vt
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vu
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vv
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vw
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vx
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vy
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.vz
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wb
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wc
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wd
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.we
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wf
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wg
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wh
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/METSplit.wi
+Queue
 
