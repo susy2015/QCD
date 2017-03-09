@@ -87,20 +87,32 @@ void LoopLLHadTauCal( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& myQCD
 
         double ISRCorr = tr.getVar<double>("ISRCorr");
         double BTagCorr = tr.getVar<double>("BTagCorr");
+        
+        bool isAllHad = tr.getVar<bool>("isAllHad");
         bool isLL = tr.getVar<bool>("isLL");
-
-        if( passLeptVeto && ( passdPhis) ){ myLLHadTauFactors.SR_dphi_ll_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( passLeptVeto && (!passdPhis) ){ myLLHadTauFactors.SR_invdphi_ll_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_ll_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_ll_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_ll_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_ll_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( passLeptVeto && ( passdPhis) ){ myLLHadTauFactors.SR_dphi_hadtau_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( passLeptVeto && (!passdPhis) ){ myLLHadTauFactors.SR_invdphi_hadtau_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_hadtau_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_hadtau_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_hadtau_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_hadtau_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        bool isHadTau = tr.getVar<bool>("isHadTau");
+        if(isAllHad)
+        {
+          if( ( (*iter_QCDSampleInfos).QCDTag ).find("Lept") != std::string::npos ) std::cout << "Get All Had events in the TTJets Leptonic channel??!!" << std::endl;
+        }
+        else
+        {
+          if(isLL)
+          {
+            if( passLeptVeto && ( passdPhis) ){ myLLHadTauFactors.SR_dphi_ll_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+            if( passLeptVeto && (!passdPhis) ){ myLLHadTauFactors.SR_invdphi_ll_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+          }
+          if(isHadTau)
+          {
+            if( passLeptVeto && ( passdPhis) ){ myLLHadTauFactors.SR_dphi_hadtau_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+            if( passLeptVeto && (!passdPhis) ){ myLLHadTauFactors.SR_invdphi_hadtau_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+          }
+          if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+          if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_singleMu_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+          if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ myLLHadTauFactors.CR_dphi_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+          if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ myLLHadTauFactors.CR_invdphi_singleEl_MC_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+          if( ((!isLL) && (!isHadTau)) || (isLL && isHadTau) ) std::cout << "Not All Had and also not LL not HadTau??!!" << std::endl;
+        }
       }
     }//end of inner loop
   }//end of QCD Samples loop
@@ -166,24 +178,18 @@ void LoopLLHadTauPredData( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& 
 
         if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos )
         {
-
-
         }
         else
         {
           double ISRCorr = tr.getVar<double>("ISRCorr");
           double BTagCorr = tr.getVar<double>("BTagCorr");
         }
-
-
-
       }
     }//end of inner loop
   }//end of QCD Samples loop
 
   return ;
 }
-
 
 int main(int argc, char* argv[])
 {
@@ -196,8 +202,8 @@ int main(int argc, char* argv[])
   }
 
   std::string RunMode = argv[1];
-  std::string inputFileList_LLHadTauMC = argv[2];
-  std::string inputFileList_Data = argv[3];
+  std::string inputFileList_LLHadTauDataMC = argv[2];
+  std::string inputFileList_AllHadTTJetsSTWJets = argv[3];
  
   std::cout << "The valid run modes are: CalLLHadTau, PredDataLLHadTau" << std::endl;
   std::cout << "The run mode we have right now is: " << RunMode << std::endl;
@@ -208,22 +214,22 @@ int main(int argc, char* argv[])
   double TTbar_DiLept_BR = 0.10614564; // W_Lept_BR^2
   //sample needed in the prediction loop
   QCDSampleWeight myLLHadTauMCSampleWeight;
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_LLHadTauMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      38867206, LUMI, 1.21, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7759701, LUMI, 1.21, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      17494743, LUMI, 1.21, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7745467, LUMI, 1.21, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       6801534, LUMI, 1.21, inputFileList_LLHadTauMC.c_str() );
-  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2637821, LUMI, 1.21, inputFileList_LLHadTauMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      38867206, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7759701, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      17494743, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7745467, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       6801534, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2637821, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
 
   //sample needed in the basic check loop
   QCDSampleWeight myLLHadTauDataSampleWeight;
-  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "MET", 1, 1, LUMI, 1, inputFileList_Data.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "MET", 1, 1, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
 
   if( RunMode == "CalLLHadTau" )
   {
