@@ -128,6 +128,9 @@ void LoopLLHadTauPredData( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& 
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
 
+  double nData_dphi_CR_Mu=0, nMC_dphi_CR_Mu=0, nData_dphi_CR_El=0, nMC_dphi_CR_El=0;
+  double nData_invdphi_CR_Mu=0, nMC_invdphi_CR_Mu=0, nData_invdphi_CR_El=0, nMC_invdphi_CR_El=0;
+
   std::cout << "Let's predict the LL and HadTau yield: " << std::endl;  
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
@@ -178,16 +181,27 @@ void LoopLLHadTauPredData( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& 
 
         if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos )
         {
+          if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ nData_dphi_CR_Mu+=thisweight; }
+          if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ nData_invdphi_CR_Mu+=thisweight; }
+          if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ nData_dphi_CR_El+=thisweight; }
+          if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ nData_invdphi_CR_El+=thisweight; }
         }
         else
         {
           double ISRCorr = tr.getVar<double>("ISRCorr");
           double BTagCorr = tr.getVar<double>("BTagCorr");
+          if( (nElectrons==0) && (nMuons == 1) && ( passdPhis) ){ nMC_dphi_CR_Mu+=thisweight*ISRCorr*BTagCorr; }
+          if( (nElectrons==0) && (nMuons == 1) && (!passdPhis) ){ nMC_invdphi_CR_Mu+=thisweight*ISRCorr*BTagCorr; }
+          if( (nElectrons==1) && (nMuons == 0) && ( passdPhis) ){ nMC_dphi_CR_El+=thisweight*ISRCorr*BTagCorr; }
+          if( (nElectrons==1) && (nMuons == 0) && (!passdPhis) ){ nMC_invdphi_CR_El+=thisweight*ISRCorr*BTagCorr; }
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
-
+  std::cout << "dphi CR Mu overall Data/MC: " << nData_dphi_CR_Mu/nMC_dphi_CR_Mu << std::endl;
+  std::cout << "invdphi CR Mu overall Data/MC: " << nData_invdphi_CR_Mu/nMC_invdphi_CR_Mu << std::endl;
+  std::cout << "dphi CR El overall Data/MC: " << nData_dphi_CR_El/nMC_dphi_CR_El << std::endl;
+  std::cout << "invdphi CR El overall Data/MC: " << nData_invdphi_CR_El/nMC_invdphi_CR_El << std::endl;
   return ;
 }
 
@@ -230,6 +244,17 @@ int main(int argc, char* argv[])
   //sample needed in the basic check loop
   QCDSampleWeight myLLHadTauDataSampleWeight;
   myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "MET", 1, 1, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7,      38867206, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,       7759701, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05,      17494743, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,       7745467, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       6801534, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
+  myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2637821, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
 
   if( RunMode == "CalLLHadTau" )
   {

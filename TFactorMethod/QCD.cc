@@ -941,7 +941,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   //                  || (ntopjets==1 && nbotjets==2)
                   //                  || (ntopjets==2 && nbotjets==1)
                   //                  || (ntopjets==2 && nbotjets==2);
-                  double ttjetsFactor = 0.815; //FIXME
+                  double ttjetsFactor = 0.84; //FIXME
                   //ismt2metsb ? ttjetsFactor = singlemuCS_invdphi : ttjetsFactor = singlemuCS_ext_invdphi;
 
                   if(isLL)
