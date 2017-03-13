@@ -210,7 +210,11 @@ void LoopLLHadTauAllHadStudy( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeigh
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
-  double cr_had_sb[NSEARCH_BINS]={0}, cr_lept_sb[NSEARCH_BINS]={0};
+  
+  AllHadTTJetsWJetsSTHistgram myAllHadTTJetsWJetsSTHistgram;
+  myAllHadTTJetsWJetsSTHistgram.BookHistgram( (dir_out + "AllHadTTJetsWJetsST.root").c_str() );
+  
+  double cr_had_sb[NSEARCH_BINS]={0}, cr_lept_sb[NSEARCH_BINS]={0}, cr_data_sb[NSEARCH_BINS]={0};
   std::cout << "Let's study the all had part of TTJets, WJets and single top: " << std::endl;  
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
@@ -265,28 +269,77 @@ void LoopLLHadTauAllHadStudy( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeigh
           if( genht>=600 ) continue;
         }
 
-        double ISRCorr = tr.getVar<double>("ISRCorr");
-        double BTagCorr = tr.getVar<double>("BTagCorr");
+        if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
+           || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
+           || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
+          )
+        {
+          double ISRCorr = tr.getVar<double>("ISRCorr");
+          double BTagCorr = tr.getVar<double>("BTagCorr");
         
-        bool isAllHad = tr.getVar<bool>("isAllHad");
-        bool isLL = tr.getVar<bool>("isLL");
-        bool isHadTau = tr.getVar<bool>("isHadTau");
-
-        if(isAllHad)
+          bool isAllHad = tr.getVar<bool>("isAllHad");
+          bool isLL = tr.getVar<bool>("isLL");
+          bool isHadTau = tr.getVar<bool>("isHadTau");
+          double ttjetsFactor = 0.84;
+          if(isAllHad)
+          {
+            if(!passdPhis)
+            { 
+              (myAllHadTTJetsWJetsSTHistgram.h_had_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_had_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              cr_had_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr*ttjetsFactor; 
+            }
+          }
+          else
+          {
+            if(!passdPhis)
+            { 
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_lept_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              cr_lept_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr*ttjetsFactor; 
+            }
+          }
+        }//end of TTJets, WJets STMC sample
+        if( ((*iter_QCDSampleInfos).QCDTag).find("MET") != std::string::npos )
         {
-          if(!passdPhis){ cr_had_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
-        }
-        else
-        {
-          if(!passdPhis){ cr_lept_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+          if(!passdPhis)
+          {
+            (myAllHadTTJetsWJetsSTHistgram.h_data_met)->Fill(met,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_njets30)->Fill(njets30,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_njets50)->Fill(njets50,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_mt2)->Fill(mt2,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_ht)->Fill(ht,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_mht)->Fill(mht,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_ntopjets)->Fill(ntopjets,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_nbjets)->Fill(nbotjets,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_data_sb)->Fill(searchbin_id,thisweight);
+            cr_data_sb[searchbin_id]+=thisweight;
+          }
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
 
+  (myAllHadTTJetsWJetsSTHistgram.oFile)->Write();
+  (myAllHadTTJetsWJetsSTHistgram.oFile)->Close();
+
   for(int i=0;i<NSEARCH_BINS;i++)
   {
-    std::cout << "SB id: " << i << "; Had/Lept: " << cr_had_sb[i]/cr_lept_sb[i] << std::endl;
+    std::cout << "SB id: " << i << "; Had/Data: " << cr_had_sb[i]/cr_data_sb[i] << std::endl;
   }
 
   return ;
@@ -358,6 +411,7 @@ int main(int argc, char* argv[])
   myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,  7745467, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
   myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,  6801534, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
   myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,  2637821, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "MET", 1, 1, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
 
   if( RunMode == "CalLLHadTau" )
   {

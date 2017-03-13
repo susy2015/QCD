@@ -26,6 +26,7 @@
 //Scale Tfactors with the Tfactor from Real Data
 #include "ConstantsSnippet.h"
 
+#include "AllHadTTJetsWJetsSTHistgram.h"
 //all the root file for plotting will go to this directory
 std::string dir_out = "RootForPlotting/";
 //search bin definition, with era
