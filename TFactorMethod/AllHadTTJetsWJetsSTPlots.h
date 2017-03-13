@@ -112,6 +112,7 @@ void AllHadTTJetsWJetsSTPlots::CompareTemplate(
   h_n->GetYaxis()->SetLabelSize(0.05);
   h_n->GetYaxis()->SetLabelFont(42);
   h_n->GetYaxis()->SetTitle("Events");
+  h_n->SetMinimum(0.001);
   //h_n->Sumw2();
   //h_n->Scale(scale);
 
@@ -128,6 +129,7 @@ void AllHadTTJetsWJetsSTPlots::CompareTemplate(
   h_d->GetYaxis()->SetLabelSize(0.05);
   h_d->GetYaxis()->SetLabelFont(42);
   h_d->GetYaxis()->SetTitle("Events");
+  h_d->SetMinimum(0.001);
   //h_d->Sumw2();
   //h_d->Scale(scale);
 
@@ -217,8 +219,8 @@ void AllHadTTJetsWJetsSTPlots::CompareTemplate(
   pad2->SetTopMargin(small);
   pad2->SetBorderMode(0);
 
-  h_ratio->SetMaximum(0.5);
-  h_ratio->SetMinimum(-0.5);
+  h_ratio->SetMaximum(0.9);
+  h_ratio->SetMinimum(-0.1);
 
   TLine *tl_one = new TLine();
   tl_one->SetLineStyle(2);
