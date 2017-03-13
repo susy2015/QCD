@@ -71,6 +71,8 @@ int main(int argc, char* argv[])
   selectedTree->Branch("isAllHad",&isAllHad,"isAllHad/O");
   selectedTree->Branch("isLL",&isLL,"isLL/O");
   selectedTree->Branch("isHadTau",&isHadTau,"isHadTau/O");
+  Double_t genht;
+  selectedTree->Branch("genht",&genht,"genht/D");
 
   std::shared_ptr<topTagger::type3TopTagger>type3Ptr(nullptr);
   NTupleReader *tr=0;
@@ -135,6 +137,9 @@ int main(int argc, char* argv[])
       if(W_emuVec.size() !=0 || W_tau_emuVec.size() !=0){ isLL=true; }
       else if(W_tau_prongsVec.size() !=0){ isHadTau = true; }
       else{ isAllHad=true; }
+      //genHT information
+      genht = tr->getVar<double>("genHT");
+
       selectedTree->Fill();
     }
     else continue;
@@ -146,8 +151,8 @@ int main(int argc, char* argv[])
   if (originalTree) delete originalTree;
 
   std::string d = "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15";
-  //std::system(("xrdcp " + output_str + " " + d).c_str());
-  //std::system(("rm " + output_str).c_str());
+  std::system(("xrdcp " + output_str + " " + d).c_str());
+  std::system(("rm " + output_str).c_str());
 
   return 0;
 }

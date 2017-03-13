@@ -1,7 +1,7 @@
 import glob, os, sys
 
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv13p5c_ReminiAOD_App"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv13p5c_TTJetsHadStudy_App"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv13p5c_ReminiAOD_App"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SFCheckTrim_2016Sep"
 
@@ -25,6 +25,7 @@ sample_tag_list_LLHadTau = [
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromTbar_ext1_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_DiLept_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_DiLept_ext1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_TTJets_Inc_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_HT-600to800_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_HT-800to1200_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_HT-1200to2500_stopFlatNtuples_",

@@ -421,6 +421,36 @@ Queue
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.bl
 Queue
 
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ae
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.af
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ah
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ai
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aj
+Queue
+
 #### WJetsToLNu_HT- ####
 
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
