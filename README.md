@@ -108,6 +108,7 @@ LLHadTau related studies:
 ```
 ./LLHadTau CalLLHadTau ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2017Moriondv12.txt ../QCDTools/QCDStopFlattrees/runList_QCD_TTJetsWJetsSTHad_QCDTFTrimAndSlim_2017Moriondv12.txt
 ./LLHadTau PredDataLLHadTau ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2017Moriondv12.txt ../QCDTools/QCDStopFlattrees/runList_QCD_TTJetsWJetsSTHad_QCDTFTrimAndSlim_2017Moriondv12.txt
+./LLHadTau AllHadStudyLLHadTau ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2017Moriondv12.txt ../QCDTools/QCDStopFlattrees/runList_QCD_TTJetsWJetsSTHad_QCDTFTrimAndSlim_2017Moriondv12.txt
 ```
 
 # QCD Rebalance and Smear Method

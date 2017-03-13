@@ -205,6 +205,93 @@ void LoopLLHadTauPredData( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& 
   return ;
 }
 
+void LoopLLHadTauAllHadStudy( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeight& myQCDSampleWeight )
+{
+  //clock to monitor the run time
+  size_t t0 = clock();
+  std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
+  double cr_had_sb[NSEARCH_BINS]={0}, cr_lept_sb[NSEARCH_BINS]={0};
+  std::cout << "Let's study the all had part of TTJets, WJets and single top: " << std::endl;  
+  for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
+  {    
+    //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
+    NTupleReader tr((*iter_QCDSampleInfos).chain);
+
+    double thisweight = (*iter_QCDSampleInfos).weight;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("MET") != std::string::npos ) thisweight = 1 * Scale;
+    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
+
+    while(tr.getNextEvent())
+    {
+      if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+
+      //searchbin variables
+      int ntopjets = tr.getVar<int>("nTop");
+      int nbotjets = tr.getVar<int>("nBot");
+      double mt2 = tr.getVar<double>("mt2");
+      double met = tr.getVar<double>("met");
+      //closure plots variables
+      int njets30 = tr.getVar<int>("nJets30");
+      int njets50 = tr.getVar<int>("nJets50");
+      double ht = tr.getVar<double>("ht");
+      double mht = tr.getVar<double>("mht");
+
+      int nMuons     = tr.getVar<int>("nMuons");
+      int nElectrons = tr.getVar<int>("nElectrons");
+
+      bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
+      bool passTagger = tr.getVar<bool>("passTagger");
+      bool passBJets = tr.getVar<bool>("passBJets");
+      bool passdPhis = tr.getVar<bool>("passdPhis");
+      bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
+      bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
+      //normal baseline without dPhis and Lepton veto cut
+      bool passBaselineQCD = passLeptVeto 
+                          && passTagger
+                          && passBJets
+                          && passQCDHighMETFilter
+                          && passNoiseEventFilter;
+
+      //apply trigger efficiencies
+      //double metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
+      double metEff = 1;
+      if ( passBaselineQCD )
+      {
+        int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
+        if( met<250 ) continue;
+        if( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos )
+        {
+          double genht = tr.getVar<double>("genht");
+          if( genht>=600 ) continue;
+        }
+
+        double ISRCorr = tr.getVar<double>("ISRCorr");
+        double BTagCorr = tr.getVar<double>("BTagCorr");
+        
+        bool isAllHad = tr.getVar<bool>("isAllHad");
+        bool isLL = tr.getVar<bool>("isLL");
+        bool isHadTau = tr.getVar<bool>("isHadTau");
+
+        if(isAllHad)
+        {
+          if(!passdPhis){ cr_had_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        }
+        else
+        {
+          if(!passdPhis){ cr_lept_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr; }
+        }
+      }
+    }//end of inner loop
+  }//end of QCD Samples loop
+
+  for(int i=0;i<NSEARCH_BINS;i++)
+  {
+    std::cout << "SB id: " << i << "; Had/Lept: " << cr_had_sb[i]/cr_lept_sb[i] << std::endl;
+  }
+
+  return ;
+}
+
 int main(int argc, char* argv[])
 {
   if (argc < 3)
@@ -226,7 +313,7 @@ int main(int argc, char* argv[])
 
   double TTbar_SingleLept_BR = 0.43930872; // 2*W_Lept_BR*(1-W_Lept_BR)
   double TTbar_DiLept_BR = 0.10614564; // W_Lept_BR^2
-  //sample needed in the prediction loop
+  //sample needed in the LL TF calculation loop
   QCDSampleWeight myLLHadTauMCSampleWeight;
   myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
   myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
@@ -241,7 +328,7 @@ int main(int argc, char* argv[])
   myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       6801534, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
   myLLHadTauMCSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2637821, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
 
-  //sample needed in the basic check loop
+  //sample needed in the ll pred loop
   QCDSampleWeight myLLHadTauDataSampleWeight;
   myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "MET", 1, 1, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
   myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_LLHadTauDataMC.c_str() );
@@ -256,6 +343,22 @@ int main(int argc, char* argv[])
   myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,       6801534, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
   myLLHadTauDataSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,       2637821, LUMI, 1.21, inputFileList_LLHadTauDataMC.c_str() );
 
+
+  QCDSampleWeight myLLHadTauAllHadSampleWeight;
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_TTJets_Inc_"          ,      831.76, 10139950, LUMI,    1, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-600to800_"  ,    2.666535, 14210872, LUMI,    1, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-800to1200_" ,    1.098082,  9982765, LUMI,    1, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-1200to2500_",    0.198748,  2932983, LUMI,    1, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-2500toInf_" , 0.002368413,  1519815, LUMI,    1, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"            ,        35.6,  6774350, LUMI,    1, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"        ,        35.6,  6933094, LUMI,    1, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7, 38867206, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,  7759701, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05, 17494743, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,  7745467, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,  6801534, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
+  myLLHadTauAllHadSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,  2637821, LUMI, 1.21, inputFileList_AllHadTTJetsSTWJets.c_str() );
+
   if( RunMode == "CalLLHadTau" )
   {
     LoopLLHadTauCal( myLLHadTauFactors, myLLHadTauMCSampleWeight );
@@ -264,6 +367,11 @@ int main(int argc, char* argv[])
   else if( RunMode == "PredDataLLHadTau" )
   {
     LoopLLHadTauPredData( myLLHadTauFactors, myLLHadTauDataSampleWeight );
+    return 0;
+  }
+  else if( RunMode == "AllHadStudyLLHadTau" )
+  {
+    LoopLLHadTauAllHadStudy( myLLHadTauFactors, myLLHadTauAllHadSampleWeight );
     return 0;
   }
   else
