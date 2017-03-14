@@ -215,6 +215,10 @@ void LoopLLHadTauAllHadStudy( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeigh
   myAllHadTTJetsWJetsSTHistgram.BookHistgram( (dir_out + "AllHadTTJetsWJetsST.root").c_str() );
   
   double cr_had_sb[NSEARCH_BINS]={0}, cr_lept_sb[NSEARCH_BINS]={0}, cr_data_sb[NSEARCH_BINS]={0};
+  double sr_had_sb[NSEARCH_BINS]={0}, sr_lept_sb[NSEARCH_BINS]={0}, sr_data_sb[NSEARCH_BINS]={0};
+  double sr_qcd_sb[NSEARCH_BINS]={170.179,7.75616,0.409068,0.192625,0.207445,43.251,1.83173,0.135019,0.277662,1.45875,0.525724,-0.0134822,0.00363832,0.0408321,0.2706,0.012484,0.0183167,0.00217602,0.0162454,0.000727278,0.0276462,43.5861,2.07933,-0.0692409,-0.0439108,0.145861,13.4119,0.256205,0.00705771,-0.00190889,0.241339,0.00630619,0.0125806,0.00361789,0.00323214,0.00293654,-0.00416238,0.874504,0.278113,0.0878673,-0.00983544,1.20302,0.724805,0.0512047,-0.115385,1.97962,0.594732,-0.075413,9.47035,0.924586,0.102283,-0.0188991,2.64092,0.18531,0.140479,0.144155,0.0221826,0.0155773,3.11106,0.430332,0.0498012,-0.0375358,0.0861389,0.235395,0.0131118,0.091604,-0.00175622,-0.00181063,0.00238067,0.00214157,0.382677,-0.0205641,0.102778,-0.07262,0.0650063,0.566029,0.0870332,0.0681539,0.0833899,-0.0201172,0.180428,-0.0134398,0.188605,0};
+  double sr_qcd_sb_err[NSEARCH_BINS]={75.853,8.18952,1.62421,0.783143,0.831271,32.5658,2.71335,0.894765,1.09675,1.68775,0.626474,0.0138361,0.0167123,0.0661538,0.378356,0.0310712,0.0342968,0.014061,0.0862839,0.0144539,0.145555,26.0467,3.1065,0.130207,0.100474,0.588059,37.2569,0.515968,0.0188754,0.010889,0.311843,0.065784,0.0268137,0.0148089,0.0222456,0.0212849,0.0110091,1.09757,0.503573,0.30293,0.197015,1.21194,0.886071,0.293166,0.199293,1.84914,1.53979,0.249632,9.50831,1.52178,0.441023,0.0786937,2.01889,0.465731,0.614343,0.242239,0.0438386,0.0316546,2.6771,0.855666,0.239512,0.0629168,0.685686,0.549709,0.0988645,0.157119,0.0108771,0.010884,0.026356,0.0145441,0.646833,0.197293,0.282624,0.285344,0.309669,0.854659,0.316846,0.268924,0.261669,0.197167,0.341827,0.197197,0.34695,0.196875};
+  
   std::cout << "Let's study the all had part of TTJets, WJets and single top: " << std::endl;  
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
@@ -285,32 +289,58 @@ void LoopLLHadTauAllHadStudy( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeigh
           {
             if(!passdPhis)
             { 
-              (myAllHadTTJetsWJetsSTHistgram.h_had_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_had_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_had_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
               cr_had_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr*ttjetsFactor; 
+            }
+            else
+            {
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_had_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              sr_had_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr*ttjetsFactor;
             }
           }
           else
           {
             if(!passdPhis)
             { 
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
-              (myAllHadTTJetsWJetsSTHistgram.h_lept_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_cr_lept_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
               cr_lept_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr*ttjetsFactor; 
+            }
+            else
+            {
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_met)->Fill(met,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_njets30)->Fill(njets30,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_njets50)->Fill(njets50,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_mt2)->Fill(mt2,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_ht)->Fill(ht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_mht)->Fill(mht,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_ntopjets)->Fill(ntopjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_nbjets)->Fill(nbotjets,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              (myAllHadTTJetsWJetsSTHistgram.h_sr_lept_sb)->Fill(searchbin_id,thisweight*ISRCorr*BTagCorr*ttjetsFactor);
+              sr_lept_sb[searchbin_id]+=thisweight*ISRCorr*BTagCorr*ttjetsFactor;
             }
           }
         }//end of TTJets, WJets STMC sample
@@ -318,29 +348,45 @@ void LoopLLHadTauAllHadStudy( LLHadTauFactors& myLLHadTauFactors, QCDSampleWeigh
         {
           if(!passdPhis)
           {
-            (myAllHadTTJetsWJetsSTHistgram.h_data_met)->Fill(met,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_njets30)->Fill(njets30,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_njets50)->Fill(njets50,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_mt2)->Fill(mt2,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_ht)->Fill(ht,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_mht)->Fill(mht,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_ntopjets)->Fill(ntopjets,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_nbjets)->Fill(nbotjets,thisweight);
-            (myAllHadTTJetsWJetsSTHistgram.h_data_sb)->Fill(searchbin_id,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_met)->Fill(met,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_njets30)->Fill(njets30,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_njets50)->Fill(njets50,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_mt2)->Fill(mt2,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_ht)->Fill(ht,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_mht)->Fill(mht,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_ntopjets)->Fill(ntopjets,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_nbjets)->Fill(nbotjets,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_cr_data_sb)->Fill(searchbin_id,thisweight);
             cr_data_sb[searchbin_id]+=thisweight;
+          }
+          else
+          {
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_met)->Fill(met,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_njets30)->Fill(njets30,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_njets50)->Fill(njets50,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_mt2)->Fill(mt2,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_ht)->Fill(ht,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_mht)->Fill(mht,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_ntopjets)->Fill(ntopjets,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_nbjets)->Fill(nbotjets,thisweight);
+            (myAllHadTTJetsWJetsSTHistgram.h_sr_data_sb)->Fill(searchbin_id,thisweight);
+            sr_data_sb[searchbin_id]+=thisweight;
           }
         }
       }
     }//end of inner loop
   }//end of QCD Samples loop
 
-  (myAllHadTTJetsWJetsSTHistgram.oFile)->Write();
-  (myAllHadTTJetsWJetsSTHistgram.oFile)->Close();
-
   for(int i=0;i<NSEARCH_BINS;i++)
   {
-    std::cout << "SB id: " << i << "; Had/Data: " << cr_had_sb[i]/cr_data_sb[i] << std::endl;
+    //std::cout << "SB id: " << i << "; Had/Data: " << cr_had_sb[i]/cr_data_sb[i] << std::endl;
+    (myAllHadTTJetsWJetsSTHistgram.h_sr_qcd_sb)->SetBinContent(i+1,sr_qcd_sb[i]);
+    (myAllHadTTJetsWJetsSTHistgram.h_sr_qcd_sb)->SetBinError(i+1,sr_qcd_sb_err[i]);
+    std::cout << sr_had_sb[i] << " ";
   }
+
+  (myAllHadTTJetsWJetsSTHistgram.oFile)->Write();
+  (myAllHadTTJetsWJetsSTHistgram.oFile)->Close();
 
   return ;
 }

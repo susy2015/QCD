@@ -105,11 +105,13 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
           passBaselineQCD
          )
       {
+        /*
         if( met > 1000 )
         { 
           std::cout << "bad QCD event with crazy MET!! " << (*iter_QCDSampleInfos).QCDTag << "; MET: " << met << " MT2: " << mt2 << " NB: " << nbotjets << " NT: " << ntopjets << std::endl;
           std::cout << "HT: " << ht << " MHT: " << mht << std::endl;
         }
+        */
         if( met < metbins_edge[0] ) std::cout << "what the fuck is going on!!" << std::endl;
         
         if ( passdPhis )
@@ -1682,7 +1684,22 @@ int main(int argc, char* argv[])
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500_BFilter", 184.4  ,  834688, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000_BFilter", 21.31  ,  240962, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf_BFilter" , 4.16   ,  136826, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
-
+  //Had ttjets wjets st part
+  /*
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_Inc_"          ,      831.76, 10139950, LUMI,    1, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-600to800_"  ,    2.666535, 14210872, LUMI,    1, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-800to1200_" ,    1.098082,  9982765, LUMI,    1, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-1200to2500_",    0.198748,  2932983, LUMI,    1, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-2500toInf_" , 0.002368413,  1519815, LUMI,    1, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"            ,        35.6,  6774350, LUMI,    1, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"        ,        35.6,  6933094, LUMI,    1, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7, 38867206, LUMI, 1.21, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-400To600"   ,   48.91,  7759701, LUMI, 1.21, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-600To800"   ,   12.05, 17494743, LUMI, 1.21, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,  7745467, LUMI, 1.21, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,  6801534, LUMI, 1.21, inputFileList_Data.c_str() );
+  myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,  2637821, LUMI, 1.21, inputFileList_Data.c_str() );
+  */
   if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
   {
     std::cout << "QCD_BINS in ConstantsSnippet.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
