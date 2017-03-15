@@ -46,13 +46,36 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
     NTupleReader tr((*iter_QCDSampleInfos).chain);
  
     double thisweight = (*iter_QCDSampleInfos).weight;
-    myQCDFactors.QCDWeights[i] = thisweight;
-    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
+    bool isQCDMC = true;
+    if     ( (((*iter_QCDSampleInfos).QCDTag).find("QCD_HT300to500")   != std::string::npos) && (((*iter_QCDSampleInfos).QCDTag).find("BFilter") == std::string::npos) ) i=0;
+    else if( (((*iter_QCDSampleInfos).QCDTag).find("QCD_HT500to700")   != std::string::npos) && (((*iter_QCDSampleInfos).QCDTag).find("BFilter") == std::string::npos) ) i=1;
+    else if( (((*iter_QCDSampleInfos).QCDTag).find("QCD_HT700to1000")  != std::string::npos) && (((*iter_QCDSampleInfos).QCDTag).find("BFilter") == std::string::npos) ) i=2;
+    else if( (((*iter_QCDSampleInfos).QCDTag).find("QCD_HT1000to1500") != std::string::npos) && (((*iter_QCDSampleInfos).QCDTag).find("BFilter") == std::string::npos) ) i=3;
+    else if( (((*iter_QCDSampleInfos).QCDTag).find("QCD_HT1500to2000") != std::string::npos) && (((*iter_QCDSampleInfos).QCDTag).find("BFilter") == std::string::npos) ) i=4;
+    else if( (((*iter_QCDSampleInfos).QCDTag).find("QCD_HT2000toInf")  != std::string::npos) && (((*iter_QCDSampleInfos).QCDTag).find("BFilter") == std::string::npos) ) i=5;
+    else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT300to500_BFilter")   != std::string::npos ) i=6;
+    else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT500to700_BFilter")   != std::string::npos ) i=7;
+    else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT700to1000_BFilter")  != std::string::npos ) i=8;
+    else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT1000to1500_BFilter") != std::string::npos ) i=9;
+    else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT1500to2000_BFilter") != std::string::npos ) i=10;
+    else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT2000toInf_BFilter")  != std::string::npos ) i=11;
+    else{ i=-1; isQCDMC=false; }
+    if(isQCDMC){ myQCDFactors.QCDWeights[i] = thisweight; }
+    std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << "; QCD Indice: " << i << std::endl;
     
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
-
+      //special patch for ttjets inc
+      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) )
+      { 
+        if( tr.getVar<double>("genht")>600 ) continue;
+      }
+      //only all had ttjets wjets st
+      if( !isQCDMC )
+      {
+        if ( !(tr.getVar<bool>("isAllHad")) ) continue;
+      }
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTop");
       int nbotjets = tr.getVar<int>("nBot");
@@ -77,9 +100,9 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       bool passBJets = tr.getVar<bool>("passBJets");
       bool passdPhis = tr.getVar<bool>("passdPhis");
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
-      bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
-      double calomet = tr.getVar<double>("calomet");
-      bool passPFCaloMETRatio = (met/calomet<5);
+      //bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
+      bool passPFCaloMETRatio = true;
+      if(isQCDMC){ double calomet = tr.getVar<double>("calomet"); passPFCaloMETRatio = (met/calomet<5); }
       //normal baseline without dPhis cut
       bool passBaselineQCD = passLeptVeto
                           && passTagger
@@ -105,41 +128,70 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
           metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(true, ht, met);
           if( ismt2metsb )
           {
-            myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
-            myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
+            if(isQCDMC)
+            {
+              myQCDFactors.nQCDNormal_MC[i][metbin_number][mt2bin_number]++;
+              myQCDFactors.nQCDNormal[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
+            }
+            else
+            {
+              myQCDFactors.nOtherNormal_all[metbin_number][mt2bin_number]+=(thisweight*metEff);
+              myQCDFactors.nOtherNormal_all_err[metbin_number][mt2bin_number]+=(thisweight*metEff*thisweight*metEff);
+            }
           }
           else
           {
-            myQCDFactors.nQCDNormal_Ext_MC[i][metbin_ext_number][htbin_ext_number]++;
-            myQCDFactors.nQCDNormal_Ext[i][metbin_ext_number][htbin_ext_number]+=(thisweight*metEff);
+            if(isQCDMC)
+            {
+              myQCDFactors.nQCDNormal_Ext_MC[i][metbin_ext_number][htbin_ext_number]++;
+              myQCDFactors.nQCDNormal_Ext[i][metbin_ext_number][htbin_ext_number]+=(thisweight*metEff);
+            }
+            else
+            {
+              myQCDFactors.nOtherNormal_Ext_all[metbin_ext_number][htbin_ext_number]+=(thisweight*metEff);
+              myQCDFactors.nOtherNormal_Ext_all_err[metbin_ext_number][htbin_ext_number]+=(thisweight*metEff*thisweight*metEff);
+            }           
           }
           myQCDFactors.nQCDNormal_NJF_MC_all[njetsbin_number]++;
         }
 
-        if ( !passdPhis )
+        if( !passdPhis )
         {
           metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
           if( ismt2metsb )
           {
-            myQCDFactors.nQCDInverted_MC[i][metbin_number][mt2bin_number]++;
-            myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
+            if(isQCDMC)
+            {
+              myQCDFactors.nQCDInverted_MC[i][metbin_number][mt2bin_number]++;
+              myQCDFactors.nQCDInverted[i][metbin_number][mt2bin_number]+=(thisweight*metEff);
 
-            myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight * metEff;
-            myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight * metEff;
+              myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum[i][metbin_number][mt2bin_number] + met * thisweight * metEff;//FIXME
+              myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] = myQCDFactors.MET_sum_weight[i][metbin_number][mt2bin_number] + thisweight * metEff;//FIXME
+            }
+            else
+            {
+              myQCDFactors.nOtherInverted_all[metbin_number][mt2bin_number]+=(thisweight*metEff);
+              myQCDFactors.nOtherInverted_all_err[metbin_number][mt2bin_number]+=(thisweight*metEff*thisweight*metEff);
+            }
           }
           else
           {
-            myQCDFactors.nQCDInverted_Ext_MC[i][metbin_ext_number][htbin_ext_number]++;
-            myQCDFactors.nQCDInverted_Ext[i][metbin_ext_number][htbin_ext_number]+=(thisweight*metEff);
+            if(isQCDMC)
+            {
+              myQCDFactors.nQCDInverted_Ext_MC[i][metbin_ext_number][htbin_ext_number]++;
+              myQCDFactors.nQCDInverted_Ext[i][metbin_ext_number][htbin_ext_number]+=(thisweight*metEff);
+            }
+            else
+            {
+              myQCDFactors.nOtherInverted_Ext_all[metbin_ext_number][htbin_ext_number]+=(thisweight*metEff);
+              myQCDFactors.nOtherInverted_Ext_all_err[metbin_ext_number][htbin_ext_number]+=(thisweight*metEff*thisweight*metEff);
+            }
           }
 
-          //(myCalHistgram.h_cal_met_MC[metbin_number][mt2bin_number])->Fill(met,thisweight*metEff);
-          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
-          //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
           std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
-          for(auto i=0;i<searchbin_ids.size();i++)
+          for(auto j=0;j<searchbin_ids.size();j++)
           {
-            int searchbin_id = searchbin_ids.at(i);
+            int searchbin_id = searchbin_ids.at(j);
             if( searchbin_id >= 0)
             {
               myQCDFactors.MET_sum_all_exp_sb[searchbin_id] = myQCDFactors.MET_sum_all_exp_sb[searchbin_id] + met * thisweight * metEff;
@@ -154,7 +206,6 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
         }
       }
     }//end of inner loop
-    i++;
   }//end of QCD Samples loop
 
   myQCDFactors.NumbertoTFactor();
@@ -191,12 +242,23 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
     NTupleReader tr((*iter_QCDSampleInfos).chain);
  
     double thisweight = (*iter_QCDSampleInfos).weight;
-    myQCDFactors.QCDWeights[i] = thisweight;
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
-    
+    bool isQCDMC = true;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("QCD_HT") == std::string::npos ) isQCDMC = false;
+
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+      //special patch for ttjets inc
+      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) )
+      { 
+        if( tr.getVar<double>("genht")>600 ) continue;
+      }
+      //only all had ttjets wjets st
+      if( !isQCDMC )
+      {
+        if ( !(tr.getVar<bool>("isAllHad")) ) continue;
+      }
 
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTop");
@@ -221,8 +283,8 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
       bool passdPhis = tr.getVar<bool>("passdPhis");
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
       bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
-      double calomet = tr.getVar<double>("calomet");
-      bool passPFCaloMETRatio = (met/calomet<5);
+      bool passPFCaloMETRatio = true;
+      if(isQCDMC){ double calomet = tr.getVar<double>("calomet"); passPFCaloMETRatio = (met/calomet<5); }
       //normal baseline without dPhis cut
       bool passBaselineQCD = passLeptVeto
                           && passTagger
@@ -261,11 +323,13 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
         {
           if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
           int searchbin_id = searchbin_ids.at(i);
+          /*
           if(searchbin_id==38 || searchbin_id==7)
           { 
             std::cout << "Weight: " << thisweight << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << "; SB : " << searchbin_id << std::endl; 
             std::cout << "MET: " << met << "; METPhi : " << tr.getVar<double>("metphi") << "; CaloMET : " << calomet << "; CaloMETPhi : " << tr.getVar<double>("calometphi") << std::endl;
           }
+          */
           if( searchbin_id >= 0 )
           {
             myQCDFactors.nQCD_exp_sb_MC[i][searchbin_id]++;
@@ -343,10 +407,22 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
     double thisweight = (*iter_QCDSampleInfos).weight;
     //negative weight for other MC samples
     std::cout <<"Sample Type: "<< (*iter_QCDSampleInfos).QCDTag << "; Weight: " << thisweight << std::endl;
+    bool isQCDMC = true;
+    if( ( (*iter_QCDSampleInfos).QCDTag ).find("QCD_HT") == std::string::npos ) isQCDMC = false;
 
     while(tr.getNextEvent())
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
+      //special patch for ttjets inc
+      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) )
+      {
+        if( tr.getVar<double>("genht")>600 ) continue;
+      }
+      //only all had ttjets wjets st
+      if( !isQCDMC )
+      {
+        if ( !(tr.getVar<bool>("isAllHad")) ) continue;
+      }
 
       //searchbin variables
       int ntopjets = tr.getVar<int>("nTop");
@@ -360,10 +436,6 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
       int njets50 = tr.getVar<int>("nJets50");
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
-
-      //checking plots for full QCD samples
-      //filling HT variables for quick weight check
-      //(myClosureHistgram.h_b_all_HT)->Fill(ht,thisweight);
 
       int metbin_number = myQCDBGModel.Set_metbin_number(met);
       int mt2bin_number = myQCDBGModel.Set_mt2bin_number(mt2);
@@ -382,8 +454,8 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
       bool passdPhis = tr.getVar<bool>("passdPhis");
       bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter");
       bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter");
-      double calomet = tr.getVar<double>("calomet");
-      bool passPFCaloMETRatio = (met/calomet<5);
+      bool passPFCaloMETRatio = true;
+      if(isQCDMC){ double calomet = tr.getVar<double>("calomet"); passPFCaloMETRatio = (met/calomet<5); }
       //normal baseline without dPhis cut
       bool passBaselineQCD = passLeptVeto
                           && passTagger
@@ -421,11 +493,6 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
           {
             if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
             int searchbin_id = searchbin_ids.at(i);
-            if(searchbin_id==38 || searchbin_id==7)
-            {
-              std::cout << "Weight: " << thisweight << "; QCD_HT : " << (*iter_QCDSampleInfos).QCDTag << "; SB : " << searchbin_id << std::endl;
-              std::cout << "MET: " << met << "; METPhi : " << tr.getVar<double>("metphi") << "; CaloMET : " << calomet << "; CaloMETPhi : " << tr.getVar<double>("calometphi") << std::endl;
-            }
             if( searchbin_id >= 0 )
             {
               myQCDFactors.nQCD_pred_sb[searchbin_id] += (predweight);
@@ -1704,6 +1771,7 @@ int main(int argc, char* argv[])
   myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,  6801534, LUMI, 1.21, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,  2637821, LUMI, 1.21, inputFileList_Data.c_str() );
   */
+  //if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS+5+2+6)
   if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
   {
     std::cout << "QCD_BINS in ConstantsSnippet.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 

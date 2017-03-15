@@ -38,15 +38,20 @@ class QCDFactors
   double nQCDNormal_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nQCDInverted_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
   double nQCDNormal_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nQCDInverted_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
 
+  double nOtherNormal_all[MET_BINS][MT2_BINS] = {{0}}, nOtherInverted_all[MET_BINS][MT2_BINS] = {{0}};
+  double nOtherNormal_all_err[MET_BINS][MT2_BINS] = {{0}}, nOtherInverted_all_err[MET_BINS][MT2_BINS] = {{0}};
+  double nOtherNormal_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nOtherInverted_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
+  double nOtherNormal_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nOtherInverted_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
+
   double QCDTFactor[MET_BINS][MT2_BINS] = {{0}}, QCDTFactor_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors calculated from QCD MC
-  double QCDTFactorFit[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorFit_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors smoothed by linear fit
+  double QCDTFactorFit[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorFit_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors smoothed by linear fit,FIXME
   double QCDTFactorScaled[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorScaled_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors scaled by low MET bin Tfactor(from Data) and linear fit 
-  double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
-  double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
-  double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
+  double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};//FIXME
+  double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};//FIXME
+  double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};//FIXME
 
   double QCDTFactor_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactor_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors calculated from QCD MC
-  double QCDTFactorFit_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactorFit_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors smoothed by linear fit
+  double QCDTFactorFit_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactorFit_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors smoothed by linear fit,FIXME
   double QCDTFactorScaled_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactorScaled_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors scaled by low MET bin Tfactor(from Data) and linear fit 
   //NJet correction factor, not used for now
   double nQCDNormal_NJF_MC_all[NJETS_BINS] = {0}, nQCDInverted_NJF_MC_all[NJETS_BINS] = {0};
@@ -65,7 +70,7 @@ class QCDFactors
   double HT_sb_mean[NSEARCH_BINS] = {0};
  
   void NumbertoTFactor();
-  void TFactorFit();
+  void TFactorFit();//FIXME
   void TFactorScale();
   void printQCDFactorInfo();
   void printTFactorsHeader();

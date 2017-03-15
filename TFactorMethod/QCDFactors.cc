@@ -15,9 +15,9 @@ void QCDFactors::NumbertoTFactor()
          MET_sum_weight_all[i_cal][j_cal] += MET_sum_weight[k_cal][i_cal][j_cal];
          if(MET_sum_weight[k_cal][i_cal][j_cal]>0) MET_mean_err[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal];
       }
-      QCDTFactor[i_cal][j_cal] = nQCDNormal_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal];
-      MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];
-      MET_mean_err[i_cal][j_cal] = std::sqrt(MET_mean_err[i_cal][j_cal]);
+      QCDTFactor[i_cal][j_cal] = (nQCDNormal_all[i_cal][j_cal]+nOtherNormal_all[i_cal][j_cal])/(nQCDInverted_all[i_cal][j_cal]+nOtherInverted_all[i_cal][j_cal]);
+      MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];//FIXME
+      MET_mean_err[i_cal][j_cal] = std::sqrt(MET_mean_err[i_cal][j_cal]);//FIXME
     }
   }
 
@@ -29,13 +29,8 @@ void QCDFactors::NumbertoTFactor()
       {
          nQCDNormal_Ext_all[i_cal][j_cal] += nQCDNormal_Ext[k_cal][i_cal][j_cal];
          nQCDInverted_Ext_all[i_cal][j_cal] += nQCDInverted_Ext[k_cal][i_cal][j_cal];
-         //MET_sum_all[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal];
-         //MET_sum_weight_all[i_cal][j_cal] += MET_sum_weight[k_cal][i_cal][j_cal];
-         //if(MET_sum_weight[k_cal][i_cal][j_cal]>0) MET_mean_err[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal];
       }
-      QCDTFactor_Ext[i_cal][j_cal] = nQCDNormal_Ext_all[i_cal][j_cal]/nQCDInverted_Ext_all[i_cal][j_cal];
-      //MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];
-      //MET_mean_err[i_cal][j_cal] = std::sqrt(MET_mean_err[i_cal][j_cal]);
+      QCDTFactor_Ext[i_cal][j_cal] = (nQCDNormal_Ext_all[i_cal][j_cal]+nOtherNormal_Ext_all[i_cal][j_cal])/(nQCDInverted_Ext_all[i_cal][j_cal]+nOtherInverted_Ext_all[i_cal][j_cal]);
     }
   }
 
@@ -49,9 +44,9 @@ void QCDFactors::NumbertoTFactor()
         nQCDNormal_all_err[i_cal][j_cal] += nQCDNormal_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal] ;
         nQCDInverted_all_err[i_cal][j_cal] += nQCDInverted_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal];
       }
-      nQCDNormal_all_err[i_cal][j_cal] = std::sqrt( nQCDNormal_all_err[i_cal][j_cal] );
-      nQCDInverted_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_all_err[i_cal][j_cal] );
-      QCDTFactor_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_all[i_cal][j_cal] , nQCDInverted_all[i_cal][j_cal] , nQCDNormal_all_err[i_cal][j_cal], nQCDInverted_all_err[i_cal][j_cal] );
+      double nNormal_all_err = std::sqrt( nQCDNormal_all_err[i_cal][j_cal]+nOtherNormal_all_err[i_cal][j_cal] );
+      double nInverted_all_err = std::sqrt( nQCDInverted_all_err[i_cal][j_cal]+nOtherInverted_all_err[i_cal][j_cal] );
+      QCDTFactor_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_all[i_cal][j_cal]+nOtherNormal_all[i_cal][j_cal] , nQCDInverted_all[i_cal][j_cal]+nOtherInverted_all[i_cal][j_cal] , nNormal_all_err , nInverted_all_err );
     }
   }
  
@@ -64,9 +59,9 @@ void QCDFactors::NumbertoTFactor()
         nQCDNormal_Ext_all_err[i_cal][j_cal] += nQCDNormal_Ext_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal] ;
         nQCDInverted_Ext_all_err[i_cal][j_cal] += nQCDInverted_Ext_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal];
       }
-      nQCDNormal_Ext_all_err[i_cal][j_cal] = std::sqrt( nQCDNormal_Ext_all_err[i_cal][j_cal] );
-      nQCDInverted_Ext_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_Ext_all_err[i_cal][j_cal] );
-      QCDTFactor_Ext_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_Ext_all[i_cal][j_cal] , nQCDInverted_Ext_all[i_cal][j_cal] , nQCDNormal_Ext_all_err[i_cal][j_cal], nQCDInverted_Ext_all_err[i_cal][j_cal] );
+      double nNormal_Ext_all_err = std::sqrt( nQCDNormal_Ext_all_err[i_cal][j_cal]+nOtherNormal_Ext_all_err[i_cal][j_cal] );
+      double nInverted_Ext_all_err = std::sqrt( nQCDInverted_Ext_all_err[i_cal][j_cal]+nOtherInverted_Ext_all_err[i_cal][j_cal] );
+      QCDTFactor_Ext_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_Ext_all[i_cal][j_cal]+nOtherNormal_Ext_all[i_cal][j_cal] , nQCDInverted_Ext_all[i_cal][j_cal]+nOtherInverted_Ext_all[i_cal][j_cal] , nNormal_Ext_all_err , nInverted_Ext_all_err );
     }
   }
 
