@@ -38,10 +38,8 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
-  int i = 0;
-
+  int i = 0;//indice to determine the QCD MC type
   std::cout << "Calculation: " << std::endl;
-
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {  
     //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
@@ -67,10 +65,6 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
       int njets50 = tr.getVar<int>("nJets50");
       double ht = tr.getVar<double>("ht");
       double mht = tr.getVar<double>("mht");
-
-      //checking plots for full QCD samples
-      //filling HT variables for quick weight check
-      //(myClosureHistgram.h_b_all_HT)->Fill(ht,thisweight);
 
       int metbin_number = myQCDBGModel.Set_metbin_number(met);
       int mt2bin_number = myQCDBGModel.Set_mt2bin_number(mt2);
@@ -105,15 +99,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
           passBaselineQCD
          )
       {
-        /*
-        if( met > 1000 )
-        { 
-          std::cout << "bad QCD event with crazy MET!! " << (*iter_QCDSampleInfos).QCDTag << "; MET: " << met << " MT2: " << mt2 << " NB: " << nbotjets << " NT: " << ntopjets << std::endl;
-          std::cout << "HT: " << ht << " MHT: " << mht << std::endl;
-        }
-        */
         if( met < metbins_edge[0] ) std::cout << "what the fuck is going on!!" << std::endl;
-        
         if ( passdPhis )
         {
           metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(true, ht, met);
@@ -430,8 +416,6 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
           (myClosureUncAUX.h_pred_x_met_y_ht)->Fill(met,ht,predweight);
 
           //if( ht < 500) std::cout << ht << " small ht, what the fuck!!" << std::endl;
-          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
-          //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
           std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
           for(auto i=0;i<searchbin_ids.size();i++)
           {
@@ -552,200 +536,224 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
           {
             if( (*iter_QCDSampleInfos).QCDTag == "MET" )
             {
-              metEff = 1;
               if(ismt2metsb)
               {
-                myQCDFactors.nQCDNormal_Data_all[sidebandbin_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDNormal_Data_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff;
+                myQCDFactors.nQCDNormal_Data_all[sidebandbin_number] += std::abs(thisweight);
+                myQCDFactors.nQCDNormal_Data_all_err[sidebandbin_number] += thisweight * thisweight;
               }
               else
               {
-                myQCDFactors.nQCDNormal_Ext_Data_all[sidebandbin_ext_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDNormal_Ext_Data_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff;
+                myQCDFactors.nQCDNormal_Ext_Data_all[sidebandbin_ext_number] += std::abs(thisweight);
+                myQCDFactors.nQCDNormal_Ext_Data_all_err[sidebandbin_ext_number] += thisweight * thisweight;
               }
-            }
-            if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
-               || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
-               || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
-              )
-            { 
-              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-              bool isLL = tr.getVar<bool>("isLL");
-              double ttjetsFactor = 1;
-              ismt2metsb ? ttjetsFactor = singlemuCS_lowmet[sidebandbin_number] : ttjetsFactor = singlemuCS_ext_lowmet[sidebandbin_number];
-              if(isLL)
+            }//end if data
+            else//start MC
+            {
+              //apply trigger efficiencies
+              double metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(true, ht, met);
+              //double metEff = 1;
+              //apply bjet scale factor
+              double BTagCorr = tr.getVar<double>("BTagCorr");
+              //double BTagCorr = 1;
+              //apply isr scale factor
+              //double ISRCorr = tr.getVar<double>("ISRCorr");
+              double ISRCorr = 1;
+
+              if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
+                 || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
+                 || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
+                )
               { 
+                bool isAllHad = tr.getVar<bool>("isAllHad"); if(isAllHad) continue;
+                //patch, apply ISRCorr only for TTJets MC
+                if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
+                bool isLL = tr.getVar<bool>("isLL");
+                double ttjetsFactor = 1;
+                ismt2metsb ? ttjetsFactor = singlemuCS_lowmet[sidebandbin_number] : ttjetsFactor = singlemuCS_ext_lowmet[sidebandbin_number];
+                if(isLL)
+                { 
+                  if(ismt2metsb)
+                  {
+                    myQCDFactors.nQCDNormal_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDNormal_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  }
+                  else
+                  {
+                    myQCDFactors.nQCDNormal_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDNormal_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  }
+                }
+                else
+                { 
+                  if(ismt2metsb)
+                  {
+                    myQCDFactors.nQCDNormal_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDNormal_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  }
+                  else
+                  {
+                    myQCDFactors.nQCDNormal_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDNormal_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  }
+                }
+              }
+              else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
+              { 
+                double njetRWF = 1;
+                njets30<ZINVNJETS_BINS ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[ZINVNJETS_BINS-1];
                 if(ismt2metsb)
                 {
-                  myQCDFactors.nQCDNormal_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDNormal_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  myQCDFactors.nQCDNormal_zinvMC_all[sidebandbin_number] += std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
+                  myQCDFactors.nQCDNormal_zinvMC_all_err[sidebandbin_number] += thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm * thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm;
                 }
                 else
                 {
-                  myQCDFactors.nQCDNormal_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDNormal_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  myQCDFactors.nQCDNormal_Ext_zinvMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
+                  myQCDFactors.nQCDNormal_Ext_zinvMC_all_err[sidebandbin_ext_number] += thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm * thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm;
                 }
               }
-              else
+              else if(   
+                         ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
+                     )
               { 
+                bool isGenZLep = tr.getVar<bool>("isGenZLep");
+                bool isGenWLep = tr.getVar<bool>("isGenWLep");
+                if( isGenZLep || isGenWLep ) continue;
+                bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
                 if(ismt2metsb)
                 {
-                  myQCDFactors.nQCDNormal_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDNormal_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  isNegativeWeight ? myQCDFactors.nQCDNormal_ttzMC_all[sidebandbin_number] -= std::abs(thisweight * metEff * BTagCorr) : myQCDFactors.nQCDNormal_ttzMC_all[sidebandbin_number] += std::abs(thisweight * metEff * BTagCorr);
+                  myQCDFactors.nQCDNormal_ttzMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * BTagCorr * BTagCorr;
                 }
                 else
                 {
-                  myQCDFactors.nQCDNormal_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDNormal_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  isNegativeWeight ? myQCDFactors.nQCDNormal_Ext_ttzMC_all[sidebandbin_ext_number] -= std::abs(thisweight * metEff * BTagCorr) : myQCDFactors.nQCDNormal_Ext_ttzMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff * BTagCorr);
+                  myQCDFactors.nQCDNormal_Ext_ttzMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * BTagCorr * BTagCorr;
                 }
-              }
-            }
-            else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
-            { 
-              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-              double njetRWF = 1;
-              njets30<ZINVNJETS_BINS ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[ZINVNJETS_BINS-1];
-              if(ismt2metsb)
-              {
-                myQCDFactors.nQCDNormal_zinvMC_all[sidebandbin_number] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
-                myQCDFactors.nQCDNormal_zinvMC_all_err[sidebandbin_number] += thisweight * metEff * njetRWF * zinv_RNorm * thisweight * metEff * njetRWF * zinv_RNorm;
-              }
-              else
-              {
-                myQCDFactors.nQCDNormal_Ext_zinvMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
-                myQCDFactors.nQCDNormal_Ext_zinvMC_all_err[sidebandbin_ext_number] += thisweight * metEff * njetRWF * zinv_RNorm * thisweight * metEff * njetRWF * zinv_RNorm;
-              }
-            }
-            else if(   
-                       ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
-                   )
-            { 
-              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-              bool isGenZLep = tr.getVar<bool>("isGenZLep");
-              bool isGenWLep = tr.getVar<bool>("isGenWLep");
-              if( isGenZLep || isGenWLep ) continue;
-              bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
-              if(ismt2metsb)
-              {
-                isNegativeWeight ? myQCDFactors.nQCDNormal_ttzMC_all[sidebandbin_number] -= std::abs(thisweight * metEff) : myQCDFactors.nQCDNormal_ttzMC_all[sidebandbin_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDNormal_ttzMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff;
-              }
-              else
-              {
-                isNegativeWeight ? myQCDFactors.nQCDNormal_Ext_ttzMC_all[sidebandbin_ext_number] -= std::abs(thisweight * metEff) : myQCDFactors.nQCDNormal_Ext_ttzMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDNormal_Ext_ttzMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff;
-              }
-            }
-          }
+              }//end of TTZ, Rare
+            }//end of MC
+          }//end of dphi region for low met sideband
           else 
           {
             if( (*iter_QCDSampleInfos).QCDTag == "MET" )
             {
-              metEff = 1;
               if(ismt2metsb)
               {
-                myQCDFactors.nQCDInverted_Data_all[sidebandbin_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDInverted_Data_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff;
+                myQCDFactors.nQCDInverted_Data_all[sidebandbin_number] += std::abs(thisweight);
+                myQCDFactors.nQCDInverted_Data_all_err[sidebandbin_number] += thisweight * thisweight;
               }
               else
               {
-                myQCDFactors.nQCDInverted_Ext_Data_all[sidebandbin_ext_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDInverted_Ext_Data_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff;
+                myQCDFactors.nQCDInverted_Ext_Data_all[sidebandbin_ext_number] += std::abs(thisweight);
+                myQCDFactors.nQCDInverted_Ext_Data_all_err[sidebandbin_ext_number] += thisweight * thisweight;
               }
-            }
-            if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
-             || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
-             || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
-            )
+            }//end of Data
+            else//start MC
             {
-              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met ); 
-              bool isLL = tr.getVar<bool>("isLL");
-              double ttjetsFactor = 1;
-              ismt2metsb ? ttjetsFactor = singlemuCS_lowmet[sidebandbin_number] : ttjetsFactor = singlemuCS_ext_lowmet[sidebandbin_number];
-              if(isLL)
+              //apply trigger efficiencies
+              double metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
+              //double metEff = 1;
+              //apply bjet scale factor
+              double BTagCorr = tr.getVar<double>("BTagCorr");
+              //double BTagCorr = 1;
+              //apply isr scale factor
+              //double ISRCorr = tr.getVar<double>("ISRCorr");
+              double ISRCorr = 1;
+
+              if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
+               || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
+               || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
+              )
               {
-                if(ismt2metsb)
+                bool isAllHad = tr.getVar<bool>("isAllHad"); if(isAllHad) continue;
+                //patch, apply ISRCorr only for TTJets MC
+                if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
+                bool isLL = tr.getVar<bool>("isLL");
+                double ttjetsFactor = 1;
+                ismt2metsb ? ttjetsFactor = singlemuCS_lowmet[sidebandbin_number] : ttjetsFactor = singlemuCS_ext_lowmet[sidebandbin_number];
+                if(isLL)
                 {
-                  myQCDFactors.nQCDInverted_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDInverted_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor; 
+                  if(ismt2metsb)
+                  {
+                    myQCDFactors.nQCDInverted_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDInverted_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor; 
+                  }
+                  else
+                  {
+                    myQCDFactors.nQCDInverted_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDInverted_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  }
                 }
                 else
                 {
-                  myQCDFactors.nQCDInverted_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDInverted_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;               
+                  if(ismt2metsb)
+                  { 
+                    myQCDFactors.nQCDInverted_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDInverted_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  }
+                  else
+                  {
+                    myQCDFactors.nQCDInverted_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDInverted_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  }
                 }
-              }
-              else
-              {
+              }//end of ll and had tau
+              else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
+              { 
+                double njetRWF = 1;
+                njets30<ZINVNJETS_BINS ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[ZINVNJETS_BINS-1];
                 if(ismt2metsb)
-                { 
-                  myQCDFactors.nQCDInverted_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDInverted_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                {
+                  myQCDFactors.nQCDInverted_zinvMC_all[sidebandbin_number] += std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
+                  myQCDFactors.nQCDInverted_zinvMC_all_err[sidebandbin_number] += thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm * thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm;
                 }
                 else
                 {
-                  myQCDFactors.nQCDInverted_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                  myQCDFactors.nQCDInverted_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;               
+                  myQCDFactors.nQCDInverted_Ext_zinvMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
+                  myQCDFactors.nQCDInverted_Ext_zinvMC_all_err[sidebandbin_ext_number] += thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm * thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm;
                 }
               }
-            }
-            else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
-            { 
-              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-              double njetRWF = 1;
-              njets30<ZINVNJETS_BINS ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[ZINVNJETS_BINS-1];
-              if(ismt2metsb)
-              {
-                myQCDFactors.nQCDInverted_zinvMC_all[sidebandbin_number] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
-                myQCDFactors.nQCDInverted_zinvMC_all_err[sidebandbin_number] += thisweight * metEff * njetRWF * zinv_RNorm * thisweight * metEff * njetRWF * zinv_RNorm;
-              }
-              else
-              {
-                myQCDFactors.nQCDInverted_Ext_zinvMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
-                myQCDFactors.nQCDInverted_Ext_zinvMC_all_err[sidebandbin_ext_number] += thisweight * metEff * njetRWF * zinv_RNorm * thisweight * metEff * njetRWF * zinv_RNorm;
-              }
-            }
-            else if(   
-                       ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
-                    || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
-                   )
-            { 
-              //metEff = myTriggerEff.GetTriggerEff_HLT_HT300_MET100( true, ht, met );
-              bool isGenZLep = tr.getVar<bool>("isGenZLep");
-              bool isGenWLep = tr.getVar<bool>("isGenWLep");
-              if( isGenZLep || isGenWLep ) continue;
-              bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
-              if(ismt2metsb)
-              {
-                isNegativeWeight ? myQCDFactors.nQCDInverted_ttzMC_all[sidebandbin_number] -= std::abs(thisweight * metEff) : myQCDFactors.nQCDInverted_ttzMC_all[sidebandbin_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDInverted_ttzMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff;
-              }
-              else
-              {
-                isNegativeWeight ? myQCDFactors.nQCDInverted_Ext_ttzMC_all[sidebandbin_ext_number] -= std::abs(thisweight * metEff) : myQCDFactors.nQCDInverted_Ext_ttzMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff);
-                myQCDFactors.nQCDInverted_Ext_ttzMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff;             
-              }
-            }
-          }
+              else if(   
+                         ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("TTWJets") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZTo") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWW_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WWG_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZG_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_WZZ_") != std::string::npos
+                      || ((*iter_QCDSampleInfos).QCDTag).find("_ZZZ_") != std::string::npos
+                     )
+              { 
+                bool isGenZLep = tr.getVar<bool>("isGenZLep");
+                bool isGenWLep = tr.getVar<bool>("isGenWLep");
+                if( isGenZLep || isGenWLep ) continue;
+                bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
+                if(ismt2metsb)
+                {
+                  isNegativeWeight ? myQCDFactors.nQCDInverted_ttzMC_all[sidebandbin_number] -= std::abs(thisweight * metEff * BTagCorr) : myQCDFactors.nQCDInverted_ttzMC_all[sidebandbin_number] += std::abs(thisweight * metEff * BTagCorr);
+                  myQCDFactors.nQCDInverted_ttzMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * BTagCorr * BTagCorr;
+                }
+                else
+                {
+                  isNegativeWeight ? myQCDFactors.nQCDInverted_Ext_ttzMC_all[sidebandbin_ext_number] -= std::abs(thisweight * metEff * BTagCorr) : myQCDFactors.nQCDInverted_Ext_ttzMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff * BTagCorr);
+                  myQCDFactors.nQCDInverted_Ext_ttzMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * BTagCorr * BTagCorr;
+                }
+              }//end of ttz
+            }//end of MC
+          }//end of inv dphi in low met sideband
         }
       }//event loop
     }//end of inner loop
@@ -864,7 +872,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       int nbotjets = tr.getVar<int>("nBot");
       double mt2 = tr.getVar<double>("mt2");
       double met = tr.getVar<double>("met");
-      if(met < metbins_edge[0]) continue;
+      if(met < metbins_edge[1]) continue;
 
       //closure plots variables
       int njets30 = tr.getVar<int>("nJets30");
@@ -888,10 +896,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                           && passBJets
                           && passNoiseEventFilter;
 
-      //apply trigger efficiencies
-      double metEff = 1;
       if ( passBaselineQCD )
       {
+        //pass trigger for data?
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
         {
           bool passSearchTrigger = tr.getVar<bool>("passSearchTrigger");
@@ -901,8 +908,6 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
         if( (!passdPhis) )
         {
           //if( ht < 500) std::cout << ht << " small ht, what the fuck!!" << std::endl;
-          //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
-          //std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met );
           std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
           for(auto i=0;i<searchbin_ids.size();i++)
           { 
@@ -911,34 +916,38 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
             {
               if( (*iter_QCDSampleInfos).QCDTag == "MET" )
               { 
-                metEff = 1;
-                myQCDFactors.MET_sb_sum[searchbin_id] = myQCDFactors.MET_sb_sum[searchbin_id] + met * thisweight * metEff;
-                myQCDFactors.MET_sb_sum_weight[searchbin_id] = myQCDFactors.MET_sb_sum_weight[searchbin_id] + thisweight * metEff;
-                myQCDFactors.MT2_sb_sum[searchbin_id] = myQCDFactors.MT2_sb_sum[searchbin_id] + mt2 * thisweight * metEff;
-                myQCDFactors.MT2_sb_sum_weight[searchbin_id] = myQCDFactors.MT2_sb_sum_weight[searchbin_id] + thisweight * metEff;
-                myQCDFactors.HT_sb_sum[searchbin_id] = myQCDFactors.HT_sb_sum[searchbin_id] + ht * thisweight * metEff;
-                myQCDFactors.HT_sb_sum_weight[searchbin_id] = myQCDFactors.HT_sb_sum_weight[searchbin_id] + thisweight * metEff;
+                myQCDFactors.MET_sb_sum[searchbin_id] = myQCDFactors.MET_sb_sum[searchbin_id] + met * thisweight;
+                myQCDFactors.MET_sb_sum_weight[searchbin_id] = myQCDFactors.MET_sb_sum_weight[searchbin_id] + thisweight;
+                myQCDFactors.MT2_sb_sum[searchbin_id] = myQCDFactors.MT2_sb_sum[searchbin_id] + mt2 * thisweight;
+                myQCDFactors.MT2_sb_sum_weight[searchbin_id] = myQCDFactors.MT2_sb_sum_weight[searchbin_id] + thisweight;
+                myQCDFactors.HT_sb_sum[searchbin_id] = myQCDFactors.HT_sb_sum[searchbin_id] + ht * thisweight;
+                myQCDFactors.HT_sb_sum_weight[searchbin_id] = myQCDFactors.HT_sb_sum_weight[searchbin_id] + thisweight;
 
-                myQCDFactors.DC_sb_Data[searchbin_id] += thisweight * metEff;
-                myQCDFactors.DC_sb_Data_err[searchbin_id] += thisweight * metEff * thisweight * metEff; 
+                myQCDFactors.DC_sb_Data[searchbin_id] += thisweight;
+                myQCDFactors.DC_sb_Data_err[searchbin_id] += thisweight * thisweight; 
               }
               else
               {
-                //double ISRCorr = tr.getVar<double>("ISRCorr");
+                //apply trigger efficiencies
+                double metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
+                //double metEff = 1;
+                //apply bjet scale factor
                 double BTagCorr = tr.getVar<double>("BTagCorr");
-                double ISRCorr = 1;
                 //double BTagCorr = 1;
+                //apply isr scale factor
+                //double ISRCorr = tr.getVar<double>("ISRCorr");
+                double ISRCorr = 1;
 
                 if(   ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos
                    || ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos
                    || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
                   )
                 {
-                  metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
+                  //Filter the All Had events
+                  bool isAllHad = tr.getVar<bool>("isAllHad"); if(isAllHad) continue;
+                  //patch, apply ISRCorr only for TTJets MC
                   if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
-
                   bool isLL = tr.getVar<bool>("isLL");
-                
                   //bool ismt2metsb =    (ntopjets==1 && nbotjets==1)
                   //                  || (ntopjets==1 && nbotjets==2)
                   //                  || (ntopjets==2 && nbotjets==1)
@@ -948,15 +957,11 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
 
                   if(isLL)
                   {
-                    //myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    //myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
                     myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor;
                     myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor * ttjetsFactor;
                   }
                   else
                   {
-                    //myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    //myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * ttjetsFactor * ttjetsFactor;
                     myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor; 
                     myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor;
                   }
@@ -965,8 +970,8 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                 {
                   double njetRWF = 1;
                   njets30<ZINVNJETS_BINS ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[ZINVNJETS_BINS-1];
-                  myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * njetRWF * zinv_RNorm);
-                  myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * njetRWF * zinv_RNorm * thisweight * metEff * njetRWF * zinv_RNorm;
+                  myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
+                  myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm * thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm;
                 }
                 else if(
                            ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
@@ -987,7 +992,6 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   if( isGenZLep || isGenWLep ) continue;
 
                   bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
-                  if( isNegativeWeight ) thisweight = -thisweight;
                   isNegativeWeight ? myQCDFactors.DC_sb_ttzMC[searchbin_id] -= std::abs(thisweight * metEff * BTagCorr * ISRCorr) : myQCDFactors.DC_sb_ttzMC[searchbin_id] += std::abs(thisweight * metEff * BTagCorr * ISRCorr);
                   myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr;
                 }

@@ -985,8 +985,8 @@ void QCDFactors::printDataCard(std::string pred_type)
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errdown",QCD_otherBG_CS_relative_errdown);
   std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
   std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
-  std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
-  std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
+  //std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
+  //std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
   std::cout << printDataCardLine("QCD_NonClosure_relative_err"    ,QCD_NonClosure_relative_err);
 
   /*
@@ -1035,8 +1035,8 @@ void QCDFactors::printSysHeader(std::string pred_type)
   SysHeader << printSysHeaderLine("head_QCD_otherBG_sysdn"          ,QCD_otherBG_CS_relative_errdown);
   SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor);  
   SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_relative_err);
-  SysHeader << printSysHeaderLine("head_QCD_NTopFactor"             ,QCD_NTopFactor);
-  SysHeader << printSysHeaderLine("head_QCD_NTopFactor_relative_err",QCD_NTopFactor_relative_err);
+  //SysHeader << printSysHeaderLine("head_QCD_NTopFactor"             ,QCD_NTopFactor);
+  //SysHeader << printSysHeaderLine("head_QCD_NTopFactor_relative_err",QCD_NTopFactor_relative_err);
   SysHeader << printSysHeaderLine("head_QCD_NonClosure_relative_err",QCD_NonClosure_relative_err);
   
   return ;
