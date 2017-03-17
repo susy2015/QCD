@@ -73,7 +73,7 @@ const double singlemuCS_invdphi =  0.705635;
 const double singlemuCS_ext_lowmet[MT2_BINS] = {0.709523,1.20265};
 const double singlemuCS_ext_invdphi = 0.737436;
 
-#define BCBin 5
+#define BCBin 6
 #define SFMCBin 3
 
 #endif

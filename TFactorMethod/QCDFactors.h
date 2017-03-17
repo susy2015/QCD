@@ -82,9 +82,9 @@ class QCDFactors
   double DC_sb_Data_err[NSEARCH_BINS] = {0};
   //MC driven variables
   double DC_sb_hadtauMC[NSEARCH_BINS] = {0}, DC_sb_lostleptMC[NSEARCH_BINS] = {0};
-  double DC_sb_zinvMC[NSEARCH_BINS] = {0}, DC_sb_ttzMC[NSEARCH_BINS] = {0};
+  double DC_sb_zinvMC[NSEARCH_BINS] = {0}, DC_sb_ttzMC[NSEARCH_BINS] = {0}, DC_sb_allhadMC[NSEARCH_BINS] = {0};
   double DC_sb_hadtauMC_err[NSEARCH_BINS] = {0}, DC_sb_lostleptMC_err[NSEARCH_BINS] = {0}; 
-  double DC_sb_zinvMC_err[NSEARCH_BINS] = {0}, DC_sb_ttzMC_err[NSEARCH_BINS] = {0};
+  double DC_sb_zinvMC_err[NSEARCH_BINS] = {0}, DC_sb_ttzMC_err[NSEARCH_BINS] = {0}, DC_sb_allhadMC_err[NSEARCH_BINS] = {0};
   //Data driven variables
   double DC_sb_hadtau[NSEARCH_BINS] = {0}, DC_sb_lostlept[NSEARCH_BINS] = {0};
   double DC_sb_hadtau_errup[NSEARCH_BINS] = {0}, DC_sb_lostlept_errup[NSEARCH_BINS] = {0}, DC_sb_hadtau_errdown[NSEARCH_BINS] = {0}, DC_sb_lostlept_errdown[NSEARCH_BINS] = {0};
@@ -114,6 +114,8 @@ class QCDFactors
   double nQCDNormal_zinvMC_all_err[MT2_BINS] = {0}, nQCDInverted_zinvMC_all_err[MT2_BINS] = {0};
   double nQCDNormal_ttzMC_all[MT2_BINS] = {0}, nQCDInverted_ttzMC_all[MT2_BINS] = {0};
   double nQCDNormal_ttzMC_all_err[MT2_BINS] = {0}, nQCDInverted_ttzMC_all_err[MT2_BINS] = {0};
+  double nQCDNormal_allhadMC_all[MT2_BINS] = {0}, nQCDInverted_allhadMC_all[MT2_BINS] = {0};
+  double nQCDNormal_allhadMC_all_err[MT2_BINS] = {0}, nQCDInverted_allhadMC_all_err[MT2_BINS] = {0};
   double nQCDNormal_Ext_hadtauMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_hadtauMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_hadtauMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_hadtauMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_lostleptMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_lostleptMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
@@ -122,6 +124,8 @@ class QCDFactors
   double nQCDNormal_Ext_zinvMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_zinvMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_ttzMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_ttzMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_ttzMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_ttzMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
+  double nQCDNormal_Ext_allhadMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_allhadMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
+  double nQCDNormal_Ext_allhadMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_allhadMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   //Data driven variables
   double nQCDNormal_hadtau_all[MT2_BINS] = {0}, nQCDInverted_hadtau_all[MT2_BINS] = {0};
   double nQCDNormal_hadtau_all_err[MT2_BINS] = {0}, nQCDInverted_hadtau_all_err[MT2_BINS] = {0};

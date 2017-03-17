@@ -131,7 +131,8 @@ void BasicCheckPlots::BasicCheckTemplate(
         if( TString(list->At(i)->GetName()).Contains( "HadTau" ) ) { smalltag = "HadTau"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
         if( TString(list->At(i)->GetName()).Contains( "Zinv" ) ) { smalltag = "Zinv"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
         if( TString(list->At(i)->GetName()).Contains( "QCD" ) ) { smalltag = "QCD"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
-        if( TString(list->At(i)->GetName()).Contains( "TTZ" ) ) { smalltag = "TTZ"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
+        if( TString(list->At(i)->GetName()).Contains( "TTZRare" ) ) { smalltag = "TTZRare"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
+        if( TString(list->At(i)->GetName()).Contains( "AllHadTTJetsWJetsST" ) ) { smalltag = "AllHadTTJetsWJetsST"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
       }
     }
     else

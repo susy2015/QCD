@@ -67,10 +67,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
       //special patch for ttjets inc
-      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) )
-      { 
-        if( tr.getVar<double>("genht")>600 ) continue;
-      }
+      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
       //only all had ttjets wjets st
       if( !isQCDMC )
       {
@@ -250,10 +247,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
       //special patch for ttjets inc
-      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) )
-      { 
-        if( tr.getVar<double>("genht")>600 ) continue;
-      }
+      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
       //only all had ttjets wjets st
       if( !isQCDMC )
       {
@@ -414,10 +408,7 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
       //special patch for ttjets inc
-      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) )
-      {
-        if( tr.getVar<double>("genht")>600 ) continue;
-      }
+      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
       //only all had ttjets wjets st
       if( !isQCDMC )
       {
@@ -631,36 +622,54 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                  || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
                 )
               { 
-                bool isAllHad = tr.getVar<bool>("isAllHad"); if(isAllHad) continue;
+                bool isAllHad = tr.getVar<bool>("isAllHad"); //if(isAllHad) continue;
+                //special patch for ttjets inc
+                if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
                 //patch, apply ISRCorr only for TTJets MC
                 if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
                 bool isLL = tr.getVar<bool>("isLL");
                 double ttjetsFactor = 1;
                 ismt2metsb ? ttjetsFactor = singlemuCS_lowmet[sidebandbin_number] : ttjetsFactor = singlemuCS_ext_lowmet[sidebandbin_number];
-                if(isLL)
-                { 
+                if(isAllHad)
+                {
                   if(ismt2metsb)
-                  {
-                    myQCDFactors.nQCDNormal_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDNormal_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  { 
+                    myQCDFactors.nQCDNormal_allhadMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor; 
+                    myQCDFactors.nQCDNormal_allhadMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
                   }
                   else
-                  {
-                    myQCDFactors.nQCDNormal_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDNormal_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  { 
+                    myQCDFactors.nQCDNormal_Ext_allhadMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor; 
+                    myQCDFactors.nQCDNormal_Ext_allhadMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
                   }
                 }
                 else
-                { 
-                  if(ismt2metsb)
-                  {
-                    myQCDFactors.nQCDNormal_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDNormal_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                {
+                  if( isLL)
+                  { 
+                    if(ismt2metsb)
+                    {
+                      myQCDFactors.nQCDNormal_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDNormal_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    }
+                    else
+                    {
+                      myQCDFactors.nQCDNormal_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDNormal_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    }
                   }
                   else
-                  {
-                    myQCDFactors.nQCDNormal_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDNormal_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  { 
+                    if(ismt2metsb)
+                    {
+                      myQCDFactors.nQCDNormal_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDNormal_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    }
+                    else
+                    {
+                      myQCDFactors.nQCDNormal_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDNormal_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    }
                   }
                 }
               }
@@ -742,39 +751,57 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
                || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos
               )
               {
-                bool isAllHad = tr.getVar<bool>("isAllHad"); if(isAllHad) continue;
+                bool isAllHad = tr.getVar<bool>("isAllHad"); //if(isAllHad) continue;
+                //special patch for ttjets inc
+                if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
                 //patch, apply ISRCorr only for TTJets MC
                 if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
                 bool isLL = tr.getVar<bool>("isLL");
                 double ttjetsFactor = 1;
                 ismt2metsb ? ttjetsFactor = singlemuCS_lowmet[sidebandbin_number] : ttjetsFactor = singlemuCS_ext_lowmet[sidebandbin_number];
-                if(isLL)
+                if(isAllHad)
                 {
                   if(ismt2metsb)
                   {
-                    myQCDFactors.nQCDInverted_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDInverted_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor; 
+                    myQCDFactors.nQCDInverted_allhadMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDInverted_allhadMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
                   }
                   else
                   {
-                    myQCDFactors.nQCDInverted_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDInverted_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    myQCDFactors.nQCDInverted_Ext_allhadMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                    myQCDFactors.nQCDInverted_Ext_allhadMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
                   }
                 }
                 else
                 {
-                  if(ismt2metsb)
-                  { 
-                    myQCDFactors.nQCDInverted_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDInverted_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                  if(isLL)
+                  {
+                    if(ismt2metsb)
+                    {
+                      myQCDFactors.nQCDInverted_lostleptMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDInverted_lostleptMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor; 
+                    }
+                    else
+                    {
+                      myQCDFactors.nQCDInverted_Ext_lostleptMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDInverted_Ext_lostleptMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    }
                   }
                   else
                   {
-                    myQCDFactors.nQCDInverted_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
-                    myQCDFactors.nQCDInverted_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    if(ismt2metsb)
+                    { 
+                      myQCDFactors.nQCDInverted_hadtauMC_all[sidebandbin_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDInverted_hadtauMC_all_err[sidebandbin_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    }
+                    else
+                    {
+                      myQCDFactors.nQCDInverted_Ext_hadtauMC_all[sidebandbin_ext_number] += std::abs(thisweight * metEff) * ttjetsFactor;
+                      myQCDFactors.nQCDInverted_Ext_hadtauMC_all_err[sidebandbin_ext_number] += thisweight * thisweight * metEff * metEff * ttjetsFactor * ttjetsFactor;
+                    }
                   }
-                }
-              }//end of ll and had tau
+                }//end of ll and had tau
+              }//end of ttjets wjets st sample
               else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
               { 
                 double njetRWF = 1;
@@ -848,6 +875,8 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
     myQCDFactors.nQCDInverted_zinvMC_all_err[i] = std::sqrt( myQCDFactors.nQCDInverted_zinvMC_all_err[i] );
     myQCDFactors.nQCDNormal_ttzMC_all_err[i] = std::sqrt( myQCDFactors.nQCDNormal_ttzMC_all_err[i] ); 
     myQCDFactors.nQCDInverted_ttzMC_all_err[i] = std::sqrt( myQCDFactors.nQCDInverted_ttzMC_all_err[i] );
+    myQCDFactors.nQCDNormal_allhadMC_all_err[i] = std::sqrt( myQCDFactors.nQCDNormal_allhadMC_all_err[i] );
+    myQCDFactors.nQCDInverted_allhadMC_all_err[i] = std::sqrt( myQCDFactors.nQCDInverted_allhadMC_all_err[i] );
   }
 
   for( int i=0 ; i<MET_Ext_SideBand_BINS*HT_Ext_BINS ; i++ )
@@ -873,6 +902,8 @@ void LoopQCDCalTFSideBand( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampl
     myQCDFactors.nQCDInverted_Ext_zinvMC_all_err[i] = std::sqrt( myQCDFactors.nQCDInverted_Ext_zinvMC_all_err[i] );
     myQCDFactors.nQCDNormal_Ext_ttzMC_all_err[i] = std::sqrt( myQCDFactors.nQCDNormal_Ext_ttzMC_all_err[i] );
     myQCDFactors.nQCDInverted_Ext_ttzMC_all_err[i] = std::sqrt( myQCDFactors.nQCDInverted_Ext_ttzMC_all_err[i] );
+    myQCDFactors.nQCDNormal_Ext_allhadMC_all_err[i] = std::sqrt( myQCDFactors.nQCDNormal_Ext_allhadMC_all_err[i] );
+    myQCDFactors.nQCDInverted_Ext_allhadMC_all_err[i] = std::sqrt( myQCDFactors.nQCDInverted_Ext_allhadMC_all_err[i] );
   }
 
   std::string pred_type;
@@ -1011,7 +1042,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   )
                 {
                   //Filter the All Had events
-                  bool isAllHad = tr.getVar<bool>("isAllHad"); if(isAllHad) continue;
+                  bool isAllHad = tr.getVar<bool>("isAllHad"); //if(isAllHad) continue;
+                  //special patch for ttjets inc
+                  if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
                   //patch, apply ISRCorr only for TTJets MC
                   if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
                   bool isLL = tr.getVar<bool>("isLL");
@@ -1021,16 +1054,24 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   //                  || (ntopjets==2 && nbotjets==2);
                   double ttjetsFactor = 0.84; //FIXME
                   //ismt2metsb ? ttjetsFactor = singlemuCS_invdphi : ttjetsFactor = singlemuCS_ext_invdphi;
-
-                  if(isLL)
+                  if(isAllHad)
                   {
-                    myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor;
-                    myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor * ttjetsFactor;
+                    myQCDFactors.DC_sb_allhadMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor;
+                    myQCDFactors.DC_sb_allhadMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor * ttjetsFactor;
+
                   }
                   else
                   {
-                    myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor; 
-                    myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor;
+                    if(isLL)
+                    {
+                      myQCDFactors.DC_sb_lostleptMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor;
+                      myQCDFactors.DC_sb_lostleptMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor * ttjetsFactor;
+                    }
+                    else
+                    {
+                      myQCDFactors.DC_sb_hadtauMC[searchbin_id] += std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor; 
+                      myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor;
+                    }
                   }
                 }
                 else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
@@ -1151,6 +1192,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     myQCDFactors.DC_sb_lostleptMC_err[i] = std::sqrt(myQCDFactors.DC_sb_lostleptMC_err[i]);
     myQCDFactors.DC_sb_zinvMC_err[i] = std::sqrt(myQCDFactors.DC_sb_zinvMC_err[i]);
     myQCDFactors.DC_sb_ttzMC_err[i] = std::sqrt(myQCDFactors.DC_sb_ttzMC_err[i]);
+    myQCDFactors.DC_sb_allhadMC_err[i] = std::sqrt(myQCDFactors.DC_sb_allhadMC_err[i]);
   }
   
   std::string pred_type;
@@ -1257,9 +1299,12 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
              || ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos 
             ) 
           { 
+            //special patch for ttjets inc
+            if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
+            bool isAllHad = tr.getVar<bool>("isAllHad");
             bool isLL = tr.getVar<bool>("isLL");
-            isLL ? ih = 0 : ih = 1;
-            
+            if(!isAllHad) isLL ? ih = 0 : ih = 1;
+            else ih = 5;
             if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
             //BTagCorr = tr.getVar<double>("BTagCorr");
           }
@@ -1783,9 +1828,14 @@ int main(int argc, char* argv[])
   //sample needed in the prediction loop
   QCDSampleWeight myDataSampleWeight;
   myDataSampleWeight.QCDSampleInfo_push_back( "MET"                        ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_Inc_"          ,      831.76, 10139950, LUMI,    1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-600to800_"  ,    2.666535, 14210872, LUMI,    1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-800to1200_" ,    1.098082,  9982765, LUMI,    1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-1200to2500_",    0.198748,  2932983, LUMI,    1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-2500toInf_" , 0.002368413,  1519815, LUMI,    1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!
@@ -1823,9 +1873,14 @@ int main(int argc, char* argv[])
   //sample needed in the basic check loop
   QCDSampleWeight myBasicCheckSampleWeight;
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "MET"                        ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
-  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_Inc_"          ,      831.76, 10139950, LUMI,    1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-600to800_"  ,    2.666535, 14210872, LUMI,    1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-800to1200_" ,    1.098082,  9982765, LUMI,    1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-1200to2500_",    0.198748,  2932983, LUMI,    1, inputFileList_Data.c_str() );
+  myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-2500toInf_" , 0.002368413,  1519815, LUMI,    1, inputFileList_Data.c_str() );
+  //myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
+  //myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
+  //myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_Data.c_str() );
   myBasicCheckSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have to take NLO(NNLO??) correction into account
