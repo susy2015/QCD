@@ -40,12 +40,12 @@ const double htbins_ext_edge[HT_Ext_BINS+1] = {300.0,2000.0};
 //const double zinv_NJetRweightingFactor[8] = {1.02845,1.08559,1.06879,0.922173,0.871796,0.99674,0.993756,0.539612};//v8 MC and v9 data, 12.9 fb-1
 //const double zinv_NJetRweightingFactor[8] = {      0,      0,      0,0.715566,0.630464,0.59214,0.523173,0.406519};//v11 MC Data, 36.4 fb-1, all 2016 runs
 //                                               NJets =      1        2       3        4        5       6     >=7
-const double zinv_NJetRweightingFactor[ZINVNJETS_BINS] = {    0,       0,      0,0.535176,0.924481,0.91038,0.491111};//v13 Data, 35.87 fb-1, all 2016 runs
+const double zinv_NJetRweightingFactor[ZINVNJETS_BINS] = {    0,       0,      0,0.506690,0.864817,0.84834,0.453468};//v13 Data, 35.87 fb-1, all 2016 runs
 //const double zinv_RNorm = 0.828;//4.0fb-1, v6 and v7
 //const double zinv_RNorm = 0.868;//7.6fb-1, v8
 //const double zinv_RNorm = 0.783;//v8 MC and v9 data, 12.9 fb-1
 //const double zinv_RNorm = 0.963;//v11 MC Data, 36.4 fb-1
-const double zinv_RNorm = 1.067;//v13 Data, 35.87 fb-1
+const double zinv_RNorm = 1.146;//v13 Data, 35.87 fb-1
 
 //Constants from single muon CS correction factor for MCDriven method
 //2016 ICHEP v9 final result

@@ -23,9 +23,15 @@ class TriggerEff
 
   //2017 Moriond
   std::vector<double> trgeff_met_bin_edge_2017Moriond = {0,25,50,75,100,125,150,175,200,275,400,600,1000};
+  //std::vector<double> trgeff_met_bin_edge_2017Moriond = {0,25,50,75,100,125,150,175,200,250,300,400,600,1000};
+
   std::vector<double> trgeff_real_met_ht300to1000_2017Moriond = {0.002 ,0.004,0.011,0.042,0.147,0.370,0.644,0.827,0.939,0.988,0.993,1.000};
   std::vector<double> trgeff_fake_met_ht300to1000_2017Moriond = {0.0005,0.001,0.003,0.015,0.082,0.279,0.547,0.763,0.899,0.955,0.981,1.000};
+  //std::vector<double> trgeff_fake_met_ht300to1000_2017Moriond = {0.09604437,0.1554465,0.2832484,0.4158014,0.5571772,0.6892371,0.789461,0.8659164,0.9236358,0.9532932,0.9669331,0.9864699,1};
+
   std::vector<double> trgeff_real_met_ht1000toInf_2017Moriond = {0.024 ,0.032,0.047,0.076,0.160,0.287,0.473,0.680,0.858,0.958,0.987,0.980};
   std::vector<double> trgeff_fake_met_ht1000toInf_2017Moriond = {0.017 ,0.024,0.031,0.068,0.122,0.261,0.391,0.582,0.768,0.886,0.941,0.963};
+  //std::vector<double> trgeff_fake_met_ht1000toInf_2017Moriond = {0.2398411,0.3132035,0.4033426,0.4960379,0.5805862,0.6688697,0.7470666,0.8121438,0.8638827,0.9100542,0.9325248,0.9620831,0.986631};
+
   int Get_met_id_2017Moriond(double met);
 };
