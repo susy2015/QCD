@@ -67,7 +67,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
       //special patch for ttjets inc
-      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
+      //if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
       //only all had ttjets wjets st
       if( !isQCDMC )
       {
@@ -247,7 +247,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
       //special patch for ttjets inc
-      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
+      //if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
       //only all had ttjets wjets st
       if( !isQCDMC )
       {
@@ -408,7 +408,7 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
     {
       if(tr.getEvtNum()%20000 == 0) std::cout << tr.getEvtNum() << "\t" << ((clock() - t0)/1000000.0) << std::endl;
       //special patch for ttjets inc
-      if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
+      //if( ( ( (*iter_QCDSampleInfos).QCDTag ).find("TTJets_Inc") != std::string::npos ) ){ if( tr.getVar<double>("genht")>600 ) continue; }
       //only all had ttjets wjets st
       if( !isQCDMC )
       {
@@ -1794,19 +1794,20 @@ int main(int argc, char* argv[])
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000", 121.5   , 11826702, LUMI, 1, inputFileList_QCDMC.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf" , 25.42   ,  6039005, LUMI, 1, inputFileList_QCDMC.c_str() );
 
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500_BFilter"  , 38970  , 6046724, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700_BFilter"  , 4150   , 7076024, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000_BFilter" , 1000   , 2869662, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500_BFilter", 184.4  ,  834688, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000_BFilter", 21.31  ,  240962, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
-  myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf_BFilter" , 4.16   ,  136826, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  //myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT300to500_BFilter"  , 38970  , 6046724, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  //myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT500to700_BFilter"  , 4150   , 7076024, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  //myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT700to1000_BFilter" , 1000   , 2869662, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  //myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1000to1500_BFilter", 184.4  ,  834688, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  //myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT1500to2000_BFilter", 21.31  ,  240962, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
+  //myQCDSampleWeight.QCDSampleInfo_push_back( "_QCD_HT2000toInf_BFilter" , 4.16   ,  136826, LUMI, 1, inputFileList_QCDMC_BFilter.c_str() );
   //Had ttjets wjets st part
-  /*
   myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_Inc_"          ,      831.76, 10139950, LUMI,    1, inputFileList_Data.c_str() );
+  /*
   myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-600to800_"  ,    2.666535, 14210872, LUMI,    1, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-800to1200_" ,    1.098082,  9982765, LUMI,    1, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-1200to2500_",    0.198748,  2932983, LUMI,    1, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-2500toInf_" , 0.002368413,  1519815, LUMI,    1, inputFileList_Data.c_str() );
+  */
   myQCDSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"            ,        35.6,  6774350, LUMI,    1, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"        ,        35.6,  6933094, LUMI,    1, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-200To400"   ,   359.7, 38867206, LUMI, 1.21, inputFileList_Data.c_str() );
@@ -1815,9 +1816,9 @@ int main(int argc, char* argv[])
   myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-800To1200"  ,   5.501,  7745467, LUMI, 1.21, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-1200To2500" ,   1.329,  6801534, LUMI, 1.21, inputFileList_Data.c_str() );
   myQCDSampleWeight.QCDSampleInfo_push_back( "_WJetsToLNu_HT-2500ToInf"  , 0.03216,  2637821, LUMI, 1.21, inputFileList_Data.c_str() );
-  */
   //if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS+5+2+6)
-  if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
+  if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS+1+2+6)
+  //if( myQCDSampleWeight.QCDSampleInfos.size() != QCD_BINS)
   {
     std::cout << "QCD_BINS in ConstantsSnippet.h and the entries of QCD samples in QCDReWeighting.h are not equal! Please check on that!" << std::endl; 
     return 0;
@@ -1828,14 +1829,14 @@ int main(int argc, char* argv[])
   //sample needed in the prediction loop
   QCDSampleWeight myDataSampleWeight;
   myDataSampleWeight.QCDSampleInfo_push_back( "MET"                        ,                              1,        1, LUMI, 1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_Inc_"          ,      831.76, 10139950, LUMI,    1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-600to800_"  ,    2.666535, 14210872, LUMI,    1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-800to1200_" ,    1.098082,  9982765, LUMI,    1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-1200to2500_",    0.198748,  2932983, LUMI,    1, inputFileList_Data.c_str() );
-  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-2500toInf_" , 0.002368413,  1519815, LUMI,    1, inputFileList_Data.c_str() );
-  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
-  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
-  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_Inc_"          ,      831.76, 10139950, LUMI,    1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-600to800_"  ,    2.666535, 14210872, LUMI,    1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-800to1200_" ,    1.098082,  9982765, LUMI,    1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-1200to2500_",    0.198748,  2932983, LUMI,    1, inputFileList_Data.c_str() );
+  //myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_HT-2500toInf_" , 0.002368413,  1519815, LUMI,    1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_DiLept"             ,         831.76*TTbar_DiLept_BR, 30444678, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromT_"   , 831.76*0.5*TTbar_SingleLept_BR, 61901450, LUMI, 1, inputFileList_Data.c_str() );
+  myDataSampleWeight.QCDSampleInfo_push_back( "_TTJets_SingleLeptFromTbar_", 831.76*0.5*TTbar_SingleLept_BR, 59860282, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_top"                 ,                           35.6,  6774350, LUMI, 1, inputFileList_Data.c_str() );
   myDataSampleWeight.QCDSampleInfo_push_back( "_ST_tW_antitop"             ,                           35.6,  6933094, LUMI, 1, inputFileList_Data.c_str() );
   //be careful!! WJets and ZJets samples have some tricky part, need to understand!

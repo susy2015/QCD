@@ -11,7 +11,8 @@
 //#define LUMI 12918.140703927 //final 2016 ICHEP data set
 #define LUMI 35866.210733056 //final 2017 Moriond data set, after re miniAOD
 
-#define QCD_BINS 2*6//6 QCD HT sample and 2 flavor, bfilter or no bfilter, plus ttjets had part
+//#define QCD_BINS 2*6//6 QCD HT sample and 2 flavor, bfilter or no bfilter
+#define QCD_BINS 6//6 QCD HT sample
 #define MET_BINS 4
 #define MT2_BINS 2
 #define MET_Ext_BINS 2
