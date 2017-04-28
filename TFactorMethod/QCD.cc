@@ -945,6 +945,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     QCDTNJFPred_err[i] = 0;
   }
 
+  PredDataHistgram myPredDataHistgram;
+  myPredDataHistgram.BookHistgram( (dir_out + "PredQCDData.root").c_str() );
+
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
@@ -1038,6 +1041,12 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                 double predtferr = thisweight;
                 ismt2metsb ? predtferr *= QCDTFactorPred_err[metbin_number][mt2bin_number] : predtferr *= QCDTFactorPred_Ext_err[metbin_ext_number][htbin_ext_number];
                 myQCDFactors.DC_sb_TFactor_sum_weight_err[searchbin_id]+=predtferr; myQCDFactors.DC_sb_TFactor_sum_err[searchbin_id]+=thisweight;
+     
+                (myPredDataHistgram.h_pred_data_met)->Fill(met,predweight);
+                (myPredDataHistgram.h_pred_data_mt2)->Fill(mt2,predweight);
+                (myPredDataHistgram.h_pred_data_ht)->Fill(ht,predweight);
+                (myPredDataHistgram.h_pred_data_ntopjets)->Fill(ntopjets,predweight);
+                (myPredDataHistgram.h_pred_data_nbjets)->Fill(nbotjets,predweight);
               }
               else
               {
@@ -1091,6 +1100,12 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   double predweight = std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor;
                   ismt2metsb ? predweight *= QCDTFactorPred[metbin_number][mt2bin_number] : predweight *= QCDTFactorPred_Ext[metbin_ext_number][htbin_ext_number];
                   myQCDFactors.DC_sb_otherBG_sum_weight[searchbin_id]+=predweight;
+
+                  (myPredDataHistgram.h_pred_otherbg_met)->Fill(met,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_mt2)->Fill(mt2,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_ht)->Fill(ht,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_ntopjets)->Fill(ntopjets,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_nbjets)->Fill(nbotjets,predweight);
                 }
                 else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
                 {
@@ -1101,6 +1116,11 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   double predweight = std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
                   ismt2metsb ? predweight *= QCDTFactorPred[metbin_number][mt2bin_number] : predweight *= QCDTFactorPred_Ext[metbin_ext_number][htbin_ext_number];
                   myQCDFactors.DC_sb_otherBG_sum_weight[searchbin_id]+=predweight;
+                  (myPredDataHistgram.h_pred_otherbg_met)->Fill(met,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_mt2)->Fill(mt2,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_ht)->Fill(ht,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_ntopjets)->Fill(ntopjets,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_nbjets)->Fill(nbotjets,predweight);
                 }
                 else if(
                            ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
@@ -1127,6 +1147,11 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   isNegativeWeight ? predweight = -std::abs(thisweight * metEff * BTagCorr * ISRCorr) : predweight = std::abs(thisweight * metEff * BTagCorr * ISRCorr);
                   ismt2metsb ? predweight *= QCDTFactorPred[metbin_number][mt2bin_number] : predweight *= QCDTFactorPred_Ext[metbin_ext_number][htbin_ext_number];
                   myQCDFactors.DC_sb_otherBG_sum_weight[searchbin_id]+=predweight;
+                  (myPredDataHistgram.h_pred_otherbg_met)->Fill(met,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_mt2)->Fill(mt2,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_ht)->Fill(ht,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_ntopjets)->Fill(ntopjets,predweight);
+                  (myPredDataHistgram.h_pred_otherbg_nbjets)->Fill(nbotjets,predweight);
                 }
               }//if MC
             }//if valid search bin id >=0
@@ -1135,6 +1160,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       }//event loop
     }//end of inner loop
   }//end of QCD Samples loop
+
+  (myPredDataHistgram.oFile)->Write();
+  (myPredDataHistgram.oFile)->Close();
 
   //get non closure unc from root file, need to be correcto in the following loop
   getNonClosureUnc(123,myQCDFactors.QCD_NonClosure_relative_err);

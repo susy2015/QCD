@@ -28,6 +28,7 @@
 #include "CalHistgram.h"
 #include "ClosureHistgram.h"
 #include "ClosureUncAUX.h"
+#include "PredDataHistgram.h"
 #include "BasicCheckHistgram.h"
 #include "SBCheckHistgram.h"
 #include "TriggerEff.h"
