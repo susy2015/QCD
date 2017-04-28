@@ -16,6 +16,9 @@ notify_user = hua.wei@cern.ch
 
 #### TTJets_ ####
 
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
+Queue
+
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
 Queue
 
@@ -421,9 +424,6 @@ Queue
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.bl
 Queue
 
-arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
-Queue
-
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab
 Queue
 
@@ -462,9 +462,6 @@ Queue
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ac
 Queue
 
-arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
-Queue
-
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ad
 Queue
 
@@ -475,6 +472,9 @@ arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-12
 Queue
 
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ag
+Queue
+
+arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.aa
 Queue
 
 arguments = $ENV(CMSSW_VERSION) $ENV(SCRAM_ARCH) 2017MoriondTxt/WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.ab

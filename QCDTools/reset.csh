@@ -34,13 +34,21 @@ if (-f puppiCorr.root) then
   unlink puppiCorr.root
 endif
 
-## Unlink Top tagger related files
+## Unlink Top tagger related files, toptagger cfg, simplified toptagger cfg, legacy cfg
 if (-f TopTagger.cfg) then
   unlink TopTagger.cfg
 endif
 
 if (-f TrainingOutput_dR20_pt30_depth12_500tree_2017_Feb16.model) then
   unlink TrainingOutput_dR20_pt30_depth12_500tree_2017_Feb16.model
+endif
+
+if (-f TopTagger_Simplified.cfg) then
+  unlink TopTagger_Simplified.cfg
+endif
+
+if (-f TrainingOutput_dR20_pt30_depth12_500tree_noQGL_binaryCSV_2017_Mar24.model) then
+  unlink TrainingOutput_dR20_pt30_depth12_500tree_noQGL_binaryCSV_2017_Mar24.model
 endif
 
 if (-f Legacy_TopTagger.cfg) then

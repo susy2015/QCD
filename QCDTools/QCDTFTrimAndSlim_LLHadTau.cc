@@ -86,7 +86,11 @@ int main(int argc, char* argv[])
   else
   {
     if( useLegacycfg ){ myBaselineVessel->SetupTopTagger(true, "Legacy_TopTagger.cfg" ); }
-    else{ myBaselineVessel->SetupTopTagger(true, "TopTagger.cfg" ); }
+    else
+    { 
+      //myBaselineVessel->SetupTopTagger(true, "TopTagger.cfg" );
+      myBaselineVessel->SetupTopTagger(true, "TopTagger_Simplified.cfg" );
+    }
   }
   tr->registerFunction(*myBaselineVessel);
 
