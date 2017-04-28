@@ -969,19 +969,25 @@ void QCDFactors::printDataCard(std::string pred_type)
       QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtau_errdown[i]*DC_sb_hadtau_errdown[i] + DC_sb_lostlept_errdown[i]*DC_sb_lostlept_errdown[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
     }
     if(QCD_otherBG_CS[i] < 0) { QCD_otherBG_CS[i]=0; }
+    QCD_otherBG_eff_CS[i] = DC_sb_otherBG_eff[i];
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
+    QCD_TFactor_ave[i] = DC_sb_TFactor_ave[i];
+    QCD_TFactor_ave_relative_err[i] = DC_sb_TFactor_ave_err[i];
   }
 
   std::cout << "Printing Data Card..." << std::endl;
   std::cout << std::setprecision(6);
 	std::cout << printDataCardLine("QCD_Data_CS"                    ,QCD_Data_CS);
   std::cout << printDataCardLine("QCD_Data_CS_relative_err"       ,QCD_Data_CS_relative_err);
-  std::cout << printDataCardLine("QCD_otherBG_CS"                 ,QCD_otherBG_CS);
+  //std::cout << printDataCardLine("QCD_otherBG_CS"                 ,QCD_otherBG_CS);
+  std::cout << printDataCardLine("QCD_otherBG_eff_CS"             ,QCD_otherBG_eff_CS);
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errup"  ,QCD_otherBG_CS_relative_errup);
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errdown",QCD_otherBG_CS_relative_errdown);
-  std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
-  std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
+  //std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
+  //std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
+  std::cout << printDataCardLine("QCD_TFactor_ave"                ,QCD_TFactor_ave);
+  std::cout << printDataCardLine("QCD_TFactor_ave_relative_err"   ,QCD_TFactor_ave_relative_err);
   //std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
   //std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
   std::cout << printDataCardLine("QCD_NonClosure_relative_err"    ,QCD_NonClosure_relative_err);
@@ -1018,8 +1024,11 @@ void QCDFactors::printSysHeader(std::string pred_type)
       QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtau_errdown[i]*DC_sb_hadtau_errdown[i] + DC_sb_lostlept_errdown[i]*DC_sb_lostlept_errdown[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
     }
     if(QCD_otherBG_CS[i] < 0) { QCD_otherBG_CS[i]=0; }
+    QCD_otherBG_eff_CS[i] = DC_sb_otherBG_eff[i];
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
+    QCD_TFactor_ave[i] = DC_sb_TFactor_ave[i];
+    QCD_TFactor_ave_relative_err[i] = DC_sb_TFactor_ave_err[i];
   }
 
   std::ofstream SysHeader;
@@ -1027,11 +1036,14 @@ void QCDFactors::printSysHeader(std::string pred_type)
   SysHeader << "//Printing SysHeader..." << std::endl;
   SysHeader << printSysHeaderLine("head_QCD_Data_CS"                ,QCD_Data_CS);
   //SysHeader << printSysHeaderLine("head_QCD_Data_CS_relative_err" ,QCD_Data_CS_relative_err);
-  SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_CS);
+  //SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_CS);
+  SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_eff_CS);
   SysHeader << printSysHeaderLine("head_QCD_otherBG_sysup"          ,QCD_otherBG_CS_relative_errup);
   SysHeader << printSysHeaderLine("head_QCD_otherBG_sysdn"          ,QCD_otherBG_CS_relative_errdown);
-  SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor);  
-  SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_relative_err);
+  //SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor);  
+  //SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_relative_err);
+  SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor_ave);  
+  SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_ave_relative_err);
   //SysHeader << printSysHeaderLine("head_QCD_NTopFactor"             ,QCD_NTopFactor);
   //SysHeader << printSysHeaderLine("head_QCD_NTopFactor_relative_err",QCD_NTopFactor_relative_err);
   SysHeader << printSysHeaderLine("head_QCD_NonClosure_relative_err",QCD_NonClosure_relative_err);

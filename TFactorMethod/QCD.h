@@ -46,7 +46,8 @@ QCDBGModel myQCDBGModel;
 //search bin definition, with era
 //SearchBins mySearchBins("SB_59_2016");
 //SearchBins mySearchBins("SB_Aggregate_ICHEP_2016");
-SearchBins mySearchBins("SB_v1_2017");
+//SearchBins mySearchBins("SB_v1_2017");
+SearchBins mySearchBins("SB_Aggregate_2017");
 //Trigger Eff
 TriggerEff myTriggerEff;
 //overall scale for all plots, will be set to be 1 if no special need
@@ -227,12 +228,15 @@ void getNonClosureUnc(int mbit, double (&QCD_NonClosure_relative_err)[NSEARCH_BI
     //if(int_pred_met_mt2<=0 || int_exp_met_mt2<=0) std::cout << int_pred_met_mt2 << " " << int_exp_met_mt2 << std::endl;
 
     bool ismt2sb = false, ishtsb = false;
+    ismt2sb = !(outBinDef.MT2_lo_==-1 && outBinDef.MT2_hi_==-1);
+    ishtsb = !(outBinDef.HT_lo_==-1 && outBinDef.HT_hi_==-1);
+    /*
     ismt2sb = (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
            || (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3)
            || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
            || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3);
     ishtsb = outBinDef.top_lo_==3 || outBinDef.bJet_lo_==3;
-
+    */
     if     (ismt2sb && !ishtsb) nc_unc_m2[i] = std::sqrt(nc_unc_met_mt2_m2[i]*nc_unc_met_mt2_m2[i]+nc_unc_ntop_m2[i]*nc_unc_ntop_m2[i]+nc_unc_nbot_m2[i]*nc_unc_nbot_m2[i]);
     else if(!ismt2sb && ishtsb) nc_unc_m2[i] = std::sqrt(nc_unc_met_ht_m2[i]*nc_unc_met_ht_m2[i]+nc_unc_ntop_m2[i]*nc_unc_ntop_m2[i]+nc_unc_nbot_m2[i]*nc_unc_nbot_m2[i]);
 
@@ -319,11 +323,15 @@ void getNonClosureUnc(int mbit, double (&QCD_NonClosure_relative_err)[NSEARCH_BI
     nc_unc_nbot_m3[i] = OneBinNonClosureUnc(int_pred_nbot, int_exp_nbot, err_pred_nbot, err_exp_nbot);
 
     bool ismt2sb = false, ishtsb = false;
+    ismt2sb = !(outBinDef.HT_lo_==-1 && outBinDef.HT_hi_==-1);
+    ishtsb = !(outBinDef.MT2_lo_==-1 && outBinDef.MT2_hi_==-1);
+    /*
     ismt2sb = (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
            || (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3)
            || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
            || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3);
     ishtsb = outBinDef.top_lo_==3 || outBinDef.bJet_lo_==3;
+    */
     if( (ismt2sb && ishtsb) || (!ismt2sb && !ishtsb) ){ std::cout << "error sb : " << i << std::endl; }
 
     if     (ismt2sb && !ishtsb) nc_unc_m3[i] = std::sqrt(nc_unc_met_m3[i]*nc_unc_met_m3[i]+nc_unc_mt2_m3[i]*nc_unc_mt2_m3[i]+nc_unc_ntop_m3[i]*nc_unc_ntop_m3[i]+nc_unc_nbot_m3[i]*nc_unc_nbot_m3[i]);
@@ -353,11 +361,15 @@ void getNonClosureUnc(int mbit, double (&QCD_NonClosure_relative_err)[NSEARCH_BI
   {
     SearchBins::searchBinDef outBinDef; mySearchBins.find_BinBoundaries( i, outBinDef );
     bool ismt2sb = false, ishtsb = false;
+    ismt2sb = !(outBinDef.HT_lo_==-1 && outBinDef.HT_hi_==-1);
+    ishtsb = !(outBinDef.MT2_lo_==-1 && outBinDef.MT2_hi_==-1);
+    /*
     ismt2sb = (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
            || (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3)
            || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
            || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3);
     ishtsb = outBinDef.top_lo_==3 || outBinDef.bJet_lo_==3;
+    */
     if(nc_unc_m3[i]>0){ nc_unc_m3_fix[i] = nc_unc_m3[i]; }
     else
     {

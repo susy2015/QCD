@@ -68,7 +68,7 @@ class QCDFactors
   double MT2_sb_mean[NSEARCH_BINS] = {0}; 
   double HT_sb_sum[NSEARCH_BINS] = {0}, HT_sb_sum_weight[NSEARCH_BINS] = {0};
   double HT_sb_mean[NSEARCH_BINS] = {0};
- 
+
   void NumbertoTFactor();
   void TFactorFit();//FIXME
   void TFactorScale();
@@ -90,12 +90,23 @@ class QCDFactors
   double DC_sb_hadtau_errup[NSEARCH_BINS] = {0}, DC_sb_lostlept_errup[NSEARCH_BINS] = {0}, DC_sb_hadtau_errdown[NSEARCH_BINS] = {0}, DC_sb_lostlept_errdown[NSEARCH_BINS] = {0};
   double DC_sb_TFactor[NSEARCH_BINS] = {0};
   double DC_sb_TFactor_err[NSEARCH_BINS] = {0};
+  //variables for aggregate search bins 
+  double DC_sb_TFactor_ave[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor_ave_err[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor_sum_weight[NSEARCH_BINS] = {0}, DC_sb_TFactor_sum[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor_sum_weight_err[NSEARCH_BINS] = {0}, DC_sb_TFactor_sum_err[NSEARCH_BINS] = {0};
+  double DC_sb_otherBG_eff[NSEARCH_BINS] = {0};
+  double DC_sb_otherBG_sum_weight[NSEARCH_BINS] = {0}, DC_sb_otherBG_sum[NSEARCH_BINS] = {0};
+  //too diffcult to calculter the err for eff other bg... use approximation to replace
   //variables for Data Card and Syst header
   double QCD_Data_CS[NSEARCH_BINS] = {0}, QCD_Data_CS_relative_err[NSEARCH_BINS] = {0};
   double QCD_otherBG_CS[NSEARCH_BINS] = {0}, QCD_otherBG_CS_relative_errup[NSEARCH_BINS] = {0}, QCD_otherBG_CS_relative_errdown[NSEARCH_BINS] = {0};
   double QCD_TFactor[NSEARCH_BINS] = {0}, QCD_TFactor_relative_err[NSEARCH_BINS] = {0};
   double QCD_NTopFactor[NSEARCH_BINS] = {0}, QCD_NTopFactor_relative_err[NSEARCH_BINS] = {0};
   double QCD_NonClosure_relative_err[NSEARCH_BINS] = {0};
+  //variables for aggregate search bins
+  double QCD_otherBG_eff_CS[NSEARCH_BINS] = {0};
+  double QCD_TFactor_ave[NSEARCH_BINS] = {0}, QCD_TFactor_ave_relative_err[NSEARCH_BINS] = {0};
 
   void printDataCard(std::string pred_type);
   void printSysHeader(std::string pred_type);

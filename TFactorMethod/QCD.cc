@@ -120,6 +120,7 @@ void LoopQCDCal( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight )
          )
       {
         if( met < metbins_edge[0] ) std::cout << "what the fuck is going on!!" << std::endl;
+
         if ( passdPhis )
         {
           metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(true, ht, met);
@@ -315,7 +316,7 @@ void LoopQCDExpMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight 
         std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
         for(auto i=0;i<searchbin_ids.size();i++)
         {
-          if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
+          //if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
           int searchbin_id = searchbin_ids.at(i);
           /*
           if(searchbin_id==38 || searchbin_id==7)
@@ -482,7 +483,7 @@ void LoopQCDPredMC( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeight
           std::vector<int> searchbin_ids = mySearchBins.find_Binning_Indices( nbotjets, ntopjets, mt2, met, ht );
           for(auto i=0;i<searchbin_ids.size();i++)
           {
-            if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
+            //if(searchbin_ids.size()!=1){ std::cout << "size of search bin not 1??" << std::endl; }
             int searchbin_id = searchbin_ids.at(i);
             if( searchbin_id >= 0 )
             {
@@ -980,6 +981,8 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
 
       int metbin_number = myQCDBGModel.Set_metbin_number(met);
       int mt2bin_number = myQCDBGModel.Set_mt2bin_number(mt2);
+      int metbin_ext_number = myQCDBGModel.Set_metbin_ext_number(met);
+      int htbin_ext_number = myQCDBGModel.Set_htbin_ext_number(ht);
       int njetsbin_number = myQCDBGModel.Set_njetsbin_number(ntopjets);
 
       bool passLeptVeto = tr.getVar<bool>("passLeptVeto");
@@ -993,6 +996,11 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                           && passTagger
                           && passBJets
                           && passNoiseEventFilter;
+
+      bool ismt2metsb =    (ntopjets==1 && nbotjets==1)
+                        || (ntopjets==1 && nbotjets==2)
+                        || (ntopjets==2 && nbotjets==1)
+                        || (ntopjets==2 && nbotjets==2);
 
       if ( passBaselineQCD )
       {
@@ -1023,6 +1031,13 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
 
                 myQCDFactors.DC_sb_Data[searchbin_id] += thisweight;
                 myQCDFactors.DC_sb_Data_err[searchbin_id] += thisweight * thisweight; 
+
+                double predweight = thisweight;
+                ismt2metsb ? predweight *= QCDTFactorPred[metbin_number][mt2bin_number] : predweight *= QCDTFactorPred_Ext[metbin_ext_number][htbin_ext_number];
+                myQCDFactors.DC_sb_TFactor_sum_weight[searchbin_id]+=predweight; myQCDFactors.DC_sb_TFactor_sum[searchbin_id]+=thisweight;
+                double predtferr = thisweight;
+                ismt2metsb ? predtferr *= QCDTFactorPred_err[metbin_number][mt2bin_number] : predtferr *= QCDTFactorPred_Ext_err[metbin_ext_number][htbin_ext_number];
+                myQCDFactors.DC_sb_TFactor_sum_weight_err[searchbin_id]+=predtferr; myQCDFactors.DC_sb_TFactor_sum_err[searchbin_id]+=thisweight;
               }
               else
               {
@@ -1073,6 +1088,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                       myQCDFactors.DC_sb_hadtauMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr * ttjetsFactor;
                     }
                   }
+                  double predweight = std::abs(thisweight * metEff) * BTagCorr * ISRCorr * ttjetsFactor;
+                  ismt2metsb ? predweight *= QCDTFactorPred[metbin_number][mt2bin_number] : predweight *= QCDTFactorPred_Ext[metbin_ext_number][htbin_ext_number];
+                  myQCDFactors.DC_sb_otherBG_sum_weight[searchbin_id]+=predweight;
                 }
                 else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
                 {
@@ -1080,6 +1098,9 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   njets30<ZINVNJETS_BINS ? njetRWF = zinv_NJetRweightingFactor[njets30-1] : njetRWF = zinv_NJetRweightingFactor[ZINVNJETS_BINS-1];
                   myQCDFactors.DC_sb_zinvMC[searchbin_id] += std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
                   myQCDFactors.DC_sb_zinvMC_err[searchbin_id] += thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm * thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm;
+                  double predweight = std::abs(thisweight * metEff * BTagCorr * njetRWF * zinv_RNorm);
+                  ismt2metsb ? predweight *= QCDTFactorPred[metbin_number][mt2bin_number] : predweight *= QCDTFactorPred_Ext[metbin_ext_number][htbin_ext_number];
+                  myQCDFactors.DC_sb_otherBG_sum_weight[searchbin_id]+=predweight;
                 }
                 else if(
                            ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos
@@ -1102,6 +1123,10 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
                   bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
                   isNegativeWeight ? myQCDFactors.DC_sb_ttzMC[searchbin_id] -= std::abs(thisweight * metEff * BTagCorr * ISRCorr) : myQCDFactors.DC_sb_ttzMC[searchbin_id] += std::abs(thisweight * metEff * BTagCorr * ISRCorr);
                   myQCDFactors.DC_sb_ttzMC_err[searchbin_id] += thisweight * metEff * thisweight * metEff * BTagCorr * BTagCorr * ISRCorr * ISRCorr;
+                  double predweight = 1;
+                  isNegativeWeight ? predweight = -std::abs(thisweight * metEff * BTagCorr * ISRCorr) : predweight = std::abs(thisweight * metEff * BTagCorr * ISRCorr);
+                  ismt2metsb ? predweight *= QCDTFactorPred[metbin_number][mt2bin_number] : predweight *= QCDTFactorPred_Ext[metbin_ext_number][htbin_ext_number];
+                  myQCDFactors.DC_sb_otherBG_sum_weight[searchbin_id]+=predweight;
                 }
               }//if MC
             }//if valid search bin id >=0
@@ -1152,11 +1177,13 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
       if( head_QCD_meanMET_exp_sb[i] < 100 ) met_ext_id = myQCDBGModel.Set_metbin_ext_number( LastOption_met );
       if( head_QCD_meanHT_exp_sb[i] < 100 ) ht_ext_id = myQCDBGModel.Set_htbin_ext_number( LastOption_mt2ht );
     }
-
+    /*
     bool ismt2metsb =    (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2)
                       || (outBinDef.top_lo_==1 && outBinDef.top_hi_==2 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3)
                       || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==1 && outBinDef.bJet_hi_==2) 
                       || (outBinDef.top_lo_==2 && outBinDef.top_hi_==3 && outBinDef.bJet_lo_==2 && outBinDef.bJet_hi_==3);
+    */
+    bool ismt2metsb = !(outBinDef.MT2_lo_==-1 && outBinDef.MT2_hi_==-1);
     //set up data card from Tfactors
     if(ismt2metsb)
     {
@@ -1193,6 +1220,12 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     myQCDFactors.DC_sb_zinvMC_err[i] = std::sqrt(myQCDFactors.DC_sb_zinvMC_err[i]);
     myQCDFactors.DC_sb_ttzMC_err[i] = std::sqrt(myQCDFactors.DC_sb_ttzMC_err[i]);
     myQCDFactors.DC_sb_allhadMC_err[i] = std::sqrt(myQCDFactors.DC_sb_allhadMC_err[i]);
+
+    //ave TF for aggregate search bin
+    myQCDFactors.DC_sb_TFactor_ave[i] = myQCDFactors.DC_sb_TFactor_sum_weight[i]/myQCDFactors.DC_sb_TFactor_sum[i];
+    myQCDFactors.DC_sb_TFactor_ave_err[i] = myQCDFactors.DC_sb_TFactor_sum_weight_err[i]/myQCDFactors.DC_sb_TFactor_sum_weight[i];//get ratio, fraction
+    myQCDFactors.DC_sb_otherBG_eff[i] = myQCDFactors.DC_sb_otherBG_sum_weight[i]/(myQCDFactors.DC_sb_TFactor_sum_weight[i]/myQCDFactors.DC_sb_TFactor_sum[i]);
+
   }
   
   std::string pred_type;
@@ -1693,7 +1726,22 @@ int main(int argc, char* argv[])
     //ncu_m1->SetLineWidth(5); ncu_m2->SetLineWidth(5); ncu_m3->SetLineWidth(5); ncu_m12->SetLineWidth(5); ncu_m13->SetLineWidth(5); ncu_m123->SetLineWidth(5);
     ncu_m1->SetMarkerColor(1); ncu_m2->SetMarkerColor(2); ncu_m3->SetMarkerColor(3); ncu_m12->SetMarkerColor(4); ncu_m13->SetMarkerColor(6); ncu_m123->SetMarkerColor(7);
     ncu_m1->SetMarkerStyle(20); ncu_m2->SetMarkerStyle(21); ncu_m3->SetMarkerStyle(22); ncu_m12->SetMarkerStyle(23); ncu_m13->SetMarkerStyle(24); ncu_m123->SetMarkerStyle(25);
-
+    /*
+    for(int ib=0; ib<NSEARCH_BINS; ib++)
+    {
+      SearchBins::searchBinDef sbDef;
+      mySearchBins.find_BinBoundaries(ib, sbDef);
+      //bool damnsb = (sbDef.HT_lo_==-1 && sbDef.HT_hi_==-1 && sbDef.MT2_lo_==-1 && sbDef.MT2_hi_==-1);
+      bool damnsb = (sbDef.met_lo_==-1 && sbDef.met_hi_==-1);
+      if(damnsb)
+      {
+        std::cout << "SB: " << ib << std::endl;
+        std::cout << "MET(high/low): " << sbDef.met_hi_ << " " << sbDef.met_lo_ << std::endl;
+        std::cout << "MT2(high/low): " << sbDef.MT2_hi_ << " " << sbDef.MT2_lo_ << std::endl;
+        std::cout << "HT(high/low): " << sbDef.HT_hi_ << " " << sbDef.HT_lo_ << std::endl;
+      }
+    }
+    */
     getNonClosureUnc(1,Test_QCD_NonClosureUnc);
     std::cout << "Method 1 : " << std::endl;
     for (int i = 0; i < NSEARCH_BINS ; i++)

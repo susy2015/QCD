@@ -23,7 +23,8 @@
 //#define NSEARCH_BINS 37
 //#define NSEARCH_BINS 59
 //#define NSEARCH_BINS 8
-#define NSEARCH_BINS 84
+//#define NSEARCH_BINS 84
+#define NSEARCH_BINS 30
 //const double metbins_edge[MET_BINS+1] = {175.0,200.0,350.0,500.0,650.0};
 //const double metbins_edge[MET_BINS+1] = {150.0,200.0,350.0,500.0,650.0};
 const double metbins_edge[MET_BINS+1] = {200.0,250.0,350.0,450.0,600.0};
