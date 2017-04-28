@@ -22,7 +22,7 @@ LDFLAGS  =
 
 LIBS     = $(shell root-config --glibs)
 
-PROGRAMS = QCD ClosurePlots BasicCheckPlots SysUncs
+PROGRAMS = QCD ClosurePlots BasicCheckPlots SysUncs LLHadTau AllHadTTJetsWJetsSTPlots
 
 all: mkobj $(PROGRAMS)
 
@@ -48,7 +48,7 @@ $(ODIR)/%.o : $(IDIR)/%.cc
 $(ODIR)/%.o : $(IDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
 
-QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/ClosureUncAUX.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
+QCD: $(ODIR)/QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/QCDFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/QCDBinFunction.o $(ODIR)/CalHistgram.o $(ODIR)/ClosureHistgram.o $(ODIR)/ClosureUncAUX.o $(ODIR)/PredDataHistgram.o $(ODIR)/BasicCheckHistgram.o $(ODIR)/SBCheckHistgram.o
 	$(LD) $^ $(LIBS) -o $@
 
 #SFCheck: $(ODIR)/SFCheck.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/BTagCorrector.o $(ODIR)/BTagCalibrationStandalone.o $(ODIR)/QCDReWeighting.o $(ODIR)/SFCheckHistgram.o
@@ -64,6 +64,12 @@ BasicCheckPlots: $(ODIR)/BasicCheckPlots.o
 #	$(LD) $^ $(LIBS) -o $@
 
 SysUncs: $(ODIR)/SysUncs.o $(ODIR)/searchBins.o $(ODIR)/SATException.o
+	$(LD) $^ $(LIBS) -o $@
+
+LLHadTau: $(ODIR)/LLHadTau.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/searchBins.o $(ODIR)/TriggerEff.o $(ODIR)/LLHadTauFactors.o $(ODIR)/QCDReWeighting.o $(ODIR)/AllHadTTJetsWJetsSTHistgram.o
+	$(LD) $^ $(LIBS) -o $@
+
+AllHadTTJetsWJetsSTPlots: $(ODIR)/AllHadTTJetsWJetsSTPlots.o $(ODIR)/searchBins.o $(ODIR)/SATException.o
 	$(LD) $^ $(LIBS) -o $@
 
 clean:

@@ -25,7 +25,7 @@ LIBS       = $(shell root-config --glibs)
 LIBS      += -Lobj -lSusyAnaTools
 LIBS      += -L$(CMSSW_BASE)/src/TopTagger/TopTagger/test -lTopTagger
 LIBS      += -L$(OPENCV_DIRECTORY)/lib/ -lopencv_ml -lopencv_core
-MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2 -L$(CMSSW_RELEASE_BASE)/lib/${SCRAM_ARCH}/ -lPhysicsToolsHeppy
+MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2 #-L$(CMSSW_RELEASE_BASE)/lib/${SCRAM_ARCH}/ -lPhysicsToolsHeppy
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 FILES = $(wildcard $(SDIR)/*.cc)
 OBJS  := $(FILES:$(SDIR)/%.cc=$(ODIR)/%.o)
@@ -60,25 +60,25 @@ $(ODIR)/%.o : $(IDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(CXXDEPFLAGS) -o $@ -c $<
 
 DeepTrim: $(ODIR)/DeepTrim.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 SFCheckTrim: $(ODIR)/SFCheckTrim.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 QCDTFTrimAndSlim_LLHadTau: $(ODIR)/QCDTFTrimAndSlim_LLHadTau.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 QCDTFTrimAndSlim_Zinv: $(ODIR)/QCDTFTrimAndSlim_Zinv.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 QCDTFTrimAndSlim_QCD: $(ODIR)/QCDTFTrimAndSlim_QCD.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 QCDTFTrimAndSlim_Rare: $(ODIR)/QCDTFTrimAndSlim_Rare.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 QCDTFTrimAndSlim_Data: $(ODIR)/QCDTFTrimAndSlim_Data.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o
-	$(LD) $^ $(LIBS) $(MT2LIB) -o $@
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 clean:
 	rm -f $(IDIR)/*.a $(ODIR)/*.o $(ODIR)/*.d $(ODIR)/*.so $(PROGRAMS) core 

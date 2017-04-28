@@ -131,6 +131,7 @@ void ClosurePlots::ClosureTemplate(
   h_pred->SetLineWidth(3);
   h_pred->GetXaxis()->SetRangeUser(min,max);
   h_pred->GetXaxis()->SetTitle(XTitle);
+  h_pred->GetXaxis()->SetLabelSize(0.20);
   h_pred->GetYaxis()->SetTitleOffset(0.6);
   h_pred->GetYaxis()->SetTitleFont(42);
   h_pred->GetYaxis()->SetTitleSize(0.065);
@@ -147,6 +148,7 @@ void ClosurePlots::ClosureTemplate(
   h_exp->SetLineWidth(3);
   h_exp->GetXaxis()->SetRangeUser(min,max);
   h_exp->GetXaxis()->SetTitle(XTitle);
+  h_exp->GetXaxis()->SetLabelSize(0.20);
   h_exp->GetYaxis()->SetTitleOffset(0.6);
   h_exp->GetYaxis()->SetTitleFont(42);
   h_exp->GetYaxis()->SetTitleSize(0.065);
@@ -175,10 +177,11 @@ void ClosurePlots::ClosureTemplate(
   h_ratio->GetYaxis()->SetLabelFont(42);
   h_ratio->GetXaxis()->SetLabelOffset(0.01);
   h_ratio->GetXaxis()->SetLabelFont(42);
-  h_ratio->GetXaxis()->SetLabelSize(0.15);
+  h_ratio->GetXaxis()->SetLabelSize(0.20);
   h_ratio->GetXaxis()->SetTitleSize(0.16);
   h_ratio->GetXaxis()->SetTitleFont(42);
   h_ratio->GetXaxis()->SetTitleOffset(1.0);
+
   if (hist_tag == "_sb")
   {
     h_ratio->GetXaxis()->SetTitle("Search region bin number");
@@ -281,7 +284,7 @@ void ClosurePlots::ClosureTemplate(
   h_ratio->SetMinimum(-2);
   if( hist_tag == "_sb" )
   {
-    h_ratio->GetXaxis()->SetLabelSize(0.15);
+    h_ratio->GetXaxis()->SetLabelSize(0.20);
     h_ratio->GetXaxis()->SetTitleOffset(1.0);
     h_ratio->GetXaxis()->SetRangeUser(0.,NSEARCH_BINS);
   }

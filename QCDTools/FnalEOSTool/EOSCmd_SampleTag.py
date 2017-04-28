@@ -1,21 +1,21 @@
 import glob, os, sys
 
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv12p5c_ReRun2"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv12p5c_ReRun2"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv13p5c_SimplifiedTagger"
+#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv13p5c_0b"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SFCheckTrim_2016Sep"
 
 MGM = "root://cmseos.fnal.gov/"
 
 sample_tag_list_Data = [
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016B-23Sep2016-v3_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016C-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016D-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016E-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016F-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016G-23Sep2016-v1_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v2_stopFlatNtuples_",
-"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v3_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016B-03Feb2017_ver2-v2_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016C-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016D-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016E-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016F-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016G-03Feb2017-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver2-v1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver3-v1_stopFlatNtuples_",
                        ]
 
 sample_tag_list_LLHadTau = [
@@ -25,6 +25,7 @@ sample_tag_list_LLHadTau = [
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromTbar_ext1_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_DiLept_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_DiLept_ext1_stopFlatNtuples_",
+"QCDTFTrimAndSlim_Summer16_80X_Mar_2017_Ntp_v13p0_TTJets_Inc_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_HT-600to800_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_HT-800to1200_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_HT-1200to2500_stopFlatNtuples_",
@@ -88,7 +89,7 @@ sample_tag_list_QCD = [
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_QCD_HT2000toInf_BFilter_stopFlatNtuples_",
                       ]
 
-sample_tag_list_TTZ = [
+sample_tag_list_Rare = [
 #"QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTWJetsToLNu_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTWJetsToLNu_ext1_stopFlatNtuples_",
 "QCDTFTrimAndSlim_Summer16_80X_Jan_2017_Ntp_v12p0_TTWJetsToLNu_ext2_stopFlatNtuples_",
@@ -118,14 +119,14 @@ sample_tag_list_TTZ = [
                       ]
 
 sample_tag_list_DeepTrim = [
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016B-23Sep2016-v3_stopFlatNtuples_",
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016C-23Sep2016-v1_stopFlatNtuples_",
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016D-23Sep2016-v1_stopFlatNtuples_",
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016E-23Sep2016-v1_stopFlatNtuples_",
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016F-23Sep2016-v1_stopFlatNtuples_",
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016G-23Sep2016-v1_stopFlatNtuples_",
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v2_stopFlatNtuples_",
-"DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_MET-Run2016H-PromptReco-v3_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016B-03Feb2017_ver2-v2_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016C-03Feb2017-v1_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016D-03Feb2017-v1_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016E-03Feb2017-v1_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016F-03Feb2017-v1_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016G-03Feb2017-v1_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver2-v1_stopFlatNtuples_",
+"DeepTrimmd_Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver3-v1_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromT_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromT_ext1_stopFlatNtuples_",
 "DeepTrimmd_Summer16_80X_Jan_2017_Ntp_v12p0_TTJets_SingleLeptFromTbar_stopFlatNtuples_",
@@ -194,8 +195,8 @@ elif(sample_tag == 'Zinv') :
   sample_tag_list = sample_tag_list_Zinv
 elif(sample_tag == 'QCD') :
   sample_tag_list = sample_tag_list_QCD
-elif(sample_tag == 'TTZ') :
-  sample_tag_list = sample_tag_list_TTZ
+elif(sample_tag == 'Rare') :
+  sample_tag_list = sample_tag_list_Rare
 elif(sample_tag == 'DeepTrim') :
   sample_tag_list = sample_tag_list_DeepTrim
 elif(sample_tag == 'SFCheckTrim') :

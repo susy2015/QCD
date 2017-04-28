@@ -12,7 +12,8 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
     else if (i == 1) smalltag = "HadTau";
     else if (i == 2) smalltag = "Zinv";
     else if (i == 3) smalltag = "QCD";
-    else smalltag = "TTZ";
+    else if (i == 4) smalltag = "TTZRare";
+    else if (i == 5) smalltag = "AllHadTTJetsWJetsST";
 
     h_b_met_MC[i] = new TH1D( ("h_b_met_MC_" + smalltag).c_str(),"",20,200,600);
     h_b_njets30_MC[i] = new TH1D( ("h_b_njets30_MC_" + smalltag).c_str(),"",10,4,14);

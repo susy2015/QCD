@@ -15,9 +15,9 @@ void QCDFactors::NumbertoTFactor()
          MET_sum_weight_all[i_cal][j_cal] += MET_sum_weight[k_cal][i_cal][j_cal];
          if(MET_sum_weight[k_cal][i_cal][j_cal]>0) MET_mean_err[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal];
       }
-      QCDTFactor[i_cal][j_cal] = nQCDNormal_all[i_cal][j_cal]/nQCDInverted_all[i_cal][j_cal];
-      MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];
-      MET_mean_err[i_cal][j_cal] = std::sqrt(MET_mean_err[i_cal][j_cal]);
+      QCDTFactor[i_cal][j_cal] = (nQCDNormal_all[i_cal][j_cal]+nOtherNormal_all[i_cal][j_cal])/(nQCDInverted_all[i_cal][j_cal]+nOtherInverted_all[i_cal][j_cal]);
+      MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];//FIXME
+      MET_mean_err[i_cal][j_cal] = std::sqrt(MET_mean_err[i_cal][j_cal]);//FIXME
     }
   }
 
@@ -29,13 +29,8 @@ void QCDFactors::NumbertoTFactor()
       {
          nQCDNormal_Ext_all[i_cal][j_cal] += nQCDNormal_Ext[k_cal][i_cal][j_cal];
          nQCDInverted_Ext_all[i_cal][j_cal] += nQCDInverted_Ext[k_cal][i_cal][j_cal];
-         //MET_sum_all[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal];
-         //MET_sum_weight_all[i_cal][j_cal] += MET_sum_weight[k_cal][i_cal][j_cal];
-         //if(MET_sum_weight[k_cal][i_cal][j_cal]>0) MET_mean_err[i_cal][j_cal] += MET_sum[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal]/MET_sum_weight[k_cal][i_cal][j_cal];
       }
-      QCDTFactor_Ext[i_cal][j_cal] = nQCDNormal_Ext_all[i_cal][j_cal]/nQCDInverted_Ext_all[i_cal][j_cal];
-      //MET_mean[i_cal][j_cal] = MET_sum_all[i_cal][j_cal]/MET_sum_weight_all[i_cal][j_cal];
-      //MET_mean_err[i_cal][j_cal] = std::sqrt(MET_mean_err[i_cal][j_cal]);
+      QCDTFactor_Ext[i_cal][j_cal] = (nQCDNormal_Ext_all[i_cal][j_cal]+nOtherNormal_Ext_all[i_cal][j_cal])/(nQCDInverted_Ext_all[i_cal][j_cal]+nOtherInverted_Ext_all[i_cal][j_cal]);
     }
   }
 
@@ -49,9 +44,9 @@ void QCDFactors::NumbertoTFactor()
         nQCDNormal_all_err[i_cal][j_cal] += nQCDNormal_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal] ;
         nQCDInverted_all_err[i_cal][j_cal] += nQCDInverted_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal];
       }
-      nQCDNormal_all_err[i_cal][j_cal] = std::sqrt( nQCDNormal_all_err[i_cal][j_cal] );
-      nQCDInverted_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_all_err[i_cal][j_cal] );
-      QCDTFactor_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_all[i_cal][j_cal] , nQCDInverted_all[i_cal][j_cal] , nQCDNormal_all_err[i_cal][j_cal], nQCDInverted_all_err[i_cal][j_cal] );
+      double nNormal_all_err = std::sqrt( nQCDNormal_all_err[i_cal][j_cal]+nOtherNormal_all_err[i_cal][j_cal] );
+      double nInverted_all_err = std::sqrt( nQCDInverted_all_err[i_cal][j_cal]+nOtherInverted_all_err[i_cal][j_cal] );
+      QCDTFactor_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_all[i_cal][j_cal]+nOtherNormal_all[i_cal][j_cal] , nQCDInverted_all[i_cal][j_cal]+nOtherInverted_all[i_cal][j_cal] , nNormal_all_err , nInverted_all_err );
     }
   }
  
@@ -64,9 +59,9 @@ void QCDFactors::NumbertoTFactor()
         nQCDNormal_Ext_all_err[i_cal][j_cal] += nQCDNormal_Ext_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal] ;
         nQCDInverted_Ext_all_err[i_cal][j_cal] += nQCDInverted_Ext_MC[k_cal][i_cal][j_cal] * QCDWeights[k_cal] * QCDWeights[k_cal];
       }
-      nQCDNormal_Ext_all_err[i_cal][j_cal] = std::sqrt( nQCDNormal_Ext_all_err[i_cal][j_cal] );
-      nQCDInverted_Ext_all_err[i_cal][j_cal] = std::sqrt( nQCDInverted_Ext_all_err[i_cal][j_cal] );
-      QCDTFactor_Ext_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_Ext_all[i_cal][j_cal] , nQCDInverted_Ext_all[i_cal][j_cal] , nQCDNormal_Ext_all_err[i_cal][j_cal], nQCDInverted_Ext_all_err[i_cal][j_cal] );
+      double nNormal_Ext_all_err = std::sqrt( nQCDNormal_Ext_all_err[i_cal][j_cal]+nOtherNormal_Ext_all_err[i_cal][j_cal] );
+      double nInverted_Ext_all_err = std::sqrt( nQCDInverted_Ext_all_err[i_cal][j_cal]+nOtherInverted_Ext_all_err[i_cal][j_cal] );
+      QCDTFactor_Ext_err[i_cal][j_cal] = get_aoverb_Error( nQCDNormal_Ext_all[i_cal][j_cal]+nOtherNormal_Ext_all[i_cal][j_cal] , nQCDInverted_Ext_all[i_cal][j_cal]+nOtherInverted_Ext_all[i_cal][j_cal] , nNormal_Ext_all_err , nInverted_Ext_all_err );
     }
   }
 
@@ -380,12 +375,12 @@ void QCDFactors::getAndprintTFactorsfromDataHeader(std::string pred_type)
   {
     if( pred_type == "MCDriven" )
     { 
-      QCDTFactorData[i] = (nQCDNormal_Data_all[i]-nQCDNormal_hadtauMC_all[i]-nQCDNormal_lostleptMC_all[i]-nQCDNormal_zinvMC_all[i]-nQCDNormal_ttzMC_all[i])/(nQCDInverted_Data_all[i]-nQCDInverted_hadtauMC_all[i]-nQCDInverted_lostleptMC_all[i]-nQCDInverted_zinvMC_all[i]-nQCDInverted_ttzMC_all[i]);
+      QCDTFactorData[i] = (nQCDNormal_Data_all[i]-nQCDNormal_hadtauMC_all[i]-nQCDNormal_lostleptMC_all[i]-nQCDNormal_zinvMC_all[i]-nQCDNormal_ttzMC_all[i]-nQCDNormal_allhadMC_all[i])/(nQCDInverted_Data_all[i]-nQCDInverted_hadtauMC_all[i]-nQCDInverted_lostleptMC_all[i]-nQCDInverted_zinvMC_all[i]-nQCDInverted_ttzMC_all[i]-nQCDInverted_allhadMC_all[i]);
       QCDTFactorData_err[i] = get_aoverb_Error( nQCDNormal_Data_all[i] , nQCDInverted_Data_all[i] , nQCDNormal_Data_all_err[i], nQCDInverted_Data_all_err[i] );
     }
     else if( pred_type == "DataDriven" ) 
     {
-      QCDTFactorData[i] = (nQCDNormal_Data_all[i]-nQCDNormal_hadtau_all[i]-nQCDNormal_lostlept_all[i]-nQCDNormal_zinvMC_all[i]-nQCDNormal_ttzMC_all[i])/(nQCDInverted_Data_all[i]-nQCDInverted_hadtau_all[i]-nQCDInverted_lostlept_all[i]-nQCDInverted_zinvMC_all[i]-nQCDInverted_ttzMC_all[i]);
+      QCDTFactorData[i] = (nQCDNormal_Data_all[i]-nQCDNormal_hadtau_all[i]-nQCDNormal_lostlept_all[i]-nQCDNormal_zinvMC_all[i]-nQCDNormal_ttzMC_all[i]-nQCDNormal_allhadMC_all[i])/(nQCDInverted_Data_all[i]-nQCDInverted_hadtau_all[i]-nQCDInverted_lostlept_all[i]-nQCDInverted_zinvMC_all[i]-nQCDInverted_ttzMC_all[i]-nQCDInverted_allhadMC_all[i]);
       QCDTFactorData_err[i] = get_aoverb_Error( nQCDNormal_Data_all[i] , nQCDInverted_Data_all[i] , nQCDNormal_Data_all_err[i], nQCDInverted_Data_all_err[i] );
     }
     else
@@ -399,6 +394,7 @@ void QCDFactors::getAndprintTFactorsfromDataHeader(std::string pred_type)
     std::cout << "[LL_Data]     METBin0, MT2Bin" << i << " : " << nQCDNormal_lostlept_all[i]   << "," << nQCDInverted_lostlept_all[i]   << std::endl;
     std::cout << "[Zinv_MC]     METBin0, MT2Bin" << i << " : " << nQCDNormal_zinvMC_all[i]     << "," << nQCDInverted_zinvMC_all[i]     << std::endl;
     std::cout << "[TTZ/W_MC]    METBin0, MT2Bin" << i << " : " << nQCDNormal_ttzMC_all[i]      << "," << nQCDInverted_ttzMC_all[i]      << std::endl;
+    std::cout << "[AllHad_MC]   METBin0, MT2Bin" << i << " : " << nQCDNormal_allhadMC_all[i]   << "," << nQCDInverted_allhadMC_all[i]   << std::endl;
     std::cout << pred_type << ":" << std::endl;
     std::cout << "METBin0, MT2Bin" << i << " : " << QCDTFactorData[i] << "(" << QCDTFactorData_err[i] << ")" << std::endl;
   }
@@ -407,12 +403,12 @@ void QCDFactors::getAndprintTFactorsfromDataHeader(std::string pred_type)
   {
     if( pred_type == "MCDriven" )
     { 
-      QCDTFactorData_Ext[i] = (nQCDNormal_Ext_Data_all[i]-nQCDNormal_Ext_hadtauMC_all[i]-nQCDNormal_Ext_lostleptMC_all[i]-nQCDNormal_Ext_zinvMC_all[i]-nQCDNormal_Ext_ttzMC_all[i])/(nQCDInverted_Ext_Data_all[i]-nQCDInverted_Ext_hadtauMC_all[i]-nQCDInverted_Ext_lostleptMC_all[i]-nQCDInverted_Ext_zinvMC_all[i]-nQCDInverted_Ext_ttzMC_all[i]);
+      QCDTFactorData_Ext[i] = (nQCDNormal_Ext_Data_all[i]-nQCDNormal_Ext_hadtauMC_all[i]-nQCDNormal_Ext_lostleptMC_all[i]-nQCDNormal_Ext_zinvMC_all[i]-nQCDNormal_Ext_ttzMC_all[i]-nQCDNormal_Ext_allhadMC_all[i])/(nQCDInverted_Ext_Data_all[i]-nQCDInverted_Ext_hadtauMC_all[i]-nQCDInverted_Ext_lostleptMC_all[i]-nQCDInverted_Ext_zinvMC_all[i]-nQCDInverted_Ext_ttzMC_all[i]-nQCDInverted_Ext_allhadMC_all[i]);
       QCDTFactorData_Ext_err[i] = get_aoverb_Error( nQCDNormal_Ext_Data_all[i] , nQCDInverted_Ext_Data_all[i] , nQCDNormal_Ext_Data_all_err[i], nQCDInverted_Ext_Data_all_err[i] );   
     }
     else if( pred_type == "DataDriven" )
     { 
-      QCDTFactorData_Ext[i] = (nQCDNormal_Ext_Data_all[i]-nQCDNormal_Ext_hadtau_all[i]-nQCDNormal_Ext_lostlept_all[i]-nQCDNormal_Ext_zinvMC_all[i]-nQCDNormal_Ext_ttzMC_all[i])/(nQCDInverted_Ext_Data_all[i]-nQCDInverted_Ext_hadtau_all[i]-nQCDInverted_Ext_lostlept_all[i]-nQCDInverted_Ext_zinvMC_all[i]-nQCDInverted_Ext_ttzMC_all[i]);
+      QCDTFactorData_Ext[i] = (nQCDNormal_Ext_Data_all[i]-nQCDNormal_Ext_hadtau_all[i]-nQCDNormal_Ext_lostlept_all[i]-nQCDNormal_Ext_zinvMC_all[i]-nQCDNormal_Ext_ttzMC_all[i]-nQCDNormal_Ext_allhadMC_all[i])/(nQCDInverted_Ext_Data_all[i]-nQCDInverted_Ext_hadtau_all[i]-nQCDInverted_Ext_lostlept_all[i]-nQCDInverted_Ext_zinvMC_all[i]-nQCDInverted_Ext_ttzMC_all[i]-nQCDInverted_Ext_allhadMC_all[i]);
       QCDTFactorData_Ext_err[i] = get_aoverb_Error( nQCDNormal_Ext_Data_all[i] , nQCDInverted_Ext_Data_all[i] , nQCDNormal_Ext_Data_all_err[i], nQCDInverted_Ext_Data_all_err[i] );   
     }
     else
@@ -426,6 +422,7 @@ void QCDFactors::getAndprintTFactorsfromDataHeader(std::string pred_type)
     std::cout << "[LL_Data]     METBin" << i << ", HTBin0 : " << nQCDNormal_Ext_lostlept_all[i]   << "," << nQCDInverted_Ext_lostlept_all[i]   << std::endl;
     std::cout << "[Zinv_MC]     METBin" << i << ", HTBin0 : " << nQCDNormal_Ext_zinvMC_all[i]     << "," << nQCDInverted_Ext_zinvMC_all[i]     << std::endl;
     std::cout << "[TTZ/W_MC]    METBin" << i << ", HTBin0 : " << nQCDNormal_Ext_ttzMC_all[i]      << "," << nQCDInverted_Ext_ttzMC_all[i]      << std::endl;
+    std::cout << "[AllHad_MC]   METBin" << i << ", HTBin0 : " << nQCDNormal_Ext_allhadMC_all[i]   << "," << nQCDInverted_Ext_allhadMC_all[i]   << std::endl;
     std::cout << pred_type << ":" << std::endl;
     std::cout << "METBin" << i << ", HTBin0 : " << QCDTFactorData_Ext[i] << "(" << QCDTFactorData_Ext_err[i] << ")" << std::endl;
   }
@@ -766,7 +763,7 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dPreFit->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_prefit, 0, 0 );
-  const std::string titre_prefit = "CMS Simulation                                                                                          36.8 fb^{-1}(13 TeV)";
+  const std::string titre_prefit = "CMS Simulation                                                                                          35.9 fb^{-1}(13 TeV)";
   TLatex *title_prefit = new TLatex(0.09770115,0.9194915,titre_prefit.c_str());
   title_prefit->SetNDC();
   title_prefit->SetTextSize(0.045);
@@ -842,7 +839,7 @@ void QCDFactors::TFactorsPlotsGen()
   gStyle->SetPaintTextFormat("1.2f");
   tfactors2dScaled->Draw("colztexte");
   //CMSStylePlot::CMS_lumi( c_scaled, 4, 0 );
-  const std::string titre_scaled = "CMS Preliminary                                                                                         36.8 fb^{-1}(13 TeV)";
+  const std::string titre_scaled = "CMS Preliminary                                                                                         35.9 fb^{-1}(13 TeV)";
   TLatex *title_scaled = new TLatex(0.09770115,0.9194915,titre_scaled.c_str());
   title_scaled->SetNDC();
   title_scaled->SetTextSize(0.045);
@@ -907,7 +904,7 @@ void QCDFactors::CountingPlotsGen()
   //std::ostringstream strs;
   //strs << (LUMI/1000);
   //std::string lumi_str = strs.str();
-  const std::string titre="CMS Preliminary                                                                           36.8 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Preliminary                                                                           35.9 fb^{-1}(13 TeV)";
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
@@ -961,31 +958,38 @@ void QCDFactors::printDataCard(std::string pred_type)
     DC_sb_Data[i] > 0 ? QCD_Data_CS_relative_err[i] = DC_sb_Data_err[i]/DC_sb_Data[i] : QCD_Data_CS_relative_err[i] = 0;
     if( pred_type == "MCDriven" )
     {
-      QCD_otherBG_CS[i] = DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i];
-      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
-      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
+      QCD_otherBG_CS[i] = DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i];
+      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
+      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
     } 
     else if( pred_type == "DataDriven" )
     {
-      QCD_otherBG_CS[i] = DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i];
-      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtau_errup[i]*DC_sb_hadtau_errup[i] + DC_sb_lostlept_errup[i]*DC_sb_lostlept_errup[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
-      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtau_errdown[i]*DC_sb_hadtau_errdown[i] + DC_sb_lostlept_errdown[i]*DC_sb_lostlept_errdown[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
+      QCD_otherBG_CS[i] = DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i];
+      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtau_errup[i]*DC_sb_hadtau_errup[i] + DC_sb_lostlept_errup[i]*DC_sb_lostlept_errup[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
+      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtau_errdown[i]*DC_sb_hadtau_errdown[i] + DC_sb_lostlept_errdown[i]*DC_sb_lostlept_errdown[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
     }
+    if(QCD_otherBG_CS[i] < 0) { QCD_otherBG_CS[i]=0; }
+    QCD_otherBG_eff_CS[i] = DC_sb_otherBG_eff[i];
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
+    QCD_TFactor_ave[i] = DC_sb_TFactor_ave[i];
+    QCD_TFactor_ave_relative_err[i] = DC_sb_TFactor_ave_err[i];
   }
 
   std::cout << "Printing Data Card..." << std::endl;
   std::cout << std::setprecision(6);
 	std::cout << printDataCardLine("QCD_Data_CS"                    ,QCD_Data_CS);
   std::cout << printDataCardLine("QCD_Data_CS_relative_err"       ,QCD_Data_CS_relative_err);
-  std::cout << printDataCardLine("QCD_otherBG_CS"                 ,QCD_otherBG_CS);
+  //std::cout << printDataCardLine("QCD_otherBG_CS"                 ,QCD_otherBG_CS);
+  std::cout << printDataCardLine("QCD_otherBG_eff_CS"             ,QCD_otherBG_eff_CS);
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errup"  ,QCD_otherBG_CS_relative_errup);
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errdown",QCD_otherBG_CS_relative_errdown);
-  std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
-  std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
-  std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
-  std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
+  //std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
+  //std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
+  std::cout << printDataCardLine("QCD_TFactor_ave"                ,QCD_TFactor_ave);
+  std::cout << printDataCardLine("QCD_TFactor_ave_relative_err"   ,QCD_TFactor_ave_relative_err);
+  //std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
+  //std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
   std::cout << printDataCardLine("QCD_NonClosure_relative_err"    ,QCD_NonClosure_relative_err);
 
   /*
@@ -1008,19 +1012,23 @@ void QCDFactors::printSysHeader(std::string pred_type)
     QCD_Data_CS[i] = DC_sb_Data[i];
     DC_sb_Data[i] > 0 ? QCD_Data_CS_relative_err[i] = DC_sb_Data_err[i]/DC_sb_Data[i] : QCD_Data_CS_relative_err[i] = 0;
     if( pred_type == "MCDriven" )
-    {
-      QCD_otherBG_CS[i] = DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i];
-      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
-      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
-    }
+    { 
+      QCD_otherBG_CS[i] = DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i];
+      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
+      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtauMC_err[i]*DC_sb_hadtauMC_err[i] + DC_sb_lostleptMC_err[i]*DC_sb_lostleptMC_err[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtauMC[i] + DC_sb_lostleptMC[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
+    } 
     else if( pred_type == "DataDriven" )
-    {
-      QCD_otherBG_CS[i] = DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i];
-      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtau_errup[i]*DC_sb_hadtau_errup[i] + DC_sb_lostlept_errup[i]*DC_sb_lostlept_errup[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
-      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtau_errdown[i]*DC_sb_hadtau_errdown[i] + DC_sb_lostlept_errdown[i]*DC_sb_lostlept_errdown[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] )/(DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i]);
+    { 
+      QCD_otherBG_CS[i] = DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i];
+      QCD_otherBG_CS_relative_errup[i] = std::sqrt( DC_sb_hadtau_errup[i]*DC_sb_hadtau_errup[i] + DC_sb_lostlept_errup[i]*DC_sb_lostlept_errup[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
+      QCD_otherBG_CS_relative_errdown[i] = std::sqrt( DC_sb_hadtau_errdown[i]*DC_sb_hadtau_errdown[i] + DC_sb_lostlept_errdown[i]*DC_sb_lostlept_errdown[i] + DC_sb_zinvMC_err[i]*DC_sb_zinvMC_err[i] + DC_sb_ttzMC_err[i]*DC_sb_ttzMC_err[i] + DC_sb_allhadMC_err[i]*DC_sb_allhadMC_err[i] )/std::abs( DC_sb_hadtau[i] + DC_sb_lostlept[i] + DC_sb_zinvMC[i] + DC_sb_ttzMC[i] + DC_sb_allhadMC[i] );
     }
+    if(QCD_otherBG_CS[i] < 0) { QCD_otherBG_CS[i]=0; }
+    QCD_otherBG_eff_CS[i] = DC_sb_otherBG_eff[i];
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
+    QCD_TFactor_ave[i] = DC_sb_TFactor_ave[i];
+    QCD_TFactor_ave_relative_err[i] = DC_sb_TFactor_ave_err[i];
   }
 
   std::ofstream SysHeader;
@@ -1028,13 +1036,16 @@ void QCDFactors::printSysHeader(std::string pred_type)
   SysHeader << "//Printing SysHeader..." << std::endl;
   SysHeader << printSysHeaderLine("head_QCD_Data_CS"                ,QCD_Data_CS);
   //SysHeader << printSysHeaderLine("head_QCD_Data_CS_relative_err" ,QCD_Data_CS_relative_err);
-  SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_CS);
+  //SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_CS);
+  SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_eff_CS);
   SysHeader << printSysHeaderLine("head_QCD_otherBG_sysup"          ,QCD_otherBG_CS_relative_errup);
   SysHeader << printSysHeaderLine("head_QCD_otherBG_sysdn"          ,QCD_otherBG_CS_relative_errdown);
-  SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor);  
-  SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_relative_err);
-  SysHeader << printSysHeaderLine("head_QCD_NTopFactor"             ,QCD_NTopFactor);
-  SysHeader << printSysHeaderLine("head_QCD_NTopFactor_relative_err",QCD_NTopFactor_relative_err);
+  //SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor);  
+  //SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_relative_err);
+  SysHeader << printSysHeaderLine("head_QCD_TFactor"                ,QCD_TFactor_ave);  
+  SysHeader << printSysHeaderLine("head_QCD_TFactor_relative_err"   ,QCD_TFactor_ave_relative_err);
+  //SysHeader << printSysHeaderLine("head_QCD_NTopFactor"             ,QCD_NTopFactor);
+  //SysHeader << printSysHeaderLine("head_QCD_NTopFactor_relative_err",QCD_NTopFactor_relative_err);
   SysHeader << printSysHeaderLine("head_QCD_NonClosure_relative_err",QCD_NonClosure_relative_err);
   
   return ;

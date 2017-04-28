@@ -14,7 +14,9 @@ const double trigger_turn_on_met = 200;
 const double cut_mtwmu = 100;
 const double cut_mtwel = 100;
 const int nth_slash_nametag_MC = 10;
-const int nth_slash_nametag_Data = 10;
+const int nth_slash_nametag_Data = 11;
+//root://cmseos.fnal.gov//store/user/lpcsusyhad/Stop_production/Summer16_80X_Mar_2017_Ntp_v13X//MET/Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016B-03Feb2017_ver2-v2/170303_234607/0000/stopFlatNtuples_102.root
+
 
 bool useNewTagger = true;
 bool useLegacycfg = false;
@@ -70,8 +72,10 @@ std::string ISRAndBTagStringConverter(std::string QCDoutputFileName)
   else if( QCDoutputFileName.find("_WJetsToLNu_HT-800To1200_"  ) != std::string::npos ) histTag = "WJetsToLNu_HT_800to1200" ;
   else if( QCDoutputFileName.find("_WJetsToLNu_HT-1200To2500_" ) != std::string::npos ) histTag = "WJetsToLNu_HT_1200to2500";
   else if( QCDoutputFileName.find("_WJetsToLNu_HT-2500ToInf_"  ) != std::string::npos ) histTag = "WJetsToLNu_HT_2500toInf" ;
-  else if( QCDoutputFileName.find("_ST_tW_top_5f_"             ) != std::string::npos ) histTag = "tW_top_incl";
-  else if( QCDoutputFileName.find("_ST_tW_antitop_5f_"         ) != std::string::npos ) histTag = "tW_antitop_incl";
+  else if( QCDoutputFileName.find("_ST_tW_top_5f_inclusiveDecays_"          ) != std::string::npos ) histTag = "tW_top_incl";
+  else if( QCDoutputFileName.find("_ST_tW_antitop_5f_inclusiveDecays_"      ) != std::string::npos ) histTag = "tW_antitop_incl";
+  else if( QCDoutputFileName.find("_ST_tW_top_5f_NoFullyHadronicDecays_"    ) != std::string::npos ) histTag = "tW_top_NoHad";
+  else if( QCDoutputFileName.find("_ST_tW_antitop_5f_NoFullyHadronicDecays_") != std::string::npos ) histTag = "tW_antitop_NoHad";
   else if( QCDoutputFileName.find("_ZJetsToNuNu_HT-100To200_"  ) != std::string::npos ) histTag = "ZJetsToNuNu_HT_100to200"  ;
   else if( QCDoutputFileName.find("_ZJetsToNuNu_HT-200To400_"  ) != std::string::npos ) histTag = "ZJetsToNuNu_HT_200to400"  ;
   else if( QCDoutputFileName.find("_ZJetsToNuNu_HT-400To600_"  ) != std::string::npos ) histTag = "ZJetsToNuNu_HT_400to600"  ;

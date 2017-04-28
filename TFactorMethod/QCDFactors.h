@@ -38,15 +38,20 @@ class QCDFactors
   double nQCDNormal_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nQCDInverted_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
   double nQCDNormal_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nQCDInverted_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
 
+  double nOtherNormal_all[MET_BINS][MT2_BINS] = {{0}}, nOtherInverted_all[MET_BINS][MT2_BINS] = {{0}};
+  double nOtherNormal_all_err[MET_BINS][MT2_BINS] = {{0}}, nOtherInverted_all_err[MET_BINS][MT2_BINS] = {{0}};
+  double nOtherNormal_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nOtherInverted_Ext_all[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
+  double nOtherNormal_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, nOtherInverted_Ext_all_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};
+
   double QCDTFactor[MET_BINS][MT2_BINS] = {{0}}, QCDTFactor_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors calculated from QCD MC
-  double QCDTFactorFit[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorFit_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors smoothed by linear fit
+  double QCDTFactorFit[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorFit_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors smoothed by linear fit,FIXME
   double QCDTFactorScaled[MET_BINS][MT2_BINS] = {{0}}, QCDTFactorScaled_err[MET_BINS][MT2_BINS] = {{0}};//Tfactors scaled by low MET bin Tfactor(from Data) and linear fit 
-  double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};
-  double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};
-  double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};
+  double MET_sum[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}}, MET_sum_weight[QCD_BINS][MET_BINS][MT2_BINS] = {{{0}}};//FIXME
+  double MET_sum_all[MET_BINS][MT2_BINS] = {{0}}, MET_sum_weight_all[MET_BINS][MT2_BINS] = {{0}};//FIXME
+  double MET_mean[MET_BINS][MT2_BINS] = {{0}}, MET_mean_err[MET_BINS][MT2_BINS] = {{0}};//FIXME
 
   double QCDTFactor_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactor_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors calculated from QCD MC
-  double QCDTFactorFit_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactorFit_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors smoothed by linear fit
+  double QCDTFactorFit_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactorFit_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors smoothed by linear fit,FIXME
   double QCDTFactorScaled_Ext[MET_Ext_BINS][HT_Ext_BINS] = {{0}}, QCDTFactorScaled_Ext_err[MET_Ext_BINS][HT_Ext_BINS] = {{0}};//Tfactors scaled by low MET bin Tfactor(from Data) and linear fit 
   //NJet correction factor, not used for now
   double nQCDNormal_NJF_MC_all[NJETS_BINS] = {0}, nQCDInverted_NJF_MC_all[NJETS_BINS] = {0};
@@ -63,9 +68,9 @@ class QCDFactors
   double MT2_sb_mean[NSEARCH_BINS] = {0}; 
   double HT_sb_sum[NSEARCH_BINS] = {0}, HT_sb_sum_weight[NSEARCH_BINS] = {0};
   double HT_sb_mean[NSEARCH_BINS] = {0};
- 
+
   void NumbertoTFactor();
-  void TFactorFit();
+  void TFactorFit();//FIXME
   void TFactorScale();
   void printQCDFactorInfo();
   void printTFactorsHeader();
@@ -77,20 +82,31 @@ class QCDFactors
   double DC_sb_Data_err[NSEARCH_BINS] = {0};
   //MC driven variables
   double DC_sb_hadtauMC[NSEARCH_BINS] = {0}, DC_sb_lostleptMC[NSEARCH_BINS] = {0};
-  double DC_sb_zinvMC[NSEARCH_BINS] = {0}, DC_sb_ttzMC[NSEARCH_BINS] = {0};
+  double DC_sb_zinvMC[NSEARCH_BINS] = {0}, DC_sb_ttzMC[NSEARCH_BINS] = {0}, DC_sb_allhadMC[NSEARCH_BINS] = {0};
   double DC_sb_hadtauMC_err[NSEARCH_BINS] = {0}, DC_sb_lostleptMC_err[NSEARCH_BINS] = {0}; 
-  double DC_sb_zinvMC_err[NSEARCH_BINS] = {0}, DC_sb_ttzMC_err[NSEARCH_BINS] = {0};
+  double DC_sb_zinvMC_err[NSEARCH_BINS] = {0}, DC_sb_ttzMC_err[NSEARCH_BINS] = {0}, DC_sb_allhadMC_err[NSEARCH_BINS] = {0};
   //Data driven variables
   double DC_sb_hadtau[NSEARCH_BINS] = {0}, DC_sb_lostlept[NSEARCH_BINS] = {0};
   double DC_sb_hadtau_errup[NSEARCH_BINS] = {0}, DC_sb_lostlept_errup[NSEARCH_BINS] = {0}, DC_sb_hadtau_errdown[NSEARCH_BINS] = {0}, DC_sb_lostlept_errdown[NSEARCH_BINS] = {0};
   double DC_sb_TFactor[NSEARCH_BINS] = {0};
   double DC_sb_TFactor_err[NSEARCH_BINS] = {0};
+  //variables for aggregate search bins 
+  double DC_sb_TFactor_ave[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor_ave_err[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor_sum_weight[NSEARCH_BINS] = {0}, DC_sb_TFactor_sum[NSEARCH_BINS] = {0};
+  double DC_sb_TFactor_sum_weight_err[NSEARCH_BINS] = {0}, DC_sb_TFactor_sum_err[NSEARCH_BINS] = {0};
+  double DC_sb_otherBG_eff[NSEARCH_BINS] = {0};
+  double DC_sb_otherBG_sum_weight[NSEARCH_BINS] = {0}, DC_sb_otherBG_sum[NSEARCH_BINS] = {0};
+  //too diffcult to calculter the err for eff other bg... use approximation to replace
   //variables for Data Card and Syst header
   double QCD_Data_CS[NSEARCH_BINS] = {0}, QCD_Data_CS_relative_err[NSEARCH_BINS] = {0};
   double QCD_otherBG_CS[NSEARCH_BINS] = {0}, QCD_otherBG_CS_relative_errup[NSEARCH_BINS] = {0}, QCD_otherBG_CS_relative_errdown[NSEARCH_BINS] = {0};
   double QCD_TFactor[NSEARCH_BINS] = {0}, QCD_TFactor_relative_err[NSEARCH_BINS] = {0};
   double QCD_NTopFactor[NSEARCH_BINS] = {0}, QCD_NTopFactor_relative_err[NSEARCH_BINS] = {0};
   double QCD_NonClosure_relative_err[NSEARCH_BINS] = {0};
+  //variables for aggregate search bins
+  double QCD_otherBG_eff_CS[NSEARCH_BINS] = {0};
+  double QCD_TFactor_ave[NSEARCH_BINS] = {0}, QCD_TFactor_ave_relative_err[NSEARCH_BINS] = {0};
 
   void printDataCard(std::string pred_type);
   void printSysHeader(std::string pred_type);
@@ -109,6 +125,8 @@ class QCDFactors
   double nQCDNormal_zinvMC_all_err[MT2_BINS] = {0}, nQCDInverted_zinvMC_all_err[MT2_BINS] = {0};
   double nQCDNormal_ttzMC_all[MT2_BINS] = {0}, nQCDInverted_ttzMC_all[MT2_BINS] = {0};
   double nQCDNormal_ttzMC_all_err[MT2_BINS] = {0}, nQCDInverted_ttzMC_all_err[MT2_BINS] = {0};
+  double nQCDNormal_allhadMC_all[MT2_BINS] = {0}, nQCDInverted_allhadMC_all[MT2_BINS] = {0};
+  double nQCDNormal_allhadMC_all_err[MT2_BINS] = {0}, nQCDInverted_allhadMC_all_err[MT2_BINS] = {0};
   double nQCDNormal_Ext_hadtauMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_hadtauMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_hadtauMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_hadtauMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_lostleptMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_lostleptMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
@@ -117,6 +135,8 @@ class QCDFactors
   double nQCDNormal_Ext_zinvMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_zinvMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_ttzMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_ttzMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   double nQCDNormal_Ext_ttzMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_ttzMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
+  double nQCDNormal_Ext_allhadMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_allhadMC_all[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
+  double nQCDNormal_Ext_allhadMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0}, nQCDInverted_Ext_allhadMC_all_err[MET_Ext_SideBand_BINS*HT_Ext_BINS] = {0};
   //Data driven variables
   double nQCDNormal_hadtau_all[MT2_BINS] = {0}, nQCDInverted_hadtau_all[MT2_BINS] = {0};
   double nQCDNormal_hadtau_all_err[MT2_BINS] = {0}, nQCDInverted_hadtau_all_err[MT2_BINS] = {0};

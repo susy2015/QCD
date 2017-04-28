@@ -131,7 +131,8 @@ void BasicCheckPlots::BasicCheckTemplate(
         if( TString(list->At(i)->GetName()).Contains( "HadTau" ) ) { smalltag = "HadTau"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
         if( TString(list->At(i)->GetName()).Contains( "Zinv" ) ) { smalltag = "Zinv"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
         if( TString(list->At(i)->GetName()).Contains( "QCD" ) ) { smalltag = "QCD"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
-        if( TString(list->At(i)->GetName()).Contains( "TTZ" ) ) { smalltag = "TTZ"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
+        if( TString(list->At(i)->GetName()).Contains( "TTZRare" ) ) { smalltag = "TTZRare"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
+        if( TString(list->At(i)->GetName()).Contains( "AllHadTTJetsWJetsST" ) ) { smalltag = "AllHadTTJetsWJetsST"; leg->AddEntry( (TH1D*)fin->Get(list->At(i)->GetName()), smalltag.c_str(), "f"); }
       }
     }
     else
@@ -170,12 +171,12 @@ void BasicCheckPlots::BasicCheckTemplate(
   //hs_MC->Sumw2();
   //hs_MC->Scale(scale);
   
-  //h_Data->Draw("e0");
-  //hs_MC->Draw("same hist");
-  //h_Data->Draw("same e0");
-
-  hs_MC->Draw("hist");
+  h_Data->Draw("e0");
+  hs_MC->Draw("same hist");
   h_Data->Draw("same e0");
+
+  //hs_MC->Draw("hist");
+  //h_Data->Draw("same e0");
 
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   //const std::string titre="CMS Preliminary 2016, 12.9 fb^{-1}, #sqrt{s} = 13 TeV";

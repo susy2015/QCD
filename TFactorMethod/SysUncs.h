@@ -222,6 +222,7 @@ void SysUncs::printFinalPred()
     //std::cout << "test on e_dn" << e_dn << std::endl;
     g->SetPointEYlow(i_cal, e_dn);
     g->SetPointEYhigh(i_cal, e_up);
+    //std::cout << final_pred[i_cal] << ",";
   }
   g->GetXaxis()->SetRangeUser(0,NSEARCH_BINS+1);
   g->GetYaxis()->SetRangeUser(0,350);

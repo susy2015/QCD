@@ -4,8 +4,8 @@
 1.Set CMS Environment:
 
 ```
-cmsrel CMSSW_8_0_25
-cd CMSSW_8_0_25/src
+cmsrel CMSSW_8_0_26_patch1
+cd CMSSW_8_0_26_patch1/src/
 cmsenv
 ```
 2.Download source code from github and compile plugins:
@@ -13,12 +13,10 @@ cmsenv
 SusyAnaTools:
 ```
 git cms-init
-git cms-merge-topic -u kpedro88:METfix8022
-git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
+git cms-merge-topic cms-met:METRecipe_8020 -u
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 git clone git@github.com:susy2015/JetToolbox.git JMEAnalysis/JetToolbox -b fix_NoLep_jetToolbox_80X_V3
-git cms-merge-topic gpetruc:badMuonFilters_80X_v2
-git clone -b ana_Summer16_MC_23Sep2016_Data_Feb07_2017 git@github.com:susy2015/SusyAnaTools.git
+git clone -b ana_reMINIAOD_Mar06_2017 git@github.com:susy2015/SusyAnaTools.git
 ```
 
 TopTagger:
@@ -32,7 +30,7 @@ cmake .
 make -j 8
 ## Checkout Tagtagger
 cd $CMSSW_BASE/src
-git clone -b HadStopAnaDevel_v6_Moriond2017_Feb5_2017 git@github.com:susy2015/TopTagger.git
+git clone -b HadStopAnaDevel_v7_Moriond2017_Feb20_2017 git@github.com:susy2015/TopTagger.git
 ```
 
 CMS Build application:
@@ -53,7 +51,7 @@ Please make sure compile the TopTagger first then SusyAnaTools/Tools! Since base
 QCD:
 ```
 cd $CMSSW_BASE/src
-git clone -b QCDBG2017Moriond git@github.com:susy2015/QCD.git
+git clone -b QCD2017MoriondBranch git@github.com:susy2015/QCD.git
 ```
 # QCD Tools
 
@@ -69,11 +67,12 @@ $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t MVAAK8_Tight_v1.1.1 -d /uscms
 $CMSSW_BASE/src/TopTagger/Tools/getTaggerCfg.sh -t Legacy_AK4Only_v0.1.0 -f Legacy_TopTagger.cfg -d /uscms_data/d3/hwei/stop
 ```
 
-Tarball CMSSW release : 
+Tarball CMSSW release and Txt file : 
 ```
 cd $CMSSW_BASE/src/QCD/QCDTools/QCDStopFlattrees
 sh cache_all.sh
 tar --exclude-caches-all -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_VERSION}
+tar -zcf 2017MoriondTxt.tar.gz 2017MoriondTxt
 ```
 
 1.Deep skim for lost lepton background estimation:
@@ -104,6 +103,12 @@ For closure and MCExp vs DataPred, reading PredQCD.root and ExpQCD.root:
 For Data/MC comparison in CS, reading BasicCheckQCD.root:
 ```
 ./BasicCheckPlots BasicCheckQCD20151209
+```
+LLHadTau related studies:
+```
+./LLHadTau CalLLHadTau ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2017Moriondv12.txt ../QCDTools/QCDStopFlattrees/runList_QCD_TTJetsWJetsSTHad_QCDTFTrimAndSlim_2017Moriondv12.txt
+./LLHadTau PredDataLLHadTau ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2017Moriondv12.txt ../QCDTools/QCDStopFlattrees/runList_QCD_TTJetsWJetsSTHad_QCDTFTrimAndSlim_2017Moriondv12.txt
+./LLHadTau AllHadStudyLLHadTau ../QCDTools/QCDStopFlattrees/runList_QCD_DataMC_QCDTFTrimAndSlim_2017Moriondv12.txt ../QCDTools/QCDStopFlattrees/runList_QCD_TTJetsWJetsSTHad_QCDTFTrimAndSlim_2017Moriondv12.txt
 ```
 
 # QCD Rebalance and Smear Method
