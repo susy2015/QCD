@@ -21,6 +21,7 @@
 #include "QCDBinFunction.h"
 
 #include "CMSStylePlot/CMS_lumi.h"
+#include "QCDSBText.h"
 
 SearchBins mySearchBins("SB_v1_2017");
 
@@ -266,7 +267,7 @@ void ClosurePlots::ClosureTemplate(
   h_pred->SetFillStyle(3001);
   h_pred->Draw("E2 same");
 
-  if( hist_tag == "_sb" ){ mySearchBins.drawSBregionDef(0.0, 75.0, true, false); }
+  if( hist_tag == "_sb" ){ QCDdrawSBregionDef(0.0, 100.0, true, false); }
   CMSStylePlot::CMS_lumi( c, 4, 0 );
   //title->Draw("same");
   leg->Draw("same");
@@ -276,7 +277,7 @@ void ClosurePlots::ClosureTemplate(
   pad->cd(2);
   TPad *pad2 = (TPad*) pad->GetPad(2);
   pad2->SetPad("ratio", "", 0, 0, 1.0, divRatio, kWhite);
-  pad2->SetBottomMargin(0.3);
+  pad2->SetBottomMargin(0.4);
   pad2->SetTopMargin(small);
   pad2->SetBorderMode(0);
 

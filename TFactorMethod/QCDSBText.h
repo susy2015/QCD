@@ -1,4 +1,4 @@
-void drawSBregionDef(const double ymin_Yields, const double ymax_Yields, const bool logscale, const bool drawOnlyLines)
+void QCDdrawSBregionDef(const double ymin_Yields, const double ymax_Yields, const bool logscale, const bool drawOnlyLines)
 {
   int NSB = 84;
   const double adjHalfBin = 0.5;
@@ -46,10 +46,10 @@ void drawSBregionDef(const double ymin_Yields, const double ymax_Yields, const b
     {
       if(NSB == 84)
       {
-        ttext_ntop->DrawLatex(20.5 + adjHalfBin, ymax_Yields/5 ,"N_{t} = 1");
-        ttext_ntop->DrawLatex(57.5 + adjHalfBin, ymax_Yields/2500. ,"N_{t} = 2");
+        ttext_ntop->DrawLatex(20.5 + adjHalfBin, ymax_Yields/2 ,"N_{t} = 1");
+        ttext_ntop->DrawLatex(57.5 + adjHalfBin, ymax_Yields/10. ,"N_{t} = 2");
         ttext_ntop->SetTextAngle(90.);
-        ttext_ntop->DrawLatex(79.5 + adjHalfBin, ymax_Yields/20000. ,"N_{t} #geq 3");
+        ttext_ntop->DrawLatex(79.5 + adjHalfBin, ymax_Yields/10. ,"N_{t} #geq 3");
       }
       else if(NSB == 59)
       {
@@ -112,10 +112,10 @@ void drawSBregionDef(const double ymin_Yields, const double ymax_Yields, const b
       //To be filled
       tl_nb->DrawLine(20.5 + adjHalfBin,ymin_Yields,20.5 + adjHalfBin,ymax_Yields/5.);
       tl_nb->DrawLine(36.5 + adjHalfBin,ymin_Yields,36.5 + adjHalfBin,ymax_Yields/5.);
-      tl_nb->DrawLine(57.5 + adjHalfBin,ymin_Yields,57.5 + adjHalfBin,ymax_Yields/16000.);
-      tl_nb->DrawLine(67.5 + adjHalfBin,ymin_Yields,67.5 + adjHalfBin,ymax_Yields/16000.);
-      tl_nb->DrawLine(79.5 + adjHalfBin,ymin_Yields,79.5 + adjHalfBin,ymax_Yields/16000.);
-      tl_nb->DrawLine(81.5 + adjHalfBin,ymin_Yields,81.5 + adjHalfBin,ymax_Yields/16000.);
+      tl_nb->DrawLine(57.5 + adjHalfBin,ymin_Yields,57.5 + adjHalfBin,ymax_Yields/50.);
+      tl_nb->DrawLine(67.5 + adjHalfBin,ymin_Yields,67.5 + adjHalfBin,ymax_Yields/50.);
+      tl_nb->DrawLine(79.5 + adjHalfBin,ymin_Yields,79.5 + adjHalfBin,ymax_Yields/50.);
+      tl_nb->DrawLine(81.5 + adjHalfBin,ymin_Yields,81.5 + adjHalfBin,ymax_Yields/50.);
     }
     else if(NSB == 59)
     {
@@ -189,12 +189,18 @@ void drawSBregionDef(const double ymin_Yields, const double ymax_Yields, const b
   {
     if(logscale)
     {
-      ttext2->DrawLatex( 4.5 + adjHalfBin, ymax_Yields/50., "N_{b} = 1");
+      ttext2->DrawLatex( 9.5 + adjHalfBin, ymax_Yields/5., "N_{b} = 1");
       if(NSB == 84)
       {
-        ttext2->DrawLatex(27.5 + adjHalfBin, ymax_Yields/2000, "N_{b} = 2");
+        ttext2->DrawLatex(27.5 + adjHalfBin, ymax_Yields/5, "N_{b} = 2");
         ttext2->SetTextAngle(90.);
-        ttext2->DrawLatex(37.5  + adjHalfBin, ymax_Yields/8 , "N_{b} #geq 3");
+        ttext2->DrawLatex(41.5  + adjHalfBin, ymax_Yields/5, "N_{b} #geq 3");
+      }
+      else if(NSB == 59)
+      {
+        ttext2->DrawLatex(17.5 + adjHalfBin, ymax_Yields/1000., "N_{b} = 2");
+        ttext2->SetTextAngle(90.);
+        ttext2->DrawLatex(23.5  + adjHalfBin, ymax_Yields/30000 , "N_{b} #geq 3");
       }
       else if(NSB == 37) ttext2->DrawLatex(14.5 + adjHalfBin, ymax_Yields/3.5, "N_{b} #geq 2");
       else if(NSB == 45)
@@ -202,12 +208,6 @@ void drawSBregionDef(const double ymin_Yields, const double ymax_Yields, const b
         ttext2->DrawLatex(14.5 + adjHalfBin, ymax_Yields/7, "N_{b} = 2");
         ttext2->SetTextAngle(90.);
         ttext2->DrawLatex(22.5  + adjHalfBin, ymax_Yields/20 , "N_{b} #geq 3");
-      }
-      else if(NSB == 59)
-      {
-        ttext2->DrawLatex(17.5 + adjHalfBin, ymax_Yields/1000., "N_{b} = 2");
-        ttext2->SetTextAngle(90.);
-        ttext2->DrawLatex(23.5  + adjHalfBin, ymax_Yields/30000 , "N_{b} #geq 3");
       }
     }
     else
@@ -241,21 +241,21 @@ void drawSBregionDef(const double ymin_Yields, const double ymax_Yields, const b
   tl_mt2->SetLineColor(49);
   if(logscale)
   {
-    tl_mt2->DrawLine(3.5 + adjHalfBin,ymin_Yields,3.5 + adjHalfBin,ymax_Yields/400.);
-    tl_mt2->DrawLine(7.5 + adjHalfBin,ymin_Yields,7.5 + adjHalfBin,ymax_Yields/400.);
+    tl_mt2->DrawLine(3.5 + adjHalfBin,ymin_Yields,3.5 + adjHalfBin,ymax_Yields/100.);
+    tl_mt2->DrawLine(7.5 + adjHalfBin,ymin_Yields,7.5 + adjHalfBin,ymax_Yields/100.);
     if(NSB == 84)
     { 
-      tl_mt2->DrawLine(11.5 + adjHalfBin,ymin_Yields,11.5 + adjHalfBin,ymax_Yields/400.);
-      tl_mt2->DrawLine(16.5 + adjHalfBin,ymin_Yields,16.5 + adjHalfBin,ymax_Yields/400.);
-      tl_mt2->DrawLine(24.5 + adjHalfBin,ymin_Yields,24.5 + adjHalfBin,ymax_Yields/400000.);
-      tl_mt2->DrawLine(29.5 + adjHalfBin,ymin_Yields,29.5 + adjHalfBin,ymax_Yields/400000.);
-      tl_mt2->DrawLine(33.5 + adjHalfBin,ymin_Yields,33.5 + adjHalfBin,ymax_Yields/10000.);
-      tl_mt2->DrawLine(40.5 + adjHalfBin,ymin_Yields,40.5 + adjHalfBin,ymax_Yields/10000.);
-      tl_mt2->DrawLine(44.5 + adjHalfBin,ymin_Yields,44.5 + adjHalfBin,ymax_Yields/10000.);
-      tl_mt2->DrawLine(50.5 + adjHalfBin,ymin_Yields,50.5 + adjHalfBin,ymax_Yields/10000.);
-      tl_mt2->DrawLine(54.5 + adjHalfBin,ymin_Yields,54.5 + adjHalfBin,ymax_Yields/32000.);
-      tl_mt2->DrawLine(61.5 + adjHalfBin,ymin_Yields,61.5 + adjHalfBin,ymax_Yields/32000.);
-      tl_mt2->DrawLine(72.5 + adjHalfBin,ymin_Yields,72.5 + adjHalfBin,ymax_Yields/32000.);
+      tl_mt2->DrawLine(11.5 + adjHalfBin,ymin_Yields,11.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(16.5 + adjHalfBin,ymin_Yields,16.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(24.5 + adjHalfBin,ymin_Yields,24.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(29.5 + adjHalfBin,ymin_Yields,29.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(33.5 + adjHalfBin,ymin_Yields,33.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(40.5 + adjHalfBin,ymin_Yields,40.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(44.5 + adjHalfBin,ymin_Yields,44.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(50.5 + adjHalfBin,ymin_Yields,50.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(54.5 + adjHalfBin,ymin_Yields,54.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(61.5 + adjHalfBin,ymin_Yields,61.5 + adjHalfBin,ymax_Yields/100.);
+      tl_mt2->DrawLine(72.5 + adjHalfBin,ymin_Yields,72.5 + adjHalfBin,ymax_Yields/100.);
     }
     else if(NSB == 59)
     {
@@ -350,12 +350,12 @@ void drawSBregionDef(const double ymin_Yields, const double ymax_Yields, const b
     {
       if(NSB == 84)
       {
-        ttextmt2->DrawLatex( 3.0, ymax_Yields/50000. , "M_{T2}=[200,300]");
-        ttextmt2->DrawLatex( 11.0, ymax_Yields/50000. , "M_{T2}=[400, 550]");
-        ttextmt2->DrawLatex( 19.5, ymax_Yields/50000. , "M_{T2}#geq750 GeV");
-        ttextmt2->DrawLatex( 39.5, ymax_Yields/100000. , "H_{T}=[300,1000]");
-        ttextmt2->DrawLatex( 46.5, ymax_Yields/200000. , "H_{T}#geq1500 GeV");
-        ttextmt2->DrawLatex( 76.5, ymax_Yields/500000. , "H_{T}#geq1300 GeV");
+        ttextmt2->DrawLatex( 3.0, ymax_Yields/100. , "M_{T2}=[200,300]");
+        ttextmt2->DrawLatex( 12.0, ymax_Yields/100. , "M_{T2}=[400, 550]");
+        ttextmt2->DrawLatex( 18.5, ymax_Yields/100. , "M_{T2}#geq750 GeV");
+        ttextmt2->DrawLatex( 39.5, ymax_Yields/70. , "H_{T}=[300,1000]");
+        ttextmt2->DrawLatex( 46.5, ymax_Yields/70. , "H_{T}#geq1500 GeV");
+        ttextmt2->DrawLatex( 76.5, ymax_Yields/200. , "H_{T}#geq1300 GeV");
         //ttextmt2->DrawLatex( 80.5, ymax_Yields/1500000. , "H_{T}#geq300 GeV");
       }
       else if(NSB == 59)
