@@ -1,7 +1,7 @@
 #include "HistStyle.h"
 #include "HistReader.h"
 
-void plotsearchbin59(
+void plotsearchbin84(
                      const TString &fileName = "MCMixv5_Closure.root",
                      const TString &graphicsFormat = "pdf"
                     ) 
@@ -63,8 +63,8 @@ void plotsearchbin59(
     hPred[i]->SetMarkerSize(0);
     if(i == 0)
     {
-      hTrue[i]->SetAxisRange(0,59,"X");
-      hPred[i]->SetAxisRange(0,59,"X");
+      hTrue[i]->SetAxisRange(0,84,"X");
+      hPred[i]->SetAxisRange(0,84,"X");
       hTrue[i]->SetAxisRange(ymin_Yields,ymax_Yields,"Y");      
       hPred[i]->SetAxisRange(ymin_Yields,ymax_Yields,"Y");      
     }
@@ -147,7 +147,7 @@ void plotsearchbin59(
         
     TExec * setex2 = new TExec("setex2", "gStyle->SetErrorX(0.0)");
     TExec *setex = new TExec("setex", "gStyle->SetErrorX(0.5)");
-    hTrue[i]->GetXaxis()->SetRangeUser(0., 59.);   
+    hTrue[i]->GetXaxis()->SetRangeUser(0., 84.);   
     setex2->Draw();
     hTrue[i]->Draw("PE1");
     setex->Draw();
@@ -161,79 +161,6 @@ void plotsearchbin59(
     if(i==0)
     {
 
-      //-----------------------------------------------------------
-      // Putting lines and labels explaining search region definitions
-      //-----------------------------------------------------------
-      // Ntop separation lines
-      TLine *tl_ntop = new TLine();
-      tl_ntop->SetLineStyle(2);
-      tl_ntop->DrawLine(28,ymin_Yields,28,ymax_Yields);
-      tl_ntop->DrawLine(53,ymin_Yields,53,ymax_Yields);
-
-      // Ntop labels
-      TLatex * ttext_ntop = new TLatex();
-      ttext_ntop->SetTextFont(42);
-      ttext_ntop->SetTextSize(0.07);
-      ttext_ntop->SetTextAlign(22);
-      ttext_ntop->DrawLatex(11.5, ymax_Yields/3 ,"N_{t} = 1");
-      ttext_ntop->DrawLatex(39.5, ymax_Yields/40000. ,"N_{t} = 2");
-      ttext_ntop->SetTextAngle(90.);
-      ttext_ntop->DrawLatex(55.5 , ymax_Yields/200000. ,"N_{t} #geq 3");
-      
-      // Nb separation lines
-      TLine *tl_nb = new TLine();
-      tl_nb->SetLineStyle(3);
-      //tl_nb->SetLineColor(32);
-      tl_nb->DrawLine(12,ymin_Yields,12,ymax_Yields/20.); 
-      tl_nb->DrawLine(23,ymin_Yields,23,ymax_Yields/20.); 
-      tl_nb->DrawLine(40,ymin_Yields,40,ymax_Yields/200000.); 
-      tl_nb->DrawLine(49,ymin_Yields,49,ymax_Yields/200000.); 
-      tl_nb->DrawLine(55,ymin_Yields,55,ymax_Yields/4000000.); 
-      tl_nb->DrawLine(57,ymin_Yields,57,ymax_Yields/4000000.); 
-
-      // Nb labels
-      TLatex * ttext2 = new TLatex();
-      ttext2->SetTextFont(42);
-      //ttext2->SetTextColor(32);
-      ttext2->SetTextSize(0.07);
-      ttext2->SetTextAlign(22);
-      ttext2->Draw();
-
-      ttext2->DrawLatex( 4.5, ymax_Yields/20., "N_{b} = 1");
-      ttext2->DrawLatex(17.5, ymax_Yields/20., "N_{b} = 2");
-      //ttext2->DrawLatex( 28, ymax_Yields/200., "N_{b} = 1");
-      //ttext2->DrawLatex(36, ymax_Yields/200., "N_{b} = 2");
-      ttext2->SetTextAngle(90.);
-      ttext2->DrawLatex(26, ymax_Yields/200. , "N_{b} #geq 3");
-
-      // MT2 separation lines
-      TLine *tl_mt2 = new TLine();
-      tl_mt2->SetLineStyle(4);
-      //tl_mt2->SetLineColor(49);
-      tl_mt2->DrawLine(4,ymin_Yields,4,ymax_Yields/200.); 
-      tl_mt2->DrawLine(8,ymin_Yields,8,ymax_Yields/200.); 
-      tl_mt2->DrawLine(16,ymin_Yields,16,ymax_Yields/200.); 
-      tl_mt2->DrawLine(20,ymin_Yields,20,ymax_Yields/200.); 
-
-      tl_mt2->DrawLine(26,ymin_Yields,26,ymax_Yields/2000.); 
-      tl_mt2->DrawLine(32,ymin_Yields,32,ymax_Yields/400000.); 
-      tl_mt2->DrawLine(36,ymin_Yields,36,ymax_Yields/400000.); 
-      tl_mt2->DrawLine(43,ymin_Yields,43,ymax_Yields/400000.); 
-      tl_mt2->DrawLine(46,ymin_Yields,46,ymax_Yields/400000.); 
-      tl_mt2->DrawLine(51,ymin_Yields,51,ymax_Yields/2000000.); 
-     
-      // MT2 labels
-      TLatex * ttextmt2 = new TLatex();
-      ttextmt2->SetTextFont(42);
-      //ttextmt2->SetTextColor(49);
-      ttextmt2->SetTextSize(0.045);
-      ttextmt2->SetTextAlign(12);
-      ttextmt2->SetTextAngle(90);
-      ttextmt2->DrawLatex( 2.5, ymax_Yields/2000000. , "M_{T2}=[200,300]");
-      ttextmt2->DrawLatex( 6.0, ymax_Yields/2000000. , "M_{T2}=[300,400]");
-      ttextmt2->DrawLatex(9.5, ymax_Yields/2000000. , "M_{T2}#geq400 GeV");
-      ttextmt2->DrawLatex( 27, ymax_Yields/10000000. , "M_{T2}#geq350 GeV");
-      //-----------------------------------------------------------
     }
    
     leg->Draw("same");
@@ -244,7 +171,7 @@ void plotsearchbin59(
     double fontScale = 1.6;
     char lumistamp[128];
     //sprintf(lumistamp, "%.1f fb^{-1} (13 TeV)", 8000/ 1000.0);
-    sprintf(lumistamp, "12.9 fb^{-1} (13 TeV)");
+    sprintf(lumistamp, "35.9 fb^{-1} (13 TeV)");
     //Draw CMS mark                                                                                                                    
     mark.SetTextAlign(11);
     mark.SetTextSize(0.042 * fontScale * 1.25);
@@ -273,7 +200,7 @@ void plotsearchbin59(
       hRatio[i]->GetXaxis()->SetLabelSize(0.15);
       hRatio[i]->GetXaxis()->SetTitleOffset(0.8);
     }
-    hRatio[i]->GetXaxis()->SetRangeUser(0., 59.);
+    hRatio[i]->GetXaxis()->SetRangeUser(0., 84.);
     hRatio[i]->Draw("PE1");
     hRatioFrame[i]->Draw("HISTsame");
     hRatio[i]->Draw("PE1same");   
@@ -323,7 +250,7 @@ void plotsearchbin59(
   /*  
   std::cout << std::setprecision(3) << std::fixed;
   cout<<"Exp: "<<hTrue[0]->Integral()<<" Pred: "<<hPred[0]->Integral()<<endl;
-  double ClosureUnc[59]={0};
+  double ClosureUnc[84]={0};
   for(unsigned ib =0; ib<hTrue[0]->GetNbinsX(); ib++)
   {
     //cout<<ib<<"\t"<<hTrue[0]->GetBinContent(ib+1)<<" ± "<<hTrue[0]->GetBinError(ib+1)<<"\t"<<hPred[0]->GetBinContent(ib+1)<<" ± "<<hPred[0]->GetBinError(ib+1)<<"\t"<<hRatio[0]->GetBinContent(ib+1)<<" ± "<<hRatio[0]->GetBinError(ib+1)<<"\t"<<hTrue[0]->GetBinContent(ib+1)/hPred[0]->GetBinContent(ib+1)<<"\t"<<fabs(hTrue[0]->GetBinContent(ib+1)-hPred[0]->GetBinContent(ib+1))/hPred[0]->GetBinContent(ib+1)<<endl;
