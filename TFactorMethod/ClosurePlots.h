@@ -166,39 +166,42 @@ void ClosurePlots::ClosureTemplate(
   h_ratio = static_cast<TH1*>(h_exp->Clone("Ratio"));
   h_ratio->Divide(h_pred);
   h_ratio->SetMarkerSize(1);
-  h_ratio->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
-  //h_ratio->GetYaxis()->SetRangeUser(0.0,5.1);
   h_ratio->SetTitle("");
   h_ratio->SetStats(0);
   h_ratio->SetLineWidth(1);
-  h_ratio->GetYaxis()->SetTitleSize(0.15);
-  h_ratio->GetYaxis()->SetTitleOffset(0.6);
-  h_ratio->GetYaxis()->SetTitleFont(42);
-  h_ratio->GetYaxis()->SetLabelSize(0.1);
-  h_ratio->GetYaxis()->SetLabelFont(42);
+
+  h_ratio->GetXaxis()->SetLabelSize(0.2);
   h_ratio->GetXaxis()->SetLabelOffset(0.01);
   h_ratio->GetXaxis()->SetLabelFont(42);
-  h_ratio->GetXaxis()->SetLabelSize(0.20);
-  h_ratio->GetXaxis()->SetTitleSize(0.16);
-  h_ratio->GetXaxis()->SetTitleFont(42);
-  h_ratio->GetXaxis()->SetTitleOffset(1.0);
-
   if (hist_tag == "_sb")
   {
     h_ratio->GetXaxis()->SetTitle("Search region bin number");
   }
+  h_ratio->GetXaxis()->SetTitleSize(0.20);
+  h_ratio->GetXaxis()->SetTitleOffset(1.0);
+  h_ratio->GetXaxis()->SetTitleFont(42);
 
+  h_ratio->GetYaxis()->SetLabelSize(0.12);
+  h_ratio->GetYaxis()->SetLabelOffset(0.01);
+  h_ratio->GetYaxis()->SetLabelFont(42);
+  h_ratio->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
+  h_ratio->GetYaxis()->SetTitleSize(0.15);
+  h_ratio->GetYaxis()->SetTitleOffset(0.3);
+  h_ratio->GetYaxis()->SetTitleFont(42);
+ 
   //Create LUMI stamp
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   //const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2016                                                       12.9 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Preliminary 2016                                                       35.9 fb^{-1}(13 TeV)";
 
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
 
   //Create Legend
-  TLegend* leg = new TLegend(0.55,0.75,0.90,0.90);
+  //TLegend* leg = new TLegend(0.55,0.75,0.90,0.90);
+  TLegend* leg = new TLegend(0.55,0.75,0.90,0.92);
+
   leg->SetBorderSize(1);
   leg->SetLineColor(1);
   leg->SetLineWidth(2);
@@ -283,13 +286,7 @@ void ClosurePlots::ClosureTemplate(
 
   h_ratio->SetMaximum(5);
   h_ratio->SetMinimum(-2);
-  if( hist_tag == "_sb" )
-  {
-    h_ratio->GetXaxis()->SetLabelSize(0.20);
-    h_ratio->GetXaxis()->SetTitleOffset(1.0);
-    h_ratio->GetXaxis()->SetRangeUser(0.,NSEARCH_BINS);
-  }
-
+  
   TLine *tl_one = new TLine();
   tl_one->SetLineStyle(2);
   tl_one->SetLineColor(1);
