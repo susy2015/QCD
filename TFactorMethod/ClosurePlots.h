@@ -280,7 +280,7 @@ void ClosurePlots::ClosureTemplate(
   pad->cd(2);
   TPad *pad2 = (TPad*) pad->GetPad(2);
   pad2->SetPad("ratio", "", 0, 0, 1.0, divRatio, kWhite);
-  pad2->SetBottomMargin(0.4);
+  pad2->SetBottomMargin(0.45);
   pad2->SetTopMargin(small);
   pad2->SetBorderMode(0);
 
