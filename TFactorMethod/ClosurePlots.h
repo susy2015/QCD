@@ -133,12 +133,12 @@ void ClosurePlots::ClosureTemplate(
   h_pred->GetXaxis()->SetRangeUser(min,max);
   h_pred->GetXaxis()->SetTitle(XTitle);
   h_pred->GetXaxis()->SetLabelSize(0.20);
+  h_pred->GetYaxis()->SetTitle("Events");
   h_pred->GetYaxis()->SetTitleOffset(0.6);
   h_pred->GetYaxis()->SetTitleFont(42);
-  h_pred->GetYaxis()->SetTitleSize(0.065);
+  h_pred->GetYaxis()->SetTitleSize(0.075);
   h_pred->GetYaxis()->SetLabelSize(0.05);
   h_pred->GetYaxis()->SetLabelFont(42);
-  h_pred->GetYaxis()->SetTitle("Events");
   //h_pred->Sumw2();
   //h_pred->Scale(scale);
 
@@ -150,12 +150,12 @@ void ClosurePlots::ClosureTemplate(
   h_exp->GetXaxis()->SetRangeUser(min,max);
   h_exp->GetXaxis()->SetTitle(XTitle);
   h_exp->GetXaxis()->SetLabelSize(0.20);
+  h_exp->GetYaxis()->SetTitle("Events");
   h_exp->GetYaxis()->SetTitleOffset(0.6);
   h_exp->GetYaxis()->SetTitleFont(42);
-  h_exp->GetYaxis()->SetTitleSize(0.065);
+  h_exp->GetYaxis()->SetTitleSize(0.075);
   h_exp->GetYaxis()->SetLabelSize(0.05);
   h_exp->GetYaxis()->SetLabelFont(42);
-  h_exp->GetYaxis()->SetTitle("Events");
   //h_exp->Sumw2();
   //h_exp->Scale(scale);
 
@@ -170,22 +170,22 @@ void ClosurePlots::ClosureTemplate(
   h_ratio->SetStats(0);
   h_ratio->SetLineWidth(1);
 
-  h_ratio->GetXaxis()->SetLabelSize(0.2);
+  h_ratio->GetXaxis()->SetLabelSize(0.15);
   h_ratio->GetXaxis()->SetLabelOffset(0.01);
   h_ratio->GetXaxis()->SetLabelFont(42);
   if (hist_tag == "_sb")
   {
     h_ratio->GetXaxis()->SetTitle("Search region bin number");
   }
-  h_ratio->GetXaxis()->SetTitleSize(0.20);
+  h_ratio->GetXaxis()->SetTitleSize(0.15);
   h_ratio->GetXaxis()->SetTitleOffset(1.0);
   h_ratio->GetXaxis()->SetTitleFont(42);
 
-  h_ratio->GetYaxis()->SetLabelSize(0.12);
+  h_ratio->GetYaxis()->SetLabelSize(0.10);
   h_ratio->GetYaxis()->SetLabelOffset(0.01);
   h_ratio->GetYaxis()->SetLabelFont(42);
   h_ratio->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
-  h_ratio->GetYaxis()->SetTitleSize(0.15);
+  h_ratio->GetYaxis()->SetTitleSize(0.13);
   h_ratio->GetYaxis()->SetTitleOffset(0.3);
   h_ratio->GetYaxis()->SetTitleFont(42);
  
@@ -199,8 +199,8 @@ void ClosurePlots::ClosureTemplate(
   title->SetTextSize(0.045);
 
   //Create Legend
-  //TLegend* leg = new TLegend(0.55,0.75,0.90,0.90);
-  TLegend* leg = new TLegend(0.55,0.75,0.90,0.92);
+  //TLegend* leg = new TLegend(0.55,0.75,0.90,0.93);
+  TLegend* leg = new TLegend(0.6,0.77,0.90,0.93);
 
   leg->SetBorderSize(1);
   leg->SetLineColor(1);
@@ -216,6 +216,7 @@ void ClosurePlots::ClosureTemplate(
 
   //Draw plots on Canvas
   TCanvas *c = new TCanvas("c","",50,50,800,600); 
+  //TCanvas *c = new TCanvas("c","",50,50,600,600); 
   //HistStyle::init();
   gStyle->SetOptStat(0);
 
@@ -223,7 +224,7 @@ void ClosurePlots::ClosureTemplate(
   pad->Clear();
   pad->Divide(2, 1);
 
-  double divRatio = 0.20;
+  double divRatio = 0.30;
   double labelRatio = (1-divRatio)/divRatio;
   double small = 0;
 
@@ -232,12 +233,13 @@ void ClosurePlots::ClosureTemplate(
   pad1->SetPad("", "", 0, divRatio, 1.0, 1.0, kWhite);
   pad1->SetBottomMargin(0);
   pad1->SetBorderMode(0);
+  pad1->SetLogy();
   
   TExec *setex = new TExec("setex", "gStyle->SetErrorX(0.0)");
 
   if( hist_tag == "_sb" )
   { 
-    pad1->SetLogy(); 
+    //pad1->SetLogy(); 
     h_exp->GetXaxis()->SetRangeUser(0.,NSEARCH_BINS);
   
     Double_t pred,exp,pred_err,exp_err;
@@ -299,7 +301,7 @@ void ClosurePlots::ClosureTemplate(
   pad2->SetTopMargin(small);
   pad2->SetBorderMode(0);
 
-  h_ratio->SetMaximum(5);
+  h_ratio->SetMaximum(4.9);
   h_ratio->SetMinimum(-2);
   
   TLine *tl_one = new TLine();
