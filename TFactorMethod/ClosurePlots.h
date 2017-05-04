@@ -264,11 +264,26 @@ void ClosurePlots::ClosureTemplate(
   }
     
   setex->Draw();
-  h_exp->Draw("PE1");
-  h_pred->DrawCopy("hist same");
-  h_pred->SetFillColor(kBlue-4);
-  h_pred->SetFillStyle(3001);
-  h_pred->Draw("E2 same");
+  if (
+         hist_tag == "_mht"
+      || hist_tag == "_mt2"
+      || hist_tag == "_njets50"
+     )
+  {
+    h_pred->Draw("E2");
+    h_pred->DrawCopy("hist same");
+    h_pred->SetFillColor(kBlue-4);
+    h_pred->SetFillStyle(3001);
+    h_exp->Draw("PE1 same");
+  }
+  else
+  {
+    h_exp->Draw("PE1");
+    h_pred->DrawCopy("hist same");
+    h_pred->SetFillColor(kBlue-4);
+    h_pred->SetFillStyle(3001);
+    h_pred->Draw("E2 same");
+  }
 
   if( hist_tag == "_sb" ){ QCDdrawSBregionDef(0.0, 100.0, true, false); }
   CMSStylePlot::CMS_lumi( c, 4, 0 );

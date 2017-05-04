@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
   { 
     //QCD closure plots
     //{"_met"     , "MET [GeV]"             ,200 , 800  },
-    {"_met"     , "E_{T}^{missing} [GeV]",200 , 800  },
+    {"_met"     , "p_{T}^{missing} [GeV]",200 , 800  },
     {"_njets30" , "Number of 30 GeV jets" ,2   , 15   }, 
     {"_njets50" , "Number of 50 GeV jets" ,2   , 15   },  
     {"_mt2"     , "M_{T2} [GeV]"         ,200 , 600  },                                               
