@@ -159,6 +159,12 @@ void ClosurePlots::ClosureTemplate(
   //h_exp->Sumw2();
   //h_exp->Scale(scale);
 
+  if (hist_tag == "_ht")
+  {
+    h_pred->SetMinimum(0.05);
+    h_exp->SetMinimum(0.05);
+  }
+
   // Ratio plots
   TH1* h_ratioFrame;
   TH1* h_ratio;
@@ -180,12 +186,13 @@ void ClosurePlots::ClosureTemplate(
   h_ratio->GetXaxis()->SetTitleSize(0.15);
   h_ratio->GetXaxis()->SetTitleOffset(1.0);
   h_ratio->GetXaxis()->SetTitleFont(42);
+  h_ratio->GetXaxis()->SetTickLength(0.1);
 
   h_ratio->GetYaxis()->SetLabelSize(0.10);
   h_ratio->GetYaxis()->SetLabelOffset(0.01);
   h_ratio->GetYaxis()->SetLabelFont(42);
   h_ratio->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
-  h_ratio->GetYaxis()->SetTitleSize(0.13);
+  h_ratio->GetYaxis()->SetTitleSize(0.12);
   h_ratio->GetYaxis()->SetTitleOffset(0.3);
   h_ratio->GetYaxis()->SetTitleFont(42);
  
@@ -276,11 +283,19 @@ void ClosurePlots::ClosureTemplate(
     h_pred->DrawCopy("hist same");
     h_pred->SetFillColor(kBlue-4);
     h_pred->SetFillStyle(3001);
-    h_exp->Draw("PE1 same");
+    //h_exp->Draw("PE1 same");
+    h_exp->Draw("E2 same");
+    h_exp->DrawCopy("hist same");
+    h_exp->SetFillColor(kRed-4);
+    h_exp->SetFillStyle(3001);
   }
   else
   {
-    h_exp->Draw("PE1");
+    //h_exp->Draw("PE1");
+    h_exp->Draw("E2");
+    h_exp->DrawCopy("hist same");
+    h_exp->SetFillColor(kRed-4);
+    h_exp->SetFillStyle(3001);
     h_pred->DrawCopy("hist same");
     h_pred->SetFillColor(kBlue-4);
     h_pred->SetFillStyle(3001);
@@ -302,8 +317,9 @@ void ClosurePlots::ClosureTemplate(
   pad2->SetBorderMode(0);
 
   h_ratio->SetMaximum(4.9);
-  h_ratio->SetMinimum(-2);
-  
+  h_ratio->SetMinimum(-1.5);
+  h_ratio->GetYaxis()->SetNdivisions(505);
+
   TLine *tl_one = new TLine();
   tl_one->SetLineStyle(2);
   tl_one->SetLineColor(1);
