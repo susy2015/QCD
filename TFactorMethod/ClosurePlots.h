@@ -161,8 +161,18 @@ void ClosurePlots::ClosureTemplate(
 
   if (hist_tag == "_ht")
   {
-    h_pred->SetMinimum(0.05);
-    h_exp->SetMinimum(0.05);
+    h_pred->SetMaximum(300); h_exp->SetMaximum(300);
+    h_pred->SetMinimum(0.05); h_exp->SetMinimum(0.05);
+  }
+
+  if (hist_tag == "_nbjets")
+  { 
+    h_pred->SetMaximum(2000); h_exp->SetMaximum(2000);
+  }
+
+  if (hist_tag == "_ntopjets")
+  { 
+    h_pred->SetMaximum(2000); h_exp->SetMaximum(2000);
   }
 
   // Ratio plots
@@ -283,19 +293,19 @@ void ClosurePlots::ClosureTemplate(
     h_pred->DrawCopy("hist same");
     h_pred->SetFillColor(kBlue-4);
     h_pred->SetFillStyle(3001);
-    //h_exp->Draw("PE1 same");
-    h_exp->Draw("E2 same");
-    h_exp->DrawCopy("hist same");
-    h_exp->SetFillColor(kRed-4);
-    h_exp->SetFillStyle(3001);
+    h_exp->Draw("PEX0 same");
+    //h_exp->Draw("E2 same");
+    //h_exp->DrawCopy("hist same");
+    //h_exp->SetFillColor(kRed-4);
+    //h_exp->SetFillStyle(3001);
   }
   else
   {
-    //h_exp->Draw("PE1");
-    h_exp->Draw("E2");
-    h_exp->DrawCopy("hist same");
-    h_exp->SetFillColor(kRed-4);
-    h_exp->SetFillStyle(3001);
+    h_exp->Draw("PEX0");
+    //h_exp->Draw("E2");
+    //h_exp->DrawCopy("hist same");
+    //h_exp->SetFillColor(kRed-4);
+    //h_exp->SetFillStyle(3001);
     h_pred->DrawCopy("hist same");
     h_pred->SetFillColor(kBlue-4);
     h_pred->SetFillStyle(3001);
@@ -311,6 +321,7 @@ void ClosurePlots::ClosureTemplate(
   
   pad->cd(2);
   TPad *pad2 = (TPad*) pad->GetPad(2);
+  //gStyle->SetErrorX(0);
   pad2->SetPad("ratio", "", 0, 0, 1.0, divRatio, kWhite);
   pad2->SetBottomMargin(0.45);
   pad2->SetTopMargin(small);
@@ -325,7 +336,12 @@ void ClosurePlots::ClosureTemplate(
   tl_one->SetLineColor(1);
   tl_one->SetLineWidth(2);
   
-  h_ratio->Draw("PE1");
+  h_ratio->Draw("PEX0");
+  //h_ratio->Draw("E2");
+  //h_ratio->DrawCopy("hist same");
+  //h_ratio->SetFillColor(kRed-4);
+  //h_ratio->SetFillStyle(3001);
+
   tl_one->DrawLine(min,1.,max,1.);
 
   c->SaveAs( target_DIR + TString("/") + hist_tag + TString(".png") );
