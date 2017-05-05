@@ -133,12 +133,12 @@ void ClosurePlots::ClosureTemplate(
   h_pred->GetXaxis()->SetRangeUser(min,max);
   h_pred->GetXaxis()->SetTitle(XTitle);
   h_pred->GetXaxis()->SetLabelSize(0.20);
+  h_pred->GetYaxis()->SetTitle("Events");
   h_pred->GetYaxis()->SetTitleOffset(0.6);
   h_pred->GetYaxis()->SetTitleFont(42);
-  h_pred->GetYaxis()->SetTitleSize(0.065);
+  h_pred->GetYaxis()->SetTitleSize(0.075);
   h_pred->GetYaxis()->SetLabelSize(0.05);
   h_pred->GetYaxis()->SetLabelFont(42);
-  h_pred->GetYaxis()->SetTitle("Events");
   //h_pred->Sumw2();
   //h_pred->Scale(scale);
 
@@ -150,14 +150,30 @@ void ClosurePlots::ClosureTemplate(
   h_exp->GetXaxis()->SetRangeUser(min,max);
   h_exp->GetXaxis()->SetTitle(XTitle);
   h_exp->GetXaxis()->SetLabelSize(0.20);
+  h_exp->GetYaxis()->SetTitle("Events");
   h_exp->GetYaxis()->SetTitleOffset(0.6);
   h_exp->GetYaxis()->SetTitleFont(42);
-  h_exp->GetYaxis()->SetTitleSize(0.065);
+  h_exp->GetYaxis()->SetTitleSize(0.075);
   h_exp->GetYaxis()->SetLabelSize(0.05);
   h_exp->GetYaxis()->SetLabelFont(42);
-  h_exp->GetYaxis()->SetTitle("Events");
   //h_exp->Sumw2();
   //h_exp->Scale(scale);
+
+  if (hist_tag == "_ht")
+  {
+    h_pred->SetMaximum(300); h_exp->SetMaximum(300);
+    h_pred->SetMinimum(0.05); h_exp->SetMinimum(0.05);
+  }
+
+  if (hist_tag == "_nbjets")
+  { 
+    h_pred->SetMaximum(2000); h_exp->SetMaximum(2000);
+  }
+
+  if (hist_tag == "_ntopjets")
+  { 
+    h_pred->SetMaximum(2000); h_exp->SetMaximum(2000);
+  }
 
   // Ratio plots
   TH1* h_ratioFrame;
@@ -166,39 +182,43 @@ void ClosurePlots::ClosureTemplate(
   h_ratio = static_cast<TH1*>(h_exp->Clone("Ratio"));
   h_ratio->Divide(h_pred);
   h_ratio->SetMarkerSize(1);
-  h_ratio->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
-  //h_ratio->GetYaxis()->SetRangeUser(0.0,5.1);
   h_ratio->SetTitle("");
   h_ratio->SetStats(0);
   h_ratio->SetLineWidth(1);
-  h_ratio->GetYaxis()->SetTitleSize(0.15);
-  h_ratio->GetYaxis()->SetTitleOffset(0.6);
-  h_ratio->GetYaxis()->SetTitleFont(42);
-  h_ratio->GetYaxis()->SetLabelSize(0.1);
-  h_ratio->GetYaxis()->SetLabelFont(42);
+
+  h_ratio->GetXaxis()->SetLabelSize(0.15);
   h_ratio->GetXaxis()->SetLabelOffset(0.01);
   h_ratio->GetXaxis()->SetLabelFont(42);
-  h_ratio->GetXaxis()->SetLabelSize(0.20);
-  h_ratio->GetXaxis()->SetTitleSize(0.16);
-  h_ratio->GetXaxis()->SetTitleFont(42);
-  h_ratio->GetXaxis()->SetTitleOffset(1.0);
-
   if (hist_tag == "_sb")
   {
     h_ratio->GetXaxis()->SetTitle("Search region bin number");
   }
+  h_ratio->GetXaxis()->SetTitleSize(0.15);
+  h_ratio->GetXaxis()->SetTitleOffset(1.0);
+  h_ratio->GetXaxis()->SetTitleFont(42);
+  h_ratio->GetXaxis()->SetTickLength(0.1);
 
+  h_ratio->GetYaxis()->SetLabelSize(0.10);
+  h_ratio->GetYaxis()->SetLabelOffset(0.01);
+  h_ratio->GetYaxis()->SetLabelFont(42);
+  h_ratio->GetYaxis()->SetTitle("#frac{Direct}{Prediction}");
+  h_ratio->GetYaxis()->SetTitleSize(0.12);
+  h_ratio->GetYaxis()->SetTitleOffset(0.3);
+  h_ratio->GetYaxis()->SetTitleFont(42);
+ 
   //Create LUMI stamp
   //const std::string titre="CMS Preliminary 2015, "+ lumi_str + " fb^{-1}, #sqrt{s} = 13 TeV";
   //const std::string titre="CMS Preliminary 2016, 2.3 fb^{-1}, #sqrt{s} = 13 TeV";
-  const std::string titre="CMS Preliminary 2016                                                       12.9 fb^{-1}(13 TeV)";
+  const std::string titre="CMS Preliminary 2016                                                       35.9 fb^{-1}(13 TeV)";
 
   TLatex *title = new TLatex(0.09770115,0.9194915,titre.c_str());
   title->SetNDC();
   title->SetTextSize(0.045);
 
   //Create Legend
-  TLegend* leg = new TLegend(0.55,0.75,0.90,0.90);
+  //TLegend* leg = new TLegend(0.55,0.75,0.90,0.93);
+  TLegend* leg = new TLegend(0.6,0.77,0.90,0.93);
+
   leg->SetBorderSize(1);
   leg->SetLineColor(1);
   leg->SetLineWidth(2);
@@ -213,6 +233,7 @@ void ClosurePlots::ClosureTemplate(
 
   //Draw plots on Canvas
   TCanvas *c = new TCanvas("c","",50,50,800,600); 
+  //TCanvas *c = new TCanvas("c","",50,50,600,600); 
   //HistStyle::init();
   gStyle->SetOptStat(0);
 
@@ -220,7 +241,7 @@ void ClosurePlots::ClosureTemplate(
   pad->Clear();
   pad->Divide(2, 1);
 
-  double divRatio = 0.20;
+  double divRatio = 0.30;
   double labelRatio = (1-divRatio)/divRatio;
   double small = 0;
 
@@ -229,12 +250,13 @@ void ClosurePlots::ClosureTemplate(
   pad1->SetPad("", "", 0, divRatio, 1.0, 1.0, kWhite);
   pad1->SetBottomMargin(0);
   pad1->SetBorderMode(0);
+  pad1->SetLogy();
   
   TExec *setex = new TExec("setex", "gStyle->SetErrorX(0.0)");
 
   if( hist_tag == "_sb" )
   { 
-    pad1->SetLogy(); 
+    //pad1->SetLogy(); 
     h_exp->GetXaxis()->SetRangeUser(0.,NSEARCH_BINS);
   
     Double_t pred,exp,pred_err,exp_err;
@@ -261,11 +283,34 @@ void ClosurePlots::ClosureTemplate(
   }
     
   setex->Draw();
-  h_exp->Draw("PE1");
-  h_pred->DrawCopy("hist same");
-  h_pred->SetFillColor(kBlue-4);
-  h_pred->SetFillStyle(3001);
-  h_pred->Draw("E2 same");
+  if (
+         hist_tag == "_mht"
+      || hist_tag == "_mt2"
+      || hist_tag == "_njets50"
+     )
+  {
+    h_pred->Draw("E2");
+    h_pred->DrawCopy("hist same");
+    h_pred->SetFillColor(kBlue-4);
+    h_pred->SetFillStyle(3001);
+    h_exp->Draw("PEX0 same");
+    //h_exp->Draw("E2 same");
+    //h_exp->DrawCopy("hist same");
+    //h_exp->SetFillColor(kRed-4);
+    //h_exp->SetFillStyle(3001);
+  }
+  else
+  {
+    h_exp->Draw("PEX0");
+    //h_exp->Draw("E2");
+    //h_exp->DrawCopy("hist same");
+    //h_exp->SetFillColor(kRed-4);
+    //h_exp->SetFillStyle(3001);
+    h_pred->DrawCopy("hist same");
+    h_pred->SetFillColor(kBlue-4);
+    h_pred->SetFillStyle(3001);
+    h_pred->Draw("E2 same");
+  }
 
   if( hist_tag == "_sb" ){ QCDdrawSBregionDef(0.0, 100.0, true, false); }
   CMSStylePlot::CMS_lumi( c, 4, 0 );
@@ -276,26 +321,27 @@ void ClosurePlots::ClosureTemplate(
   
   pad->cd(2);
   TPad *pad2 = (TPad*) pad->GetPad(2);
+  //gStyle->SetErrorX(0);
   pad2->SetPad("ratio", "", 0, 0, 1.0, divRatio, kWhite);
-  pad2->SetBottomMargin(0.4);
+  pad2->SetBottomMargin(0.45);
   pad2->SetTopMargin(small);
   pad2->SetBorderMode(0);
 
-  h_ratio->SetMaximum(5);
-  h_ratio->SetMinimum(-2);
-  if( hist_tag == "_sb" )
-  {
-    h_ratio->GetXaxis()->SetLabelSize(0.20);
-    h_ratio->GetXaxis()->SetTitleOffset(1.0);
-    h_ratio->GetXaxis()->SetRangeUser(0.,NSEARCH_BINS);
-  }
+  h_ratio->SetMaximum(4.9);
+  h_ratio->SetMinimum(-1.5);
+  h_ratio->GetYaxis()->SetNdivisions(505);
 
   TLine *tl_one = new TLine();
   tl_one->SetLineStyle(2);
   tl_one->SetLineColor(1);
   tl_one->SetLineWidth(2);
   
-  h_ratio->Draw("PE1");
+  h_ratio->Draw("PEX0");
+  //h_ratio->Draw("E2");
+  //h_ratio->DrawCopy("hist same");
+  //h_ratio->SetFillColor(kRed-4);
+  //h_ratio->SetFillStyle(3001);
+
   tl_one->DrawLine(min,1.,max,1.);
 
   c->SaveAs( target_DIR + TString("/") + hist_tag + TString(".png") );

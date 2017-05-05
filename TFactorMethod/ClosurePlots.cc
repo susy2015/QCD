@@ -35,14 +35,15 @@ int main(int argc, char* argv[])
   std::vector<Plotting_Parameter> myPlotting_Paramete = 
   { 
     //QCD closure plots
-    {"_met"     , "MET [GeV]"             ,200 , 800  },
+    //{"_met"     , "MET [GeV]"             ,200 , 800  },
+    {"_met"     , "E_{T}^{miss} [GeV]"    ,200 , 800  },
     {"_njets30" , "Number of 30 GeV jets" ,2   , 15   }, 
     {"_njets50" , "Number of 50 GeV jets" ,2   , 15   },  
-    {"_mt2"     , "MT2 [GeV]"             ,200 , 600  },                                               
-    {"_ht"      , "HT [GeV]"              ,300 , 1800 },
-    {"_mht"     , "MHT [GeV]"             ,100 , 500  },
-    {"_ntopjets", "Number of Top jets"    ,0   , 5    },
-    {"_nbjets"  , "Number of B Jets"      ,0   , 5    },
+    {"_mt2"     , "M_{T2} [GeV]"          ,200 , 600  },                                               
+    {"_ht"      , "H_{T} [GeV]"           ,300 , 1800 },
+    {"_mht"     , "H_{T}^{miss} [GeV]"    ,100 , 500  },
+    {"_ntopjets", "N_{t}"                 ,0   , 5    },
+    {"_nbjets"  , "N_{b}"                 ,0   , 5    },
     //search bin closure plots
     //{"_sb"   , "Search Bins"           ,0   , 65  },
   };

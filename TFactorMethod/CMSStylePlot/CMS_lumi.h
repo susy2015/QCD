@@ -16,7 +16,7 @@ namespace CMSStylePlot
   // text sizes and text offsets with respect to the top frame
   // in unit of the top margin size
   float lumiTextSize     = 0.45;
-  float lumiTextOffset   = 0.25;
+  float lumiTextOffset   = 0.35;
   float cmsTextSize      = 0.45;
   float cmsTextOffset    = 0.1;  // only used in outOfFrame version
 
