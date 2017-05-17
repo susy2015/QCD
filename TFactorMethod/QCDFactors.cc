@@ -981,13 +981,13 @@ void QCDFactors::printDataCard(std::string pred_type)
 	std::cout << printDataCardLine("QCD_Data_CS"                    ,QCD_Data_CS);
   std::cout << printDataCardLine("QCD_Data_CS_relative_err"       ,QCD_Data_CS_relative_err);
   std::cout << printDataCardLine("QCD_otherBG_CS"                 ,QCD_otherBG_CS);
-  //std::cout << printDataCardLine("QCD_otherBG_eff_CS"             ,QCD_otherBG_eff_CS);
+  std::cout << printDataCardLine("QCD_otherBG_eff_CS"             ,QCD_otherBG_eff_CS);
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errup"  ,QCD_otherBG_CS_relative_errup);
   std::cout << printDataCardLine("QCD_otherBG_CS_relative_errdown",QCD_otherBG_CS_relative_errdown);
   std::cout << printDataCardLine("QCD_TFactor"                    ,QCD_TFactor);
   std::cout << printDataCardLine("QCD_TFactor_relative_err"       ,QCD_TFactor_relative_err);
-  //std::cout << printDataCardLine("QCD_TFactor_ave"                ,QCD_TFactor_ave);
-  //std::cout << printDataCardLine("QCD_TFactor_ave_relative_err"   ,QCD_TFactor_ave_relative_err);
+  std::cout << printDataCardLine("QCD_TFactor_ave"                ,QCD_TFactor_ave);
+  std::cout << printDataCardLine("QCD_TFactor_ave_relative_err"   ,QCD_TFactor_ave_relative_err);
   //std::cout << printDataCardLine("QCD_NTopFactor"                 ,QCD_NTopFactor);
   //std::cout << printDataCardLine("QCD_NTopFactor_relative_err"    ,QCD_NTopFactor_relative_err);
   std::cout << printDataCardLine("QCD_NonClosure_relative_err"    ,QCD_NonClosure_relative_err);
@@ -1035,7 +1035,6 @@ void QCDFactors::printSysHeader(std::string pred_type)
   SysHeader.open ( (header_out + "SysHeader.h").c_str() );
   SysHeader << "//Printing SysHeader..." << std::endl;
   SysHeader << printSysHeaderLine("head_QCD_Data_CS"                ,QCD_Data_CS);
-  //SysHeader << printSysHeaderLine("head_QCD_Data_CS_relative_err" ,QCD_Data_CS_relative_err);
   SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_CS);
   //SysHeader << printSysHeaderLine("head_QCD_otherBG_CS"             ,QCD_otherBG_eff_CS);
   SysHeader << printSysHeaderLine("head_QCD_otherBG_sysup"          ,QCD_otherBG_CS_relative_errup);

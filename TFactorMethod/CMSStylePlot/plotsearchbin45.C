@@ -182,8 +182,8 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
       ttext2->SetTextAlign(22);
       ttext2->Draw();
 
-      ttext2->DrawLatex( 5, ymax_Yields/6., "N_{b} = 1");
-      ttext2->DrawLatex(16, ymax_Yields/6., "N_{b} = 2");
+      ttext2->DrawLatex( 5, ymax_Yields/5, "N_{b} = 1");
+      ttext2->DrawLatex(16, ymax_Yields/5, "N_{b} = 2");
       // ttext2->DrawLatex( 28, ymax_Yields/200., "N_{b} = 1");
       // ttext2->DrawLatex(36, ymax_Yields/200., "N_{b} = 2");
       ttext2->SetTextAngle(90.);
@@ -210,9 +210,9 @@ void plotsearchbin45(const TString &fileName = "MCmix_Closure45.root",
       ttextmt2->SetTextSize(0.055);
       ttextmt2->SetTextAlign(12);
       ttextmt2->SetTextAngle(90);
-      ttextmt2->DrawLatex( 2.5, ymax_Yields/800. , "M_{T2}=[200,300]");
-      ttextmt2->DrawLatex( 6.0, ymax_Yields/800. , "M_{T2}=[300,400]");
-      ttextmt2->DrawLatex(9.5, ymax_Yields/800. , "M_{T2}#geq400 GeV");
+      ttextmt2->DrawLatex( 2.5, ymax_Yields/800. , "M_{T2} #in [200,300]");
+      ttextmt2->DrawLatex( 6.0, ymax_Yields/800. , "M_{T2} #in [300,400]");
+      ttextmt2->DrawLatex(9.5, ymax_Yields/800. , "M_{T2} #geq 400 GeV");
       //-----------------------------------------------------------
  
     }
