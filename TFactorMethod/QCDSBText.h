@@ -350,54 +350,54 @@ void QCDdrawSBregionDef(const double ymin_Yields, const double ymax_Yields, cons
     {
       if(NSB == 84)
       {
-        ttextmt2->DrawLatex( 3.0, ymax_Yields/100. , "M_{T2}=[200,300]");
-        ttextmt2->DrawLatex( 12.0, ymax_Yields/100. , "M_{T2}=[400, 550]");
-        ttextmt2->DrawLatex( 18.5, ymax_Yields/100. , "M_{T2}#geq750 GeV");
-        ttextmt2->DrawLatex( 39.5, ymax_Yields/70. , "H_{T}=[300,1000]");
-        ttextmt2->DrawLatex( 46.5, ymax_Yields/70. , "H_{T}#geq1500 GeV");
-        ttextmt2->DrawLatex( 76.5, ymax_Yields/200. , "H_{T}#geq1300 GeV");
+        ttextmt2->DrawLatex( 3.0, ymax_Yields/100. , "M_{T2} #in [200,300]");
+        ttextmt2->DrawLatex( 12.0, ymax_Yields/100. , "M_{T2} #in [400, 550]");
+        ttextmt2->DrawLatex( 18.5, ymax_Yields/100. , "M_{T2} #geq 750 GeV");
+        ttextmt2->DrawLatex( 39.5, ymax_Yields/70. , "H_{T} #in [300,1000]");
+        ttextmt2->DrawLatex( 46.5, ymax_Yields/70. , "H_{T} #geq 1500 GeV");
+        ttextmt2->DrawLatex( 76.5, ymax_Yields/200. , "H_{T} #geq 1300 GeV");
         //ttextmt2->DrawLatex( 80.5, ymax_Yields/1500000. , "H_{T}#geq300 GeV");
       }
       else if(NSB == 59)
       {
-        ttextmt2->DrawLatex( 2.0, ymax_Yields/10000. , "M_{T2}=[200,350]");
-        ttextmt2->DrawLatex( 6.0, ymax_Yields/10000. , "M_{T2}=[350,450]");
-        ttextmt2->DrawLatex( 10.5, ymax_Yields/10000. , "M_{T2}#geq450 GeV");
-        ttextmt2->DrawLatex( 27.5, ymax_Yields/10000. , "M_{T2}#geq350 GeV");
+        ttextmt2->DrawLatex( 2.0, ymax_Yields/10000. , "M_{T2} #in [200,350]");
+        ttextmt2->DrawLatex( 6.0, ymax_Yields/10000. , "M_{T2} #in [350,450]");
+        ttextmt2->DrawLatex( 10.5, ymax_Yields/10000. , "M_{T2} #geq 450 GeV");
+        ttextmt2->DrawLatex( 27.5, ymax_Yields/10000. , "M_{T2} #geq 350 GeV");
       }
       else if(NSB == 37 || NSB == 45)
       {
-        ttextmt2->DrawLatex( 2.0, ymax_Yields/2000. , "M_{T2}=[200,300]");
-        ttextmt2->DrawLatex( 6.0, ymax_Yields/2000. , "M_{T2}=[300,400]");
-        ttextmt2->DrawLatex( 9.5, ymax_Yields/2000. , "M_{T2}#geq400 GeV");
+        ttextmt2->DrawLatex( 2.0, ymax_Yields/2000. , "M_{T2} #in [200,300]");
+        ttextmt2->DrawLatex( 6.0, ymax_Yields/2000. , "M_{T2} #in [300,400]");
+        ttextmt2->DrawLatex( 9.5, ymax_Yields/2000. , "M_{T2} #geq 400 GeV");
       } 
     }
     else
     {
       if(NSB == 84)
       {
-        ttextmt2->DrawLatex( 3.0, ymax_Yields*0.52 , "M_{T2}=[250,300]");
-        ttextmt2->DrawLatex( 8.0, ymax_Yields*0.52 , "M_{T2}=[300,400]");
-        ttextmt2->DrawLatex( 12.5, ymax_Yields*0.52 , "M_{T2}=[400, 550]");
-        ttextmt2->DrawLatex( 16.5, ymax_Yields*0.52 , "M_{T2}=[550, 800]");
-        ttextmt2->DrawLatex( 19.5, ymax_Yields*0.52 , "M_{T2}#geq800 GeV");
-        ttextmt2->DrawLatex( 39.5, ymax_Yields*0.32 , "H_{T}=[300,1000]");
-        ttextmt2->DrawLatex( 46.5, ymax_Yields*0.32 , "H_{T}#geq1500 GeV");
-        ttextmt2->DrawLatex( 76.5, ymax_Yields*0.32 , "H_{T}#geq1300 GeV");
-        ttextmt2->DrawLatex( 80.5, ymax_Yields*0.32 , "H_{T}#geq300 GeV");
+        ttextmt2->DrawLatex( 3.0, ymax_Yields*0.52 , "M_{T2} #in [250,300]");
+        ttextmt2->DrawLatex( 8.0, ymax_Yields*0.52 , "M_{T2} #in [300,400]");
+        ttextmt2->DrawLatex( 12.5, ymax_Yields*0.52 , "M_{T2} #in [400, 550]");
+        ttextmt2->DrawLatex( 16.5, ymax_Yields*0.52 , "M_{T2} #in [550, 800]");
+        ttextmt2->DrawLatex( 19.5, ymax_Yields*0.52 , "M_{T2} #geq 800 GeV");
+        ttextmt2->DrawLatex( 39.5, ymax_Yields*0.32 , "H_{T} #in [300,1000]");
+        ttextmt2->DrawLatex( 46.5, ymax_Yields*0.32 , "H_{T} #geq 1500 GeV");
+        ttextmt2->DrawLatex( 76.5, ymax_Yields*0.32 , "H_{T} #geq 1300 GeV");
+        ttextmt2->DrawLatex( 80.5, ymax_Yields*0.32 , "H_{T} #geq 300 GeV");
       }
       else if(NSB == 59)
       {
-        ttextmt2->DrawLatex( 2.0, deltaY*0.52 + ymin_Yields , "M_{T2}=[200,350]");
-        ttextmt2->DrawLatex( 6.0, deltaY*0.52 + ymin_Yields , "M_{T2}=[350,450]");
-        ttextmt2->DrawLatex( 10.5, deltaY*0.52 + ymin_Yields , "M_{T2}#geq450 GeV");
-        ttextmt2->DrawLatex( 27.5, deltaY*0.52 + ymin_Yields , "M_{T2}#geq350 GeV");
+        ttextmt2->DrawLatex( 2.0, deltaY*0.52 + ymin_Yields , "M_{T2} #in [200,350]");
+        ttextmt2->DrawLatex( 6.0, deltaY*0.52 + ymin_Yields , "M_{T2} #in [350,450]");
+        ttextmt2->DrawLatex( 10.5, deltaY*0.52 + ymin_Yields , "M_{T2} #geq 450 GeV");
+        ttextmt2->DrawLatex( 27.5, deltaY*0.52 + ymin_Yields , "M_{T2} #geq 350 GeV");
       }
       else if(NSB == 37 || NSB == 45)
       {
-        ttextmt2->DrawLatex( 2.0, deltaY*0.52 + ymin_Yields , "M_{T2}=[200,300]");
-        ttextmt2->DrawLatex( 6.0, deltaY*0.52 + ymin_Yields , "M_{T2}=[300,400]");
-        ttextmt2->DrawLatex( 9.5, deltaY*0.52 + ymin_Yields , "M_{T2}#geq400 GeV");
+        ttextmt2->DrawLatex( 2.0, deltaY*0.52 + ymin_Yields , "M_{T2} #in [200,300]");
+        ttextmt2->DrawLatex( 6.0, deltaY*0.52 + ymin_Yields , "M_{T2} #in [300,400]");
+        ttextmt2->DrawLatex( 9.5, deltaY*0.52 + ymin_Yields , "M_{T2} #geq 400 GeV");
       }
     }
   }

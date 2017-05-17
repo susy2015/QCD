@@ -1250,10 +1250,18 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     myQCDFactors.DC_sb_allhadMC_err[i] = std::sqrt(myQCDFactors.DC_sb_allhadMC_err[i]);
 
     //ave TF for aggregate search bin
-    myQCDFactors.DC_sb_TFactor_ave[i] = myQCDFactors.DC_sb_TFactor_sum_weight[i]/myQCDFactors.DC_sb_TFactor_sum[i];
-    myQCDFactors.DC_sb_TFactor_ave_err[i] = myQCDFactors.DC_sb_TFactor_sum_weight_err[i]/myQCDFactors.DC_sb_TFactor_sum_weight[i];//get ratio, fraction
-    myQCDFactors.DC_sb_otherBG_eff[i] = myQCDFactors.DC_sb_otherBG_sum_weight[i]/(myQCDFactors.DC_sb_TFactor_sum_weight[i]/myQCDFactors.DC_sb_TFactor_sum[i]);
-
+    if(myQCDFactors.DC_sb_TFactor_sum[i]>0)
+    {
+      myQCDFactors.DC_sb_TFactor_ave[i] = myQCDFactors.DC_sb_TFactor_sum_weight[i]/myQCDFactors.DC_sb_TFactor_sum[i];
+      myQCDFactors.DC_sb_TFactor_ave_err[i] = myQCDFactors.DC_sb_TFactor_sum_weight_err[i]/myQCDFactors.DC_sb_TFactor_sum_weight[i];//get ratio, fraction
+      myQCDFactors.DC_sb_otherBG_eff[i] = myQCDFactors.DC_sb_otherBG_sum_weight[i]/(myQCDFactors.DC_sb_TFactor_sum_weight[i]/myQCDFactors.DC_sb_TFactor_sum[i]);
+    }
+    else
+    {
+      myQCDFactors.DC_sb_TFactor_ave[i] = myQCDFactors.DC_sb_TFactor[i];
+      myQCDFactors.DC_sb_TFactor_err[i] = myQCDFactors.DC_sb_TFactor_err[i];
+      myQCDFactors.DC_sb_otherBG_eff[i] = myQCDFactors.DC_sb_otherBG_sum_weight[i]/(myQCDFactors.DC_sb_TFactor[i]);
+    }
   }
   
   std::string pred_type;
