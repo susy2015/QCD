@@ -56,8 +56,12 @@ int main(int argc, char* argv[])
   std::size_t begin = input_str.find("stopFlatNtuples");
   std::size_t end = input_str.find(".root");
   std::string fileid = input_str.substr(begin,end);
-  EventInfo myEventInfo;
-  myEventInfo.OutTxtName = tag + "_" + fileid + ".txt";
+  EventInfo myEventInfo_2t_1j2j;
+  myEventInfo_2t_1j2j.OutTxtName = tag + "_" + fileid + ".2t_1j2j.txt";
+  EventInfo myEventInfo_2t_1j3j;
+  myEventInfo_2t_1j3j.OutTxtName = tag + "_" + fileid + ".2t_1j3j.txt";
+  EventInfo myEventInfo_2t_2j3j;
+  myEventInfo_2t_2j3j.OutTxtName = tag + "_" + fileid + ".2t_2j3j.txt";
 
   while(tr->getNextEvent())
   {
@@ -66,48 +70,38 @@ int main(int argc, char* argv[])
     int event = tr->getVar<int>("event");
  
     int ntopjets = tr->getVar<int>("nTopCandSortedCnt"+spec);
-		std::vector<std::pair<int, std::vector<TLorentzVector>>> topjetmap = tr->getVec<std::pair<int, std::vector<TLorentzVector>>>("mTopJets"+spec);
-    /*
-    std::vector<TLorentzVector> *vTops;
-    const TopTaggerResults& ttr = myBaselineVessel->ttPtr->getResults();
-    std::vector<TopObject*> Ntop = ttr.getTops();  
-    int ntopjets = Ntop.size();
-    for(int it=0; it<ntopjets; it++)
+    const std::map<int, std::vector<TLorentzVector>> &mtopjets = tr->getMap<int, std::vector<TLorentzVector>>("mTopJets"+spec);
+    bool passBaseline = (tr->getVar<bool>("passBaseline"+spec)) && (tr->getVar<bool>("passLeptVeto"+spec));
+   
+    bool dit_1j2j=false, dit_1j3j=false, dit_2j3j=false;
+
+    if( passBaseline )
     {
-      vTops->push_back(Ntop.at(it)->P());
-      std::vector<TLorentzVector> temp;
-      for(auto j : Ntop.at(it)->getConstituents())
+      if(ntopjets==2)
       {
-        temp.push_back(j->P());
+        std::cout << "NTops: " << ntopjets << std::endl;
+        bool monojet=false, dijet=false, trijet=false;
+        for(auto &topit  : mtopjets)
+        {
+          std::cout << "Top ID: " << topit.first << " nSubJets: " << (topit.second).size() << std::endl;
+          int nsubjets=(topit.second).size();
+          if     (nsubjets==1) monojet=true;
+          else if(nsubjets==2) dijet=true;
+          else if(nsubjets==3) trijet=true;
+          else std::cout<<"Not monojet, dijet or trijet case!" << std::endl;
+        }
+        dit_1j2j=monojet && dijet; dit_1j3j=monojet && trijet; dit_2j3j=dijet && trijet;
       }
-      topjetmap->insert(std::make_pair(it, temp));
+      if(dit_1j2j){ myEventInfo_2t_1j2j.run.push_back(run); myEventInfo_2t_1j2j.lumi.push_back(lumi); myEventInfo_2t_1j2j.event.push_back(event); }
+      if(dit_1j3j){ myEventInfo_2t_1j3j.run.push_back(run); myEventInfo_2t_1j3j.lumi.push_back(lumi); myEventInfo_2t_1j3j.event.push_back(event); }
+      if(dit_2j3j){ myEventInfo_2t_2j3j.run.push_back(run); myEventInfo_2t_2j3j.lumi.push_back(lumi); myEventInfo_2t_2j3j.event.push_back(event); }
     }
-    */
-    std::cout << "NTops: " << ntopjets << std::endl;
-    for(std::vector<std::pair<int, std::vector<TLorentzVector>>>::iterator it = topjetmap.begin(); it != topjetmap.end(); ++it) 
-    {
-      std::cout << "Top ID: " << it->first << " nSubJets: " << (it->second).size() << std::endl;
-    }
-    myEventInfo.run.push_back(run);
-    myEventInfo.lumi.push_back(lumi);
-    myEventInfo.event.push_back(event);
-
-    /*
-    double met = tr->getVar<double>("met");
-    double ht = tr->getVar<double>("HT"+spec);
-    int njetspt30 = tr->getVar<int>("cntNJetsPt30"+spec);
-    int nmus = tr->getVar<int>("nMuons_CUT"+spec);
-    int nels = tr->getVar<int>("nElectrons_CUT"+spec);
-
-    bool passSFCheckTrim = false;
-    passSFCheckTrim = ( met > 250 )
-                   && ( ht > 250 )
-                   && ( njetspt30 > 1 )
-                   && ( (nmus==1 && nels == 0) || (nmus==0 && nels == 1) );
-    */
   }
 
   if (originalTree) delete originalTree;
-  myEventInfo.EventTxtProducer();
+  myEventInfo_2t_1j2j.EventTxtProducer();
+  myEventInfo_2t_1j3j.EventTxtProducer();
+  myEventInfo_2t_2j3j.EventTxtProducer();
+
   return 0;
 }
