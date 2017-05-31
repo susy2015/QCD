@@ -193,10 +193,10 @@ CompareDraw(True,"QCD_ControlRegion_otherBG",qcd_jmap_bin,qcd_otherBG_aggSBsplTG
 
 qcd_tf_aggSBsplTG = GetNum("qcd_v13_aggsb_spltg.txt","QCD_TFactor_ave = ")
 qcd_tf_aggSBnorTG = GetNum("qcd_v13_aggsb_nortg.txt","QCD_TFactor_ave = ")
-qcd_tf_norSBsplTG = GetNum("qcd_v13_norsb_spltg.txt","QCD_TFactor_ave = ")
-qcd_tf_norSBnorTG = GetNum("qcd_v13_norsb_nortg.txt","QCD_TFactor_ave = ")
-#qcd_tf_norSBsplTG = GetNum("qcd_v13_norsb_spltg.txt","QCD_TFactor = ")
-#qcd_tf_norSBnorTG = GetNum("qcd_v13_norsb_nortg.txt","QCD_TFactor = ")
+#qcd_tf_norSBsplTG = GetNum("qcd_v13_norsb_spltg.txt","QCD_TFactor_ave = ")
+#qcd_tf_norSBnorTG = GetNum("qcd_v13_norsb_nortg.txt","QCD_TFactor_ave = ")
+qcd_tf_norSBsplTG = GetNum("qcd_v13_norsb_spltg.txt","QCD_TFactor = ")
+qcd_tf_norSBnorTG = GetNum("qcd_v13_norsb_nortg.txt","QCD_TFactor = ")
 
 qcd_tf_aggSBsplTG_jmap = GetAggSBJSON(qcd_tf_aggSBsplTG)
 qcd_tf_aggSBnorTG_jmap = GetAggSBJSON(qcd_tf_aggSBnorTG)
