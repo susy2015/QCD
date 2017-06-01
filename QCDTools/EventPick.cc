@@ -103,5 +103,13 @@ int main(int argc, char* argv[])
   myEventInfo_2t_1j3j.EventTxtProducer();
   myEventInfo_2t_2j3j.EventTxtProducer();
 
+  std::string d = "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15";
+  std::system(("xrdcp " + myEventInfo_2t_1j2j.OutTxtName + " " + d).c_str());
+  std::system(("rm " + myEventInfo_2t_1j2j.OutTxtName).c_str());
+  std::system(("xrdcp " + myEventInfo_2t_1j3j.OutTxtName + " " + d).c_str());
+  std::system(("rm " + myEventInfo_2t_1j3j.OutTxtName).c_str());
+  std::system(("xrdcp " + myEventInfo_2t_2j3j.OutTxtName + " " + d).c_str());
+  std::system(("rm " + myEventInfo_2t_2j3j.OutTxtName).c_str());
+
   return 0;
 }

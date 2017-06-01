@@ -16,7 +16,7 @@ git cms-init
 git cms-merge-topic cms-met:METRecipe_8020 -u
 git clone -b TestMiniAOD git@github.com:susy2015/recipeAUX.git
 git clone git@github.com:susy2015/JetToolbox.git JMEAnalysis/JetToolbox -b fix_NoLep_jetToolbox_80X_V3
-git clone -b ana_reMINIAOD_Mar06_2017 git@github.com:susy2015/SusyAnaTools.git
+git clone -b ana_reMINIAOD_April26_2017_V2 git@github.com:susy2015/SusyAnaTools.git
 ```
 
 TopTagger:
@@ -30,7 +30,7 @@ cmake .
 make -j 8
 ## Checkout Tagtagger
 cd $CMSSW_BASE/src
-git clone -b HadStopAnaDevel_v7_Moriond2017_Feb20_2017 git@github.com:susy2015/TopTagger.git
+git clone -b HadStopAnaDevel_v8_Moriond2017_Mar27_2017 git@github.com:susy2015/TopTagger.git
 ```
 
 CMS Build application:
