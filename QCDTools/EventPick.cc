@@ -62,18 +62,24 @@ int main(int argc, char* argv[])
   myEventInfo_2t_1j3j.OutTxtName = tag + "_" + fileid + ".2t_1j3j.txt";
   EventInfo myEventInfo_2t_2j3j;
   myEventInfo_2t_2j3j.OutTxtName = tag + "_" + fileid + ".2t_2j3j.txt";
+  EventInfo myEventInfo_2t_1j1j;
+  myEventInfo_2t_1j2j.OutTxtName = tag + "_" + fileid + ".2t_1j1j.txt";
+  EventInfo myEventInfo_2t_2j2j;
+  myEventInfo_2t_1j3j.OutTxtName = tag + "_" + fileid + ".2t_2j2j.txt";
+  EventInfo myEventInfo_2t_3j3j;
+  myEventInfo_2t_2j3j.OutTxtName = tag + "_" + fileid + ".2t_3j3j.txt";
 
   while(tr->getNextEvent())
   {
-    int run   = tr->getVar<int>("run");
-    int lumi  = tr->getVar<int>("lumi");
-    int event = tr->getVar<int>("event");
+    unsigned int run             = tr->getVar<unsigned int>("run");
+    unsigned int lumi            = tr->getVar<unsigned int>("lumi");
+    unsigned long long int event = tr->getVar<unsigned long long int>("event");
  
     int ntopjets = tr->getVar<int>("nTopCandSortedCnt"+spec);
     const std::map<int, std::vector<TLorentzVector>> &mtopjets = tr->getMap<int, std::vector<TLorentzVector>>("mTopJets"+spec);
     bool passBaseline = (tr->getVar<bool>("passBaseline"+spec)) && (tr->getVar<bool>("passLeptVeto"+spec));
    
-    bool dit_1j2j=false, dit_1j3j=false, dit_2j3j=false;
+    bool dit_1j2j=false, dit_1j3j=false, dit_2j3j=false, dit_1j1j=false, dit_2j2j=false, dit_3j3j=false;
 
     if( passBaseline )
     {
@@ -90,26 +96,28 @@ int main(int argc, char* argv[])
           else if(nsubjets==3) trijet=true;
           else std::cout<<"Not monojet, dijet or trijet case!" << std::endl;
         }
-        dit_1j2j=monojet && dijet; dit_1j3j=monojet && trijet; dit_2j3j=dijet && trijet;
+        dit_1j2j = monojet && dijet && (!trijet);    dit_1j3j = monojet && (!dijet) && trijet;    dit_2j3j = (!monojet) && dijet && trijet;
+        dit_1j1j = monojet && (!dijet) && (!trijet); dit_2j2j = (!monojet) && dijet && (!trijet); dit_3j3j = (!monojet) && (!dijet) && trijet;
       }
       if(dit_1j2j){ myEventInfo_2t_1j2j.run.push_back(run); myEventInfo_2t_1j2j.lumi.push_back(lumi); myEventInfo_2t_1j2j.event.push_back(event); }
       if(dit_1j3j){ myEventInfo_2t_1j3j.run.push_back(run); myEventInfo_2t_1j3j.lumi.push_back(lumi); myEventInfo_2t_1j3j.event.push_back(event); }
       if(dit_2j3j){ myEventInfo_2t_2j3j.run.push_back(run); myEventInfo_2t_2j3j.lumi.push_back(lumi); myEventInfo_2t_2j3j.event.push_back(event); }
+      if(dit_1j1j){ myEventInfo_2t_1j1j.run.push_back(run); myEventInfo_2t_1j1j.lumi.push_back(lumi); myEventInfo_2t_1j1j.event.push_back(event); }
+      if(dit_2j2j){ myEventInfo_2t_2j2j.run.push_back(run); myEventInfo_2t_2j2j.lumi.push_back(lumi); myEventInfo_2t_2j2j.event.push_back(event); }
+      if(dit_3j3j){ myEventInfo_2t_3j3j.run.push_back(run); myEventInfo_2t_3j3j.lumi.push_back(lumi); myEventInfo_2t_3j3j.event.push_back(event); }
     }
   }
 
   if (originalTree) delete originalTree;
-  myEventInfo_2t_1j2j.EventTxtProducer();
-  myEventInfo_2t_1j3j.EventTxtProducer();
-  myEventInfo_2t_2j3j.EventTxtProducer();
-
+  
   std::string d = "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15";
-  std::system(("xrdcp " + myEventInfo_2t_1j2j.OutTxtName + " " + d).c_str());
-  std::system(("rm " + myEventInfo_2t_1j2j.OutTxtName).c_str());
-  std::system(("xrdcp " + myEventInfo_2t_1j3j.OutTxtName + " " + d).c_str());
-  std::system(("rm " + myEventInfo_2t_1j3j.OutTxtName).c_str());
-  std::system(("xrdcp " + myEventInfo_2t_2j3j.OutTxtName + " " + d).c_str());
-  std::system(("rm " + myEventInfo_2t_2j3j.OutTxtName).c_str());
+
+  myEventInfo_2t_1j2j.ZSxrdcp(d);
+  myEventInfo_2t_1j3j.ZSxrdcp(d);
+  myEventInfo_2t_2j3j.ZSxrdcp(d);
+  myEventInfo_2t_1j1j.ZSxrdcp(d);
+  myEventInfo_2t_2j2j.ZSxrdcp(d);
+  myEventInfo_2t_3j3j.ZSxrdcp(d);
 
   return 0;
 }

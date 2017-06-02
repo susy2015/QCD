@@ -37,15 +37,25 @@ size_t find_Nth
 
 class EventInfo
 {
+ private:
+  bool ZeroContent();
+  void EventTxtProducer();
  public:
-  std::vector<int> run;
-  std::vector<int> lumi;
-  std::vector<int> event;
+  std::vector<unsigned int> run;
+  std::vector<unsigned int> lumi;
+  std::vector<unsigned long long int> event;
   
   bool isData;
   std::string OutTxtName="";
-  void EventTxtProducer();
+  void ZSxrdcp(std::string d);
 };
+
+bool EventInfo::ZeroContent()
+{
+  bool zerocontent = false;
+  if(run.size()==0){ zerocontent = true; }
+  return zerocontent;
+}
 
 void EventInfo::EventTxtProducer()
 {
@@ -57,5 +67,18 @@ void EventInfo::EventTxtProducer()
     outfile << run.at(i) << ":" << lumi.at(i) << ":" << event.at(i) << "\n";
   }
   outfile.close();
+  return ;
+}
+
+void EventInfo::ZSxrdcp(std::string d)
+{
+  if( ZeroContent() ){ return ; }
+  else
+  {
+    EventTxtProducer();
+    std::system(("xrdcp " + OutTxtName + " " + d).c_str());
+    std::system(("rm " + OutTxtName).c_str());
+    return ;
+  }
   return ;
 }
