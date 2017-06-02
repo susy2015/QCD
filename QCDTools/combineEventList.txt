@@ -46,4 +46,3 @@ cat Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver3-v1_stopFlatNtupl
 cat Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver3-v1_stopFlatNtuples_*.root.2t_1j1j.txt >> MET-Run2016H-03Feb2017_ver3-v1_2t_1j1j.txt
 cat Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver3-v1_stopFlatNtuples_*.root.2t_2j2j.txt >> MET-Run2016H-03Feb2017_ver3-v1_2t_2j2j.txt
 cat Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016H-03Feb2017_ver3-v1_stopFlatNtuples_*.root.2t_3j3j.txt >> MET-Run2016H-03Feb2017_ver3-v1_2t_3j3j.txt
-
