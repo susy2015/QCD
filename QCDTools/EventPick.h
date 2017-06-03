@@ -46,7 +46,8 @@ class EventInfo
   std::vector<unsigned long long int> event;
   
   bool isData;
-  std::string OutTxtName="";
+  std::string EvtTxtName="";
+  std::string AUXTxtName="";
   void ZSxrdcp(std::string d);
 };
 
@@ -59,9 +60,9 @@ bool EventInfo::ZeroContent()
 
 void EventInfo::EventTxtProducer()
 {
-  std::cout << "Output File Name: " << OutTxtName << std::endl;
+  std::cout << "Output File Name: " << EvtTxtName << std::endl;
   std::ofstream outfile;
-  outfile.open (OutTxtName.c_str());
+  outfile.open (EvtTxtName.c_str());
   for (int i=0;i<run.size();i++)
   {
     outfile << run.at(i) << ":" << lumi.at(i) << ":" << event.at(i) << "\n";
@@ -76,8 +77,8 @@ void EventInfo::ZSxrdcp(std::string d)
   else
   {
     EventTxtProducer();
-    std::system(("xrdcp " + OutTxtName + " " + d).c_str());
-    std::system(("rm " + OutTxtName).c_str());
+    std::system(("xrdcp " + EvtTxtName + " " + d).c_str());
+    std::system(("rm " + EvtTxtName).c_str());
     return ;
   }
   return ;

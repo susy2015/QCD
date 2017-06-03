@@ -52,22 +52,22 @@ int main(int argc, char* argv[])
   //for all the MC samples
   //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   //for all the data samples
-  std::string tag = input_str.substr(find_Nth(input_str,11,"/") + 1,find_Nth(input_str,12,"/")-find_Nth(input_str,11,"/")-1);
+  std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   std::size_t begin = input_str.find("stopFlatNtuples");
   std::size_t end = input_str.find(".root");
   std::string fileid = input_str.substr(begin,end);
   EventInfo myEventInfo_2t_1j2j;
-  myEventInfo_2t_1j2j.OutTxtName = tag + "_" + fileid + ".2t_1j2j.txt";
+  myEventInfo_2t_1j2j.EvtTxtName = tag + "_" + fileid + ".2t_1j2j.txt";
   EventInfo myEventInfo_2t_1j3j;
-  myEventInfo_2t_1j3j.OutTxtName = tag + "_" + fileid + ".2t_1j3j.txt";
+  myEventInfo_2t_1j3j.EvtTxtName = tag + "_" + fileid + ".2t_1j3j.txt";
   EventInfo myEventInfo_2t_2j3j;
-  myEventInfo_2t_2j3j.OutTxtName = tag + "_" + fileid + ".2t_2j3j.txt";
+  myEventInfo_2t_2j3j.EvtTxtName = tag + "_" + fileid + ".2t_2j3j.txt";
   EventInfo myEventInfo_2t_1j1j;
-  myEventInfo_2t_1j2j.OutTxtName = tag + "_" + fileid + ".2t_1j1j.txt";
+  myEventInfo_2t_1j1j.EvtTxtName = tag + "_" + fileid + ".2t_1j1j.txt";
   EventInfo myEventInfo_2t_2j2j;
-  myEventInfo_2t_1j3j.OutTxtName = tag + "_" + fileid + ".2t_2j2j.txt";
+  myEventInfo_2t_2j2j.EvtTxtName = tag + "_" + fileid + ".2t_2j2j.txt";
   EventInfo myEventInfo_2t_3j3j;
-  myEventInfo_2t_2j3j.OutTxtName = tag + "_" + fileid + ".2t_3j3j.txt";
+  myEventInfo_2t_3j3j.EvtTxtName = tag + "_" + fileid + ".2t_3j3j.txt";
 
   while(tr->getNextEvent())
   {
@@ -98,13 +98,15 @@ int main(int argc, char* argv[])
         }
         dit_1j2j = monojet && dijet && (!trijet);    dit_1j3j = monojet && (!dijet) && trijet;    dit_2j3j = (!monojet) && dijet && trijet;
         dit_1j1j = monojet && (!dijet) && (!trijet); dit_2j2j = (!monojet) && dijet && (!trijet); dit_3j3j = (!monojet) && (!dijet) && trijet;
+      
+        if(dit_1j2j){ myEventInfo_2t_1j2j.run.push_back(run); myEventInfo_2t_1j2j.lumi.push_back(lumi); myEventInfo_2t_1j2j.event.push_back(event); }
+        if(dit_1j3j){ myEventInfo_2t_1j3j.run.push_back(run); myEventInfo_2t_1j3j.lumi.push_back(lumi); myEventInfo_2t_1j3j.event.push_back(event); }
+        if(dit_2j3j){ myEventInfo_2t_2j3j.run.push_back(run); myEventInfo_2t_2j3j.lumi.push_back(lumi); myEventInfo_2t_2j3j.event.push_back(event); }
+        if(dit_1j1j){ myEventInfo_2t_1j1j.run.push_back(run); myEventInfo_2t_1j1j.lumi.push_back(lumi); myEventInfo_2t_1j1j.event.push_back(event); }
+        if(dit_2j2j){ myEventInfo_2t_2j2j.run.push_back(run); myEventInfo_2t_2j2j.lumi.push_back(lumi); myEventInfo_2t_2j2j.event.push_back(event); }
+        if(dit_3j3j){ myEventInfo_2t_3j3j.run.push_back(run); myEventInfo_2t_3j3j.lumi.push_back(lumi); myEventInfo_2t_3j3j.event.push_back(event); }
       }
-      if(dit_1j2j){ myEventInfo_2t_1j2j.run.push_back(run); myEventInfo_2t_1j2j.lumi.push_back(lumi); myEventInfo_2t_1j2j.event.push_back(event); }
-      if(dit_1j3j){ myEventInfo_2t_1j3j.run.push_back(run); myEventInfo_2t_1j3j.lumi.push_back(lumi); myEventInfo_2t_1j3j.event.push_back(event); }
-      if(dit_2j3j){ myEventInfo_2t_2j3j.run.push_back(run); myEventInfo_2t_2j3j.lumi.push_back(lumi); myEventInfo_2t_2j3j.event.push_back(event); }
-      if(dit_1j1j){ myEventInfo_2t_1j1j.run.push_back(run); myEventInfo_2t_1j1j.lumi.push_back(lumi); myEventInfo_2t_1j1j.event.push_back(event); }
-      if(dit_2j2j){ myEventInfo_2t_2j2j.run.push_back(run); myEventInfo_2t_2j2j.lumi.push_back(lumi); myEventInfo_2t_2j2j.event.push_back(event); }
-      if(dit_3j3j){ myEventInfo_2t_3j3j.run.push_back(run); myEventInfo_2t_3j3j.lumi.push_back(lumi); myEventInfo_2t_3j3j.event.push_back(event); }
+      else continue;
     }
   }
 
