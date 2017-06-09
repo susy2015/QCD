@@ -1280,9 +1280,10 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
   //clock to monitor the run time
   size_t t0 = clock();
   std::vector<QCDSampleInfo>::iterator iter_QCDSampleInfos;
+  double nData=0, nTTJets=0, nWJets=0, nSTop=0, nZJets=0, nQCD=0, nTTZ=0, nRare=0;
 
   std::cout << "Let's check inverted Delta Phi region for QCD: " << std::endl;
-  
+
   for(iter_QCDSampleInfos = myQCDSampleWeight.QCDSampleInfos.begin(); iter_QCDSampleInfos != myQCDSampleWeight.QCDSampleInfos.end(); iter_QCDSampleInfos++)
   {    
     //use class NTupleReader in the SusyAnaTools/Tools/NTupleReader.h file
@@ -1325,14 +1326,19 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
 
       bool passBaseline_dPhisInverted = false;
       passBaseline_dPhisInverted = passBaselineQCD && (!passdPhis);
+      //passBaseline_dPhisInverted = passBaselineQCD && passdPhis;
+
       //apply trigger efficiencies
       double metEff = 1;
       if   ( (*iter_QCDSampleInfos).QCDTag == "MET" ) metEff = 1;
       else metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(false, ht, met);
+      //else metEff = myTriggerEff.GetTriggerEff_HLT_PFMET100_PFMHT100_2017Moriond(true, ht, met);
+      //FIXME : need to be removed after check with koushik
+      //if(met<250) continue;
+      //metEff=1;
 
       if (passBaseline_dPhisInverted)
       {
-        //int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met );
         int searchbin_id = mySearchBins.find_Binning_Index( nbotjets, ntopjets, mt2, met, ht );
 
         if( (*iter_QCDSampleInfos).QCDTag == "MET" )
@@ -1350,6 +1356,7 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           (myBasicCheckHistgram.h_b_njets50_Data)->Fill(njets50,thisweight*metEff);
 
           (myBasicCheckHistgram.h_b_sb_Data)->Fill(searchbin_id,thisweight*metEff);
+          nData+=thisweight*metEff;
         }
         else
         {
@@ -1376,14 +1383,22 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
             else ih = 5;
             if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) ISRCorr = tr.getVar<double>("ISRCorr");
             //BTagCorr = tr.getVar<double>("BTagCorr");
+            if( ((*iter_QCDSampleInfos).QCDTag).find("TTJets") != std::string::npos ) nTTJets+=thisweight*metEff*ISRCorr*BTagCorr;
+            if( ((*iter_QCDSampleInfos).QCDTag).find("ST_tW") != std::string::npos ) nSTop+=thisweight*metEff*ISRCorr*BTagCorr;
+            if( ((*iter_QCDSampleInfos).QCDTag).find("WJetsToLNu_HT") != std::string::npos ) nWJets+=thisweight*metEff*ISRCorr*BTagCorr;
           }
-          else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos ) ih = 2;
+          else if( ((*iter_QCDSampleInfos).QCDTag).find("ZJetsToNuNu_HT") != std::string::npos )
+          { 
+            ih = 2;
+            nZJets+=thisweight*metEff*ISRCorr*BTagCorr;
+          }
           else if( ((*iter_QCDSampleInfos).QCDTag).find("QCD_HT") != std::string::npos )
           {
             double calomet = tr.getVar<double>("calomet");
             bool passPFCaloMETRatio = (met/calomet<5); 
             if( !passPFCaloMETRatio ) continue;
             ih = 3;
+            nQCD+=thisweight*metEff*ISRCorr*BTagCorr;
           }
           else if( 
                      ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos 
@@ -1401,7 +1416,14 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
           { 
             ih = 4;
             bool isNegativeWeight = tr.getVar<bool>("isNegativeWeight");
-            if( isNegativeWeight ) thisweight = -thisweight;
+            if( isNegativeWeight ) thisweight = -(*iter_QCDSampleInfos).weight;
+            else thisweight = (*iter_QCDSampleInfos).weight;
+            if( ((*iter_QCDSampleInfos).QCDTag).find("TTZTo") != std::string::npos ) 
+            {  
+              nTTZ+=thisweight*metEff*ISRCorr*BTagCorr;
+              //myBasicCheckHistgram.h_b_ttz_weight->Fill(thisweight*metEff*ISRCorr*BTagCorr);
+            }
+            else nRare+=thisweight*metEff*ISRCorr*BTagCorr;
           }
           else std::cout << "Invalid tag! what the fuck is going on ?!" << std::endl;
 
@@ -1419,6 +1441,9 @@ void LoopBasicCheckQCD( QCDSampleWeight& myQCDSampleWeight )
       }
     }//end of inner loop
   }//end of QCD Samples loop
+
+  std::cout << "nData: " << nData << ", nMCTotal: " << nTTJets+nWJets+nSTop+nZJets+nQCD+nTTZ+nRare << std::endl;
+  std::cout << "nTTJets: " << nTTJets << ", nWJets: " << nWJets << ", nSTop: " << nSTop << ", nZJets: " << nZJets << ", nQCD: " << nQCD << ", nTTZ: " << nTTZ << ", nRare: " << nRare << std::endl;
 
   (myBasicCheckHistgram.oFile)->Write();
   (myBasicCheckHistgram.oFile)->Close();
