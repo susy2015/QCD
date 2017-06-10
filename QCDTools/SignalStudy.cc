@@ -39,8 +39,8 @@ int main(int argc, char* argv[])
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
 
-  //output_str = "SignalStudy_" + tag + "_" + fileid;
-  output_str = "SignalStudy_Test.root";
+  output_str = "SignalStudy_" + tag + "_" + fileid;
+  //output_str = "SignalStudy_Test.root";
   std::cout << "Output File Name: " << output_str << std::endl;
 
   TChain *originalTree = new TChain("stopTreeMaker/AUX");
@@ -65,6 +65,9 @@ int main(int argc, char* argv[])
   selectedTree->Branch("SusyMotherMass",&SusyMotherMass,"SusyMotherMass/D");
   selectedTree->Branch("SusyLSPMass"   ,&SusyLSPMass   ,"SusyLSPMass/D");
 
+  Bool_t ifAllHadTop;
+  selectedTree->Branch("ifAllHadTop",&ifAllHadTop,"ifAllHadTop/O");
+
   std::shared_ptr<topTagger::type3TopTagger>type3Ptr(nullptr);
   NTupleReader *tr=0;
   //initialize the type3Ptr defined in the customize.h
@@ -84,30 +87,26 @@ int main(int argc, char* argv[])
 
   while(tr->getNextEvent())
   {
-    /*
-    bool passLeptVeto = tr.getVar<bool>("passLeptVeto"+spec);
-    bool passnJets = tr.getVar<bool>("passnJets"+spec);
-    bool passMET = tr.getVar<bool>("passMET"+spec);
-    bool passHT = tr.getVar<bool>("passHT"+spec);
-    bool passMT2 = tr.getVar<bool>("passMT2"+spec);
-    bool passTagger = tr.getVar<bool>("passTagger"+spec);
-    bool passBJets = tr.getVar<bool>("passBJets"+spec);
-    bool passNoiseEventFilter = tr.getVar<bool>("passNoiseEventFilter"+spec);
-    bool passQCDHighMETFilter = tr.getVar<bool>("passQCDHighMETFilter"+spec);
-    bool passdPhis = tr.getVar<bool>("passdPhis"+spec);
-    */
-    //bool passSSTrimAndSlim = tr->getVar<bool>("passBaseline"+spec);
-    bool passSSTrimAndSlim = true;
-    /*
-    passSSTrimAndSlim = ( met > 200)
-                && passnJets
-                && passHT
-                && passMT2
-                //&& passTagger
-                && passBJets
-                && passNoiseEventFilter;
-    */
-    if(passSSTrimAndSlim)
+    bool passLeptVeto = tr->getVar<bool>("passLeptVeto"+spec);
+    //bool passnJets = tr->getVar<bool>("passnJets"+spec);
+    //bool passMET = tr->getVar<bool>("passMET"+spec);
+    //bool passHT = tr->getVar<bool>("passHT"+spec);
+    //bool passMT2 = tr->getVar<bool>("passMT2"+spec);
+    //bool passTagger = tr->getVar<bool>("passTagger"+spec);
+    //bool passBJets = tr->getVar<bool>("passBJets"+spec);
+    //bool passNoiseEventFilter = tr->getVar<bool>("passNoiseEventFilter"+spec);
+    //bool passQCDHighMETFilter = tr->getVar<bool>("passQCDHighMETFilter"+spec);
+    //bool passdPhis = tr->getVar<bool>("passdPhis"+spec);
+    bool passSSTrimAndSlim = tr->getVar<bool>("passBaseline"+spec);
+    //bool passSSTrimAndSlim = true;
+    //passSSTrimAndSlim = ( met > 200)
+    //            && passnJets
+    //            && passHT
+    //            && passMT2
+    //            && passTagger
+    //            && passBJets
+    //            && passNoiseEventFilter;
+    if(passSSTrimAndSlim && passLeptVeto)
     {
       met = tr->getVar<double>("met");
       genmet = tr->getVar<double>("genmet");
@@ -139,7 +138,15 @@ int main(int argc, char* argv[])
 
       SusyMotherMass = tr->getVar<double>("SusyMotherMass");
       SusyLSPMass    = tr->getVar<double>("SusyLSPMass");
-     
+ 
+      std::vector<int> W_emuVec = tr->getVec<int>("W_emuVec");
+      std::vector<int> W_tau_emuVec = tr->getVec<int>("W_tau_emuVec");
+      std::vector<int> W_tauVec = tr->getVec<int>("W_tauVec");
+      ifAllHadTop = (W_emuVec.size()==0) && (W_tau_emuVec.size()==0) && (W_tauVec.size()==0);
+
+      //if(ifAllHadTop && NuFromTopWLVec.size()!=0){ std::cout << tr->getVar<unsigned int>("run") <<":" << tr->getVar<unsigned int>("lumi") << ":" << tr->getVar<unsigned long long int>("event") << std::endl; }
+      if(ifAllHadTop && NuOtherLVec.size()!=0){ std::cout << tr->getVar<unsigned int>("run") <<":" << tr->getVar<unsigned int>("lumi") << ":" << tr->getVar<unsigned long long int>("event") << std::endl; }
+
       selectedTree->Fill();
     }
     else continue;
@@ -150,9 +157,9 @@ int main(int argc, char* argv[])
    
   if (originalTree) delete originalTree;
 
-  //std::string d = "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15";
-  //std::system(("xrdcp " + output_str + " " + d).c_str());
-  //std::system(("rm " + output_str).c_str());
+  std::string d = "root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15";
+  std::system(("xrdcp " + output_str + " " + d).c_str());
+  std::system(("rm " + output_str).c_str());
 
   return 0;
 }

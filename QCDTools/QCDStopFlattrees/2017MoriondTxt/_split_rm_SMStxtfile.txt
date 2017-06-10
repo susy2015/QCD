@@ -1,0 +1,2 @@
+split -l 5 SMS-T5tttt_dM175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt SMS-T5tttt_dM175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8Split.
+rm SMS-T5tttt_dM175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8.txt
