@@ -29,7 +29,7 @@ MT2LIB     = -L$(CMSSW_BASE)/lib/${SCRAM_ARCH}/ -lrecipeAUXOxbridgeMT2 #-L$(CMSS
 LHAPDFLIB  = -L$(LHAPDF_DATA_PATH)/../../lib -lLHAPDF
 FILES = $(wildcard $(SDIR)/*.cc)
 OBJS  := $(FILES:$(SDIR)/%.cc=$(ODIR)/%.o)
-PROGRAMS = DeepTrim SFCheckTrim QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_Zinv QCDTFTrimAndSlim_QCD QCDTFTrimAndSlim_Rare QCDTFTrimAndSlim_Data
+PROGRAMS = DeepTrim SFCheckTrim EventPick SignalStudy QCDTFTrimAndSlim_LLHadTau QCDTFTrimAndSlim_Zinv QCDTFTrimAndSlim_QCD QCDTFTrimAndSlim_Rare QCDTFTrimAndSlim_Data
 
 all: mkobj $(OBJS) SusyAnaTools $(PROGRAMS)
 
@@ -63,6 +63,12 @@ DeepTrim: $(ODIR)/DeepTrim.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
 	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 SFCheckTrim: $(ODIR)/SFCheckTrim.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
+
+EventPick: $(ODIR)/EventPick.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
+	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
+
+SignalStudy: $(ODIR)/SignalStudy.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o
 	$(LD) $^ $(LIBS) $(MT2LIB) $(LHAPDFLIB) -o $@
 
 QCDTFTrimAndSlim_LLHadTau: $(ODIR)/QCDTFTrimAndSlim_LLHadTau.o $(ODIR)/NTupleReader.o $(ODIR)/SATException.o $(ODIR)/ISRCorrector.o $(ODIR)/BTagCorrector.o

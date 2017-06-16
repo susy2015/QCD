@@ -14,7 +14,7 @@ const double trigger_turn_on_met = 200;
 const double cut_mtwmu = 100;
 const double cut_mtwel = 100;
 const int nth_slash_nametag_MC = 10;
-const int nth_slash_nametag_Data = 11;
+const int nth_slash_nametag_Data = 10;
 //root://cmseos.fnal.gov//store/user/lpcsusyhad/Stop_production/Summer16_80X_Mar_2017_Ntp_v13X//MET/Summer16_80X_Mar_2017_Ntp_v13p0_MET-Run2016B-03Feb2017_ver2-v2/170303_234607/0000/stopFlatNtuples_102.root
 
 

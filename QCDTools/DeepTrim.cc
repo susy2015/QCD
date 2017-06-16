@@ -36,8 +36,8 @@ int main(int argc, char* argv[])
   //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
   //for all the data samples
   //std::string tag = input_str.substr(find_Nth(input_str,9,"/") + 1,find_Nth(input_str,10,"/")-find_Nth(input_str,9,"/")-1);
-  //std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
-  std::string tag = input_str.substr(find_Nth(input_str,11,"/") + 1,find_Nth(input_str,12,"/")-find_Nth(input_str,11,"/")-1);
+  std::string tag = input_str.substr(find_Nth(input_str,10,"/") + 1,find_Nth(input_str,11,"/")-find_Nth(input_str,10,"/")-1);
+  //std::string tag = input_str.substr(find_Nth(input_str,11,"/") + 1,find_Nth(input_str,12,"/")-find_Nth(input_str,11,"/")-1);
   std::size_t idpos = input_str.find("stopFlatNtuples");
   std::string fileid = input_str.substr (idpos);
 

@@ -60,5 +60,7 @@ void BasicCheckHistgram::BookHistgram(const char *outFileName)
 
   h_b_sb_Data = new TH1D("h_b_sb_Data","",60,0,60);
 
+  //h_b_ttz_weight = new TH1D("h_ttz_weight","",100,-0.5,0.5);
+
   return ;
 }

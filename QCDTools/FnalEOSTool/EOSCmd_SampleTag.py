@@ -1,9 +1,10 @@
 import glob, os, sys
 
 d_hadd_source = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15"
-d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv13p5c_SimplifiedTagger"
+#d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/QCD_Data_2017Moriondv13p5c_SimplifiedTagger"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/LL_DataMC_2017Moriondv13p5c_0b"
 #d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SFCheckTrim_2016Sep"
+d_final_target = "/store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SMSStudy"
 
 MGM = "root://cmseos.fnal.gov/"
 
@@ -182,6 +183,10 @@ sample_tag_list_SFCheckTrim = [
 #"SFCheckTrimmed_Summer16_80X_Jan_2017_Ntp_v12p0_ST_tW_antitop_5f_inclusiveDecays_stopFlatNtuples_",
                            ]
 
+sample_tag_list_SMSStudy = [
+"SignalStudy_Summer16_80X_Mar_2017_Ntp_v13p0_SMS-T5tttt_dM175_FastSim_scan_stopFlatNtuples_"
+                           ]
+             
 #example of sample tag: SSTrimmed_SMS-T2tt_mStop-850_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_stopFlatNtuples_, always end with "_"
 sample_tag = sys.argv[1]
 
@@ -201,6 +206,8 @@ elif(sample_tag == 'DeepTrim') :
   sample_tag_list = sample_tag_list_DeepTrim
 elif(sample_tag == 'SFCheckTrim') :
   sample_tag_list = sample_tag_list_SFCheckTrim
+elif(sample_tag == 'SMSStudy') :
+  sample_tag_list = sample_tag_list_SMSStudy
 else:
   print "wrong run type!"
 
