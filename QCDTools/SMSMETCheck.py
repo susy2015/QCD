@@ -157,16 +157,16 @@ def CompareDraw(islogy,title,mSUSYMother,mLSP):
   c1 = ROOT.TCanvas("c","",50,50,800,600)
   if islogy:
     c1.SetLogy()
-  ROOT.gStyle.SetOptStat(0);
+  ROOT.gStyle.SetOptStat(0)
   
-  #h_met1.Draw()
-  h_met2.Draw()
+  h_met1.Draw()
+  #h_met2.Draw()
   h_met2.Draw("same")
   #h_met3.Draw("same")
-  h_met4.Draw("same")
+  #h_met4.Draw("same")
   #h_met5.Draw("same")
   #h_met6.Draw("same")
-  h_met7.Draw("same")
+  #h_met7.Draw("same")
 
   leg1 = ROOT.TLegend(0.35,0.70,0.90,0.90)
   leg1.SetBorderSize(1)
@@ -188,7 +188,7 @@ def CompareDraw(islogy,title,mSUSYMother,mLSP):
   c1.Close()
 
   c2 = ROOT.TCanvas("c","",50,50,800,600)
-  ROOT.gStyle.SetOptStat(0);
+  ROOT.gStyle.SetOptStat(0)
 
   h_metdiff1.Draw()
   h_metdiff2.Draw("same")
@@ -224,9 +224,9 @@ def SignalScan():
   for event in t:
     if((event.SusyMotherMass,event.SusyLSPMass) not in SUSYMotherSUSYLSPList):
       #if(event.SusyLSPMass==1):
-      if(event.SusyMotherMass==1000):
-        SUSYMotherSUSYLSPList.append((event.SusyMotherMass,event.SusyLSPMass))
-        print("mSUSYMother: %d, mLSP: %d" % (event.SusyMotherMass,event.SusyLSPMass))
+      #if(event.SusyMotherMass==1000):
+      SUSYMotherSUSYLSPList.append((event.SusyMotherMass,event.SusyLSPMass))
+      print("mSUSYMother: %d, mLSP: %d" % (event.SusyMotherMass,event.SusyLSPMass))
     i = i+1
     if((i%10000) == 0):
       print("%i Events Filled!" % (i))
@@ -313,10 +313,57 @@ def mSUSYMotherTrend():
   print GenLeptVetoEvt
   print AllPassBaselineEvt
 
+def mSUSYMothermSUSYLSP2DTrend():
+  f = ROOT.TFile.Open("root://cmseos.fnal.gov//store/group/lpcsusyhad/hua/Skimmed_2015Nov15/SMSStudy/SignalStudy_Summer16_80X_Mar_2017_Ntp_v13p0_SMS-T5tttt_dM175_FastSim_scan_stopFlatNtuples.root", "read")
+  t = f.Get("stopTreeMaker/QCDTFTree")
+  SUSYMotherSUSYLSPList=SignalScan()
+  GenLeptVetoEvt = [0]*len(SUSYMotherSUSYLSPList)
+  AllPassBaselineEvt = [0]*len(SUSYMotherSUSYLSPList)
+  h_allbsl = ROOT.TH2D("h_allbsl","",32,800,2400,34,0,1700)
+  h_lepvto = ROOT.TH2D("h_lepvto","",32,800,2400,34,0,1700)
+  h_lowmet = ROOT.TH2D("h_lowmet","",32,800,2400,34,0,1700)
+  i = 0
+  for event in t:
+    idx=SUSYMotherSUSYLSPList.index((event.SusyMotherMass,event.SusyLSPMass))
+    AllPassBaselineEvt[idx] = AllPassBaselineEvt[idx]+1
+    h_allbsl.Fill(event.SusyMotherMass,event.SusyLSPMass,1)
+    if(event.ifAllHadTop):
+      GenLeptVetoEvt[idx] = GenLeptVetoEvt[idx]+1
+      h_lepvto.Fill(event.SusyMotherMass,event.SusyLSPMass,1)
+    if(event.genmet<250):
+      h_lowmet.Fill(event.SusyMotherMass,event.SusyLSPMass,1)
+    i = i+1
+    if((i%10000) == 0):
+      print("%i Events Filled!" % (i))
 
-SignalScan()
+  c = ROOT.TCanvas("c","",50,50,2400,2400)
+  ROOT.gStyle.SetOptStat(0)
+  ROOT.gStyle.SetPaintTextFormat("4.2f")
+
+  #h_ratio = h_lepvto.Clone()
+  #h_ratio.Divide(h_lepvto,h_allbsl,1.0,1.0,"B")
+  h_ratio = h_lowmet.Clone()
+  h_ratio.Divide(h_lowmet,h_allbsl,1.0,1.0,"B")
+  h_ratio.SetMarkerSize(0.5)
+  h_ratio.GetXaxis().SetTitle("mSUSYMother")
+  h_ratio.GetYaxis().SetTitle("mSUSYLSP")
+  h_ratio.GetYaxis().SetTitleOffset(1.5)
+  h_ratio.Draw("colz text")
+
+  c.SetRightMargin(0.15)
+  c.SetLeftMargin(0.15)
+  c.SaveAs("_test3.png")
+  c.SaveAs("_test3.C")
+  c.Close()
+  f.Close()
+
+  print GenLeptVetoEvt
+  print AllPassBaselineEvt
+
+#SignalScan()
 #mSUSYMotherTrend()
+mSUSYMothermSUSYLSP2DTrend()
 #CompareDraw(True,"T5tttt_dM175_2000_1",2000,1)
 #CompareDraw(True,"T5tttt_dM175_1700_1",1700,1)
-#CompareDraw(True,"T5tttt_dM175_1000_1",1000,1)
+#CompareDraw(True,"T5tttt_dM175_800_1",800,1)
 
