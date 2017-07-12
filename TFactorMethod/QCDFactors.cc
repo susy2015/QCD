@@ -970,6 +970,7 @@ void QCDFactors::printDataCard(std::string pred_type)
     }
     if(QCD_otherBG_CS[i] < 0) { QCD_otherBG_CS[i]=0; }
     QCD_otherBG_eff_CS[i] = DC_sb_otherBG_eff[i];
+    if(QCD_otherBG_eff_CS[i] < 0) { QCD_otherBG_eff_CS[i]=0; }
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
     QCD_TFactor_ave[i] = DC_sb_TFactor_ave[i];
@@ -1025,6 +1026,7 @@ void QCDFactors::printSysHeader(std::string pred_type)
     }
     if(QCD_otherBG_CS[i] < 0) { QCD_otherBG_CS[i]=0; }
     QCD_otherBG_eff_CS[i] = DC_sb_otherBG_eff[i];
+    if(QCD_otherBG_eff_CS[i] < 0) { QCD_otherBG_eff_CS[i]=0; }
     QCD_TFactor[i] = DC_sb_TFactor[i];
     QCD_TFactor_relative_err[i] = DC_sb_TFactor_err[i];
     QCD_TFactor_ave[i] = DC_sb_TFactor_ave[i];

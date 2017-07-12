@@ -1259,7 +1259,7 @@ void LoopQCDPredData( QCDFactors& myQCDFactors, QCDSampleWeight& myQCDSampleWeig
     else
     {
       myQCDFactors.DC_sb_TFactor_ave[i] = myQCDFactors.DC_sb_TFactor[i];
-      myQCDFactors.DC_sb_TFactor_err[i] = myQCDFactors.DC_sb_TFactor_err[i];
+      myQCDFactors.DC_sb_TFactor_ave_err[i] = myQCDFactors.DC_sb_TFactor_err[i];
       myQCDFactors.DC_sb_otherBG_eff[i] = myQCDFactors.DC_sb_otherBG_sum_weight[i]/(myQCDFactors.DC_sb_TFactor[i]);
     }
   }
