@@ -91,5 +91,11 @@ elif(runtype == "Rare"):
   PrintCondorSubmitLine(d, "WW", runtype)
   PrintCondorSubmitLine(d, "WZ", runtype)
   PrintCondorSubmitLine(d, "ZZ", runtype)
+elif(runtype == "TTH"):
+  PrintCondorHeaderLine()
+  print("##transfer file list for " + runtype + " samples")
+  PrintTransferFileLine("ttHTo", True, True)
+  PrintCondorLogLine(runtype)
+  PrintCondorSubmitLine(d, "ttHTo", runtype)
 else:
   print ("#Invalid run type for QCDTFTrimAndSlim! What the fuck is going on ??!!")

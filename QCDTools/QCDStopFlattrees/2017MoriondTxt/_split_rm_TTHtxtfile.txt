@@ -1,0 +1,5 @@
+split -l 5 ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8.txt ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8Split.
+split -l 5 ttHTobb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8.txt ttHTobb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8Split.
+
+rm ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8.txt
+rm ttHTobb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8.txt

@@ -35,6 +35,21 @@ size_t find_Nth
   return pos;
 }
 
+double GetCSVMatch(TLorentzVector target, std::vector<TLorentzVector> jetsLVec, std::vector<double> jetsCSV)
+{
+  double thiscsv=-1;
+  for ( int i = 0 ; i < jetsLVec.size() ; i++ )
+  {
+    double diffeta = std::abs( target.Eta() - jetsLVec.at(i).Eta() );
+    double diffphi = std::abs( target.Phi() - jetsLVec.at(i).Phi() );
+    double diffpt = std::abs( target.Pt() - jetsLVec.at(i).Pt() );
+    if( diffeta < 0.05 && diffphi < 0.05 && diffpt < 5 ) return jetsCSV.at(i);
+  }
+  //std::vector<TLorentzVector> jetsLVec = getVec<TLorentzVector>("jetsLVec");
+  //std::vector<double> jetsCSV = tr->getVec<double>("recoJetsBtag_0");
+  return thiscsv;
+}
+
 class EventInfo
 {
  private:
@@ -44,7 +59,7 @@ class EventInfo
   std::vector<unsigned int> run;
   std::vector<unsigned int> lumi;
   std::vector<unsigned long long int> event;
-  std::vector<std::array<double, 6>> eta, phi, pt;
+  std::vector<std::array<double, 6>> eta, phi, pt, csv;
   
   bool isData;
   std::string EvtTxtName="";
@@ -71,7 +86,7 @@ void EventInfo::EventTxtProducer(bool ExtInfo)
     { 
       for(int j=0;j<6;j++)
       {
-        outfile << j << "th jet eta: " << eta.at(i)[j] << ", phi: " << phi.at(i)[j] << ", pt: " << pt.at(i)[j] << "\n";
+        outfile << j << "th jet eta: " << eta.at(i)[j] << ", phi: " << phi.at(i)[j] << ", pt: " << pt.at(i)[j] << ", csv: " << csv.at(i)[j] << "\n";
       }
     }
   }
@@ -86,8 +101,8 @@ void EventInfo::ZSxrdcp(std::string d)
   {
     //EventTxtProducer(false);
     EventTxtProducer(true);
-    std::system(("xrdcp " + EvtTxtName + " " + d).c_str());
-    std::system(("rm " + EvtTxtName).c_str());
+    //std::system(("xrdcp " + EvtTxtName + " " + d).c_str());
+    //std::system(("rm " + EvtTxtName).c_str());
     return ;
   }
   return ;

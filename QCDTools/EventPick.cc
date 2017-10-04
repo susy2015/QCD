@@ -77,6 +77,8 @@ int main(int argc, char* argv[])
  
     int ntopjets = tr->getVar<int>("nTopCandSortedCnt"+spec);
     const std::map<int, std::vector<TLorentzVector>> &mtopjets = tr->getMap<int, std::vector<TLorentzVector>>("mTopJets"+spec);
+    std::vector<TLorentzVector> jetsLVec = tr->getVec<TLorentzVector>("jetsLVec");
+    std::vector<double> jetsCSV = tr->getVec<double>("recoJetsBtag_0");
     bool passBaseline = (tr->getVar<bool>("passBaseline"+spec)) && (tr->getVar<bool>("passLeptVeto"+spec));
    
     bool dit_1j2j=false, dit_1j3j=false, dit_2j3j=false, dit_1j1j=false, dit_2j2j=false, dit_3j3j=false;
@@ -88,7 +90,7 @@ int main(int argc, char* argv[])
         std::cout << "NTops: " << ntopjets << std::endl;
         bool monojet=false, dijet=false, trijet=false;
         int jid=0;//from 0 to 5
-        std::array<double, 6> thiseta, thisphi, thispt;
+        std::array<double, 6> thiseta, thisphi, thispt, thiscsv;
         for(auto &topit  : mtopjets)
         {
           std::cout << "Top ID: " << topit.first << " nSubJets: " << (topit.second).size() << std::endl;
@@ -98,7 +100,8 @@ int main(int argc, char* argv[])
             monojet=true;
             thiseta[jid]=(topit.second).at(0).Eta(); thiseta[jid+1]=0; thiseta[jid+2]=0;
             thisphi[jid]=(topit.second).at(0).Phi(); thisphi[jid+1]=0; thisphi[jid+2]=0;
-            thispt[jid]=(topit.second).at(0).Pt(); thispt[jid+1]=0; thispt[jid+2]=0; 
+            thispt[jid]=(topit.second).at(0).Pt(); thispt[jid+1]=0; thispt[jid+2]=0;
+            thiscsv[jid]=-1; thiscsv[jid+1]=-1; thiscsv[jid+2]=-1;
           }
           else if(nsubjets==2)
           { 
@@ -106,6 +109,7 @@ int main(int argc, char* argv[])
             thiseta[jid]=(topit.second).at(0).Eta(); thiseta[jid+1]=(topit.second).at(1).Eta(); thiseta[jid+2]=0;
             thisphi[jid]=(topit.second).at(0).Phi(); thisphi[jid+1]=(topit.second).at(1).Phi(); thisphi[jid+2]=0;
             thispt[jid]=(topit.second).at(0).Pt(); thispt[jid+1]=(topit.second).at(1).Pt(); thispt[jid+2]=0; 
+            thiscsv[jid]=-1; thiscsv[jid+1]=-1; thiscsv[jid+2]=-1;
           }
           else if(nsubjets==3)
           { 
@@ -113,6 +117,7 @@ int main(int argc, char* argv[])
             thiseta[jid]=(topit.second).at(0).Eta(); thiseta[jid+1]=(topit.second).at(1).Eta(); thiseta[jid+2]=(topit.second).at(2).Eta();
             thisphi[jid]=(topit.second).at(0).Phi(); thisphi[jid+1]=(topit.second).at(1).Phi(); thisphi[jid+2]=(topit.second).at(2).Phi();
             thispt[jid]=(topit.second).at(0).Pt(); thispt[jid+1]=(topit.second).at(1).Pt(); thispt[jid+2]=(topit.second).at(2).Pt();
+            thiscsv[jid]=GetCSVMatch((topit.second).at(0), jetsLVec, jetsCSV); thiscsv[jid+1]=GetCSVMatch((topit.second).at(1), jetsLVec, jetsCSV); thiscsv[jid+2]=GetCSVMatch((topit.second).at(2), jetsLVec, jetsCSV);
           }
           else std::cout<<"Not monojet, dijet or trijet case!" << std::endl;
           jid=jid+3;
@@ -124,31 +129,37 @@ int main(int argc, char* argv[])
         { 
           myEventInfo_2t_1j2j.run.push_back(run); myEventInfo_2t_1j2j.lumi.push_back(lumi); myEventInfo_2t_1j2j.event.push_back(event); 
           myEventInfo_2t_1j2j.eta.push_back(thiseta); myEventInfo_2t_1j2j.phi.push_back(thisphi); myEventInfo_2t_1j2j.pt.push_back(thispt);
+          myEventInfo_2t_1j2j.csv.push_back(thiscsv);
         }
         if(dit_1j3j)
         { 
           myEventInfo_2t_1j3j.run.push_back(run); myEventInfo_2t_1j3j.lumi.push_back(lumi); myEventInfo_2t_1j3j.event.push_back(event);
           myEventInfo_2t_1j3j.eta.push_back(thiseta); myEventInfo_2t_1j3j.phi.push_back(thisphi); myEventInfo_2t_1j3j.pt.push_back(thispt); 
+          myEventInfo_2t_1j3j.csv.push_back(thiscsv);
         }
         if(dit_2j3j)
         { 
           myEventInfo_2t_2j3j.run.push_back(run); myEventInfo_2t_2j3j.lumi.push_back(lumi); myEventInfo_2t_2j3j.event.push_back(event); 
           myEventInfo_2t_2j3j.eta.push_back(thiseta); myEventInfo_2t_2j3j.phi.push_back(thisphi); myEventInfo_2t_2j3j.pt.push_back(thispt);
+          myEventInfo_2t_2j3j.csv.push_back(thiscsv);
         }
         if(dit_1j1j)
         { 
           myEventInfo_2t_1j1j.run.push_back(run); myEventInfo_2t_1j1j.lumi.push_back(lumi); myEventInfo_2t_1j1j.event.push_back(event);
           myEventInfo_2t_1j1j.eta.push_back(thiseta); myEventInfo_2t_1j1j.phi.push_back(thisphi); myEventInfo_2t_1j1j.pt.push_back(thispt);
+          myEventInfo_2t_1j1j.csv.push_back(thiscsv);
         }
         if(dit_2j2j)
         { 
           myEventInfo_2t_2j2j.run.push_back(run); myEventInfo_2t_2j2j.lumi.push_back(lumi); myEventInfo_2t_2j2j.event.push_back(event);
           myEventInfo_2t_2j2j.eta.push_back(thiseta); myEventInfo_2t_2j2j.phi.push_back(thisphi); myEventInfo_2t_2j2j.pt.push_back(thispt);
+          myEventInfo_2t_2j2j.csv.push_back(thiscsv);
         }
         if(dit_3j3j)
         { 
           myEventInfo_2t_3j3j.run.push_back(run); myEventInfo_2t_3j3j.lumi.push_back(lumi); myEventInfo_2t_3j3j.event.push_back(event);
           myEventInfo_2t_3j3j.eta.push_back(thiseta); myEventInfo_2t_3j3j.phi.push_back(thisphi); myEventInfo_2t_3j3j.pt.push_back(thispt);
+          myEventInfo_2t_3j3j.csv.push_back(thiscsv);
         }
       }
       else continue;
