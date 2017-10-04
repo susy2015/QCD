@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
             thiseta[jid]=(topit.second).at(0).Eta(); thiseta[jid+1]=(topit.second).at(1).Eta(); thiseta[jid+2]=0;
             thisphi[jid]=(topit.second).at(0).Phi(); thisphi[jid+1]=(topit.second).at(1).Phi(); thisphi[jid+2]=0;
             thispt[jid]=(topit.second).at(0).Pt(); thispt[jid+1]=(topit.second).at(1).Pt(); thispt[jid+2]=0; 
-            thiscsv[jid]=-1; thiscsv[jid+1]=(topit.second).at(1).Pt(); thiscsv[jid+2]=-1;
+            thiscsv[jid]=-1; thiscsv[jid+1]=-1; thiscsv[jid+2]=-1;
           }
           else if(nsubjets==3)
           { 
